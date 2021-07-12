@@ -192,7 +192,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
-	codes := strings.Split(req.OrderNo, "-")
+	codes := strings.Split(req.Code, "-")
 	if len(codes) == 3 {
 		userQr := codes[1]
 		user := service.UserService.DetailByQr(r.Context(), userQr)
@@ -249,7 +249,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
 		}
 		response.JsonErrExit(r)
 	} else {
-		order, err := service.PackagesOrderService.DetailByNo(r.Context(), req.OrderNo)
+		order, err := service.PackagesOrderService.DetailByNo(r.Context(), req.Code)
 		if err != nil {
 			response.JsonErrExit(r)
 		}

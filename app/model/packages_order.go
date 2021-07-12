@@ -93,7 +93,7 @@ type ShopManagerPackagesOrderListDetailRep struct {
 
 // ShopManagerPackagesOrderClaimReq 店长认领订单，请求数据
 type ShopManagerPackagesOrderClaimReq struct {
-	OrderNo string `validate:"required" json:"orderNo"` //订单编号
+	Code string `validate:"required" json:"code"` //扫码获取
 }
 
 // Prepay 发起支付数据

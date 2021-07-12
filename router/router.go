@@ -162,16 +162,16 @@ func init() {
 
 		group.POST("/biz_battery_renewal", user.BizApi.BatteryRenewal)
 
-		group.POST("/biz_record/stat", user.BizApi.RecordStat)
-		group.POST("/biz_record/list", user.BizApi.RecordList)
+		group.GET("/biz_record/stat", user.BizApi.RecordStat)
+		group.GET("/biz_record/list", user.BizApi.RecordList)
 
-		group.POST("/group/stat", user.GroupApi.Stat)
-		group.POST("/group/list", user.GroupApi.List)
+		group.GET("/group/stat", user.GroupApi.Stat)
+		group.GET("/group/list", user.GroupApi.List)
 	})
 
 	//店长
 	s.Group("/sapi", func(group *ghttp.RouterGroup) {
-		group.POST("/manger/login", shop.ManagerApi.Login)
+		group.POST("/login", shop.ManagerApi.Login)
 		group.Middleware(
 			shop.Middleware.Ctx,
 			shop.Middleware.Auth,

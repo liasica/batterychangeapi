@@ -513,7 +513,7 @@ func (s *userService) GetUserByAccessToken(accessToken string) (user model.User,
 	err = dao.User.Where(dao.User.Columns.AccessToken, accessToken).Scan(&user)
 	if err == nil && user.Id > 0 {
 		if user.BatteryState == model.BatteryStateUse {
-			if user.BatteryReturnAt.Timestamp() <= gtime.Now().Timestamp() {
+			if user.GroupId == 0 && user.BatteryReturnAt.Timestamp() <= gtime.Now().Timestamp() {
 				user.BatteryState = model.BatteryStateOverdue
 			}
 		}

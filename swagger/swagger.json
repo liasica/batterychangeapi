@@ -302,6 +302,22 @@
                     "骑手"
                 ],
                 "summary": "骑手-换电记录列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -2120,11 +2136,11 @@
         "model.ShopManagerPackagesOrderClaimReq": {
             "type": "object",
             "required": [
-                "orderNo"
+                "code"
             ],
             "properties": {
-                "orderNo": {
-                    "description": "订单编号",
+                "code": {
+                    "description": "扫码获取",
                     "type": "string"
                 }
             }

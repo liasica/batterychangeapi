@@ -14,15 +14,25 @@ type shopBatteryRecordService struct {
 
 // User 骑手记录
 func (*shopBatteryRecordService) User(ctx context.Context, recordType, bizType, shopId uint, bizId uint64, userName string, batteryType uint) error {
-	_, err := dao.ShopBatteryRecord.Ctx(ctx).Insert(model.ShopBatteryRecord{
-		ShopId:      shopId,
-		BizId:       bizId,
-		BizType:     bizType,
-		UserName:    userName,
-		BatteryType: batteryType,
-		Num:         1,
-		Type:        recordType,
-	})
+	_, err := dao.ShopBatteryRecord.Ctx(ctx).
+		Fields(
+			dao.ShopBatteryRecord.Columns.ShopId,
+			dao.ShopBatteryRecord.Columns.BizId,
+			dao.ShopBatteryRecord.Columns.BizType,
+			dao.ShopBatteryRecord.Columns.UserName,
+			dao.ShopBatteryRecord.Columns.BatteryType,
+			dao.ShopBatteryRecord.Columns.Num,
+			dao.ShopBatteryRecord.Columns.Type,
+		).
+		Insert(model.ShopBatteryRecord{
+			ShopId:      shopId,
+			BizId:       bizId,
+			BizType:     bizType,
+			UserName:    userName,
+			BatteryType: batteryType,
+			Num:         1,
+			Type:        recordType,
+		})
 	return err
 }
 

@@ -47,6 +47,8 @@ func (*bizApi) RecordStat(r *ghttp.Request) {
 // @Accept  json
 // @Produce  json
 // @tags    骑手
+// @param 	pageIndex query integer  true "当前页码"
+// @param 	pageLimit query integer  true "每页行数"
 // @router  /rapi/biz_record/list [GET]
 // @success 200 {object} response.JsonResponse{data=[]model.UserBizRecordListRep}  "返回结果"
 func (*bizApi) RecordList(r *ghttp.Request) {
@@ -64,7 +66,7 @@ func (*bizApi) RecordList(r *ghttp.Request) {
 			cityIds = append(cityIds, record.CityId)
 		}
 		shopMapIdName := service.ShopService.MapIdName(r.Context(), shopIds)
-		cityMapIdName := service.ShopService.MapIdName(r.Context(), cityIds)
+		cityMapIdName := service.DistrictsService.MapIdName(r.Context(), cityIds)
 		for key, record := range records {
 			list[key] = model.UserBizRecordListRep{
 				ShopName: shopMapIdName[record.ShopId],
@@ -105,6 +107,7 @@ func (*bizApi) BatteryRenewal(r *ghttp.Request) {
 	err = dao.User.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
 		if _, err := service.UserBizService.Create(ctx, model.UserBiz{
 			ShopId:      shop.Id,
+			CityId:      shop.CityId,
 			UserId:      user.Id,
 			GoroupId:    user.GroupId,
 			Type:        model.UserBizBatteryRenewal,

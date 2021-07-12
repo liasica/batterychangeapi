@@ -67,6 +67,7 @@ func (m *middleware) Ctx(r *ghttp.Request) {
 			rider.SignState = u.SignState
 			rider.PackagesId = u.PackagesId
 			rider.BatteryType = u.BatteryType
+			rider.BatteryState = u.BatteryState
 			rider.Qr = u.Qr
 			rider.PackagesOrderId = u.PackagesOrderId
 			rider.ExpirationAt = u.BatteryReturnAt
