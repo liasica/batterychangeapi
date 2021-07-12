@@ -30,8 +30,8 @@ func StartListen() {
     hook, _ := github.New(github.Options.Secret("ILDUIctIvErOCaREuSHaNgYpudesToTi"))
 
     http.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
-        // 仅开启pull事件
-        payload, err := hook.Parse(r, github.PullRequestEvent)
+        // 仅开启push事件
+        payload, err := hook.Parse(r, github.PushEvent)
         if err != nil {
             if err == github.ErrEventNotFound {
                 // ok event wasn;t one of the ones asked to be parsed
