@@ -6,13 +6,12 @@ require (
 	github.com/alibabacloud-go/dysmsapi-20170525/v2 v2.0.1
 	github.com/alibabacloud-go/tea v1.1.10
 	github.com/alibabacloud-go/tea-rpc v1.1.8
-	github.com/go-playground/webhooks/v6 v6.0.0-beta.3 // indirect
+	github.com/go-playground/webhooks/v6 v6.0.0-beta.3
 	github.com/gogf/gf v1.16.4
 	github.com/gogf/swagger v1.3.0
 	github.com/huangfuhui/umeng-push v1.1.0
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/smartwalle/alipay/v3 v3.1.6
-	github.com/spacemonkeygo/openssl v0.0.0-20181017203307-c2dcc5cca94a
 	github.com/wechatpay-apiv3/wechatpay-go v0.2.2
 	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110 // indirect
 	golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1 // indirect
