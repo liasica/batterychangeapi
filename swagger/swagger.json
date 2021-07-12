@@ -1,0 +1,2869 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "时光驹API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "apiv2.shiguangjv.com",
+    "paths": {
+        "/api/sms": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "公用"
+                ],
+                "summary": "公用-发送短信",
+                "parameters": [
+                    {
+                        "description": "注册数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.SmsSendReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/upload/image": {
+            "post": {
+                "tags": [
+                    "公用"
+                ],
+                "summary": "公用-单图片上传",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "jpg/png图片",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UploadImageRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/auth": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-实名认证提交",
+                "parameters": [
+                    {
+                        "description": "登录数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserRealNameAuthReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserRealNameAuthRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/biz_battery_renewal": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-业务办理"
+                ],
+                "summary": "骑手-骑手扫码换电",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserBizBatteryRenewalReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserBizBatteryRenewalRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/biz_new": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-业务办理"
+                ],
+                "summary": "骑手-个签用户新购套餐",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserBizNewReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserBizNewRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/biz_new_group": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-业务办理"
+                ],
+                "summary": "骑手-团签用户新领电池",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserBizGroupNewReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/biz_penalty": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-业务办理"
+                ],
+                "summary": "骑手-个签用户逾期缴纳违约金",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserBizPenaltyReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserBizPenaltyRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/biz_record/list": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-换电记录列表",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.UserBizRecordListRep"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/biz_record/stat": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-换电记录统计",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserBizRecordStatRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/biz_renewal": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-业务办理"
+                ],
+                "summary": "骑手-个签用户续购套餐",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserBizRenewalReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserBizRenewalRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/device": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-上报推送token",
+                "parameters": [
+                    {
+                        "description": "登录数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.PushTokenReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/districts/current_city": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-定位当前城市",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DistrictsCurrentCityReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.DistrictsCurrentCityRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/group/list": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-团签BOSS"
+                ],
+                "summary": "骑手-团签团队详情",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.UserGroupListRep"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/group/stat": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-团签BOSS"
+                ],
+                "summary": "骑手-团签团队统计",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserGroupStatRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/home": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-首页",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserProfileRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-用户登录",
+                "parameters": [
+                    {
+                        "description": "登录数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserLoginRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/open_city": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-选择已经开放的城市",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.DistrictsChildRep"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/package": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-获取骑手当前套餐详情",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserCurrentPackageOrder"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/package_order/qr": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-获取骑手当前套餐二维码",
+                "responses": {
+                    "200": {
+                        "description": "返回结果, data字段为二维码图片数据，需要本地生成二维码",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/packages": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-个签用户套餐列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前城市ID",
+                        "name": "cityId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.PackagesRiderListRepItem"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/register": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-用户注册",
+                "parameters": [
+                    {
+                        "description": "注册数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserRegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/shop": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-店铺列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前城市ID",
+                        "name": "cityId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "经度",
+                        "name": "lng",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "纬度",
+                        "name": "lat",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "店铺名称",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.ShopListUserRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/sign": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-获取签约地址",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserSignRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/asset/battery_list": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长-资产"
+                ],
+                "summary": "店长-资产-电池出入库列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "1 入库 2 出库",
+                        "name": "type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始时间",
+                        "name": "startTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "endTime",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.ShopBatteryRecordListRep"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/asset/battery_stat": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长-资产"
+                ],
+                "summary": "店长-资产-电池统计",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.ShopBatteryRecordStatRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/biz_record": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长-业务"
+                ],
+                "summary": "店长-业务-记录列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "月份数字，如 202106",
+                        "name": "month",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "业务类型 2 换电 3 寄存(仅个签可用)，5 退租",
+                        "name": "bizType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "业务类型 1 个签  2 团签",
+                        "name": "userType",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.UserBizShopRecordRep"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/biz_record_total": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长-业务"
+                ],
+                "summary": "店长-业务-记录统计",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "月份数字，如 202106",
+                        "name": "month",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "业务类型 1 个签  2 团签",
+                        "name": "userType",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserBizShopRecordMonthTotalRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/device": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长"
+                ],
+                "summary": "店长-上报推送token",
+                "parameters": [
+                    {
+                        "description": "登录数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.PushTokenReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/exception": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长"
+                ],
+                "summary": "店长-异常上报",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ExceptionReportReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长"
+                ],
+                "summary": "店长-登录",
+                "parameters": [
+                    {
+                        "description": "登录数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ShopManagerLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.ShopManagerLoginRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/mobile": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长"
+                ],
+                "summary": "店长-修改手机号码",
+                "parameters": [
+                    {
+                        "description": "登录数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ShopManagerResetMobileReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/order": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长-订单"
+                ],
+                "summary": "店长-订单列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "月份 如：202106",
+                        "name": "month",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "搜索关键字",
+                        "name": "keywords",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.ShopOrderListItem"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/order/:id": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长-订单"
+                ],
+                "summary": "店长-订单列表获取订单详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订单记录获取订单详情",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.ShopManagerPackagesOrderListDetailRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/order_claim": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长-订单"
+                ],
+                "summary": "店长-认领订单",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ShopManagerPackagesOrderClaimReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/order_scan/:code": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长-订单"
+                ],
+                "summary": "店长-二维码获取订单详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "订单二维码扫码获取的code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.ShopManagerPackagesOrderScanDetailRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/order_total": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长-订单"
+                ],
+                "summary": "店长-订单月份统计",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "月份 如：202106",
+                        "name": "month",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.ShopOrderTotalRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/profile": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长"
+                ],
+                "summary": "店长-获取店铺信息",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.Shop"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/qr": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长"
+                ],
+                "summary": "店长-获取店本店二维码",
+                "parameters": [
+                    {
+                        "description": "登录数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ShopManagerLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/state": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长"
+                ],
+                "summary": "店长-修改店铺状态",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ShopManagerChangeStateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/user_biz": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长-业务"
+                ],
+                "summary": "店长-业务-业务办理提交",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserBizReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/user_biz_profile/:code": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长-业务"
+                ],
+                "summary": "店长-业务-办理获取用户信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户二维码",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.BizProfileRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.BizProfileRep": {
+            "type": "object",
+            "properties": {
+                "PackagesName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "authState": {
+                    "description": "实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过",
+                    "type": "integer"
+                },
+                "batteryState": {
+                    "description": "换电状态：0 未开通，1 租借中，2 寄存中，3 已退租 4 已逾期",
+                    "type": "integer"
+                },
+                "batteryType": {
+                    "description": "电池类型 60 / 72",
+                    "type": "integer"
+                },
+                "groupId": {
+                    "description": "团体Id，个签用户为 0",
+                    "type": "integer"
+                },
+                "groupName": {
+                    "description": "团体名称",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "idCardNo": {
+                    "description": "身份证号码",
+                    "type": "string"
+                },
+                "mobile": {
+                    "type": "string"
+                },
+                "realName": {
+                    "description": "真实姓名",
+                    "type": "string"
+                }
+            }
+        },
+        "model.DistrictsChildRep": {
+            "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.DistrictsCurrentCityRep": {
+            "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.DistrictsCurrentCityReq": {
+            "type": "object",
+            "required": [
+                "lat",
+                "lng"
+            ],
+            "properties": {
+                "lat": {
+                    "type": "number"
+                },
+                "lng": {
+                    "type": "number"
+                }
+            }
+        },
+        "model.ExceptionReportReq": {
+            "type": "object",
+            "required": [
+                "batteryType",
+                "detail",
+                "img",
+                "reason",
+                "recoverType",
+                "type"
+            ],
+            "properties": {
+                "batteryType": {
+                    "description": "电池型号 60 / 72",
+                    "type": "integer"
+                },
+                "detail": {
+                    "description": "详细说明",
+                    "type": "string"
+                },
+                "img": {
+                    "description": "图片链接数组",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "reason": {
+                    "description": "故障原因 0 其它 1 插头故障 2 无电压",
+                    "type": "integer"
+                },
+                "recoverType": {
+                    "description": "1 用户 2 店长",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "1 遗失  2 故障",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.PackagesRiderListRepItem": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "套餐价格(包含押金)",
+                    "type": "number"
+                },
+                "batteryType": {
+                    "description": "60 / 72 电池类型",
+                    "type": "integer"
+                },
+                "days": {
+                    "description": "套餐时长天数",
+                    "type": "integer"
+                },
+                "earnest": {
+                    "description": "押金",
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                }
+            }
+        },
+        "model.PushTokenReq": {
+            "type": "object",
+            "required": [
+                "deviceToken",
+                "deviceType"
+            ],
+            "properties": {
+                "deviceToken": {
+                    "description": "token",
+                    "type": "string"
+                },
+                "deviceType": {
+                    "description": "1 android  2 ios",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.Shop": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "详细地址",
+                    "type": "string"
+                },
+                "batteryCnt60": {
+                    "description": "60伏电池数量",
+                    "type": "integer"
+                },
+                "batteryCnt72": {
+                    "description": "72伏电池数量",
+                    "type": "integer"
+                },
+                "batteryInCnt60": {
+                    "description": "60伏电池入库数量",
+                    "type": "integer"
+                },
+                "batteryInCnt72": {
+                    "description": "72伏电池入库数量",
+                    "type": "integer"
+                },
+                "batteryOutCnt60": {
+                    "description": "60伏电池出库数量",
+                    "type": "integer"
+                },
+                "batteryOutCnt72": {
+                    "description": "72伏电池出库数量",
+                    "type": "integer"
+                },
+                "chargerCnt": {
+                    "description": "充电器数量",
+                    "type": "integer"
+                },
+                "chargerInCnt": {
+                    "description": "充电器入库数量",
+                    "type": "integer"
+                },
+                "chargerOutCnt": {
+                    "description": "充电器出库数量",
+                    "type": "integer"
+                },
+                "cityId": {
+                    "description": "市级行政编码",
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "districtId": {
+                    "description": "区县行政编码",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lat": {
+                    "description": "纬度",
+                    "type": "number"
+                },
+                "lng": {
+                    "description": "经度",
+                    "type": "number"
+                },
+                "managerName": {
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "店铺名称",
+                    "type": "string"
+                },
+                "provinceId": {
+                    "description": "省级行政编码",
+                    "type": "integer"
+                },
+                "qr": {
+                    "description": "二维码编号",
+                    "type": "string"
+                },
+                "returnAt": {
+                    "description": "外出大致返回时间",
+                    "type": "string"
+                },
+                "state": {
+                    "description": "店铺状态 0 休息总，1 营业中，2 外出中",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ShopBatteryRecordListRep": {
+            "type": "object",
+            "properties": {
+                "At": {
+                    "description": "时间",
+                    "type": "string"
+                },
+                "batteryType": {
+                    "description": "60 / 72",
+                    "type": "integer"
+                },
+                "dayCnt": {
+                    "description": "当天总数",
+                    "type": "integer"
+                },
+                "num": {
+                    "description": "数量",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "0 平台调拨",
+                    "type": "integer"
+                },
+                "userName": {
+                    "description": "用户名  平台调拨为空",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ShopBatteryRecordStatRep": {
+            "type": "object",
+            "properties": {
+                "inTotal": {
+                    "description": "入库总数",
+                    "type": "integer"
+                },
+                "outTotal": {
+                    "description": "出库总数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ShopListUserRep": {
+            "type": "object",
+            "required": [
+                "address",
+                "distance",
+                "id",
+                "lat",
+                "lng",
+                "mobile",
+                "name",
+                "state"
+            ],
+            "properties": {
+                "address": {
+                    "description": "详细地址",
+                    "type": "string"
+                },
+                "distance": {
+                    "description": "距离",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "lat": {
+                    "description": "纬度",
+                    "type": "number"
+                },
+                "lng": {
+                    "description": "经度",
+                    "type": "number"
+                },
+                "mobile": {
+                    "description": "联系手机号码",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "state": {
+                    "description": "店铺状态 0 休息总，1 营业中",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ShopManagerChangeStateReq": {
+            "type": "object",
+            "required": [
+                "state"
+            ],
+            "properties": {
+                "state": {
+                    "description": "店铺状态 1 休息总，2 营业中",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ShopManagerLoginRep": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "description": "请求 token",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ShopManagerLoginReq": {
+            "type": "object",
+            "required": [
+                "mobile",
+                "sms"
+            ],
+            "properties": {
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "sms": {
+                    "description": "短信验证码",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ShopManagerPackagesOrderClaimReq": {
+            "type": "object",
+            "required": [
+                "orderNo"
+            ],
+            "properties": {
+                "orderNo": {
+                    "description": "订单编号",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ShopManagerPackagesOrderListDetailRep": {
+            "type": "object",
+            "required": [
+                "amount",
+                "batteryType",
+                "earnest",
+                "orderNo",
+                "packagesName",
+                "payAt",
+                "payType",
+                "userMobile",
+                "userName"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "支付金额",
+                    "type": "number"
+                },
+                "batteryType": {
+                    "description": "电池型号 60 / 72",
+                    "type": "integer"
+                },
+                "earnest": {
+                    "description": "押金金额",
+                    "type": "number"
+                },
+                "orderNo": {
+                    "description": "订单编号",
+                    "type": "string"
+                },
+                "packagesName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "payAt": {
+                    "description": "支付时间",
+                    "type": "string"
+                },
+                "payType": {
+                    "description": "支付方式 1 支付宝 2 微信",
+                    "type": "integer"
+                },
+                "userMobile": {
+                    "description": "客户手机号",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "客户名称",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ShopManagerPackagesOrderScanDetailRep": {
+            "type": "object",
+            "required": [
+                "amount",
+                "batteryType",
+                "claimState",
+                "earnest",
+                "groupName",
+                "orderNo",
+                "packagesName",
+                "payAt",
+                "payType",
+                "userMobile",
+                "userName",
+                "userType"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "支付金额，个签用户返回",
+                    "type": "number"
+                },
+                "batteryType": {
+                    "description": "电池型号 60 / 72",
+                    "type": "integer"
+                },
+                "claimState": {
+                    "description": "1 未被认领， 2 已被认领",
+                    "type": "integer"
+                },
+                "earnest": {
+                    "description": "押金金额，个签用户返回",
+                    "type": "number"
+                },
+                "groupName": {
+                    "description": "团签公司名称，团签签用户返回",
+                    "type": "string"
+                },
+                "orderNo": {
+                    "description": "订单编号，个签用户返回",
+                    "type": "string"
+                },
+                "packagesName": {
+                    "description": "套餐名称，个签用户返回",
+                    "type": "string"
+                },
+                "payAt": {
+                    "description": "支付时间，个签用户返回",
+                    "type": "string"
+                },
+                "payType": {
+                    "description": "支付方式 1 支付宝 2 微信，个签用户返回",
+                    "type": "integer"
+                },
+                "userMobile": {
+                    "description": "客户手机号",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "客户名称",
+                    "type": "string"
+                },
+                "userType": {
+                    "description": "1 个签 2 团签 3 团签BOOS",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ShopManagerResetMobileReq": {
+            "type": "object",
+            "required": [
+                "mobile",
+                "sms"
+            ],
+            "properties": {
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "sms": {
+                    "description": "短信验证码",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ShopOrderListItem": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "金额",
+                    "type": "number"
+                },
+                "id": {
+                    "description": "订单ID",
+                    "type": "integer"
+                },
+                "orderNo": {
+                    "description": "订单编号",
+                    "type": "string"
+                },
+                "packageName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "shopId": {
+                    "description": "支付时间",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "1 新签， 2 续费",
+                    "type": "integer"
+                },
+                "userMobile": {
+                    "description": "用户电话",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "用户姓名",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ShopOrderTotalRep": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "总额",
+                    "type": "integer"
+                },
+                "cnt": {
+                    "description": "总记录数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.SmsSendReq": {
+            "type": "object",
+            "required": [
+                "mobile",
+                "sessionId",
+                "sig",
+                "token"
+            ],
+            "properties": {
+                "mobile": {
+                    "description": "手机号码",
+                    "type": "string"
+                },
+                "sessionId": {
+                    "type": "string"
+                },
+                "sig": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UploadImageRep": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "description": "图片路径",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserBizBatteryRenewalRep": {
+            "type": "object",
+            "required": [
+                "at",
+                "batteryType",
+                "shopName"
+            ],
+            "properties": {
+                "at": {
+                    "description": "时间",
+                    "type": "string"
+                },
+                "batteryType": {
+                    "description": "电池型号",
+                    "type": "integer"
+                },
+                "shopName": {
+                    "description": "店铺名称",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserBizBatteryRenewalReq": {
+            "type": "object",
+            "required": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "description": "店铺二维码扫码获得",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserBizGroupNewReq": {
+            "type": "object",
+            "required": [
+                "batteryType"
+            ],
+            "properties": {
+                "batteryType": {
+                    "description": "电池类型 60 / 72",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserBizNewRep": {
+            "type": "object",
+            "required": [
+                "PayOrderInfo"
+            ],
+            "properties": {
+                "PayOrderInfo": {
+                    "description": "发起支付使用数据",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserBizNewReq": {
+            "type": "object",
+            "required": [
+                "packagesId",
+                "paymentType"
+            ],
+            "properties": {
+                "packagesId": {
+                    "description": "套餐ID",
+                    "type": "integer"
+                },
+                "paymentType": {
+                    "description": "支付类型 1 支付宝 2 微信",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserBizPenaltyRep": {
+            "type": "object",
+            "required": [
+                "PayOrderInfo"
+            ],
+            "properties": {
+                "PayOrderInfo": {
+                    "description": "发起支付使用数据",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserBizPenaltyReq": {
+            "type": "object",
+            "required": [
+                "paymentType"
+            ],
+            "properties": {
+                "paymentType": {
+                    "description": "支付类型 1 支付宝 2 微信",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserBizRecordListRep": {
+            "type": "object",
+            "required": [
+                "cityName",
+                "scanAt",
+                "shopName"
+            ],
+            "properties": {
+                "cityName": {
+                    "description": "城市名称",
+                    "type": "string"
+                },
+                "scanAt": {
+                    "description": "扫码时间",
+                    "type": "string"
+                },
+                "shopName": {
+                    "description": "店铺名称",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserBizRecordStatRep": {
+            "type": "object",
+            "required": [
+                "count",
+                "days"
+            ],
+            "properties": {
+                "count": {
+                    "description": "累计换电次数",
+                    "type": "integer"
+                },
+                "days": {
+                    "description": "累计使用天数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserBizRenewalRep": {
+            "type": "object",
+            "required": [
+                "PayOrderInfo"
+            ],
+            "properties": {
+                "PayOrderInfo": {
+                    "description": "发起支付使用数据",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserBizRenewalReq": {
+            "type": "object",
+            "required": [
+                "paymentType"
+            ],
+            "properties": {
+                "paymentType": {
+                    "description": "支付类型 1 支付宝 2 微信",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserBizReq": {
+            "type": "object",
+            "required": [
+                "code",
+                "type"
+            ],
+            "properties": {
+                "code": {
+                    "description": "用户二维码code",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "业务类型:  3 寄存(仅个签用户使用)， 4 恢复计费，5 退租",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserBizShopRecordMonthTotalRep": {
+            "type": "object",
+            "properties": {
+                "cnt": {
+                    "description": "总条数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserBizShopRecordRep": {
+            "type": "object",
+            "properties": {
+                "At": {
+                    "description": "时间",
+                    "type": "string"
+                },
+                "bizType": {
+                    "description": "业务类型  2 换电 3 寄存(仅个签可用)，5 退租",
+                    "type": "integer"
+                },
+                "groupName": {
+                    "description": "团体名称， 名称为空即为 个签用户",
+                    "type": "string"
+                },
+                "packagesName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "userMobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "用户姓名",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserCurrentPackageOrder": {
+            "type": "object",
+            "required": [
+                "amount",
+                "cityName",
+                "earnest",
+                "expirationAt",
+                "orderNo",
+                "packageName",
+                "payAt",
+                "payType",
+                "startUseAt"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "支付金额",
+                    "type": "number"
+                },
+                "cityName": {
+                    "description": "可用城市",
+                    "type": "string"
+                },
+                "earnest": {
+                    "description": "押金金额 0 为没有押金",
+                    "type": "number"
+                },
+                "expirationAt": {
+                    "description": "截止日期",
+                    "type": "string"
+                },
+                "orderNo": {
+                    "description": "订单编号",
+                    "type": "string"
+                },
+                "packageName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "payAt": {
+                    "description": "支付时间",
+                    "type": "string"
+                },
+                "payType": {
+                    "description": "支付方式 1 支付宝 2 微信",
+                    "type": "integer"
+                },
+                "startUseAt": {
+                    "description": "开通时间",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserGroupListRep": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "description": "使用天数",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserGroupStatRep": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "description": "待付款累计天数",
+                    "type": "integer"
+                },
+                "userCnt": {
+                    "description": "团队人数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserLoginRep": {
+            "type": "object",
+            "required": [
+                "accessToken",
+                "authState",
+                "signState",
+                "type"
+            ],
+            "properties": {
+                "accessToken": {
+                    "description": "请求 token",
+                    "type": "string"
+                },
+                "authState": {
+                    "description": "实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过",
+                    "type": "integer"
+                },
+                "signState": {
+                    "description": "签约状态 0 未签约 1 已签约",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "用户角色 1 个签骑手 2 团签骑手 3 团签BOSS",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserLoginReq": {
+            "type": "object",
+            "required": [
+                "mobile",
+                "sms"
+            ],
+            "properties": {
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "sms": {
+                    "description": "短信验证码",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserProfileRep": {
+            "type": "object",
+            "required": [
+                "authState",
+                "signState",
+                "type"
+            ],
+            "properties": {
+                "authState": {
+                    "description": "实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过",
+                    "type": "integer"
+                },
+                "groupBoos": {
+                    "description": "团队BOSS信息， 其它类型用户忽略",
+                    "$ref": "#/definitions/model.UserGroupStatRep"
+                },
+                "groupUser": {
+                    "description": "团签用户骑手信息， 其它类型用户忽略",
+                    "type": "object",
+                    "properties": {
+                        "batteryState": {
+                            "description": "团签骑手换电状态：0 未开通，2 租借中，3 寄存中，4 已退租",
+                            "type": "integer"
+                        },
+                        "batteryType": {
+                            "description": "电池型号 60 / 72  未开通为 0",
+                            "type": "integer"
+                        }
+                    }
+                },
+                "name": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "qr": {
+                    "description": "用户二维码数据，需要本地生成图片",
+                    "type": "string"
+                },
+                "signState": {
+                    "description": "签约状态 0 未签约 1 已签约",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "用户角色 1 个签骑手 2 团签骑手 3 团签BOSS",
+                    "type": "integer"
+                },
+                "user": {
+                    "description": "个签用户套餐信息， 其它类型用户忽略",
+                    "type": "object",
+                    "properties": {
+                        "batteryReturnAt": {
+                            "description": "个签骑手套餐到期时间",
+                            "type": "string"
+                        },
+                        "batteryState": {
+                            "description": "个签骑手换电状态：0 未开通， 1 新签未领 ，2 租借中，3 寄存中，4 已退租， 5 已逾期",
+                            "type": "integer"
+                        },
+                        "packagesId": {
+                            "description": "个签骑手所购套餐ID",
+                            "type": "integer"
+                        },
+                        "packagesName": {
+                            "description": "个签骑手所购套餐名称",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "model.UserRealNameAuthRep": {
+            "type": "object",
+            "required": [
+                "url"
+            ],
+            "properties": {
+                "flowId": {
+                    "description": "流程ID",
+                    "type": "string"
+                },
+                "shortLink": {
+                    "description": "短地址",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "骑手实名认证连接地址",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserRealNameAuthReq": {
+            "type": "object",
+            "required": [
+                "idCardImg1",
+                "idCardImg2",
+                "idCardImg3",
+                "idCardNo",
+                "realName"
+            ],
+            "properties": {
+                "idCardImg1": {
+                    "description": "身份证正面照片",
+                    "type": "string"
+                },
+                "idCardImg2": {
+                    "description": "身份证反面照片",
+                    "type": "string"
+                },
+                "idCardImg3": {
+                    "description": "身份证手持照片",
+                    "type": "string"
+                },
+                "idCardNo": {
+                    "description": "身份证号码",
+                    "type": "string"
+                },
+                "realName": {
+                    "description": "真实姓名",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserRegisterReq": {
+            "type": "object",
+            "required": [
+                "mobile",
+                "sms"
+            ],
+            "properties": {
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "sms": {
+                    "description": "短信验证码",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserSignRep": {
+            "type": "object",
+            "properties": {
+                "shortUrl": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.JsonResponse": {
+            "type": "object",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "description": "错误码((200:成功, 其它:失败))",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "返回数据(业务接口定义具体数据结构)",
+                    "type": "object"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "X-ACCESS-TOKEN",
+            "in": "header"
+        }
+    }
+}
