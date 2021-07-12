@@ -67,6 +67,10 @@ func (s *smsService) Send(ctx context.Context, req model.SmsSendReq) error {
 
 // Verify 短信验证
 func (s *smsService) Verify(ctx context.Context, req model.SmsVerifyReq) bool {
+	// 是否商店审核账号和短信: 18501234567 123456
+	if req.Mobile == storeTestPhone && req.Code == storeTestSmsCode {
+		return true
+	}
 	var sms model.Sms
 	if err := dao.Sms.Ctx(ctx).Where(dao.Sms.Columns.Mobile, req.Mobile).OrderDesc(dao.Sms.Columns.Id).Limit(1).Scan(&sms); err != nil {
 		fmt.Println(req, err)
@@ -74,12 +78,8 @@ func (s *smsService) Verify(ctx context.Context, req model.SmsVerifyReq) bool {
 	}
 	// 直接删除已经使用的短信
 	_, _ = dao.Sms.Ctx(ctx).Where(dao.Sms.Columns.Mobile, sms.Mobile).Delete()
-	// 是否商店审核账号和短信: 18501234567 123456
-	isStoreTestAccount := func() bool {
-		return sms.Mobile == storeTestPhone && sms.Code == storeTestSmsCode
-	}
 	// 两分钟过期时间
-	if isStoreTestAccount() || (sms.Code == req.Code && sms.CreatedAt.Add(time.Minute*2).After(gtime.Now())) {
+	if sms.Code == req.Code && sms.CreatedAt.Add(time.Minute*2).After(gtime.Now()) {
 		return true
 	}
 	return false
