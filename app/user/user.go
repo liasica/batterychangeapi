@@ -45,10 +45,11 @@ func (*userApi) Login(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
-	if _, err := service.UserService.Login(r.Context(), req); err != nil {
+	if data, err := service.UserService.Login(r.Context(), req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
+	} else {
+		response.JsonOkExit(r, data)
 	}
-	response.JsonOkExit(r)
 }
 
 // Auth
