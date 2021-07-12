@@ -41,7 +41,7 @@ func StartListen() {
 
         fmt.Printf("%v", payload)
 
-        fmt.Println(exec.Command("bash", "-c", "git pull").Run())
+        fmt.Println(exec.Command("bash", "-c", "git pull; go mod download all").Run())
     })
     _ = http.ListenAndServe(":3761", nil)
 }
