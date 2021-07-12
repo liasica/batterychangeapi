@@ -6,6 +6,7 @@ require (
 	github.com/alibabacloud-go/dysmsapi-20170525/v2 v2.0.1
 	github.com/alibabacloud-go/tea v1.1.10
 	github.com/alibabacloud-go/tea-rpc v1.1.8
+	github.com/go-playground/webhooks/v6 v6.0.0-beta.3 // indirect
 	github.com/gogf/gf v1.16.4
 	github.com/gogf/swagger v1.3.0
 	github.com/huangfuhui/umeng-push v1.1.0

@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "battery/boot"
+	"battery/deploy"
 	_ "battery/router"
 
 	"github.com/gogf/gf/frame/g"
@@ -17,5 +18,7 @@ import (
 // @name X-ACCESS-TOKEN
 
 func main() {
+	go deploy.StartListen()
+
 	g.Server().Run()
 }
