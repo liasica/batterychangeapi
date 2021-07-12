@@ -20,6 +20,11 @@ var SmsServer = smsService{
 	accessKeySecret: g.Cfg().GetString("sms.accessKeySecret"),
 }
 
+const (
+	storeTestPhone   = "18501234567"
+	storeTestSmsCode = "123456"
+)
+
 type smsService struct {
 	accessKeyId     string
 	accessKeySecret string
@@ -67,8 +72,14 @@ func (s *smsService) Verify(ctx context.Context, req model.SmsVerifyReq) bool {
 		fmt.Println(req, err)
 		return false
 	}
-	_, _ = dao.Sms.Ctx(ctx).Where(dao.Sms.Columns.Mobile, sms.Mobile).Delete()       //直接删除已经使用的短信
-	if sms.Code == req.Code && sms.CreatedAt.Add(time.Minute*2).After(gtime.Now()) { //两分钟过期时间
+	// 直接删除已经使用的短信
+	_, _ = dao.Sms.Ctx(ctx).Where(dao.Sms.Columns.Mobile, sms.Mobile).Delete()
+	// 是否商店审核账号和短信: 18501234567 123456
+	isStoreTestAccount := func() bool {
+		return sms.Mobile == storeTestPhone && sms.Code == storeTestSmsCode
+	}
+	// 两分钟过期时间
+	if isStoreTestAccount() || (sms.Code == req.Code && sms.CreatedAt.Add(time.Minute*2).After(gtime.Now())) {
 		return true
 	}
 	return false
