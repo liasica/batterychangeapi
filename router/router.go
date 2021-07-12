@@ -39,6 +39,7 @@ func init() {
 	s.Group("/api", func(group *ghttp.RouterGroup) {
 		group.POST("/upload/image", api.Upload.Image)
 		group.POST("/sms", api.SmsApi.Send)
+
 		group.GET("/test", func(r *ghttp.Request) {
 			//resWeb, err := realname.Service().WebIndivIdentityUrl(beans.WebIndivIdentityUrlInfo{
 			//	AuthType:           "PSN_FACEAUTH_BYURL",

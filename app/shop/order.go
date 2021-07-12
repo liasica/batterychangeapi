@@ -239,8 +239,8 @@ func (*orderApi) Claim(r *ghttp.Request) {
 				user.BatteryType); err != nil {
 				return err
 			}
-			//使用人数统计
-			if err := service.GroupDailyStatService.RiderBizNew(ctx, shop.Id, user.BatteryType); err != nil {
+			//人数统计
+			if err := service.GroupDailyStatService.RiderBizNew(ctx, user.GroupId, user.BatteryType); err != nil {
 				return err
 			}
 			return nil
