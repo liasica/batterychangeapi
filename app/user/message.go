@@ -40,7 +40,7 @@ type MessageReadReg struct {
 // @Accept  json
 // @Produce  json
 // @param   entity  body MessageReadReg true "请求数据"
-// @router  /rapi/message/read [GET]
+// @router  /rapi/message/read [PUT]
 // @success 200 {object} response.JsonResponse{data=[]model.Message} "返回结果"
 func (*messageApi) Read(r *ghttp.Request) {
 	var req MessageReadReg

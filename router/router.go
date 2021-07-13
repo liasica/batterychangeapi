@@ -82,6 +82,9 @@ func init() {
 
 		group.GET("/group/stat", user.GroupApi.Stat)
 		group.GET("/group/list", user.GroupApi.List)
+
+		group.GET("/message", user.MessageApi.List)
+		group.PUT("/message/read", user.MessageApi.Read)
 	})
 
 	//店长
