@@ -704,7 +704,7 @@
             }
         },
         "/rapi/message/read": {
-            "get": {
+            "put": {
                 "consumes": [
                     "application/json"
                 ],
