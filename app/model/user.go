@@ -113,6 +113,7 @@ type PushTokenReq struct {
 // UserProfileRep 骑手端用户信息概况
 type UserProfileRep struct {
 	Name      string `json:"name"`                          //姓名
+	Mobile    string `json:"mobile"`                        //姓名
 	Type      uint   `validate:"required" json:"type"`      //用户角色 1 个签骑手 2 团签骑手 3 团签BOSS
 	AuthState uint   `validate:"required" json:"authState"` //实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过
 	SignState uint   `validate:"required" json:"signState"` //签约状态 0 未签约 1 已签约
@@ -123,12 +124,12 @@ type UserProfileRep struct {
 		PackagesId      uint        `json:"packagesId"`      //个签骑手所购套餐ID
 		PackagesName    string      `json:"packagesName"`    //个签骑手所购套餐名称
 		BatteryReturnAt *gtime.Time `json:"batteryReturnAt"` //个签骑手套餐到期时间
-	} `json:"user"` //个签用户套餐信息， 其它类型用户忽略
+	} `json:"user,omitempty"` //个签用户套餐信息， 其它类型用户忽略
 
 	GroupUser struct {
 		BatteryState uint `json:"batteryState"` //团签骑手换电状态：0 未开通，2 租借中，3 寄存中，4 已退租
 		BatteryType  uint `json:"batteryType"`  //电池型号 60 / 72  未开通为 0
-	} `json:"groupUser"` // 团签用户骑手信息， 其它类型用户忽略
+	} `json:"groupUser,omitempty"` // 团签用户骑手信息， 其它类型用户忽略
 
-	GroupBoos UserGroupStatRep `json:"groupBoos"` //团队BOSS信息， 其它类型用户忽略
+	GroupBoos UserGroupStatRep `json:"groupBoos,omitempty"` //团队BOSS信息， 其它类型用户忽略
 }

@@ -2054,11 +2054,13 @@
                 "address",
                 "distance",
                 "id",
+                "img",
                 "lat",
                 "lng",
                 "mobile",
                 "name",
-                "state"
+                "state",
+                "tags"
             ],
             "properties": {
                 "address": {
@@ -2072,6 +2074,10 @@
                 "id": {
                     "description": "ID",
                     "type": "integer"
+                },
+                "img": {
+                    "description": "图片",
+                    "type": "string"
                 },
                 "lat": {
                     "description": "纬度",
@@ -2092,6 +2098,13 @@
                 "state": {
                     "description": "店铺状态 0 休息总，1 营业中",
                     "type": "integer"
+                },
+                "tags": {
+                    "description": "标签",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -2732,6 +2745,10 @@
                             "type": "integer"
                         }
                     }
+                },
+                "mobile": {
+                    "description": "姓名",
+                    "type": "string"
                 },
                 "name": {
                     "description": "姓名",

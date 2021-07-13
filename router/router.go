@@ -7,6 +7,8 @@ import (
 	"battery/app/payment"
 	"battery/app/shop"
 	"battery/app/user"
+	"battery/library/push/getui"
+	"fmt"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 )
@@ -41,98 +43,10 @@ func init() {
 		group.POST("/sms", api.SmsApi.Send)
 
 		group.GET("/test", func(r *ghttp.Request) {
-			//resWeb, err := realname.Service().WebIndivIdentityUrl(beans.WebIndivIdentityUrlInfo{
-			//	AuthType:           "PSN_FACEAUTH_BYURL",
-			//	AvailableAuthTypes: []string{"PSN_FACEAUTH_BYURL"},
-			//	ContextInfo: beans.ContextInfo{
-			//		NotifyUrl: g.Cfg().GetString("app.host") + "/esign/callback/real_name",
-			//	},
-			//	ConfigParams: beans.ConfigParams{
-			//		IndivUneditableInfo: []string{"name", "certNo", "mobileNo"},
-			//	},
-			//}, "74b2747324264eb6800cd771e624136f")
-			//if err == nil {
-			//	_ = r.Response.WriteJson(resWeb)
-			//}
-			//fmt.Println(resWeb, err)
 
-			//data := beans.CreateByTemplateReq{
-			//	Name:       "王麻子的测试合同.pdf",
-			//	TemplateId: "a7ac5f9e808840439efb0817ce23b84c",
-			//}
-			//data.SimpleFormFields.Name = "王麻子"
-			//data.SimpleFormFields.IdCardNo = "510902198005183997"
-			//res, err := sign.Service().CreateByTemplate(data)
-			//fmt.Println(res, err)
+			token, err := getui.Service().Token()
+			fmt.Println(token, err)
 
-			//{0 {https://esignoss.esign.cn/1111564182/89b34614-af9e-481a-ba56-715f2ac6e1ba/%E7%8E%8B%E9%BA%BB%E5%AD%90%E7%9A%84%E6%B5%8B%E8%AF%95%E5%90%88%E5%90%8C.pdf?Expires=1625222633&OSSAccessKeyId=LTAI4G23YViiKnxTC28ygQzF&Signature=MDJVrF3wrQOQhlEuUgM%2BOf%2FZ4w4%3D
-			//99f50adc00cb41529c45a8df63c5c6b4
-			//王麻子的测试合同.pdf}
-			//成功} <nil>
-
-			//data := beans.CreateFlowOneStepReq{
-			//	Docs: []beans.CreateFlowOneStepReqDoc{
-			//		{
-			//			FileId:   "6d91857f3fa04efc959da2436b13e9c0",
-			//			FileName: "王麻子的测试合同.pdf",
-			//		},
-			//	},
-			//	FlowInfo: beans.CreateFlowOneStepReqDocFlowInfo{
-			//		AutoInitiate:  true,
-			//		AutoArchive:   true,
-			//		BusinessScene: "本次签署流程的文件主题名称",
-			//		FlowConfigInfo: beans.CreateFlowOneStepReqDocFlowInfoFlowConfigInfo{
-			//			NoticeDeveloperUrl: g.Cfg().GetString("api.host") + "/esign/callback/sign",
-			//		},
-			//	},
-			//	Signers: []beans.CreateFlowOneStepReqDocSigner{
-			//		{
-			//			PlatformSign:  true,
-			//			SignerAccount: beans.CreateFlowOneStepReqDocSignerAccount{},
-			//			Signfields: []beans.CreateFlowOneStepReqDocSignerField{
-			//				{
-			//					AutoExecute: true,
-			//					SignType:    1,
-			//					FileId:      "6d91857f3fa04efc959da2436b13e9c0",
-			//					PosBean: beans.CreateFlowOneStepReqDocSignerFieldPosBean{
-			//						PosPage: "3",
-			//						PosX:    400,
-			//						PosY:    400,
-			//					},
-			//				},
-			//			},
-			//		},
-			//		{
-			//			PlatformSign: false,
-			//			SignerAccount: beans.CreateFlowOneStepReqDocSignerAccount{
-			//				SignerAccountId: "74b2747324264eb6800cd771e624136f",
-			//			},
-			//			Signfields: []beans.CreateFlowOneStepReqDocSignerField{
-			//				{
-			//					FileId: "6d91857f3fa04efc959da2436b13e9c0",
-			//					PosBean: beans.CreateFlowOneStepReqDocSignerFieldPosBean{
-			//						PosPage: "3",
-			//						PosX:    300,
-			//						PosY:    300,
-			//					},
-			//				},
-			//			},
-			//		},
-			//	},
-			//}
-			//
-			//res, err := sign.Service().CreateFlowOneStep(data)
-			//fmt.Println(res, err)
-
-			//{0 成功 {2fd6da656d914c6297891208cfcbb1d1}} <nil>
-
-			//	data := beans.FlowExecuteUrlReq{
-			//		FlowId:    "e4c27444a0064fceb0755467a35eb08b",
-			//		AccountId: "74b2747324264eb6800cd771e624136f",
-			//	}
-			//
-			//	res, err := sign.Service().FlowExecuteUrl(data)
-			//	fmt.Println(res, err)
 		})
 	})
 

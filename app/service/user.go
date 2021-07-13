@@ -242,6 +242,7 @@ func (s *userService) Profile(ctx context.Context) (rep model.UserProfileRep) {
 	var user model.User
 	_ = dao.User.WherePri(u.Id).Scan(&user)
 	rep.Name = user.RealName
+	rep.Mobile = user.Mobile
 	rep.Type = user.Type
 	rep.Qr = u.Qr
 	rep.AuthState = user.AuthState
