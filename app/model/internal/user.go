@@ -30,7 +30,7 @@ type User struct {
 	AccessToken              string      `orm:"accessToken,unique"       json:"accessToken"`              //
 	Salt                     string      `orm:"salt"                     json:"salt"`                     //
 	DeviceType               int         `orm:"deviceType"               json:"deviceType"`               // 1 安卓  2  iOS
-	DeviceToken              string      `orm:"deviceToken"              json:"deviceToken"`              // 用户推送token
+	DeviceToken              string      `orm:"deviceToken"              json:"deviceToken"`              // 用户推送消息唯一ID
 	EsignAccountId           string      `orm:"esignAccountId"           json:"esignAccountId"`           // 易签账户ID
 	EsignFlowId              string      `orm:"esignFlowId"              json:"esignFlowId"`              // 易签签约流程ID
 	EsignFileId              string      `orm:"esignFileId"              json:"esignFileId"`              // 易签签约文件ID

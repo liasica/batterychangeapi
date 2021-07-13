@@ -107,7 +107,7 @@ type BizProfileRep struct {
 // PushTokenReq 上报用户的推送token
 type PushTokenReq struct {
 	DeviceType  int    `validate:"required" v:"required|in:1,2" json:"deviceType"` // 1 android  2 ios
-	DeviceToken string `validate:"required" v:"required" json:"deviceToken"`       //token
+	DeviceToken string `validate:"required" v:"required" json:"deviceToken"`       //token 推送平台用户ID
 }
 
 // UserProfileRep 骑手端用户信息概况

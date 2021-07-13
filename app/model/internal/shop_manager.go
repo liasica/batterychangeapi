@@ -16,7 +16,7 @@ type ShopManager struct {
 	ShopId      uint        `orm:"shopId"             json:"shopId"`      // 店铺ID
 	AccessToken string      `orm:"accessToken,unique" json:"accessToken"` //
 	DeviceType  int         `orm:"deviceType"         json:"deviceType"`  // 0 未上报 1 安卓  2  iOS
-	DeviceToken string      `orm:"deviceToken,unique" json:"deviceToken"` // 用户推送token
+	DeviceToken string      `orm:"deviceToken,unique" json:"deviceToken"` // 用户推送消息唯一ID
 	DeletedAt   *gtime.Time `orm:"deletedAt"          json:"deletedAt"`   //
 	CreatedAt   *gtime.Time `orm:"createdAt"          json:"createdAt"`   //
 	UpdatedAt   *gtime.Time `orm:"updatedAt"          json:"updatedAt"`   //

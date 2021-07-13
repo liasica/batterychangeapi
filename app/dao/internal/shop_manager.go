@@ -27,7 +27,7 @@ type shopManagerColumns struct {
 	ShopId      string // 店铺ID
 	AccessToken string //
 	DeviceType  string // 0 未上报 1 安卓  2  iOS
-	DeviceToken string // 用户推送token
+	DeviceToken string // 用户推送消息唯一ID
 	DeletedAt   string //
 	CreatedAt   string //
 	UpdatedAt   string //

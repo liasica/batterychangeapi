@@ -431,7 +431,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "骑手"
+                    "骑手-消息"
                 ],
                 "summary": "骑手-上报推送token",
                 "parameters": [
@@ -641,6 +641,107 @@
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/model.UserLoginRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/message": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-消息"
+                ],
+                "summary": "骑手-消息列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Message"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/message/read": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-消息"
+                ],
+                "summary": "骑手-消息已读标记",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.MessageReadReg"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Message"
+                                            }
                                         }
                                     }
                                 }
@@ -1864,6 +1965,37 @@
                 }
             }
         },
+        "model.Message": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "detail": {
+                    "type": "object"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isRead": {
+                    "description": "是否已读",
+                    "type": "boolean"
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "description": "0 标识推送所有用户",
+                    "type": "integer"
+                }
+            }
+        },
         "model.PackagesRiderListRepItem": {
             "type": "object",
             "properties": {
@@ -1900,7 +2032,7 @@
             ],
             "properties": {
                 "deviceToken": {
-                    "description": "token",
+                    "description": "token 推送平台用户ID",
                     "type": "string"
                 },
                 "deviceType": {
@@ -1966,6 +2098,9 @@
                 "id": {
                     "type": "integer"
                 },
+                "img": {
+                    "type": "string"
+                },
                 "lat": {
                     "description": "纬度",
                     "type": "number"
@@ -2000,6 +2135,10 @@
                 "state": {
                     "description": "店铺状态 0 休息总，1 营业中，2 外出中",
                     "type": "integer"
+                },
+                "tags": {
+                    "description": "标签",
+                    "type": "string"
                 },
                 "updatedAt": {
                     "type": "string"
@@ -2893,6 +3032,18 @@
                 "message": {
                     "description": "提示信息",
                     "type": "string"
+                }
+            }
+        },
+        "user.MessageReadReg": {
+            "type": "object",
+            "properties": {
+                "messageIds": {
+                    "description": "消息ID数组",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         }

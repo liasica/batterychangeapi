@@ -13,10 +13,11 @@ import (
 // Entity is the golang structure for table shop.
 type Entity struct {
     Id              uint        `orm:"id,primary"      json:"id"`                 //                                        
-    State           uint        `orm:"state"           json:"state"`              // 店铺状态 0 休息总，1 营业中，2 外出中  
-    ManagerName     string      `orm:"managerName"     json:"manager_name"`       //                                        
     Name            string      `orm:"name,unique"     json:"name"`               // 店铺名称                               
+    Img             string      `orm:"img"             json:"img"`                //                                        
+    Tags            string      `orm:"tags"            json:"tags"`               // 标签                                   
     Mobile          string      `orm:"mobile,unique"   json:"mobile"`             // 手机号                                 
+    ManagerName     string      `orm:"managerName"     json:"manager_name"`       //                                        
     ReturnAt        *gtime.Time `orm:"returnAt"        json:"return_at"`          // 外出大致返回时间                       
     BatteryOutCnt60 uint        `orm:"batteryOutCnt60" json:"battery_out_cnt_60"` // 60伏电池出库数量                       
     BatteryInCnt60  uint        `orm:"batteryInCnt60"  json:"battery_in_cnt_60"`  // 60伏电池入库数量                       
@@ -30,6 +31,7 @@ type Entity struct {
     Lng             float64     `orm:"lng"             json:"lng"`                // 经度                                   
     Lat             float64     `orm:"lat"             json:"lat"`                // 纬度                                   
     Qr              string      `orm:"qr,unique"       json:"qr"`                 // 二维码编号                             
+    State           uint        `orm:"state"           json:"state"`              // 店铺状态 0 休息总，1 营业中，2 外出中  
     ProvinceId      uint        `orm:"provinceId"      json:"province_id"`        // 省级行政编码                           
     CityId          uint        `orm:"cityId"          json:"city_id"`            // 市级行政编码                           
     DistrictId      uint        `orm:"districtId"      json:"district_id"`        // 区县行政编码                           

@@ -89,7 +89,7 @@ func (*userApi) Sign(r *ghttp.Request) {
 
 // PushToken
 // @summary 骑手-上报推送token
-// @tags    骑手
+// @tags    骑手-消息
 // @Accept  json
 // @Produce  json
 // @param   entity  body model.PushTokenReq true "登录数据"

@@ -14,6 +14,7 @@ require (
 	github.com/smartwalle/alipay/v3 v3.1.6
 	github.com/wechatpay-apiv3/wechatpay-go v0.2.2
 	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110 // indirect
+	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a
 	golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1 // indirect
 )
 

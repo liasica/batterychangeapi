@@ -6,14 +6,19 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/os/gcache"
 	"github.com/gogf/gf/os/gtime"
+	"golang.org/x/sync/singleflight"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 const (
+	CacheKeyGeTuiToken = "CACHE:GETUI:TOKEN"
+
 	UriToken = "/auth"
 )
 
@@ -40,8 +45,16 @@ func Service() *service {
 	return serv
 }
 
-func (s *service) Rpc(method, uri string, data interface{}) ([]byte, error) {
-	resp, err := g.Client().SetHeader("Content-Type", "application/json").DoRequest(method, fmt.Sprintf("%s%s", s.baseUrl, uri), data)
+func (s *service) rpc(method, uri string, data interface{}) ([]byte, error) {
+	client := g.Client().SetHeader("Content-Type", "application/json")
+	if uri != UriToken {
+		token, err := s.Token()
+		if err != nil {
+			return nil, err
+		}
+		client = client.SetHeader("token", token)
+	}
+	resp, err := client.DoRequest(method, fmt.Sprintf("%s%s", s.baseUrl, uri), data)
 	if err != nil {
 		return nil, err
 	}
@@ -51,27 +64,57 @@ func (s *service) Rpc(method, uri string, data interface{}) ([]byte, error) {
 	return ioutil.ReadAll(resp.Body)
 }
 
+// Token 获取请求token
 func (s *service) Token() (string, error) {
-	t := strconv.FormatInt(gtime.TimestampMilli(), 10)
-	h := sha256.New()
-	_, err := io.WriteString(h, s.appKey+t+s.appMasterSecret)
-	if err != nil {
-		return "", err
+	if val, err := gcache.Get(CacheKeyGeTuiToken); err == nil && val != nil {
+		return val.(string), err
 	}
-	content, err := s.Rpc(http.MethodPost, UriToken, TokenRequest{
-		Sign:      fmt.Sprintf("%x", h.Sum(nil)),
-		Timestamp: t,
-		AppKey:    s.appKey,
+	var singleSetCache singleflight.Group
+	token, err, _ := singleSetCache.Do(CacheKeyGeTuiToken, func() (interface{}, error) {
+		t := strconv.FormatInt(gtime.TimestampMilli(), 10)
+		h := sha256.New()
+		_, err := io.WriteString(h, s.appKey+t+s.appMasterSecret)
+		if err != nil {
+			return "", err
+		}
+		content, err := s.rpc(http.MethodPost, UriToken, TokenRequest{
+			Sign:      fmt.Sprintf("%x", h.Sum(nil)),
+			Timestamp: t,
+			AppKey:    s.appKey,
+		})
+		if err != nil {
+			return "", err
+		}
+		var res TokenResponse
+		if _err := json.Unmarshal(content, &res); _err != nil {
+			return "", _err
+		}
+		if res.Code != 0 {
+			return "", errors.New(res.Msg)
+		}
+		gcache.Set(CacheKeyGeTuiToken, res.Data.Token, 12*time.Hour)
+		return res.Data.Token, err
 	})
+
+	return token.(string), err
+}
+
+// PushAll 群推
+func (s *service) PushAll(msg PushAllRequest) (res PushAllResponse, err error) {
+	content, err := s.rpc(http.MethodPost, "/push/all", msg)
 	if err != nil {
-		return "", err
+		return res, err
 	}
-	var res TokenResponse
-	if _err := json.Unmarshal(content, &res); _err != nil {
-		return "", _err
+	_err := json.Unmarshal(content, &res)
+	return res, _err
+}
+
+// PushSingleCid 单推
+func (s *service) PushSingleCid(msg PushSingleRequest) (res PushSingleResponse, err error) {
+	content, err := s.rpc(http.MethodPost, "/push/single/cid", msg)
+	if err != nil {
+		return res, err
 	}
-	if res.Code != 0 {
-		return "", errors.New(res.Msg)
-	}
-	return res.Data.Token, nil
+	_err := json.Unmarshal(content, &res)
+	return res, _err
 }

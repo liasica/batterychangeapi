@@ -18,3 +18,58 @@ type TokenResponse struct {
 		Token      string `json:"token"`
 	} `json:"data"`
 }
+
+// PushSingleRequest 【toSingle】执行cid单推
+type PushSingleRequest struct {
+	RequestId string `json:"request_id"`
+	Settings  struct {
+		Ttl int `json:"ttl"`
+	} `json:"settings,omitempty"`
+	Audience struct {
+		Cid []string `json:"cid"`
+	} `json:"audience"`
+	PushMessage struct {
+		PushMessageNotification `json:"notification"`
+	} `json:"push_message"`
+}
+
+type PushSingleResponse struct {
+	Response
+	Data struct {
+		Taskid struct {
+			Cid string `json:"$cid"`
+		} `json:"$taskid"`
+	} `json:"data"`
+}
+
+// CustomTagRequest 【标签】一个用户绑定一批标签
+type CustomTagRequest struct {
+	CustomTag []string `json:"custom_tag"`
+}
+
+// PushAllRequest 群推送
+type PushAllRequest struct {
+	RequestId string `json:"request_id"`
+	GroupName string `json:"group_name"`
+	Settings  struct {
+		Ttl int `json:"ttl"`
+	} `json:"settings,omitempty"`
+	Audience    string `json:"audience"`
+	PushMessage struct {
+		PushMessageNotification `json:"notification"`
+	} `json:"push_message"`
+}
+
+type PushMessageNotification struct {
+	Title     string `json:"title"`
+	Body      string `json:"body"`
+	ClickType string `json:"click_type"`
+	Url       string `json:"url"`
+}
+
+type PushAllResponse struct {
+	Response
+	Data struct {
+		Taskid string `json:"taskid"`
+	} `json:"data"`
+}

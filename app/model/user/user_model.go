@@ -45,7 +45,7 @@ var (
         AccessToken               string //                                                              
         Salt                      string //                                                              
         DeviceType                string // 1 安卓  2  iOS                                               
-        DeviceToken               string // 用户推送token                                                
+        DeviceToken               string // 用户推送消息唯一ID                                           
         EsignAccountId            string // 易签账户ID                                                   
         EsignFlowId               string // 易签签约流程ID                                               
         EsignFileId               string // 易签签约文件ID                                               
