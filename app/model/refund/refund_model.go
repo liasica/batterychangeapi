@@ -26,6 +26,7 @@ var (
 	// Columns defines and stores column names for table refund.
 	Columns = struct {
 		Id                string //               
+        UserId            string //               
         No                string // 退款编号      
         RelationId        string //               
         RelationType      string //               
@@ -36,6 +37,7 @@ var (
         UpdatedAt         string //
 	}{
 		Id:               "id",                
+        UserId:           "userId",            
         No:               "no",                
         RelationId:       "relationId",        
         RelationType:     "relationType",      

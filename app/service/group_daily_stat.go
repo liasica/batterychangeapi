@@ -39,7 +39,7 @@ func (s *groupDailyStatService) RiderBizExit(ctx context.Context, groupId uint, 
 	now := gtime.Now()
 	_, err := dao.GroupDailyStat.Ctx(ctx).Where(dao.GroupDailyStat.Columns.GroupId, groupId).
 		Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
-		WhereGTE(dao.GroupDailyStat.Columns.Date, s.Date(now)).
+		WhereGT(dao.GroupDailyStat.Columns.Date, s.Date(now)).
 		Decrement(dao.GroupDailyStat.Columns.Total, 1)
 	return err
 }

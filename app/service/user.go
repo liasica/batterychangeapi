@@ -461,8 +461,18 @@ func (s *userService) BizBatteryUnSave(ctx context.Context, user model.User) err
 
 // BizBatteryExit 用户退租
 func (s *userService) BizBatteryExit(ctx context.Context, user model.User) error {
-
-	return nil
+	var seconds int64 = 0
+	if !user.BizBatterySecondsStartAt.IsZero() {
+		seconds = gtime.Now().Timestamp() - user.BizBatterySecondsStartAt.Timestamp()
+	}
+	_, err := dao.User.Ctx(ctx).WherePri(user.Id).
+		WhereIn(dao.User.Columns.BatteryState, []int{model.BatteryStateUse, model.BatteryStateSave}).
+		Update(g.Map{
+			dao.User.Columns.BatteryState:             model.BatteryStateExit,
+			dao.User.Columns.BizBatterySecondsStartAt: nil,
+			dao.User.Columns.BizBatteryRenewalSeconds: user.BizBatteryRenewalSeconds + uint(seconds),
+		})
+	return err
 }
 
 // BuyPackagesSuccess 用户成功新购套餐

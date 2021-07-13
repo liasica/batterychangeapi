@@ -142,12 +142,15 @@ func (*bizApi) Post(r *ghttp.Request) {
 			response.Json(r, response.RespCodeArgs, "用户未开通或已退租，不能办理退租")
 		}
 
+		var refundId uint64
+		var refundNo string
+
 		err = dao.User.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
 			//用户状态
 			if err := service.UserService.BizBatteryExit(ctx, user); err != nil {
 				return nil
 			}
-			//取电记录
+			//业务记录
 			bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
 				CityId:       shop.CityId,
 				ShopId:       shop.Id,
@@ -161,9 +164,8 @@ func (*bizApi) Post(r *ghttp.Request) {
 			if err != nil {
 				return err
 			}
-
 			if user.BatteryState == model.BatteryStateUse {
-				//电池出库
+				//电池入库
 				if err := service.ShopService.BatteryIn(ctx, shop.Id, user.BatteryType, 1); err != nil {
 					return err
 				}
@@ -178,7 +180,21 @@ func (*bizApi) Post(r *ghttp.Request) {
 				}
 			}
 			if user.GroupId > 0 {
-				// TODO  发起退款
+				if err := service.GroupDailyStatService.RiderBizExit(ctx, user.GroupId, user.BatteryType); err != nil {
+					return err
+				}
+			} else {
+				packagesOrder, err := service.PackagesOrderService.Detail(ctx, user.PackagesOrderId)
+				if err != nil {
+					return err
+				}
+				if packagesOrder.Earnest > 0 {
+					refundNo = service.RefundService.No()
+					refundId, err = service.RefundService.Create(ctx, user.Id, packagesOrder.Id, model.RefundRelationTypePackagesOrder, refundNo, packagesOrder.Earnest)
+					if err != nil {
+						return err
+					}
+				}
 			}
 			return nil
 		})

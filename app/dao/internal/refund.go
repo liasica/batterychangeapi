@@ -22,6 +22,7 @@ type RefundDao struct {
 // RefundColumns defines and stores column names for table refund.
 type refundColumns struct {
 	Id               string //
+	UserId           string //
 	No               string // 退款编号
 	RelationId       string //
 	RelationType     string //
@@ -39,6 +40,7 @@ func NewRefundDao() *RefundDao {
 		Table: "refund",
 		Columns: refundColumns{
 			Id:               "id",
+			UserId:           "userId",
 			No:               "no",
 			RelationId:       "relationId",
 			RelationType:     "relationType",

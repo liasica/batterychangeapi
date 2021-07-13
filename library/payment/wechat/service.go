@@ -6,6 +6,7 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"github.com/gogf/gf/frame/g"
 	"github.com/wechatpay-apiv3/wechatpay-go/core"
@@ -14,6 +15,7 @@ import (
 	"github.com/wechatpay-apiv3/wechatpay-go/core/notify"
 	"github.com/wechatpay-apiv3/wechatpay-go/core/option"
 	"github.com/wechatpay-apiv3/wechatpay-go/services/payments/app"
+	"github.com/wechatpay-apiv3/wechatpay-go/services/refunddomestic"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -84,4 +86,30 @@ func (s *service) ParseNotify(ctx context.Context, request *http.Request, conten
 	certVisitor := downloader.MgrInstance().GetCertificateVisitor(g.Cfg().GetString("payment.wechat.mchId"))
 	handler := notify.NewNotifyHandler(g.Cfg().GetString("payment.wechat.apiV3Key"), verifiers.NewSHA256WithRSAVerifier(certVisitor))
 	return handler.ParseNotifyRequest(ctx, request, content)
+}
+
+// App 发起退款
+func (s *service) Refund(ctx context.Context, transactionId, outTradeNo, outRefundNo, reason string, refundAmount, orderAmount float64) (string, error) {
+	r := refunddomestic.RefundsApiService{
+		Client: s.client(),
+	}
+	resp, res, err := r.Create(ctx, refunddomestic.CreateRequest{
+		TransactionId: core.String(transactionId),
+		OutTradeNo:    core.String(outTradeNo),
+		OutRefundNo:   core.String(outRefundNo),
+		Reason:        core.String(reason),
+		Amount: &refunddomestic.AmountReq{
+			Refund: core.Int64(int64(refundAmount * 100)),
+			Total:  core.Int64(int64(orderAmount * 100)),
+		},
+	})
+	if err != nil {
+		return "", err
+	}
+	if resp.Status == refunddomestic.STATUS_SUCCESS.Ptr() || resp.Status == refunddomestic.STATUS_PROCESSING.Ptr() {
+		return *resp.RefundId, nil
+	} else {
+		g.Log().Error("退款失败:", res, resp)
+		return "", errors.New("退款失败")
+	}
 }

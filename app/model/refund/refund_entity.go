@@ -12,7 +12,8 @@ import (
 
 // Entity is the golang structure for table refund.
 type Entity struct {
-    Id               uint        `orm:"id,primary"              json:"id"`                 //               
+    Id               uint64      `orm:"id,primary"              json:"id"`                 //               
+    UserId           uint64      `orm:"userId"                  json:"user_id"`            //               
     No               string      `orm:"no,unique"               json:"no"`                 // 退款编号      
     RelationId       uint64      `orm:"relationId"              json:"relation_id"`        //               
     RelationType     uint        `orm:"relationType"            json:"relation_type"`      //               
