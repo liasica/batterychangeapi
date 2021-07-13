@@ -113,7 +113,7 @@ type PushTokenReq struct {
 // UserProfileRep 骑手端用户信息概况
 type UserProfileRep struct {
 	Name      string `json:"name"`                          //姓名
-	Mobile    string `json:"mobile"`                        //姓名
+	Mobile    string `json:"mobile"`                        //手机号码
 	Type      uint   `validate:"required" json:"type"`      //用户角色 1 个签骑手 2 团签骑手 3 团签BOSS
 	AuthState uint   `validate:"required" json:"authState"` //实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过
 	SignState uint   `validate:"required" json:"signState"` //签约状态 0 未签约 1 已签约

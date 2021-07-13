@@ -38,14 +38,15 @@ type ShopListAdminReq struct {
 
 // ShopListUserRep 骑手获取店铺列表响应
 type ShopListUserRep struct {
-	Id       uint     `validate:"required" json:"id"`             //ID
-	Img      string   `validate:"required" json:"img"`            //图片
-	Tags     []string `validate:"required" json:"tags"`           //标签
-	Name     string   `validate:"required" json:"name"`           //名称
-	Lng      float64  `validate:"required" json:"lng"`            //经度
-	Lat      float64  `validate:"required" json:"lat"`            //纬度
-	Distance uint     `validate:"required" json:"distance"`       //距离
-	Mobile   string   `validate:"required" json:"mobile"`         //联系手机号码
-	Address  string   `validate:"required" json:"address"`        //详细地址
-	State    uint     `validate:"required" v:"required|in:0,1,2"` //店铺状态 0 休息总，1 营业中
+	Id           uint     `validate:"required" json:"id"`             //ID
+	Img          string   `validate:"required" json:"img"`            //图片
+	Tags         []string `validate:"required" json:"tags"`           //标签
+	Name         string   `validate:"required" json:"name"`           //名称
+	Lng          float64  `validate:"required" json:"lng"`            //经度
+	Lat          float64  `validate:"required" json:"lat"`            //纬度
+	BatteryTotal uint     `validate:"required" json:"batteryTotal"`   //备货
+	Distance     uint     `validate:"required" json:"distance"`       //距离
+	Mobile       string   `validate:"required" json:"mobile"`         //联系手机号码
+	Address      string   `validate:"required" json:"address"`        //详细地址
+	State        uint     `validate:"required" v:"required|in:0,1,2"` //店铺状态 0 休息总，1 营业中
 }

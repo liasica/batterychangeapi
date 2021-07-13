@@ -2052,6 +2052,7 @@
             "type": "object",
             "required": [
                 "address",
+                "batteryTotal",
                 "distance",
                 "id",
                 "img",
@@ -2066,6 +2067,10 @@
                 "address": {
                     "description": "详细地址",
                     "type": "string"
+                },
+                "batteryTotal": {
+                    "description": "备货",
+                    "type": "integer"
                 },
                 "distance": {
                     "description": "距离",
@@ -2747,7 +2752,7 @@
                     }
                 },
                 "mobile": {
-                    "description": "姓名",
+                    "description": "手机号码",
                     "type": "string"
                 },
                 "name": {
