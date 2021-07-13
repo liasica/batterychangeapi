@@ -25,6 +25,7 @@ func (s *shopService) ListUser(ctx context.Context, req model.ShopListUserReq) (
 		dao.Shop.Columns.Mobile,
 		dao.Shop.Columns.Address,
 		dao.Shop.Columns.State,
+		fmt.Sprintf("(%s + %s) as batteryTotal", dao.Shop.Columns.BatteryCnt60, dao.Shop.Columns.BatteryInCnt72),
 		fmt.Sprintf("ST_DISTANCE_SPHERE(POINT(lng, lat), POINT(%f, %f)) as distance", req.Lng, req.Lat)).
 		Where(dao.Shop.Columns.CityId, req.CityId).
 		OrderAsc("distance").
