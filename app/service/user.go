@@ -46,7 +46,7 @@ func (s *userService) Create(ctx context.Context, mobile string, userType, group
 		dao.User.Columns.Type:        userType,
 		dao.User.Columns.GroupId:     groupId,
 		dao.User.Columns.Mobile:      mobile,
-		dao.User.Columns.Qr:          snowflake.Service().Generate(),
+		dao.User.Columns.Qr:          "sgjdriver://"+snowflake.Service().Generate().String(),
 		dao.User.Columns.AccessToken: dao.User.GenerateAccessToken(uint64(rand.New(rand.NewSource(time.Now().Unix())).Intn(1000000)), salt),
 	})
 	return uint64(id), err
