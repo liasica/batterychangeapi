@@ -5,6 +5,7 @@ import (
 	"battery/app/api"
 	"battery/app/esign"
 	"battery/app/payment"
+	"battery/app/service"
 	"battery/app/shop"
 	"battery/app/user"
 	"github.com/gogf/gf/frame/g"
@@ -13,6 +14,7 @@ import (
 
 func init() {
 	s := g.Server()
+	s.BindMiddlewareDefault(service.Middleware.ErrorHandle)
 
 	//认证签约回调
 	s.Group("/esign/callback", func(group *ghttp.RouterGroup) {
