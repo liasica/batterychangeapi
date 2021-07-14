@@ -7,8 +7,6 @@ import (
 	"battery/app/payment"
 	"battery/app/shop"
 	"battery/app/user"
-	"battery/library/push/getui"
-	"fmt"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 )
@@ -41,13 +39,6 @@ func init() {
 	s.Group("/api", func(group *ghttp.RouterGroup) {
 		group.POST("/upload/image", api.Upload.Image)
 		group.POST("/sms", api.SmsApi.Send)
-
-		group.GET("/test", func(r *ghttp.Request) {
-
-			token, err := getui.Service().Token()
-			fmt.Println(token, err)
-
-		})
 	})
 
 	//骑手

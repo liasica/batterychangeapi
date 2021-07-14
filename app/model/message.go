@@ -1,11 +1,14 @@
 package model
 
-import "battery/app/model/internal"
+import (
+	"battery/app/model/internal"
+	"github.com/gogf/gf/os/gtime"
+)
 
 type Message struct {
 	internal.Message
-	Detail interface{} `json:"detail"`
-	IsRead bool        `json:"isRead"` //是否已读
+	Detail MessageDetail `json:"detail,omitempty"` //详情页信息  type 为 100，101， 104 时返回
+	IsRead bool          `json:"isRead"`           //是否已读
 }
 
 const (
@@ -22,12 +25,19 @@ const (
 	MessageTypeShopManagerBatteryRenewal = 500 //骑手扫码换电
 )
 
-// MessageTypeUserBizNewSuccessDetail 骑手购买套餐成功消息详情
-type MessageTypeUserBizNewSuccessDetail struct {
-	PackagesName   string  `json:"packagesName"`   //套餐名称
-	Type           string  `json:"type"`           //交易商品
-	PackageOrderNo string  `json:"PackageOrderNo"` //订单编号
-	PayType        uint    `json:"payType"`        //支付方式 1 支付宝 2 微信
-	PayAt          uint    `json:"payAt"`          //支付时间
-	Amount         float64 `json:"amount"`         //支付金额
+// MessageDetail 订单详情
+type MessageDetail struct {
+	Type           string      `json:"type,omitempty"`           //订单类型 type 为 100，102 时返回
+	PackagesName   string      `json:"packagesName,omitempty"`   //套餐名称 type 为 100 时返回
+	CityName       string      `json:"cityName,omitempty"`       //可用城市 type 为 100 时返回
+	BatteryType    uint        `json:"batteryType,omitempty"`    //可用电池 type 为 100 时返回
+	PackageOrderNo string      `json:"packageOrderNo,omitempty"` //订单编号 type 为 100，102 时返回
+	PayType        uint        `json:"payType,omitempty"`        //支付方式 1 支付宝 2 微信  type 为 100，102 时返回
+	PayAt          *gtime.Time `json:"payAt,omitempty"`          //支付时间 type 为 100，102 时返回
+	Amount         float64     `json:"amount,omitempty"`         //支付金额 type 为 100，102 时返回
+	Earnest        float64     `json:"earnest,omitempty"`        //押金金额 type 为 100 时返回
+
+	ShopName    string      `json:"shopName,omitempty"`              //店铺名称 type 为 104 时返回
+	ExitAt      *gtime.Time `json:"at,omitempty"`                    //退租时间 type 为 104 时返回
+	EarnestDesc string      `json:"earnestDesc,omitempty,omitempty"` //押金说明 type 为 104 时返回
 }

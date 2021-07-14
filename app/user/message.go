@@ -14,6 +14,7 @@ type messageApi struct {
 
 // List
 // @summary 骑手-消息列表
+// @description type 为 100， 101， 102， 104 时需要跳转详情页面
 // @tags    骑手-消息
 // @Accept  json
 // @Produce  json

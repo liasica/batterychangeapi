@@ -13,7 +13,7 @@ type messageService struct {
 }
 
 // Create 创建消息
-func (*messageService) Create(ctx context.Context, userId uint64, t uint, title, summary string, detail interface{}) (uint64, error) {
+func (*messageService) Create(ctx context.Context, userId uint64, t uint, title, summary string, detail model.MessageDetail) (uint64, error) {
 	id, err := dao.Message.Ctx(ctx).
 		Fields(
 			dao.Message.Columns.Type,

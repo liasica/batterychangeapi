@@ -652,6 +652,7 @@
         },
         "/rapi/message": {
             "get": {
+                "description": "type 为 100， 101， 102， 104 时需要跳转详情页面",
                 "consumes": [
                     "application/json"
                 ],
@@ -1972,7 +1973,8 @@
                     "type": "string"
                 },
                 "detail": {
-                    "type": "object"
+                    "description": "详情页信息  type 为 100，101， 104 时返回",
+                    "$ref": "#/definitions/model.MessageDetail"
                 },
                 "id": {
                     "type": "integer"
@@ -1993,6 +1995,59 @@
                 "userId": {
                     "description": "0 标识推送所有用户",
                     "type": "integer"
+                }
+            }
+        },
+        "model.MessageDetail": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "支付金额 type 为 100，101 时返回",
+                    "type": "number"
+                },
+                "at": {
+                    "description": "退租时间 type 为 104 时返回",
+                    "type": "string"
+                },
+                "batteryType": {
+                    "description": "可用电池 type 为 100 时返回",
+                    "type": "integer"
+                },
+                "cityName": {
+                    "description": "可用城市 type 为 100 时返回",
+                    "type": "string"
+                },
+                "earnest": {
+                    "description": "押金金额 type 为 100 时返回",
+                    "type": "number"
+                },
+                "earnestDesc": {
+                    "description": "押金说明 type 为 104 时返回",
+                    "type": "string"
+                },
+                "packageOrderNo": {
+                    "description": "订单编号 type 为 100，101 时返回",
+                    "type": "string"
+                },
+                "packagesName": {
+                    "description": "套餐名称 type 为 100 时返回",
+                    "type": "string"
+                },
+                "payAt": {
+                    "description": "支付时间 type 为 100，101 时返回",
+                    "type": "string"
+                },
+                "payType": {
+                    "description": "支付方式 1 支付宝 2 微信  type 为 100，101 时返回",
+                    "type": "integer"
+                },
+                "shopName": {
+                    "description": "店铺名称 type 为 104 时返回",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "订单类型 type 为 100，101 时返回",
+                    "type": "string"
                 }
             }
         },
