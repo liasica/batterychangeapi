@@ -3,6 +3,7 @@ package service
 import (
 	"battery/app/dao"
 	"battery/app/model"
+	"battery/library/wf"
 	"context"
 	"github.com/gogf/gf/frame/g"
 )
@@ -10,6 +11,7 @@ import (
 var MessageService = messageService{}
 
 type messageService struct {
+	wf *wf.WorkFlow
 }
 
 // Create 创建消息
@@ -90,4 +92,8 @@ func (*messageService) Read(ctx context.Context, userId uint64, userType uint, m
 	}
 	_, err := dao.MessageRead.Ctx(ctx).Save(data)
 	return err
+}
+
+func (s *messageService) SendWorkFlowInit() {
+	s.wf = wf.Start("Send-Message", 4, 20)
 }
