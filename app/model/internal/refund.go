@@ -17,6 +17,7 @@ type Refund struct {
 	RelationType     uint        `orm:"relationType"            json:"relationType"`     //
 	Amount           float64     `orm:"amount"                  json:"amount"`           // 退款金额
 	PlatformRefundNo string      `orm:"platformRefundNo,unique" json:"platformRefundNo"` // 第三方流水号
+	Reason           string      `orm:"reason"                  json:"reason"`           //
 	State            uint        `orm:"state"                   json:"state"`            //
 	CreatedAt        *gtime.Time `orm:"createdAt"               json:"createdAt"`        //
 	UpdatedAt        *gtime.Time `orm:"updatedAt"               json:"updatedAt"`        //

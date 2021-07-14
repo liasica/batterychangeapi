@@ -28,6 +28,7 @@ type refundColumns struct {
 	RelationType     string //
 	Amount           string // 退款金额
 	PlatformRefundNo string // 第三方流水号
+	Reason           string //
 	State            string //
 	CreatedAt        string //
 	UpdatedAt        string //
@@ -46,6 +47,7 @@ func NewRefundDao() *RefundDao {
 			RelationType:     "relationType",
 			Amount:           "amount",
 			PlatformRefundNo: "platformRefundNo",
+			Reason:           "reason",
 			State:            "state",
 			CreatedAt:        "createdAt",
 			UpdatedAt:        "updatedAt",

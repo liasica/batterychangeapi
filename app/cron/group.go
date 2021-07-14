@@ -14,12 +14,11 @@ var GroupCron = group{}
 type group struct {
 }
 
-func (*group) GroupDailyGenerateInit() error {
+func (*group) Init() error {
 	if !g.Cfg().GetBool("cron.group.stat.enable", false) {
 		return nil
 	}
 	c := cron.New()
-
 	_, err := c.AddFunc(g.Cfg().GetString("cron.group.stat.spec"), func() {
 		fmt.Println("GroupDailyGenerateInit start !!!")
 		req := model.GroupListAdminReq{}

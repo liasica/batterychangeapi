@@ -190,7 +190,7 @@ func (*bizApi) Post(r *ghttp.Request) {
 				}
 				if packagesOrder.Earnest > 0 {
 					refundNo = service.RefundService.No()
-					refundId, err = service.RefundService.Create(ctx, user.Id, packagesOrder.Id, model.RefundRelationTypePackagesOrder, refundNo, packagesOrder.Earnest)
+					refundId, err = service.RefundService.Create(ctx, user.Id, packagesOrder.Id, model.RefundRelationTypePackagesOrder, refundNo, "骑手套餐退租", packagesOrder.Earnest)
 					if err != nil {
 						return err
 					}

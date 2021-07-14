@@ -19,6 +19,7 @@ type Entity struct {
     RelationType     uint        `orm:"relationType"            json:"relation_type"`      //               
     Amount           float64     `orm:"amount"                  json:"amount"`             // 退款金额      
     PlatformRefundNo string      `orm:"platformRefundNo,unique" json:"platform_refund_no"` // 第三方流水号  
+    Reason           string      `orm:"reason"                  json:"reason"`             //               
     State            uint        `orm:"state"                   json:"state"`              //               
     CreatedAt        *gtime.Time `orm:"createdAt"               json:"created_at"`         //               
     UpdatedAt        *gtime.Time `orm:"updatedAt"               json:"updated_at"`         //               

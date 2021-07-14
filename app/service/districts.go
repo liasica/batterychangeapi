@@ -24,7 +24,7 @@ func (s *districtsService) Child(parentId uint64) []model.DistrictsChildRep {
 
 // CurrentCity 获取当前城市
 func (s *districtsService) CurrentCity(ctx context.Context, req model.DistrictsCurrentCityReq) (rep model.DistrictsCurrentCityRep, err error) {
-	geoRep, err := g.Client().Get(fmt.Sprintf("https://restapi.amap.com/v3/geocode/regeo?key=%s&location=%s,%s&radius=1000&extensions=base", "73a64efc880cb45122626dfc401ef515", req.Lng, req.Lat))
+	geoRep, err := g.Client().Get(fmt.Sprintf("https://restapi.amap.com/v3/geocode/regeo?key=%s&location=%s,%s&radius=1000&extensions=base", g.Cfg().GetString("amap.key"), req.Lng, req.Lat))
 	if err != nil {
 		return
 	}
