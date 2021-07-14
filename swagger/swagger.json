@@ -2002,7 +2002,7 @@
             "type": "object",
             "properties": {
                 "amount": {
-                    "description": "支付金额 type 为 100，101 时返回",
+                    "description": "支付金额 type 为 100，102 时返回",
                     "type": "number"
                 },
                 "at": {
@@ -2026,7 +2026,7 @@
                     "type": "string"
                 },
                 "packageOrderNo": {
-                    "description": "订单编号 type 为 100，101 时返回",
+                    "description": "订单编号 type 为 100，102 时返回",
                     "type": "string"
                 },
                 "packagesName": {
@@ -2034,11 +2034,11 @@
                     "type": "string"
                 },
                 "payAt": {
-                    "description": "支付时间 type 为 100，101 时返回",
+                    "description": "支付时间 type 为 100，102 时返回",
                     "type": "string"
                 },
                 "payType": {
-                    "description": "支付方式 1 支付宝 2 微信  type 为 100，101 时返回",
+                    "description": "支付方式 1 支付宝 2 微信  type 为 100，102 时返回",
                     "type": "integer"
                 },
                 "shopName": {
@@ -2046,7 +2046,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "description": "订单类型 type 为 100，101 时返回",
+                    "description": "订单类型 type 为 100，102 时返回",
                     "type": "string"
                 }
             }
@@ -3012,9 +3012,6 @@
         "model.UserRealNameAuthReq": {
             "type": "object",
             "required": [
-                "idCardImg1",
-                "idCardImg2",
-                "idCardImg3",
                 "idCardNo",
                 "realName"
             ],
