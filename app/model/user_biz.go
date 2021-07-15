@@ -49,8 +49,7 @@ type UserBizRecordStatRep struct {
 
 // UserBizNewReq 个签骑手新签套餐请求数据
 type UserBizNewReq struct {
-	PaymentType uint `validate:"required" json:"paymentType" v:"required|in:1,2"` //支付类型 1 支付宝 2 微信
-	PackagesId  uint `validate:"required" json:"packagesId" v:"required|integer"` //套餐ID
+	PackagesId uint `validate:"required" json:"packagesId" v:"required|integer"` //套餐ID
 }
 
 // UserBizNewRep 个签骑手新签套餐响应数据

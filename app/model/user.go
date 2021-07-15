@@ -48,7 +48,6 @@ type UserLoginRep struct {
 	AccessToken string `validate:"required" json:"accessToken"` //请求 token
 	Type        uint   `validate:"required" json:"type"`        //用户角色 1 个签骑手 2 团签骑手 3 团签BOSS
 	AuthState   uint   `validate:"required" json:"authState"`   //实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过
-	SignState   uint   `validate:"required" json:"signState"`   //签约状态 0 未签约 1 已签约
 }
 
 // UserRealNameAuthReq 实名认证请求数据
@@ -65,12 +64,6 @@ type UserRealNameAuthRep struct {
 	FlowId    string `json:"flowId"`       //流程ID
 	ShortLink string `json:"shortLink"`    //短地址
 	Url       string `validate:"required"` // 骑手实名认证连接地址
-}
-
-// UserSignRep 获取签约URL
-type UserSignRep struct {
-	Url      string `json:"url"`
-	ShortUrl string `json:"shortUrl"`
 }
 
 // RealNameAuthVerifyProfileRep 获取用户实名认证提交资料信息
@@ -116,10 +109,8 @@ type UserProfileRep struct {
 	Mobile    string `json:"mobile"`                        //手机号码
 	Type      uint   `validate:"required" json:"type"`      //用户角色 1 个签骑手 2 团签骑手 3 团签BOSS
 	AuthState uint   `validate:"required" json:"authState"` //实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过
-	SignState uint   `validate:"required" json:"signState"` //签约状态 0 未签约 1 已签约
 	Qr        string `json:"qr"`                            //用户二维码数据，需要本地生成图片
-
-	User struct {
+	User      struct {
 		BatteryState    uint        `json:"batteryState"`    //个签骑手换电状态：0 未开通， 1 新签未领 ，2 租借中，3 寄存中，4 已退租， 5 已逾期
 		PackagesId      uint        `json:"packagesId"`      //个签骑手所购套餐ID
 		PackagesName    string      `json:"packagesName"`    //个签骑手所购套餐名称

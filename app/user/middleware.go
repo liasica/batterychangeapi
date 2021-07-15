@@ -38,7 +38,6 @@ func (s *contextUser) SetUser(ctx context.Context, r *model.ContextRider) {
 	rider.GroupId = r.GroupId
 	rider.EsignAccountId = r.EsignAccountId
 	rider.AuthState = r.AuthState
-	rider.SignState = r.SignState
 	rider.PackagesId = r.PackagesId
 	rider.BatteryType = r.BatteryType
 	rider.Qr = r.Qr
@@ -64,7 +63,6 @@ func (m *middleware) Ctx(r *ghttp.Request) {
 			rider.GroupId = u.GroupId
 			rider.EsignAccountId = u.EsignAccountId
 			rider.AuthState = u.AuthState
-			rider.SignState = u.SignState
 			rider.PackagesId = u.PackagesId
 			rider.BatteryType = u.BatteryType
 			rider.BatteryState = u.BatteryState

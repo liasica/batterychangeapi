@@ -31,7 +31,6 @@ type ContextRider struct {
 	BatteryType              uint
 	BatteryState             uint
 	AuthState                uint
-	SignState                uint
 	EsignAccountId           string
 	Qr                       string
 	ExpirationAt             *gtime.Time

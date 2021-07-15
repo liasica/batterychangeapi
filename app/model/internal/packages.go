@@ -19,7 +19,9 @@ type Packages struct {
 	Name        string      `orm:"name"        json:"name"`        // 名称
 	Days        uint        `orm:"days"        json:"days"`        // 套餐时长天数
 	Amount      float64     `orm:"amount"      json:"amount"`      // 套餐价格(包含保证金额)
+	Price       float64     `orm:"price"       json:"price"`       //
 	Earnest     float64     `orm:"earnest"     json:"earnest"`     // 保证金
 	ProvinceId  uint        `orm:"provinceId"  json:"provinceId"`  // 省级行政编码
 	CityId      uint        `orm:"cityId"      json:"cityId"`      // 市级行政编码
+	Packagescol string      `orm:"packagescol" json:"packagescol"` //
 }

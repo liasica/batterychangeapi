@@ -4,6 +4,7 @@ import (
 	"battery/app/dao"
 	"battery/app/model"
 	"context"
+	"github.com/shopspring/decimal"
 )
 
 var PackagesService = packagesService{}
@@ -41,8 +42,11 @@ func (s *packagesService) Detail(ctx context.Context, id uint) (rep model.Packag
 func (s *packagesService) PenaltyAmount(ctx context.Context, id, days uint) (amount float64, err error) {
 	packages, err := s.Detail(ctx, id)
 	if err == nil {
-		//TODO 高精度计算
-		amount = ((packages.Amount - packages.Earnest) / 30) * float64(days)
+		amount, _ = decimal.NewFromFloat(packages.Price).
+			Div(decimal.NewFromInt(int64(packages.Days))).
+			Mul(decimal.NewFromInt(int64(days))).
+			Round(2).
+			Float64()
 	}
 	return
 }

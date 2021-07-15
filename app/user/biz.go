@@ -4,6 +4,8 @@ import (
 	"battery/app/dao"
 	"battery/app/model"
 	"battery/app/service"
+	"battery/library/esign/sign"
+	beansSign "battery/library/esign/sign/beans"
 	"battery/library/payment/alipay"
 	"battery/library/payment/wechat"
 	"battery/library/response"
@@ -140,48 +142,121 @@ func (*bizApi) BatteryRenewal(r *ghttp.Request) {
 // @tags    骑手-业务办理
 // @param   entity  body model.UserBizNewReq true "请求数据"
 // @router  /rapi/biz_new [POST]
-// @success 200 {object} response.JsonResponse{data=model.UserBizNewRep}  "返回结果"
+// @success 200 {object} response.JsonResponse{data=model.SignRep}  "返回结果"
 func (*bizApi) New(r *ghttp.Request) {
 	var req model.UserBizNewReq
 	if err := r.Parse(&req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
-	user := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
-	if user.GroupId > 0 {
+	u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
+	if u.GroupId > 0 {
 		response.Json(r, response.RespCodeArgs, "团签用户，无需办理购买")
 	}
 	packages, err := service.PackagesService.Detail(r.Context(), req.PackagesId)
 	if err != nil {
 		response.Json(r, response.RespCodeArgs, "套餐不存")
 	}
-	order, err := service.PackagesOrderService.New(r.Context(), user.Id, req.PaymentType, packages)
-	if err == nil && req.PaymentType == model.PayTypeWechat {
-		if res, err := wechat.Service().App(r.Context(), model.Prepay{
-			Description: packages.Name,
-			No:          order.No,
-			Amount:      order.Amount,
-			NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_new/wechat",
-		}); err == nil {
-			response.JsonOkExit(r, model.UserBizNewRep{
-				PayOrderInfo: *res.PrepayId,
-			})
-		}
+
+	user := service.UserService.Detail(r.Context(), u.Id)
+	// 创建代签签文件
+	res, err := sign.Service().CreateByTemplate(beansSign.CreateByTemplateReq{
+		TemplateId: g.Cfg().GetString("eSign.personal.templateId"),
+		SimpleFormFields: beansSign.CreateByTemplateReqSimpleFormFields{
+			Name:     user.RealName,
+			IdCardNo: user.IdCardNo,
+		},
+		Name: g.Cfg().GetString("eSign.personal.fileName"),
+	})
+	if err != nil {
+		response.JsonOkExit(r, response.RespCodeSystemError)
+	}
+	// 发起签署
+	resFlow, err := sign.Service().CreateFlowOneStep(beansSign.CreateFlowOneStepReq{
+		Docs: []beansSign.CreateFlowOneStepReqDoc{
+			{
+				FileId:   res.Data.FileId,
+				FileName: g.Cfg().GetString("eSign.personal.fileName"),
+			},
+		},
+		FlowInfo: beansSign.CreateFlowOneStepReqDocFlowInfo{
+			AutoInitiate:  true,
+			AutoArchive:   true,
+			BusinessScene: g.Cfg().GetString("eSign.businessScene"),
+			FlowConfigInfo: beansSign.CreateFlowOneStepReqDocFlowInfoFlowConfigInfo{
+				NoticeDeveloperUrl: g.Cfg().GetString("api.host") + "/esign/callback/sign",
+			},
+		},
+		Signers: []beansSign.CreateFlowOneStepReqDocSigner{
+			{
+				PlatformSign:  true,
+				SignerAccount: beansSign.CreateFlowOneStepReqDocSignerAccount{},
+				Signfields: []beansSign.CreateFlowOneStepReqDocSignerField{
+					{
+						AutoExecute: true,
+						SignType:    1,
+						FileId:      res.Data.FileId,
+						PosBean: beansSign.CreateFlowOneStepReqDocSignerFieldPosBean{
+							PosPage: "3",
+							PosX:    400,
+							PosY:    400,
+						},
+					},
+				},
+			},
+			{
+				PlatformSign: false,
+				SignerAccount: beansSign.CreateFlowOneStepReqDocSignerAccount{
+					SignerAccountId: user.EsignAccountId,
+				},
+				Signfields: []beansSign.CreateFlowOneStepReqDocSignerField{
+					{
+						FileId: res.Data.FileId,
+						PosBean: beansSign.CreateFlowOneStepReqDocSignerFieldPosBean{
+							PosPage: "3",
+							PosX:    300,
+							PosY:    300,
+						},
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		response.JsonOkExit(r, response.RespCodeSystemError)
+	}
+	// 获取签署地址
+	resUrl, err := sign.Service().FlowExecuteUrl(beansSign.FlowExecuteUrlReq{
+		FlowId:    resFlow.Data.FlowId,
+		AccountId: user.EsignAccountId,
+	})
+	if err != nil {
+		response.JsonOkExit(r, response.RespCodeSystemError)
 	}
 
-	if err == nil && req.PaymentType == model.PayTypeAliPay {
-		if res, err := alipay.Service().App(r.Context(), model.Prepay{
-			Description: packages.Name,
-			No:          order.No,
-			Amount:      order.Amount,
-			NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_new/alipay",
-		}); err == nil {
-			response.JsonOkExit(r, model.UserBizNewRep{
-				PayOrderInfo: res,
-			})
+	if dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+		order, err := service.PackagesOrderService.New(ctx, u.Id, packages)
+		if err != nil {
+			return err
 		}
+		if _, _err := service.SignService.Create(ctx, model.Sign{
+			UserId:          user.Id,
+			GroupId:         0,
+			PackagesOrderId: order.Id,
+			BatteryType:     packages.BatteryType,
+			State:           0,
+			FileId:          res.Data.FileId,
+			FlowId:          resFlow.Data.FlowId,
+		}); _err != nil {
+			return _err
+		}
+		return nil
+	}) != nil {
+		response.JsonOkExit(r, response.RespCodeSystemError)
 	}
-
-	response.JsonErrExit(r, response.RespCodeSystemError)
+	response.JsonOkExit(r, model.SignRep{
+		Url:      resUrl.Data.Url,
+		ShortUrl: resUrl.Data.ShortUrl,
+	})
 }
 
 // Renewal 续约
@@ -311,21 +386,107 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 // @tags    骑手-业务办理
 // @param   entity  body model.UserBizGroupNewReq true "请求数据"
 // @router  /rapi/biz_new_group [POST]
-// @success 200 {object} response.JsonResponse  "返回结果"
+// @success 200 {object} response.JsonResponse{data=model.SignRep}  "返回结果"
 func (*bizApi) GroupNew(r *ghttp.Request) {
 	var req model.UserBizGroupNewReq
 	if err := r.Parse(&req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
-	user := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
-	if user.GroupId == 0 {
+	u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
+	if u.GroupId == 0 {
 		response.Json(r, response.RespCodeArgs, "个签用户请购买套餐")
 	}
-	if user.BatteryState != model.BatteryStateDefault && user.BatteryState != model.BatteryStateExit {
+	if u.BatteryState != model.BatteryStateDefault && u.BatteryState != model.BatteryStateExit {
 		response.Json(r, response.RespCodeArgs, "已选择过电池型号，请前往店铺办理业务")
 	}
-	if service.UserService.GroupUserSelectBattery(r.Context(), req.BatteryType) == nil {
-		response.JsonOkExit(r)
+	user := service.UserService.Detail(r.Context(), u.Id)
+	// 创建代签签文件
+	res, err := sign.Service().CreateByTemplate(beansSign.CreateByTemplateReq{
+		TemplateId: g.Cfg().GetString("eSign.group.templateId"),
+		SimpleFormFields: beansSign.CreateByTemplateReqSimpleFormFields{
+			Name:     user.RealName,
+			IdCardNo: user.IdCardNo,
+		},
+		Name: g.Cfg().GetString("eSign.group.fileName"),
+	})
+	if err != nil {
+		response.JsonOkExit(r, response.RespCodeSystemError)
 	}
-	response.JsonErrExit(r, response.RespCodeSystemError)
+	// 发起签署
+	resFlow, err := sign.Service().CreateFlowOneStep(beansSign.CreateFlowOneStepReq{
+		Docs: []beansSign.CreateFlowOneStepReqDoc{
+			{
+				FileId:   res.Data.FileId,
+				FileName: g.Cfg().GetString("eSign.group.fileName"),
+			},
+		},
+		FlowInfo: beansSign.CreateFlowOneStepReqDocFlowInfo{
+			AutoInitiate:  true,
+			AutoArchive:   true,
+			BusinessScene: g.Cfg().GetString("eSign.businessScene"),
+			FlowConfigInfo: beansSign.CreateFlowOneStepReqDocFlowInfoFlowConfigInfo{
+				NoticeDeveloperUrl: g.Cfg().GetString("api.host") + "/esign/callback/sign",
+			},
+		},
+		Signers: []beansSign.CreateFlowOneStepReqDocSigner{
+			{
+				PlatformSign:  true,
+				SignerAccount: beansSign.CreateFlowOneStepReqDocSignerAccount{},
+				Signfields: []beansSign.CreateFlowOneStepReqDocSignerField{
+					{
+						AutoExecute: true,
+						SignType:    1,
+						FileId:      res.Data.FileId,
+						PosBean: beansSign.CreateFlowOneStepReqDocSignerFieldPosBean{
+							PosPage: "3",
+							PosX:    400,
+							PosY:    400,
+						},
+					},
+				},
+			},
+			{
+				PlatformSign: false,
+				SignerAccount: beansSign.CreateFlowOneStepReqDocSignerAccount{
+					SignerAccountId: user.EsignAccountId,
+				},
+				Signfields: []beansSign.CreateFlowOneStepReqDocSignerField{
+					{
+						FileId: res.Data.FileId,
+						PosBean: beansSign.CreateFlowOneStepReqDocSignerFieldPosBean{
+							PosPage: "3",
+							PosX:    300,
+							PosY:    300,
+						},
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		response.JsonOkExit(r, response.RespCodeSystemError)
+	}
+	// 获取签署地址
+	resUrl, err := sign.Service().FlowExecuteUrl(beansSign.FlowExecuteUrlReq{
+		FlowId:    resFlow.Data.FlowId,
+		AccountId: user.EsignAccountId,
+	})
+	if err != nil {
+		response.JsonOkExit(r, response.RespCodeSystemError)
+	}
+	if _, _err := service.SignService.Create(r.Context(), model.Sign{
+		UserId:          user.Id,
+		GroupId:         user.GroupId,
+		PackagesOrderId: 0,
+		BatteryType:     req.BatteryType,
+		State:           0,
+		FileId:          res.Data.FileId,
+		FlowId:          resFlow.Data.FlowId,
+	}); _err != nil {
+		response.JsonErrExit(r, response.RespCodeSystemError)
+	}
+	response.JsonOkExit(r, model.SignRep{
+		Url:      resUrl.Data.Url,
+		ShortUrl: resUrl.Data.ShortUrl,
+	})
 }

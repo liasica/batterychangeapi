@@ -43,9 +43,6 @@ type userColumns struct {
 	DeviceType               string // 1 安卓  2  iOS
 	DeviceToken              string // 用户推送消息唯一ID
 	EsignAccountId           string // 易签账户ID
-	EsignFlowId              string // 易签签约流程ID
-	EsignFileId              string // 易签签约文件ID
-	SignState                string // 签约状态 0 未签约 1 已签约
 	BizBatteryRenewalCnt     string // 积累换次数
 	BizBatteryRenewalSeconds string // 累计使用电池时间，单位秒
 	BizBatterySecondsStartAt string // 需要统计使用时间的开始时间，为空即不需要统计
@@ -81,9 +78,6 @@ func NewUserDao() *UserDao {
 			DeviceType:               "deviceType",
 			DeviceToken:              "deviceToken",
 			EsignAccountId:           "esignAccountId",
-			EsignFlowId:              "esignFlowId",
-			EsignFileId:              "esignFileId",
-			SignState:                "signState",
 			BizBatteryRenewalCnt:     "bizBatteryRenewalCnt",
 			BizBatteryRenewalSeconds: "bizBatteryRenewalSeconds",
 			BizBatterySecondsStartAt: "bizBatterySecondsStartAt",

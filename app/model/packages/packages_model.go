@@ -34,9 +34,11 @@ var (
         Name         string // 名称                    
         Days         string // 套餐时长天数            
         Amount       string // 套餐价格(包含保证金额)  
+        Price        string //                         
         Earnest      string // 保证金                  
         ProvinceId   string // 省级行政编码            
-        CityId       string // 市级行政编码
+        CityId       string // 市级行政编码            
+        Packagescol  string //
 	}{
 		Id:          "id",           
         DeletedAt:   "deletedAt",    
@@ -47,9 +49,11 @@ var (
         Name:        "name",         
         Days:        "days",         
         Amount:      "amount",       
+        Price:       "price",        
         Earnest:     "earnest",      
         ProvinceId:  "provinceId",   
-        CityId:      "cityId",
+        CityId:      "cityId",       
+        Packagescol: "packagescol",
 	}
 )
 

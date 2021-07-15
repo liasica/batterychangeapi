@@ -72,21 +72,6 @@ func (*userApi) Auth(r *ghttp.Request) {
 	}
 }
 
-// Sign
-// @summary 骑手-获取签约地址
-// @tags    骑手
-// @Accept  json
-// @Produce  json
-// @router  /rapi/sign [GET]
-// @success 200 {object} response.JsonResponse{data=model.UserSignRep}  "返回结果"
-func (*userApi) Sign(r *ghttp.Request) {
-	res, err := service.UserService.Sign(r.Context())
-	if err != nil {
-		response.JsonErrExit(r, response.RespCodeSystemError)
-	}
-	response.JsonOkExit(r, res)
-}
-
 // PushToken
 // @summary 骑手-上报推送token
 // @tags    骑手-消息

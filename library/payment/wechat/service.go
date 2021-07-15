@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gogf/gf/frame/g"
+	"github.com/shopspring/decimal"
 	"github.com/wechatpay-apiv3/wechatpay-go/core"
 	"github.com/wechatpay-apiv3/wechatpay-go/core/auth/verifiers"
 	"github.com/wechatpay-apiv3/wechatpay-go/core/downloader"
@@ -74,7 +75,7 @@ func (s *service) App(ctx context.Context, req model.Prepay) (resp *app.PrepayRe
 		Description: core.String(req.Description),
 		OutTradeNo:  core.String(req.No),
 		Amount: &app.Amount{
-			Total: core.Int64(int64(req.Amount * 100)), //todo 高精度计算
+			Total: core.Int64(decimal.NewFromFloat(req.Amount).Mul(decimal.NewFromInt(100)).IntPart()),
 		},
 		NotifyUrl: core.String(req.NotifyUrl),
 	})

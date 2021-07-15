@@ -52,7 +52,6 @@ func init() {
 			user.Middleware.Auth,
 		)
 		group.POST("/auth", user.UserApi.Auth)
-		group.GET("/sign", user.UserApi.Sign)
 		group.PUT("/device", user.UserApi.PushToken)
 		group.GET("/package", user.UserApi.Packages)
 		group.GET("/package_order/qr", user.UserApi.PackagesOrderQr)

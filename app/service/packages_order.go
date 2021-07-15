@@ -36,13 +36,13 @@ func (s *packagesOrderService) DetailByNo(ctx context.Context, no string) (rep m
 }
 
 // New 新购订单
-func (s *packagesOrderService) New(ctx context.Context, userId uint64, payType uint, packages model.Packages) (order model.PackagesOrder, err error) {
+func (s *packagesOrderService) New(ctx context.Context, userId uint64, packages model.Packages) (order model.PackagesOrder, err error) {
 	no := s.GenerateOrderNo()
 	id, insertErr := dao.PackagesOrder.Ctx(ctx).InsertAndGetId(g.Map{
 		dao.PackagesOrder.Columns.PackageId: packages.Id,
 		dao.PackagesOrder.Columns.Amount:    packages.Amount,
 		dao.PackagesOrder.Columns.Earnest:   packages.Earnest,
-		dao.PackagesOrder.Columns.PayType:   payType,
+		dao.PackagesOrder.Columns.PayType:   0,
 		dao.PackagesOrder.Columns.No:        no,
 		dao.PackagesOrder.Columns.UserId:    userId,
 		dao.PackagesOrder.Columns.Type:      model.PackageTypeNew,

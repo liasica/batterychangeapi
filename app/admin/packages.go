@@ -5,6 +5,7 @@ import (
 	"battery/app/service"
 	"battery/library/response"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/shopspring/decimal"
 )
 
 var PackagesApi = packagesApi{}
@@ -16,6 +17,7 @@ type packageListItem struct {
 	Id          uint    `json:"id"`
 	Name        string  `json:"name"`
 	Amount      float64 `json:"amount"`
+	Price       float64 `json:"price"`
 	BatteryType uint    `json:"batteryType"`
 	Days        uint    `json:"days"`
 	Earnest     float64 `json:"earnest"`
@@ -46,6 +48,7 @@ func (*packagesApi) List(r *ghttp.Request) {
 				Id:          packages.Id,
 				Name:        packages.Name,
 				Amount:      packages.Amount,
+				Price:       packages.Price,
 				Earnest:     packages.Earnest,
 				Days:        packages.Days,
 				BatteryType: packages.BatteryType,
@@ -71,11 +74,13 @@ func (*packagesApi) Create(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
+	amount, _ := decimal.NewFromFloat(req.Price).Add(decimal.NewFromFloat(req.Earnest)).Float64()
 	if _, err := service.PackagesService.Create(r.Context(), model.Packages{
 		Name:        req.Name,
 		Type:        1,
 		BatteryType: req.BatteryType,
-		Amount:      req.Price + req.Earnest, //TODO 高精度计算
+		Amount:      amount,
+		Price:       req.Price,
 		Earnest:     req.Earnest,
 		ProvinceId:  req.ProvinceId,
 		Days:        req.Days,

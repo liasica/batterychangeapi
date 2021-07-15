@@ -202,7 +202,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UserBizNewRep"
+                                            "$ref": "#/definitions/model.SignRep"
                                         }
                                     }
                                 }
@@ -239,7 +239,19 @@
                     "200": {
                         "description": "返回结果",
                         "schema": {
-                            "$ref": "#/definitions/response.JsonResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.SignRep"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -1000,40 +1012,6 @@
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/model.ShopListUserRep"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/rapi/sign": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "骑手"
-                ],
-                "summary": "骑手-获取签约地址",
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.JsonResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/model.UserSignRep"
                                         }
                                     }
                                 }
@@ -2543,6 +2521,17 @@
                 }
             }
         },
+        "model.SignRep": {
+            "type": "object",
+            "properties": {
+                "shortUrl": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
         "model.SmsSendReq": {
             "type": "object",
             "required": [
@@ -2622,31 +2611,14 @@
                 }
             }
         },
-        "model.UserBizNewRep": {
-            "type": "object",
-            "required": [
-                "PayOrderInfo"
-            ],
-            "properties": {
-                "PayOrderInfo": {
-                    "description": "发起支付使用数据",
-                    "type": "string"
-                }
-            }
-        },
         "model.UserBizNewReq": {
             "type": "object",
             "required": [
-                "packagesId",
-                "paymentType"
+                "packagesId"
             ],
             "properties": {
                 "packagesId": {
                     "description": "套餐ID",
-                    "type": "integer"
-                },
-                "paymentType": {
-                    "description": "支付类型 1 支付宝 2 微信",
                     "type": "integer"
                 }
             }
@@ -2876,7 +2848,6 @@
             "required": [
                 "accessToken",
                 "authState",
-                "signState",
                 "type"
             ],
             "properties": {
@@ -2886,10 +2857,6 @@
                 },
                 "authState": {
                     "description": "实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过",
-                    "type": "integer"
-                },
-                "signState": {
-                    "description": "签约状态 0 未签约 1 已签约",
                     "type": "integer"
                 },
                 "type": {
@@ -2919,7 +2886,6 @@
             "type": "object",
             "required": [
                 "authState",
-                "signState",
                 "type"
             ],
             "properties": {
@@ -2956,10 +2922,6 @@
                 "qr": {
                     "description": "用户二维码数据，需要本地生成图片",
                     "type": "string"
-                },
-                "signState": {
-                    "description": "签约状态 0 未签约 1 已签约",
-                    "type": "integer"
                 },
                 "type": {
                     "description": "用户角色 1 个签骑手 2 团签骑手 3 团签BOSS",
@@ -3051,17 +3013,6 @@
                 },
                 "sms": {
                     "description": "短信验证码",
-                    "type": "string"
-                }
-            }
-        },
-        "model.UserSignRep": {
-            "type": "object",
-            "properties": {
-                "shortUrl": {
-                    "type": "string"
-                },
-                "url": {
                     "type": "string"
                 }
             }

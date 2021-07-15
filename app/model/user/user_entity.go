@@ -34,9 +34,6 @@ type Entity struct {
     DeviceType               int         `orm:"deviceType"               json:"device_type"`                  // 1 安卓  2  iOS                                               
     DeviceToken              string      `orm:"deviceToken"              json:"device_token"`                 // 用户推送消息唯一ID                                           
     EsignAccountId           string      `orm:"esignAccountId"           json:"esign_account_id"`             // 易签账户ID                                                   
-    EsignFlowId              string      `orm:"esignFlowId"              json:"esign_flow_id"`                // 易签签约流程ID                                               
-    EsignFileId              string      `orm:"esignFileId"              json:"esign_file_id"`                // 易签签约文件ID                                               
-    SignState                uint        `orm:"signState"                json:"sign_state"`                   // 签约状态 0 未签约 1 已签约                                   
     BizBatteryRenewalCnt     uint        `orm:"bizBatteryRenewalCnt"     json:"biz_battery_renewal_cnt"`      // 积累换次数                                                   
     BizBatteryRenewalSeconds uint        `orm:"bizBatteryRenewalSeconds" json:"biz_battery_renewal_seconds"`  // 累计使用电池时间，单位秒                                     
     BizBatterySecondsStartAt *gtime.Time `orm:"bizBatterySecondsStartAt" json:"biz_battery_seconds_start_at"` // 需要统计使用时间的开始时间，为空即不需要统计                 

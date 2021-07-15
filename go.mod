@@ -10,6 +10,7 @@ require (
 	github.com/gogf/gf v1.16.4
 	github.com/gogf/swagger v1.3.0
 	github.com/robfig/cron/v3 v3.0.1
+	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/smartwalle/alipay/v3 v3.1.6
 	github.com/wechatpay-apiv3/wechatpay-go v0.2.2

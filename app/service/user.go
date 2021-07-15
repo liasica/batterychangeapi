@@ -5,8 +5,6 @@ import (
 	"battery/app/model"
 	"battery/library/esign/realname"
 	"battery/library/esign/realname/beans"
-	"battery/library/esign/sign"
-	beansSign "battery/library/esign/sign/beans"
 	"battery/library/snowflake"
 	"context"
 	"errors"
@@ -46,7 +44,7 @@ func (s *userService) Create(ctx context.Context, mobile string, userType, group
 		dao.User.Columns.Type:        userType,
 		dao.User.Columns.GroupId:     groupId,
 		dao.User.Columns.Mobile:      mobile,
-		dao.User.Columns.Qr:          "sgjdriver://"+snowflake.Service().Generate().String(),
+		dao.User.Columns.Qr:          "sgjdriver://" + snowflake.Service().Generate().String(),
 		dao.User.Columns.AccessToken: dao.User.GenerateAccessToken(uint64(rand.New(rand.NewSource(time.Now().Unix())).Intn(1000000)), salt),
 	})
 	return uint64(id), err
@@ -173,7 +171,6 @@ GenerateAccessToken:
 		rep.AccessToken = token
 		rep.Type = user.Type
 		rep.AuthState = user.AuthState
-		rep.SignState = user.SignState
 	}
 	return
 }
@@ -231,14 +228,6 @@ func (s *userService) RealNameAuthVerifyCallBack(ctx context.Context, eSignAccou
 	return err
 }
 
-// SignCallBack 签约成功回调
-func (s *userService) SignCallBack(ctx context.Context, accountId, flowId string) error {
-	_, err := dao.User.Ctx(ctx).Where(dao.User.Columns.EsignAccountId, accountId).Where(dao.User.Columns.EsignFlowId, flowId).Update(g.Map{
-		dao.User.Columns.SignState: model.SignStateDone,
-	})
-	return err
-}
-
 // Profile 用户信息
 func (s *userService) Profile(ctx context.Context) (rep model.UserProfileRep) {
 	u := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
@@ -249,7 +238,6 @@ func (s *userService) Profile(ctx context.Context) (rep model.UserProfileRep) {
 	rep.Type = user.Type
 	rep.Qr = u.Qr
 	rep.AuthState = user.AuthState
-	rep.SignState = user.SignState
 	if user.Type == model.UserTypePersonal {
 		packages, _ := PackagesService.Detail(ctx, user.PackagesId)
 		rep.User.PackagesId = user.PackagesId
@@ -266,96 +254,6 @@ func (s *userService) Profile(ctx context.Context) (rep model.UserProfileRep) {
 		rep.GroupBoos.Days = 0    //TODO
 	}
 	return
-}
-
-func (s *userService) Sign(ctx context.Context) (rep model.UserSignRep, err error) {
-	u := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
-	var user model.User
-	_ = dao.User.WherePri(u.Id).Scan(&user)
-
-	if user.AuthState != model.AuthStateVerifySuccess {
-		err = errors.New("用户未完成实名认证，请先完成实名认证")
-		return rep, err
-	}
-
-	// 创建代签签文件
-	res, err := sign.Service().CreateByTemplate(beansSign.CreateByTemplateReq{
-		TemplateId: g.Cfg().GetString("eSign.templateId"),
-		SimpleFormFields: beansSign.CreateByTemplateReqSimpleFormFields{
-			Name:     user.RealName,
-			IdCardNo: user.IdCardNo,
-		},
-		Name: g.Cfg().GetString("eSign.fileName"),
-	})
-	if err != nil {
-		return rep, err
-	}
-	// 发起签署
-	resFlow, err := sign.Service().CreateFlowOneStep(beansSign.CreateFlowOneStepReq{
-		Docs: []beansSign.CreateFlowOneStepReqDoc{
-			{
-				FileId:   res.Data.FileId,
-				FileName: g.Cfg().GetString("eSign.fileName"),
-			},
-		},
-		FlowInfo: beansSign.CreateFlowOneStepReqDocFlowInfo{
-			AutoInitiate:  true,
-			AutoArchive:   true,
-			BusinessScene: g.Cfg().GetString("eSign.businessScene"),
-			FlowConfigInfo: beansSign.CreateFlowOneStepReqDocFlowInfoFlowConfigInfo{
-				NoticeDeveloperUrl: g.Cfg().GetString("api.host") + "/esign/callback/sign",
-			},
-		},
-		Signers: []beansSign.CreateFlowOneStepReqDocSigner{
-			{
-				PlatformSign:  true,
-				SignerAccount: beansSign.CreateFlowOneStepReqDocSignerAccount{},
-				Signfields: []beansSign.CreateFlowOneStepReqDocSignerField{
-					{
-						AutoExecute: true,
-						SignType:    1,
-						FileId:      res.Data.FileId,
-						PosBean: beansSign.CreateFlowOneStepReqDocSignerFieldPosBean{
-							PosPage: "3",
-							PosX:    400,
-							PosY:    400,
-						},
-					},
-				},
-			},
-			{
-				PlatformSign: false,
-				SignerAccount: beansSign.CreateFlowOneStepReqDocSignerAccount{
-					SignerAccountId: user.EsignAccountId,
-				},
-				Signfields: []beansSign.CreateFlowOneStepReqDocSignerField{
-					{
-						FileId: res.Data.FileId,
-						PosBean: beansSign.CreateFlowOneStepReqDocSignerFieldPosBean{
-							PosPage: "3",
-							PosX:    300,
-							PosY:    300,
-						},
-					},
-				},
-			},
-		},
-	})
-	if err != nil {
-		return rep, err
-	}
-	// 获取签署地址
-	resUrl, err := sign.Service().FlowExecuteUrl(beansSign.FlowExecuteUrlReq{
-		FlowId:    resFlow.Data.FlowId,
-		AccountId: user.EsignAccountId,
-	})
-	if err == nil {
-		rep.Url = resUrl.Data.Url
-		rep.ShortUrl = resUrl.Data.ShortUrl
-	} else {
-		_, err = dao.User.Ctx(ctx).WherePri(user.Id).Update(g.Map{dao.User.Columns.EsignFlowId: resFlow.Data.FlowId})
-	}
-	return rep, err
 }
 
 // PushToken 用户修改推送token
