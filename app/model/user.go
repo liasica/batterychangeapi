@@ -52,11 +52,12 @@ type UserLoginRep struct {
 
 // UserRealNameAuthReq 实名认证请求数据
 type UserRealNameAuthReq struct {
-	RealName   string `validate:"required" v:"required|length:2,10"`              //真实姓名
-	IdCardNo   string `validate:"required" v:"required|length:15,18|resident-id"` //身份证号码
-	IdCardImg1 string //身份证正面照片
-	IdCardImg2 string //身份证反面照片
-	IdCardImg3 string //身份证手持照片
+	RealName   string `validate:"required" v:"required|length:2,10"`              // 真实姓名
+	IdCardNo   string `validate:"required" v:"required|length:15,18|resident-id"` // 身份证号码
+	IdType 	   string // 证件类型 CRED_PSN_CH_IDCARD 中国大陆居民身份证 CRED_PSN_CH_HONGKONG 香港来往大陆通行证 CRED_PSN_CH_MACAO 澳门来往大陆通行证 CRED_PSN_CH_TWCARD 台湾来往大陆通行证 CRED_PSN_PASSPORT 护照
+	IdCardImg1 string // 身份证正面照片
+	IdCardImg2 string // 身份证反面照片
+	IdCardImg3 string // 身份证手持照片
 }
 
 // UserRealNameAuthRep 实名认证响应数据

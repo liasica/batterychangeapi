@@ -8,6 +8,7 @@ import (
 	"battery/library/snowflake"
 	"context"
 	"errors"
+	"fmt"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
 	"math/rand"
@@ -180,12 +181,16 @@ func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserReal
 	user := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
 	accountId := ""
 	if user.EsignAccountId == "" {
+		idType := "CRED_PSN_CH_IDCARD"
+		if req.IdType != "" {
+			idType = req.IdType
+		}
 		res, err := realname.Service().CreatePersonByThirdPartyUserId(beans.CreatePersonByThirdPartyUserIdInfo{
-			ThirdPartyUserId: req.IdCardNo,
+			ThirdPartyUserId: fmt.Sprintf("%s-%d", req.IdCardNo, time.Now().UnixNano()),
 			Mobile:           user.Mobile,
 			Name:             req.RealName,
 			IdNumber:         req.IdCardNo,
-			IdType:           "CRED_PSN_CH_IDCARD",
+			IdType:           idType,
 		})
 		if err != nil || res.Code != 0 {
 			return rep, err
