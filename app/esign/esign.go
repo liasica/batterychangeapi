@@ -67,7 +67,7 @@ func (*callbackApi) Sign(r *ghttp.Request) {
 		r.Exit()
 	}
 
-	fmt.Println(string(r.GetBody()))
+	fmt.Println("Sign 签约完成回调:", string(r.GetBody()))
 
 	if req.SignResult == 2 {
 		sign, err := service.SignService.GetDetailBayFlowId(r.Context(), req.FlowId)
