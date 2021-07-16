@@ -67,7 +67,7 @@ func (*callbackApi) Sign(r *ghttp.Request) {
 		r.Exit()
 	}
 
-	fmt.Println(req)
+	fmt.Println(req.Action)
 
 	if req.Action == "SIGN_FLOW_UPDATE" && req.SignResult == 2 {
 		sign, err := service.SignService.GetDetailBayFlowId(r.Context(), req.FlowId)
