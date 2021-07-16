@@ -8,13 +8,23 @@ import (
 	"battery/app/service"
 	"battery/app/shop"
 	"battery/app/user"
+	"fmt"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"net/http"
 )
 
 func init() {
 	s := g.Server()
 	s.BindMiddlewareDefault(service.Middleware.ErrorHandle)
+
+	s.BindStatusHandler(http.StatusNotFound, func(r *ghttp.Request) {
+		fmt.Println("404 handle start {{{{{{{{{{{{")
+		fmt.Println(r.Method)
+		fmt.Println(r.URL)
+		fmt.Println(string(r.GetBody()))
+		fmt.Println("}}}}}}}}}}}}}} 404 handle end")
+	})
 
 	//认证签约回调
 	s.Group("/esign/callback", func(group *ghttp.RouterGroup) {
