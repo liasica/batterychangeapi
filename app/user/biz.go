@@ -10,6 +10,7 @@ import (
 	"battery/library/payment/wechat"
 	"battery/library/response"
 	"context"
+	"fmt"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -465,8 +466,10 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 		},
 		Name: g.Cfg().GetString("eSign.group.fileName"),
 	})
-	if err != nil {
-		response.JsonOkExit(r, response.RespCodeSystemError)
+
+	if err != nil || res.Code != 0 {
+		fmt.Println(470, err.Error())
+		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	// 发起签署
 	resFlow, err := sign.Service().CreateFlowOneStep(beansSign.CreateFlowOneStepReq{
@@ -479,7 +482,7 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 		FlowInfo: beansSign.CreateFlowOneStepReqDocFlowInfo{
 			AutoInitiate:  true,
 			AutoArchive:   true,
-			BusinessScene: g.Cfg().GetString("eSign.businessScene"),
+			BusinessScene: g.Cfg().GetString("eSign.group.businessScene"),
 			FlowConfigInfo: beansSign.CreateFlowOneStepReqDocFlowInfoFlowConfigInfo{
 				NoticeDeveloperUrl: g.Cfg().GetString("api.host") + "/esign/callback/sign",
 			},
@@ -519,16 +522,18 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 			},
 		},
 	})
-	if err != nil {
-		response.JsonOkExit(r, response.RespCodeSystemError)
+	if err != nil || res.Code != 0 {
+		fmt.Println(525, err)
+		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	// 获取签署地址
 	resUrl, err := sign.Service().FlowExecuteUrl(beansSign.FlowExecuteUrlReq{
 		FlowId:    resFlow.Data.FlowId,
 		AccountId: user.EsignAccountId,
 	})
-	if err != nil {
-		response.JsonOkExit(r, response.RespCodeSystemError)
+	if err != nil || res.Code != 0 {
+		fmt.Println(534, err.Error())
+		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	if _, _err := service.SignService.Create(r.Context(), model.Sign{
 		UserId:          user.Id,
@@ -539,6 +544,7 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 		FileId:          res.Data.FileId,
 		FlowId:          resFlow.Data.FlowId,
 	}); _err != nil {
+		fmt.Println(546, _err.Error())
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	response.JsonOkExit(r, model.SignRep{

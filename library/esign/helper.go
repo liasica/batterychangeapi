@@ -183,6 +183,9 @@ func SendCommHttp(apiUrl string, data interface{}, method string) (initResult []
 	reqSignature := DoSignatureBase64(message, Config().ProjectSecret())
 	// 初始化接口返回值
 	initResult, httpStatus = sendHttp(httpUrl, dataJsonStr, method, buildCommHeader(md5Str, reqSignature))
+
+	fmt.Println(fmt.Sprintf("%s 响应 %s \n", apiUrl, string(initResult)))
+
 	return initResult, httpStatus
 }
 
