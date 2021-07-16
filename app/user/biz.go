@@ -137,7 +137,7 @@ func (*bizApi) BatteryRenewal(r *ghttp.Request) {
 }
 
 // New
-// @summary 骑手-签约之后获取支付信息
+// @summary 骑手-个签骑手签约之后获取支付信息
 // @Accept  json
 // @Produce  json
 // @tags    骑手-业务办理
