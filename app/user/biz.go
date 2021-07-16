@@ -225,7 +225,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 		Name: g.Cfg().GetString("eSign.personal.fileName"),
 	})
 	if err != nil || res.Code != 0 {
-		response.JsonOkExit(r, response.RespCodeSystemError)
+		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	// 发起签署
 	resFlow, err := sign.Service().CreateFlowOneStep(beansSign.CreateFlowOneStepReq{
@@ -280,7 +280,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 		},
 	})
 	if err != nil || resFlow.Code != 0 {
-		response.JsonOkExit(r, response.RespCodeSystemError)
+		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	// 获取签署地址
 	resUrl, err := sign.Service().FlowExecuteUrl(beansSign.FlowExecuteUrlReq{
@@ -288,7 +288,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 		AccountId: user.EsignAccountId,
 	})
 	if err != nil || resUrl.Code != 0 {
-		response.JsonOkExit(r, response.RespCodeSystemError)
+		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 
 	if dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
@@ -309,7 +309,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 		}
 		return nil
 	}) != nil {
-		response.JsonOkExit(r, response.RespCodeSystemError)
+		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	response.JsonOkExit(r, model.SignRep{
 		Url:      resUrl.Data.Url,
