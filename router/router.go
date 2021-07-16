@@ -27,12 +27,12 @@ func init() {
 	})
 
 	//认证签约回调
-	s.Group("/esign/callback", func(group *ghttp.RouterGroup) {
+	s.Group("/esign", func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			esign.Middleware.Ip,
 		)
-		group.POST("/real_name", esign.CallbackApi.RealName)
-		group.POST("/sign", esign.CallbackApi.Sign)
+		group.POST("/callback/real_name", esign.CallbackApi.RealName)
+		group.POST("/callback/sign", esign.CallbackApi.Sign)
 	})
 
 	//支付回调
