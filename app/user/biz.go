@@ -291,7 +291,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 
-	if dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+	if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
 		order, err := service.PackagesOrderService.New(ctx, u.Id, packages)
 		if err != nil {
 			return err
@@ -305,11 +305,10 @@ func (*bizApi) Sign(r *ghttp.Request) {
 			FileId:          res.Data.FileId,
 			FlowId:          resFlow.Data.FlowId,
 		}); _err != nil {
-			fmt.Println(_err)
 			return _err
 		}
 		return nil
-	}) != nil {
+	}); err != nil {
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	response.JsonOkExit(r, model.SignRep{

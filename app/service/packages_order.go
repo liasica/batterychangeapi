@@ -48,7 +48,7 @@ func (s *packagesOrderService) New(ctx context.Context, userId uint64, packages 
 		dao.PackagesOrder.Columns.Type:      model.PackageTypeNew,
 	})
 	if insertErr == nil {
-		err = dao.PackagesOrder.WherePri(id).Scan(&order)
+		err = dao.PackagesOrder.Ctx(ctx).WherePri(id).Scan(&order)
 	}
 	return order, err
 }
