@@ -57,7 +57,7 @@ func (*userApi) Login(r *ghttp.Request) {
 // @tags    骑手
 // @Accept  json
 // @Produce  json
-// @param   entity  body model.UserRealNameAuthReq true "登录数据"
+// @param   entity  body model.UserRealNameAuthReq true "认证数据"
 // @router  /rapi/auth [POST]
 // @success 200 {object} response.JsonResponse{data=model.UserRealNameAuthRep}  "返回结果"
 func (*userApi) Auth(r *ghttp.Request) {

@@ -91,7 +91,7 @@
                 "summary": "骑手-实名认证提交",
                 "parameters": [
                     {
-                        "description": "登录数据",
+                        "description": "认证数据",
                         "name": "entity",
                         "in": "body",
                         "required": true,
@@ -3061,6 +3061,10 @@
                 },
                 "idCardNo": {
                     "description": "身份证号码",
+                    "type": "string"
+                },
+                "idType": {
+                    "description": "证件类型 CRED_PSN_CH_IDCARD 中国大陆居民身份证 CRED_PSN_CH_HONGKONG 香港来往大陆通行证 CRED_PSN_CH_MACAO 澳门来往大陆通行证 CRED_PSN_CH_TWCARD 台湾来往大陆通行证 CRED_PSN_PASSPORT 护照",
                     "type": "string"
                 },
                 "realName": {
