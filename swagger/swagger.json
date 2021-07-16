@@ -178,7 +178,7 @@
                 "tags": [
                     "骑手-业务办理"
                 ],
-                "summary": "骑手-个签用户新购套餐",
+                "summary": "骑手-签约之后获取支付信息",
                 "parameters": [
                     {
                         "description": "请求数据",
@@ -202,7 +202,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.SignRep"
+                                            "$ref": "#/definitions/model.UserBizNewRep"
                                         }
                                     }
                                 }
@@ -223,7 +223,7 @@
                 "tags": [
                     "骑手-业务办理"
                 ],
-                "summary": "骑手-团签用户新领电池",
+                "summary": "骑手-团签用户新签约",
                 "parameters": [
                     {
                         "description": "请求数据",
@@ -425,6 +425,51 @@
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/model.UserBizRenewalRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/biz_sign": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-业务办理"
+                ],
+                "summary": "骑手-个签用户新签约套餐",
+                "parameters": [
+                    {
+                        "description": "请求数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserBizSignReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.SignRep"
                                         }
                                     }
                                 }
@@ -2611,14 +2656,26 @@
                 }
             }
         },
+        "model.UserBizNewRep": {
+            "type": "object",
+            "required": [
+                "PayOrderInfo"
+            ],
+            "properties": {
+                "PayOrderInfo": {
+                    "description": "发起支付使用数据",
+                    "type": "string"
+                }
+            }
+        },
         "model.UserBizNewReq": {
             "type": "object",
             "required": [
-                "packagesId"
+                "payType"
             ],
             "properties": {
-                "packagesId": {
-                    "description": "套餐ID",
+                "payType": {
+                    "description": "支付方式 1 支付宝 2 微信支付",
                     "type": "integer"
                 }
             }
@@ -2765,6 +2822,18 @@
                 }
             }
         },
+        "model.UserBizSignReq": {
+            "type": "object",
+            "required": [
+                "packagesId"
+            ],
+            "properties": {
+                "packagesId": {
+                    "description": "套餐ID",
+                    "type": "integer"
+                }
+            }
+        },
         "model.UserCurrentPackageOrder": {
             "type": "object",
             "required": [
@@ -2902,7 +2971,7 @@
                     "type": "object",
                     "properties": {
                         "batteryState": {
-                            "description": "团签骑手换电状态：0 未开通，2 租借中，3 寄存中，4 已退租",
+                            "description": "团签骑手换电状态：0 未开通，1 新签未领, 2 租借中，3 寄存中，4 已退租",
                             "type": "integer"
                         },
                         "batteryType": {

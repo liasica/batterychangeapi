@@ -20,10 +20,6 @@ const (
 	BatteryStateExit    = 4 //已退租
 	BatteryStateOverdue = 5 //已逾期
 
-	//签约状态
-	SignStateDefault = 0 //未签约
-	SignStateDone    = 1 //已签约
-
 	UserTypePersonal   = 1 //个签用户
 	UserTypeGroupRider = 2 //团签骑手
 	UserTypeGroupBoss  = 3 //团签BOSS
@@ -119,7 +115,7 @@ type UserProfileRep struct {
 	} `json:"user,omitempty"` //个签用户套餐信息， 其它类型用户忽略
 
 	GroupUser struct {
-		BatteryState uint `json:"batteryState"` //团签骑手换电状态：0 未开通，2 租借中，3 寄存中，4 已退租
+		BatteryState uint `json:"batteryState"` //团签骑手换电状态：0 未开通，1 新签未领, 2 租借中，3 寄存中，4 已退租
 		BatteryType  uint `json:"batteryType"`  //电池型号 60 / 72  未开通为 0
 	} `json:"groupUser,omitempty"` // 团签用户骑手信息， 其它类型用户忽略
 

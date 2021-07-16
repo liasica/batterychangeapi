@@ -47,9 +47,14 @@ type UserBizRecordStatRep struct {
 	Days  uint `validate:"required" json:"days"`  //累计使用天数
 }
 
-// UserBizNewReq 个签骑手新签套餐请求数据
-type UserBizNewReq struct {
+// UserBizSignReq 个签骑手新签套餐请求数据
+type UserBizSignReq struct {
 	PackagesId uint `validate:"required" json:"packagesId" v:"required|integer"` //套餐ID
+}
+
+// UserBizNewReq 个签骑手签约之后获取支付信息
+type UserBizNewReq struct {
+	PayType uint `validate:"required" json:"payType" v:"required|integer|in:1,2"` //支付方式 1 支付宝 2 微信支付
 }
 
 // UserBizNewRep 个签骑手新签套餐响应数据

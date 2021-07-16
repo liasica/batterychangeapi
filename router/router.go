@@ -60,6 +60,7 @@ func init() {
 		group.GET("/districts/current_city", user.DistrictsApi.CurrentCity)
 		group.GET("/open_city", user.DistrictsApi.OpenCityList)
 
+		group.POST("/biz_sign", user.BizApi.Sign)
 		group.POST("/biz_new", user.BizApi.New)
 		group.POST("/biz_renewal", user.BizApi.Renewal)
 		group.POST("/biz_new_group", user.BizApi.GroupNew)

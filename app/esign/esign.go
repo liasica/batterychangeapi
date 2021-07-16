@@ -63,12 +63,19 @@ func (*callbackApi) Sign(r *ghttp.Request) {
 		r.Exit()
 	}
 	if req.Action == "SIGN_FLOW_UPDATE" && req.SignResult == 2 {
-		//TODO
-		//err := service.UserService.SignCallBack(r.Context(), req.AccountId, req.FlowId)
-		//if err != nil {
-		//	r.Response.Status = http.StatusInternalServerError
-		//	r.Exit()
-		//}
+		sign, err := service.SignService.GetDetailBayFlowId(r.Context(), req.FlowId)
+
+		if err != nil {
+			r.Response.Status = http.StatusInternalServerError
+			r.Exit()
+		}
+
+		if sign.State != model.SignStateDone {
+			if service.SignService.Done(r.Context(), req.FlowId) != nil {
+				r.Response.Status = http.StatusInternalServerError
+				r.Exit()
+			}
+		}
 	}
 	response.JsonOkExit(r)
 }

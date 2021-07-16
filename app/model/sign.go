@@ -11,7 +11,9 @@ import (
 // Sign is the golang structure for table sign.
 type Sign internal.Sign
 
-// Fill with you ideas below.
+const (
+	SignStateDone = 1
+)
 
 // UserSignRep 获取签约URL
 type SignRep struct {

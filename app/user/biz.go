@@ -135,16 +135,72 @@ func (*bizApi) BatteryRenewal(r *ghttp.Request) {
 	})
 }
 
-// New 新签
-// @summary 骑手-个签用户新购套餐
+// New
+// @summary 骑手-签约之后获取支付信息
 // @Accept  json
 // @Produce  json
 // @tags    骑手-业务办理
 // @param   entity  body model.UserBizNewReq true "请求数据"
 // @router  /rapi/biz_new [POST]
-// @success 200 {object} response.JsonResponse{data=model.SignRep}  "返回结果"
+// @success 200 {object} response.JsonResponse{data=model.UserBizNewRep}"返回结果"
 func (*bizApi) New(r *ghttp.Request) {
 	var req model.UserBizNewReq
+	if err := r.Parse(&req); err != nil {
+		response.Json(r, response.RespCodeArgs, err.Error())
+	}
+	user := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
+	if user.BatteryState != model.BatteryStateDefault && user.BatteryState != model.BatteryStateExit {
+		response.Json(r, response.RespCodeArgs, "没有待支付订单")
+	}
+	if user.GroupId > 0 {
+		response.Json(r, response.RespCodeArgs, "团签用户无此操作")
+	}
+	sign, err := service.SignService.UserLatestDetail(r.Context(), user.Id)
+	if err != nil || sign.State != model.SignStateDone {
+		response.Json(r, response.RespCodeArgs, "没有完成签约的合同")
+	}
+	order, _err := service.PackagesOrderService.Detail(r.Context(), sign.PackagesOrderId)
+	if _err == nil {
+		packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
+		if req.PayType == model.PayTypeWechat {
+			if res, err := wechat.Service().App(r.Context(), model.Prepay{
+				Description: packages.Name,
+				No:          order.No,
+				Amount:      order.Amount,
+				NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_new/wechat",
+			}); err == nil {
+				response.JsonOkExit(r, model.UserBizNewRep{
+					PayOrderInfo: *res.PrepayId,
+				})
+			}
+		}
+		if req.PayType == model.PayTypeAliPay {
+			if res, err := alipay.Service().App(r.Context(), model.Prepay{
+				Description: packages.Name,
+				No:          order.No,
+				Amount:      order.Amount,
+				NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_new/alipay",
+			}); err == nil {
+				response.JsonOkExit(r, model.UserBizNewRep{
+					PayOrderInfo: res,
+				})
+			}
+		}
+	}
+
+	response.JsonErrExit(r, response.RespCodeSystemError)
+}
+
+// Sign 新签
+// @summary 骑手-个签用户新签约套餐
+// @Accept  json
+// @Produce  json
+// @tags    骑手-业务办理
+// @param   entity  body model.UserBizSignReq true "请求数据"
+// @router  /rapi/biz_sign [POST]
+// @success 200 {object} response.JsonResponse{data=model.SignRep}  "返回结果"
+func (*bizApi) Sign(r *ghttp.Request) {
+	var req model.UserBizSignReq
 	if err := r.Parse(&req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
@@ -380,7 +436,7 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 }
 
 // GroupNew
-// @summary 骑手-团签用户新领电池
+// @summary 骑手-团签用户新签约
 // @Accept  json
 // @Produce  json
 // @tags    骑手-业务办理
