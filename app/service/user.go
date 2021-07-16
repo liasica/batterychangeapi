@@ -442,15 +442,14 @@ func (s *userService) GetUserByAccessToken(accessToken string) (user model.User,
 	return
 }
 
-// GroupUserSelectBattery 团签用户选择电池型号
-func (s *userService) GroupUserSelectBattery(ctx context.Context, batteryType uint) error {
-	user := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
-	res, err := dao.User.WherePri(user.Id).
-		WhereGT(dao.User.Columns.GroupId, 0).
+// GroupUserSignDone 团签用户选择电池型号
+func (s *userService) GroupUserSignDone(ctx context.Context, sign model.Sign) error {
+	res, err := dao.User.WherePri(sign.UserId).
+		Where(dao.User.Columns.GroupId, sign.GroupId).
 		Where(dao.User.Columns.BatteryState, model.BatteryStateDefault).
 		Update(g.Map{
 			dao.User.Columns.BatteryState: model.BatteryStateNew,
-			dao.User.Columns.BatteryType:  batteryType,
+			dao.User.Columns.BatteryType:  sign.BatteryType,
 		})
 	if err != nil {
 		return err

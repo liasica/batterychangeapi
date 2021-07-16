@@ -1,10 +1,13 @@
 package esign
 
 import (
+	"battery/app/dao"
 	"battery/app/model"
 	"battery/app/service"
 	"battery/library/response"
+	"context"
 	"fmt"
+	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/net/ghttp"
 	"net/http"
 )
@@ -75,10 +78,23 @@ func (*callbackApi) Sign(r *ghttp.Request) {
 		}
 
 		if sign.State != model.SignStateDone {
-			if service.SignService.Done(r.Context(), req.FlowId) != nil {
+			if dao.Sign.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+				if err := service.SignService.Done(ctx, req.FlowId); err != nil {
+					return err
+				}
+				if sign.GroupId > 0 {
+					if err := service.UserService.GroupUserSignDone(ctx, sign); err != nil {
+						return err
+					}
+				} else {
+					//TODO 个签订单
+				}
+				return nil
+			}) != nil {
 				r.Response.Status = http.StatusInternalServerError
 				r.Exit()
 			}
+
 		}
 	}
 	response.JsonOkExit(r)
