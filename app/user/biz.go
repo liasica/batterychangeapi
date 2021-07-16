@@ -305,6 +305,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 			FileId:          res.Data.FileId,
 			FlowId:          resFlow.Data.FlowId,
 		}); _err != nil {
+			fmt.Println(_err)
 			return _err
 		}
 		return nil
