@@ -6,6 +6,7 @@ import (
 	"battery/app/service"
 	"battery/library/response"
 	"context"
+	"fmt"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/net/ghttp"
 	"net/http"
@@ -65,6 +66,8 @@ func (*callbackApi) Sign(r *ghttp.Request) {
 		r.Response.Status = http.StatusBadRequest
 		r.Exit()
 	}
+
+	fmt.Println(string(r.GetBody()))
 
 	if req.SignResult == 2 {
 		sign, err := service.SignService.GetDetailBayFlowId(r.Context(), req.FlowId)
