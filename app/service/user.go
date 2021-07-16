@@ -179,8 +179,8 @@ GenerateAccessToken:
 // RealNameAuthSubmit 骑手实名认证提交
 func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserRealNameAuthReq) (rep model.UserRealNameAuthRep, err error) {
 	user := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
-	accountId := ""
-	if user.EsignAccountId == "" {
+	accountId := user.EsignAccountId
+	if accountId == "" {
 		idType := "CRED_PSN_CH_IDCARD"
 		if req.IdType != "" {
 			idType = req.IdType
@@ -196,18 +196,20 @@ func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserReal
 			return rep, err
 		}
 		accountId = res.Data.AccountId
-	} else {
-		accountId = user.EsignAccountId
-		_, err = dao.User.Ctx(ctx).Where(dao.User.Columns.Id, user.Id).Update(g.Map{
-			dao.User.Columns.RealName:       req.RealName,
-			dao.User.Columns.IdCardNo:       req.IdCardNo,
-			dao.User.Columns.IdCardImg1:     req.IdCardImg1,
-			dao.User.Columns.IdCardImg2:     req.IdCardImg2,
-			dao.User.Columns.IdCardImg3:     req.IdCardImg3,
-			dao.User.Columns.AuthState:      model.AuthStateVerifyWait,
-			dao.User.Columns.EsignAccountId: accountId,
-		})
 	}
+	_, err = dao.User.Ctx(ctx).Where(dao.User.Columns.Id, user.Id).Update(g.Map{
+		dao.User.Columns.RealName:       req.RealName,
+		dao.User.Columns.IdCardNo:       req.IdCardNo,
+		dao.User.Columns.IdCardImg1:     req.IdCardImg1,
+		dao.User.Columns.IdCardImg2:     req.IdCardImg2,
+		dao.User.Columns.IdCardImg3:     req.IdCardImg3,
+		dao.User.Columns.AuthState:      model.AuthStateVerifyWait,
+		dao.User.Columns.EsignAccountId: accountId,
+	})
+	if err != nil {
+		return rep, err
+	}
+
 	resWeb, err := realname.Service().WebIndivIdentityUrl(beans.WebIndivIdentityUrlInfo{
 		AuthType: "PSN_FACEAUTH_BYURL",
 		ContextInfo: beans.ContextInfo{

@@ -177,15 +177,12 @@ func SendCommHttp(apiUrl string, data interface{}, method string) (initResult []
 	dataJson, _ := json.Marshal(data)
 	dataJsonStr := string(dataJson)
 	httpUrl := Config().Host() + apiUrl
-	fmt.Println(httpUrl)
-	fmt.Println(dataJsonStr)
 	var md5Str string
 	md5Str = DoHashMd5(dataJsonStr)
 	message := AppendSignDataString("POST", "*/*", md5Str, "application/json; charset=UTF-8", "", "", apiUrl)
 	reqSignature := DoSignatureBase64(message, Config().ProjectSecret())
 	// 初始化接口返回值
 	initResult, httpStatus = sendHttp(httpUrl, dataJsonStr, method, buildCommHeader(md5Str, reqSignature))
-	fmt.Println(initResult, httpStatus)
 	return initResult, httpStatus
 }
 
