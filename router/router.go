@@ -21,8 +21,8 @@ func init() {
 		group.Middleware(
 			esign.Middleware.Ip,
 		)
-		group.POST("/real_name", esign.CallbackApi.RealName)
-		group.POST("/sign", esign.CallbackApi.Sign)
+		group.ALL("/real_name", esign.CallbackApi.RealName)
+		group.ALL("/sign", esign.CallbackApi.Sign)
 	})
 
 	//支付回调
