@@ -87,8 +87,6 @@ func (*callbackApi) Sign(r *ghttp.Request) {
 					if err := service.UserService.GroupUserSignDone(ctx, sign); err != nil {
 						return err
 					}
-				} else {
-					//TODO 个签订单
 				}
 				return nil
 			}) != nil {
