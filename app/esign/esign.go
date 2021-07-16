@@ -61,13 +61,12 @@ type SignReq struct {
 
 // Sign 签约完成回调
 func (*callbackApi) Sign(r *ghttp.Request) {
+	fmt.Println("Sign 签约完成回调:", string(r.GetBody()))
 	var req SignReq
 	if err := r.Parse(&req); err != nil || req.Action != "SIGN_FLOW_UPDATE" {
 		r.Response.Status = http.StatusBadRequest
 		r.Exit()
 	}
-
-	fmt.Println("Sign 签约完成回调:", string(r.GetBody()))
 
 	if req.SignResult == 2 {
 		sign, err := service.SignService.GetDetailBayFlowId(r.Context(), req.FlowId)
