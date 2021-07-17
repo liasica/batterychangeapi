@@ -1,4 +1,1 @@
-#!/usr/bin/bash
-
-cd /var/www/apiv2 || exit
 gf run main.go --args "--gf.gcfg.file=config/config.toml"
