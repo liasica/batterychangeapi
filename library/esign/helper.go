@@ -184,7 +184,7 @@ func SendCommHttp(apiUrl string, data interface{}, method string) (initResult []
 	// 初始化接口返回值
 	initResult, httpStatus = sendHttp(httpUrl, dataJsonStr, method, buildCommHeader(md5Str, reqSignature))
 
-	fmt.Println(fmt.Sprintf("%s 响应 %s \n", apiUrl, string(initResult)))
+	fmt.Println(fmt.Sprintf("%s 响应 %s %d \n", apiUrl, string(initResult), httpStatus))
 
 	return initResult, httpStatus
 }

@@ -213,7 +213,8 @@ func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserReal
 	resWeb, err := realname.Service().WebIndivIdentityUrl(beans.WebIndivIdentityUrlInfo{
 		AuthType: "PSN_FACEAUTH_BYURL",
 		ContextInfo: beans.ContextInfo{
-			NotifyUrl: g.Cfg().GetString("api.host") + "/esign/callback/real_name",
+			NotifyUrl: 	 g.Cfg().GetString("api.host") + "/esign/callback/real_name",
+			RedirectUrl: "https://h5.shiguangjv.com/pages/verify-success.html",
 		},
 		ConfigParams: beans.ConfigParams{
 			IndivUneditableInfo: []string{"name", "certNo", "mobileNo"},
