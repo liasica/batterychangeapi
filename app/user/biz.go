@@ -206,6 +206,9 @@ func (*bizApi) Sign(r *ghttp.Request) {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
 	u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
+	if u.AuthState != model.AuthStateVerifySuccess {
+		response.Json(r, response.RespCodeArgs, "未完成实名认证，请先实名认证")
+	}
 	if u.GroupId > 0 {
 		response.Json(r, response.RespCodeArgs, "团签用户，无需办理购买")
 	}
@@ -451,6 +454,9 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
 	u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
+	if u.AuthState != model.AuthStateVerifySuccess {
+		response.Json(r, response.RespCodeArgs, "未完成实名认证，请先实名认证")
+	}
 	if u.GroupId == 0 {
 		response.Json(r, response.RespCodeArgs, "个签用户请购买套餐")
 	}
