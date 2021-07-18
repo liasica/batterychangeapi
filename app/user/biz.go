@@ -10,6 +10,7 @@ import (
 	"battery/library/payment/wechat"
 	"battery/library/response"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/gogf/gf/database/gdb"
@@ -169,15 +170,16 @@ func (*bizApi) New(r *ghttp.Request) {
 		packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
 		switch req.PayType {
 		case model.PayTypeWechat:
-			var res *app.PrepayResponse
+			var res *app.PrepayWithRequestPaymentResponse
 			if res, err = wechat.Service().App(r.Context(), model.Prepay{
 				Description: packages.Name,
 				No:          order.No,
 				Amount:      order.Amount,
 				NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_new/wechat",
 			}); err == nil {
+				b, _ := json.Marshal(res)
 				response.JsonOkExit(r, model.UserBizNewRep{
-					PayOrderInfo: *res.PrepayId,
+					PayOrderInfo: string(b),
 				})
 				return
 			}
@@ -368,8 +370,9 @@ func (*bizApi) Renewal(r *ghttp.Request) {
 			Amount:      order.Amount,
 			NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_renewal/wechat",
 		}); err == nil {
+			b, _ := json.Marshal(res)
 			response.JsonOkExit(r, model.UserBizNewRep{
-				PayOrderInfo: *res.PrepayId,
+				PayOrderInfo: string(b),
 			})
 		}
 	}
@@ -433,8 +436,9 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 			Amount:      order.Amount,
 			NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_penalty/wechat",
 		}); err == nil {
+			b, _ := json.Marshal(res)
 			response.JsonOkExit(r, model.UserBizNewRep{
-				PayOrderInfo: *res.PrepayId,
+				PayOrderInfo: string(b),
 			})
 		}
 	}

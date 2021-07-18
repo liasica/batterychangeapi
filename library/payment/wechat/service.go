@@ -65,11 +65,11 @@ func (s *service) client() *core.Client {
 }
 
 // App 发起支付
-func (s *service) App(ctx context.Context, req model.Prepay) (resp *app.PrepayResponse, err error) {
+func (s *service) App(ctx context.Context, req model.Prepay) (resp *app.PrepayWithRequestPaymentResponse, err error) {
 	a := app.AppApiService{
 		Client: s.client(),
 	}
-	resp, _, err = a.Prepay(ctx, app.PrepayRequest{
+	resp, _, err = a.PrepayWithRequestPayment(ctx, app.PrepayRequest{
 		Appid:       core.String(g.Cfg().GetString("payment.wechat.appId")),
 		Mchid:       core.String(g.Cfg().GetString("payment.wechat.mchId")),
 		Description: core.String(req.Description),
