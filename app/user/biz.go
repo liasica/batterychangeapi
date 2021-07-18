@@ -10,11 +10,13 @@ import (
 	"battery/library/payment/wechat"
 	"battery/library/response"
 	"context"
+	"errors"
 	"fmt"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/wechatpay-apiv3/wechatpay-go/services/payments/app"
 )
 
 var BizApi = bizApi{}
@@ -156,15 +158,19 @@ func (*bizApi) New(r *ghttp.Request) {
 	if user.GroupId > 0 {
 		response.Json(r, response.RespCodeArgs, "团签用户无此操作")
 	}
-	sign, err := service.SignService.UserLatestDetail(r.Context(), user.Id)
-	if err != nil || sign.State != model.SignStateDone {
+	s, err := service.SignService.UserLatestDetail(r.Context(), user.Id, req.FlowId)
+	if err != nil || s == nil {
 		response.Json(r, response.RespCodeArgs, "没有完成签约的合同")
+		return
 	}
-	order, _err := service.PackagesOrderService.Detail(r.Context(), sign.PackagesOrderId)
-	if _err == nil {
+	var order model.PackagesOrder
+	order, err = service.PackagesOrderService.Detail(r.Context(), s.PackagesOrderId)
+	if err == nil {
 		packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
-		if req.PayType == model.PayTypeWechat {
-			if res, err := wechat.Service().App(r.Context(), model.Prepay{
+		switch req.PayType {
+		case model.PayTypeWechat:
+			var res *app.PrepayResponse
+			if res, err = wechat.Service().App(r.Context(), model.Prepay{
 				Description: packages.Name,
 				No:          order.No,
 				Amount:      order.Amount,
@@ -173,10 +179,12 @@ func (*bizApi) New(r *ghttp.Request) {
 				response.JsonOkExit(r, model.UserBizNewRep{
 					PayOrderInfo: *res.PrepayId,
 				})
+				return
 			}
-		}
-		if req.PayType == model.PayTypeAliPay {
-			if res, err := alipay.Service().App(r.Context(), model.Prepay{
+			break
+		case model.PayTypeAliPay:
+			var res string
+			if res, err = alipay.Service().App(r.Context(), model.Prepay{
 				Description: packages.Name,
 				No:          order.No,
 				Amount:      order.Amount,
@@ -185,11 +193,17 @@ func (*bizApi) New(r *ghttp.Request) {
 				response.JsonOkExit(r, model.UserBizNewRep{
 					PayOrderInfo: res,
 				})
+				return
 			}
+			break
+		default:
+			err = errors.New("支付方式无效")
+			break
 		}
 	}
 
-	response.JsonErrExit(r, response.RespCodeSystemError)
+	// 经过错误处理之后遇到需要中断的[错误返回]可以直接panic
+	panic(err)
 }
 
 // Sign 新签
@@ -317,6 +331,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 	response.JsonOkExit(r, model.SignRep{
 		Url:      resUrl.Data.Url,
 		ShortUrl: resUrl.Data.ShortUrl,
+		FlowId:   resFlow.Data.FlowId,
 	})
 }
 
@@ -558,5 +573,6 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 	response.JsonOkExit(r, model.SignRep{
 		Url:      resUrl.Data.Url,
 		ShortUrl: resUrl.Data.ShortUrl,
+		FlowId:   resFlow.Data.FlowId,
 	})
 }

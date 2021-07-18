@@ -18,7 +18,7 @@ type UserBiz internal.UserBiz
 
 // UserBizReq 业务办理请求数据
 type UserBizReq struct {
-	Code string `validate:"required" v:"required|string"`   //用户二维码code
+	Code string `validate:"required" v:"required"`   //用户二维码code
 	Type uint   `validate:"required" v:"required|in:3,4,5"` //业务类型:  3 寄存(仅个签用户使用)， 4 恢复计费，5 退租
 }
 
@@ -54,7 +54,8 @@ type UserBizSignReq struct {
 
 // UserBizNewReq 个签骑手签约之后获取支付信息
 type UserBizNewReq struct {
-	PayType uint `validate:"required" json:"payType" v:"required|integer|in:1,2"` //支付方式 1 支付宝 2 微信支付
+	PayType uint   `validate:"required" json:"payType" v:"required|integer|in:1,2"` //支付方式 1 支付宝 2 微信支付
+	FlowId  string `validate:"required" json:"flowId" v:"required"` // 签约流程ID
 }
 
 // UserBizNewRep 个签骑手新签套餐响应数据

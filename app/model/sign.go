@@ -15,8 +15,9 @@ const (
 	SignStateDone = 1
 )
 
-// UserSignRep 获取签约URL
+// SignRep 签约返回体
 type SignRep struct {
 	Url      string `json:"url"`
 	ShortUrl string `json:"shortUrl"`
+	FlowId   string `json:"flowId"`
 }

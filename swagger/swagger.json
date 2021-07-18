@@ -2569,6 +2569,9 @@
         "model.SignRep": {
             "type": "object",
             "properties": {
+                "flowId": {
+                    "type": "string"
+                },
                 "shortUrl": {
                     "type": "string"
                 },
@@ -2671,9 +2674,14 @@
         "model.UserBizNewReq": {
             "type": "object",
             "required": [
+                "flowId",
                 "payType"
             ],
             "properties": {
+                "flowId": {
+                    "description": "签约流程ID",
+                    "type": "string"
+                },
                 "payType": {
                     "description": "支付方式 1 支付宝 2 微信支付",
                     "type": "integer"

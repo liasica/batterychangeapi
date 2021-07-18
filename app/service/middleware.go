@@ -29,9 +29,9 @@ func (s *middlewareService) CORS(r *ghttp.Request) {
 // ErrorHandle 全局错误处理
 func (s *middlewareService) ErrorHandle(r *ghttp.Request) {
     r.Middleware.Next()
-    log.Println("服务器故障啦", r.GetError())
     // 服务器故障抛出错误覆盖
     if r.Response.Status >= http.StatusInternalServerError {
+        log.Println("服务器故障啦", r.GetError())
         r.Response.Status = http.StatusOK
         r.Response.ClearBuffer()
         // r.Response.Writeln("服务器故障了，请稍后重试或联系管理员！")
