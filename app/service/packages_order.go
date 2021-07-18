@@ -20,7 +20,7 @@ type packagesOrderService struct {
 func (s packagesOrderService) GenerateOrderNo() string {
 	id := snowflake.Service().Generate()
 	now := gtime.Now()
-	return fmt.Sprintf("%d%d%d%12d", now.Year(), now.Month(), now.Day(), id%1000000000000)
+	return fmt.Sprintf("%d%d%d%012d", now.Year(), now.Month(), now.Day(), id%1000000000000)
 }
 
 // Detail 套餐订单详情
