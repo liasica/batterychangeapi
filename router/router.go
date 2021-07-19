@@ -18,7 +18,7 @@ func init() {
 	s.BindMiddlewareDefault(service.Middleware.ErrorHandle, func(r *ghttp.Request) {
 		r.Middleware.Next()
 
-		g.Log().Printf("url: %s \n method: %s n header: %v \n requestData: %s \n responseData: %s \n",
+		g.Log().Printf("url: %s \n method: %s \n header: %v \n requestData: %s \n responseData: %s \n",
 			r.URL.String(),
 			r.Method,
 			r.Header,
