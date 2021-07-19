@@ -45,7 +45,7 @@ func (s *userService) Create(ctx context.Context, mobile string, userType, group
 		dao.User.Columns.Type:        userType,
 		dao.User.Columns.GroupId:     groupId,
 		dao.User.Columns.Mobile:      mobile,
-		dao.User.Columns.Qr:          "sgjdriver://" + snowflake.Service().Generate().String(),
+		dao.User.Columns.Qr:          snowflake.Service().Generate().String(),
 		dao.User.Columns.AccessToken: dao.User.GenerateAccessToken(uint64(rand.New(rand.NewSource(time.Now().Unix())).Intn(1000000)), salt),
 	})
 	return uint64(id), err
@@ -213,7 +213,7 @@ func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserReal
 	resWeb, err := realname.Service().WebIndivIdentityUrl(beans.WebIndivIdentityUrlInfo{
 		AuthType: "PSN_FACEAUTH_BYURL",
 		ContextInfo: beans.ContextInfo{
-			NotifyUrl: 	 g.Cfg().GetString("api.host") + "/esign/callback/real_name",
+			NotifyUrl:   g.Cfg().GetString("api.host") + "/esign/callback/real_name",
 			RedirectUrl: "https://h5.shiguangjv.com/pages/verify-success.html",
 		},
 		ConfigParams: beans.ConfigParams{

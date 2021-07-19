@@ -3,6 +3,7 @@ package user
 import (
 	"battery/app/model"
 	"battery/app/service"
+	"battery/library/qr"
 	"battery/library/response"
 	"fmt"
 	"github.com/gogf/gf/net/ghttp"
@@ -138,5 +139,7 @@ func (*userApi) PackagesOrderQr(r *ghttp.Request) {
 // @router  /rapi/home  [GET]
 // @success 200 {object} response.JsonResponse{data=model.UserProfileRep}  "返回结果"
 func (*userApi) Profile(r *ghttp.Request) {
-	response.JsonOkExit(r, service.UserService.Profile(r.Context()))
+	profile := service.UserService.Profile(r.Context())
+	profile.Qr = qr.Code.AddPrefix(profile.Qr)
+	response.JsonOkExit(r, profile)
 }
