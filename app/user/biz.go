@@ -244,6 +244,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 		Name: g.Cfg().GetString("eSign.personal.fileName"),
 	})
 	if err != nil || res.Code != 0 {
+		g.Log().Error(err)
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	// 发起签署
@@ -299,6 +300,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 		},
 	})
 	if err != nil || resFlow.Code != 0 {
+		g.Log().Error(err)
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	// 获取签署地址
@@ -307,6 +309,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 		AccountId: user.EsignAccountId,
 	})
 	if err != nil || resUrl.Code != 0 {
+		g.Log().Error(err)
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 
@@ -328,6 +331,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 		}
 		return nil
 	}); err != nil {
+		g.Log().Error(err)
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	response.JsonOkExit(r, model.SignRep{
