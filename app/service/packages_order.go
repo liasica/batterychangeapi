@@ -91,12 +91,13 @@ func (s *packagesOrderService) Penalty(ctx context.Context, payType uint, amount
 	return order, err
 }
 
-// PaySuccess 订单字符成功处理
-func (s *packagesOrderService) PaySuccess(ctx context.Context, payAt *gtime.Time, no, PayPlatformNo string) error {
+// PaySuccess 订单支付成功处理
+func (s *packagesOrderService) PaySuccess(ctx context.Context, payAt *gtime.Time, no, PayPlatformNo string, payType uint) error {
 	_, err := dao.PackagesOrder.Ctx(ctx).Where(dao.PackagesOrder.Columns.No, no).Update(g.Map{
 		dao.PackagesOrder.Columns.PayState:      model.PayStateSuccess,
 		dao.PackagesOrder.Columns.PayPlatformNo: PayPlatformNo,
 		dao.PackagesOrder.Columns.PayAt:         payAt,
+		dao.PackagesOrder.Columns.PayType:       payType,
 	})
 	return err
 }

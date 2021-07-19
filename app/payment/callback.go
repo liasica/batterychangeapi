@@ -10,7 +10,7 @@ import (
 )
 
 // packageOrderNewSuccess 新购买套餐支付成功处理
-func packageOrderNewSuccess(ctx context.Context, payAt *gtime.Time, no, payPlatformNo string) error {
+func packageOrderNewSuccess(ctx context.Context, payAt *gtime.Time, no, payPlatformNo string, payType uint) error {
 	return dao.PackagesOrder.DB.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
 		order, err := service.PackagesOrderService.DetailByNo(ctx, no)
 		if err != nil {
@@ -19,7 +19,7 @@ func packageOrderNewSuccess(ctx context.Context, payAt *gtime.Time, no, payPlatf
 		if order.PayState == model.PayStateSuccess {
 			return nil
 		}
-		if err := service.PackagesOrderService.PaySuccess(ctx, payAt, no, payPlatformNo); err != nil {
+		if err := service.PackagesOrderService.PaySuccess(ctx, payAt, no, payPlatformNo, payType); err != nil {
 			return err
 		}
 		if err := service.UserService.BuyPackagesSuccess(ctx, order); err != nil {
@@ -38,7 +38,7 @@ func packageOrderNewSuccess(ctx context.Context, payAt *gtime.Time, no, payPlatf
 				PackagesName:   packages.Name,
 				CityName:       city.Name,
 				BatteryType:    packages.BatteryType,
-				PayType:        order.PayType,
+				PayType:        payType,
 				PayAt:          payAt,
 				Amount:         order.Amount,
 				Earnest:        order.Earnest,
@@ -49,7 +49,7 @@ func packageOrderNewSuccess(ctx context.Context, payAt *gtime.Time, no, payPlatf
 }
 
 // packageOrderRenewalSuccess 续购买套餐支付成功处理
-func packageOrderRenewalSuccess(ctx context.Context, payAt *gtime.Time, no, payPlatformNo string) error {
+func packageOrderRenewalSuccess(ctx context.Context, payAt *gtime.Time, no, payPlatformNo string, payType uint) error {
 	return dao.PackagesOrder.DB.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
 		order, err := service.PackagesOrderService.DetailByNo(ctx, no)
 		if err != nil {
@@ -58,7 +58,7 @@ func packageOrderRenewalSuccess(ctx context.Context, payAt *gtime.Time, no, payP
 		if order.PayState == model.PayStateSuccess {
 			return nil
 		}
-		if err := service.PackagesOrderService.PaySuccess(ctx, payAt, no, payPlatformNo); err != nil {
+		if err := service.PackagesOrderService.PaySuccess(ctx, payAt, no, payPlatformNo, payType); err != nil {
 			return err
 		}
 		if err := service.UserService.RenewalPackagesSuccess(ctx, order); err != nil {
@@ -71,7 +71,7 @@ func packageOrderRenewalSuccess(ctx context.Context, payAt *gtime.Time, no, payP
 			"开通套餐支付成功",
 			model.MessageDetail{
 				Type:           "续费套餐",
-				PayType:        order.PayType,
+				PayType:        payType,
 				PayAt:          payAt,
 				Amount:         order.Amount,
 				PackageOrderNo: no,
@@ -81,7 +81,7 @@ func packageOrderRenewalSuccess(ctx context.Context, payAt *gtime.Time, no, payP
 }
 
 // packageOrderPenaltySuccess 违约金支付成功处理
-func packageOrderPenaltySuccess(ctx context.Context, payAt *gtime.Time, no, payPlatformNo string) error {
+func packageOrderPenaltySuccess(ctx context.Context, payAt *gtime.Time, no, payPlatformNo string, payType uint) error {
 	return dao.PackagesOrder.DB.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
 		order, err := service.PackagesOrderService.DetailByNo(ctx, no)
 		if err != nil {
@@ -90,7 +90,7 @@ func packageOrderPenaltySuccess(ctx context.Context, payAt *gtime.Time, no, payP
 		if order.PayState == model.PayStateSuccess {
 			return nil
 		}
-		if err := service.PackagesOrderService.PaySuccess(ctx, payAt, no, payPlatformNo); err != nil {
+		if err := service.PackagesOrderService.PaySuccess(ctx, payAt, no, payPlatformNo, payType); err != nil {
 			return err
 		}
 		if err := service.UserService.BuyPackagesSuccess(ctx, order); err != nil {
