@@ -15,7 +15,17 @@ import (
 
 func init() {
 	s := g.Server()
-	s.BindMiddlewareDefault(service.Middleware.ErrorHandle)
+	s.BindMiddlewareDefault(service.Middleware.ErrorHandle, func(r *ghttp.Request) {
+
+		g.Log().Printf("url: %s \n method: %s n header: %s \n body: %v \n",
+			r.URL.String(),
+			r.Method,
+			r.Header,
+			string(r.GetBody()),
+		)
+
+		r.Middleware.Next()
+	})
 
 	s.BindStatusHandler(http.StatusNotFound, func(r *ghttp.Request) {
 
