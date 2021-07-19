@@ -17,7 +17,7 @@ func init() {
 	s := g.Server()
 	s.BindMiddlewareDefault(service.Middleware.ErrorHandle, func(r *ghttp.Request) {
 
-		g.Log().Printf("url: %s \n method: %s n header: %s \n body: %v \n",
+		g.Log().Printf("url: %s \n method: %s n header: %v \n body: %s \n",
 			r.URL.String(),
 			r.Method,
 			r.Header,
