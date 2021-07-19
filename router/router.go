@@ -15,17 +15,21 @@ import (
 
 func init() {
 	s := g.Server()
-	s.BindMiddlewareDefault(service.Middleware.ErrorHandle, func(r *ghttp.Request) {
-		r.Middleware.Next()
+	s.BindMiddlewareDefault(
+		service.Middleware.ErrorHandle,
+		service.Middleware.CORS,
+		func(r *ghttp.Request) {
+			r.Middleware.Next()
 
-		g.Log().Printf("url: %s \n method: %s \n header: %v \n requestData: %s \n responseCode: %d \n responseData: %s \n",
-			r.URL.String(),
-			r.Method,
-			r.Header,
-			string(r.GetBody()),
-			r.Response.Status,
-			r.Response.BufferString())
-	})
+			g.Log().Printf("url: %s \n method: %s \n header: %v \n requestData: %s \n responseCode: %d \n responseData: %s \n",
+				r.URL.String(),
+				r.Method,
+				r.Header,
+				string(r.GetBody()),
+				r.Response.Status,
+				r.Response.BufferString())
+		},
+	)
 
 	s.BindStatusHandler(http.StatusNotFound, func(r *ghttp.Request) {
 
@@ -137,9 +141,6 @@ func init() {
 
 	//后台管理员
 	s.Group("/adm", func(group *ghttp.RouterGroup) {
-		group.Middleware(
-			admin.Middleware.CORS,
-		)
 		group.POST("/login", admin.UserApi.Login)
 		group.Middleware(
 			admin.Middleware.Ctx,
