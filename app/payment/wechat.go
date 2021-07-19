@@ -3,6 +3,7 @@ package payment
 import (
 	"battery/app/model"
 	"battery/library/payment/wechat"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
 	"net/http"
@@ -17,12 +18,15 @@ type wechatApi struct {
 func (*wechatApi) PackageOrderNewSuccessCallback(r *ghttp.Request) {
 	var content wechatPaySuccessNotifyContent
 	if _, err := wechat.Service().ParseNotify(r.Context(), r.Request, &content); err != nil {
+		g.Log().Error(err.Error())
 		r.Response.Status = http.StatusBadRequest
 		r.Exit()
 	}
+
 	if content.TradeState == "SUCCESS" {
 		//TODO 查询校验
 		if err := packageOrderNewSuccess(r.Context(), content.SuccessTime, content.OutTradeNo, content.TransactionId, model.PayTypeWechat); err != nil {
+			g.Log().Error(err.Error())
 			r.Response.Status = http.StatusInternalServerError
 			r.Exit()
 		}
@@ -39,12 +43,14 @@ func (*wechatApi) PackageOrderNewSuccessCallback(r *ghttp.Request) {
 func (*wechatApi) PackageOrderRenewalSuccessCallback(r *ghttp.Request) {
 	var content wechatPaySuccessNotifyContent
 	if _, err := wechat.Service().ParseNotify(r.Context(), r.Request, &content); err != nil {
+		g.Log().Error(err.Error())
 		r.Response.Status = http.StatusBadRequest
 		r.Exit()
 	}
 	if content.TradeState == "SUCCESS" {
 		//TODO 查询校验
 		if err := packageOrderRenewalSuccess(r.Context(), content.SuccessTime, content.OutTradeNo, content.TransactionId, model.PayTypeWechat); err != nil {
+			g.Log().Error(err.Error())
 			r.Response.Status = http.StatusInternalServerError
 			r.Exit()
 		}
