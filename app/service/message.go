@@ -3,9 +3,12 @@ package service
 import (
 	"battery/app/dao"
 	"battery/app/model"
+	"battery/library/push/getui"
 	"battery/library/wf"
 	"context"
+	"fmt"
 	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/os/gtime"
 )
 
 var MessageService = messageService{}
@@ -15,7 +18,7 @@ type messageService struct {
 }
 
 // Create 创建消息
-func (*messageService) Create(ctx context.Context, userId uint64, t uint, title, summary string, detail model.MessageDetail) (uint64, error) {
+func (s *messageService) Create(ctx context.Context, userId uint64, t uint, title, summary string, detail model.MessageDetail) (uint64, error) {
 	id, err := dao.Message.Ctx(ctx).
 		Fields(
 			dao.Message.Columns.Type,
@@ -31,7 +34,17 @@ func (*messageService) Create(ctx context.Context, userId uint64, t uint, title,
 			dao.Message.Columns.Summary: summary,
 			dao.Message.Columns.Detail:  detail,
 		})
+	if err == nil && t != model.MessageTypeSystem {
+		s.SendWorkFlow(uint64(id))
+	}
 	return uint64(id), err
+}
+
+// Detail 消息详情
+func (*messageService) Detail(ctx context.Context, messageId uint64) (model.Message, error) {
+	var msg model.Message
+	err := dao.Message.Ctx(ctx).WherePri(messageId).Scan(&msg)
+	return msg, err
 }
 
 // ListUser 用户消息列表
@@ -95,5 +108,41 @@ func (*messageService) Read(ctx context.Context, userId uint64, userType uint, m
 }
 
 func (s *messageService) SendWorkFlowInit() {
-	s.wf = wf.Start("Send-Message", 4, 20)
+	s.wf = wf.Start("Push-Message", 4, 20)
+}
+
+type MessagePayload struct {
+	MessageId uint64
+}
+
+func (p *MessagePayload) Play() {
+	message, err := MessageService.Detail(context.TODO(), p.MessageId)
+	if err != nil {
+		return
+	}
+	if message.Type == model.MessageTypeSystem {
+		return
+	}
+	user := UserService.Detail(context.TODO(), message.UserId)
+	res, _err := getui.Service().PushSingleCid(getui.PushSingleRequest{
+		RequestId: fmt.Sprintf("%d-%d", gtime.Timestamp(), message.Id),
+		Audience:  getui.PushSingleRequestAudience{Cid: []string{user.DeviceToken}},
+		PushMessage: getui.PushSingleRequestPushMessage{Notification: getui.PushMessageNotification{
+			Title:     message.Title,
+			Body:      message.Summary,
+			ClickType: "none",
+			//TODO 跳转
+		}},
+	})
+	if _err != nil {
+		g.Log().Errorf("个推推送错误：%v, %v", _err.Error(), res)
+	}
+}
+
+func (s *messageService) SendWorkFlow(messageId uint64) {
+	s.wf.AddJob(wf.Job{
+		Payload: &MessagePayload{
+			MessageId: messageId,
+		},
+	})
 }

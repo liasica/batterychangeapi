@@ -25,12 +25,16 @@ type PushSingleRequest struct {
 	Settings  struct {
 		Ttl int `json:"ttl"`
 	} `json:"settings,omitempty"`
-	Audience struct {
-		Cid []string `json:"cid"`
-	} `json:"audience"`
-	PushMessage struct {
-		PushMessageNotification `json:"notification"`
-	} `json:"push_message"`
+	Audience    PushSingleRequestAudience    `json:"audience"`
+	PushMessage PushSingleRequestPushMessage `json:"push_message"`
+}
+
+type PushSingleRequestAudience struct {
+	Cid []string `json:"cid"`
+}
+
+type PushSingleRequestPushMessage struct {
+	Notification PushMessageNotification `json:"notification"`
 }
 
 type PushSingleResponse struct {
