@@ -225,6 +225,9 @@ func (*bizApi) Sign(r *ghttp.Request) {
 	if u.AuthState != model.AuthStateVerifySuccess {
 		response.Json(r, response.RespCodeArgs, "未完成实名认证，请先实名认证")
 	}
+	if u.BatteryState != model.BatteryStateExit && u.BatteryState != model.BatteryStateDefault {
+		response.Json(r, response.RespCodeArgs, "有正在使用中的套餐，请先办理退租")
+	}
 	if u.GroupId > 0 {
 		response.Json(r, response.RespCodeArgs, "团签用户，无需办理购买")
 	}
@@ -479,6 +482,9 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 	u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
 	if u.AuthState != model.AuthStateVerifySuccess {
 		response.Json(r, response.RespCodeArgs, "未完成实名认证，请先实名认证")
+	}
+	if u.BatteryState != model.BatteryStateExit && u.BatteryState != model.BatteryStateDefault {
+		response.Json(r, response.RespCodeArgs, "有正在使用中的电池，请先办理退租")
 	}
 	if u.GroupId == 0 {
 		response.Json(r, response.RespCodeArgs, "个签用户请购买套餐")
