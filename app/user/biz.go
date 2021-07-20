@@ -358,7 +358,7 @@ func (*bizApi) Renewal(r *ghttp.Request) {
 	if user.GroupId > 0 {
 		response.Json(r, response.RespCodeArgs, "团签用户，不能办理续约")
 	}
-	if user.BatteryState != model.BatteryStateOverdue {
+	if user.BatteryState == model.BatteryStateOverdue {
 		response.Json(r, response.RespCodeArgs, "套餐已逾期请先交纳违约金")
 	}
 	if user.BatteryState != model.BatteryStateUse && user.BatteryState != model.BatteryStateSave {
