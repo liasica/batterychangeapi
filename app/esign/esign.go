@@ -6,8 +6,6 @@ import (
 	"battery/app/service"
 	"battery/library/response"
 	"context"
-	"encoding/json"
-	"fmt"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/net/ghttp"
 	"net/http"
@@ -62,22 +60,18 @@ type SignReq struct {
 
 // Sign 签约完成回调
 func (*callbackApi) Sign(r *ghttp.Request) {
-	bh, _ := json.MarshalIndent(r.Header, "", "  ")
-	fmt.Printf("签约完成回调\nHeaders: %s,\n Body: %s\n", string(bh), string(r.GetBody()))
 	var req SignReq
-	if err := r.Parse(&req); err != nil || req.Action != "SIGN_FLOW_UPDATE" {
+	if err := r.Parse(&req); err != nil {
 		r.Response.Status = http.StatusBadRequest
 		r.Exit()
 	}
-
-	if req.SignResult == 2 {
+	//只处理签约成功的
+	if req.Action != "SIGN_FLOW_UPDATE" && req.SignResult == 2 {
 		sign, err := service.SignService.GetDetailBayFlowId(r.Context(), req.FlowId)
-
 		if err != nil {
 			r.Response.Status = http.StatusInternalServerError
 			r.Exit()
 		}
-
 		if sign.State != model.SignStateDone {
 			if dao.Sign.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
 				if err := service.SignService.Done(ctx, req.FlowId); err != nil {
@@ -93,8 +87,8 @@ func (*callbackApi) Sign(r *ghttp.Request) {
 				r.Response.Status = http.StatusInternalServerError
 				r.Exit()
 			}
-
 		}
 	}
+
 	response.JsonOkExit(r)
 }
