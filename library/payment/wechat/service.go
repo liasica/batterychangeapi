@@ -15,6 +15,7 @@ import (
 	"github.com/wechatpay-apiv3/wechatpay-go/core/downloader"
 	"github.com/wechatpay-apiv3/wechatpay-go/core/notify"
 	"github.com/wechatpay-apiv3/wechatpay-go/core/option"
+	"github.com/wechatpay-apiv3/wechatpay-go/services/payments"
 	"github.com/wechatpay-apiv3/wechatpay-go/services/payments/app"
 	"github.com/wechatpay-apiv3/wechatpay-go/services/refunddomestic"
 	"io/ioutil"
@@ -100,8 +101,8 @@ func (s *service) Refund(ctx context.Context, transactionId, outTradeNo, outRefu
 		OutRefundNo:   core.String(outRefundNo),
 		Reason:        core.String(reason),
 		Amount: &refunddomestic.AmountReq{
-			Refund: core.Int64(int64(refundAmount * 100)),
-			Total:  core.Int64(int64(orderAmount * 100)),
+			Refund: core.Int64(decimal.NewFromFloat(refundAmount).Mul(decimal.NewFromInt(100)).IntPart()),
+			Total:  core.Int64(decimal.NewFromFloat(orderAmount).Mul(decimal.NewFromInt(100)).IntPart()),
 		},
 	})
 	if err != nil {
@@ -113,4 +114,19 @@ func (s *service) Refund(ctx context.Context, transactionId, outTradeNo, outRefu
 		g.Log().Error("退款失败:", res, resp)
 		return "", errors.New("退款失败")
 	}
+}
+
+// QueryOrderByOutTradeNo 使用内部订单到查询交易
+func (s *service) QueryOrderByOutTradeNo(ctx context.Context, orderNo string) (*payments.Transaction, error) {
+	a := app.AppApiService{
+		Client: s.client(),
+	}
+	resp, result, err := a.QueryOrderByOutTradeNo(ctx, app.QueryOrderByOutTradeNoRequest{
+		OutTradeNo: core.String(orderNo),
+		Mchid:      core.String(g.Cfg().GetString("payment.wechat.mchId")),
+	})
+	if err != nil {
+		g.Log().Errorf("微信支付订单查询错误: %s \n %v", err, result)
+	}
+	return resp, err
 }
