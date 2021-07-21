@@ -2307,7 +2307,7 @@
                     "type": "string"
                 },
                 "state": {
-                    "description": "店铺状态 0 休息总，1 营业中",
+                    "description": "店铺状态 1 营业中 2 休息中",
                     "type": "integer"
                 },
                 "tags": {
@@ -2326,7 +2326,7 @@
             ],
             "properties": {
                 "state": {
-                    "description": "店铺状态 1 休息总，2 营业中",
+                    "description": "店铺状态 1 营业中 2 休息中",
                     "type": "integer"
                 }
             }

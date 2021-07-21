@@ -18,7 +18,7 @@ type Shop internal.Shop
 
 // ShopManagerChangeStateReq 店长修改店铺状态请求
 type ShopManagerChangeStateReq struct {
-	State uint `validate:"required" v:"required|in:1,2"` //店铺状态 1 休息总，2 营业中
+	State uint `validate:"required" v:"required|in:1,2"` //店铺状态 1 营业中 2 休息中
 }
 
 // ShopListUserReq 骑手获取店铺列表请求
@@ -48,5 +48,5 @@ type ShopListUserRep struct {
 	Distance     uint     `validate:"required" json:"distance"`     //距离
 	Mobile       string   `validate:"required" json:"mobile"`       //联系手机号码
 	Address      string   `validate:"required" json:"address"`      //详细地址
-	State        uint     `validate:"required" json:"state"`        //店铺状态 0 休息总，1 营业中
+	State        uint     `validate:"required" json:"state"`        //店铺状态 1 营业中 2 休息中
 }
