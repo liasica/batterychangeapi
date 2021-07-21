@@ -176,17 +176,6 @@ GenerateAccessToken:
 	return
 }
 
-// AuthState 获取用户实名认证状态
-func (s *userService) AuthState(ctx context.Context) (authState uint, err error) {
-	u := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
-	var user = new(model.User)
-	err = dao.User.Ctx(ctx).WherePri(u.Id).Scan(user)
-	if err != nil {
-		return
-	}
-	return user.AuthState, nil
-}
-
 // RealNameAuthSubmit 骑手实名认证提交
 func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserRealNameAuthReq) (rep model.UserRealNameAuthRep, err error) {
 	user := ctx.Value(model.ContextRiderKey).(*model.ContextRider)

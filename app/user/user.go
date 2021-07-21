@@ -81,11 +81,8 @@ func (*userApi) Auth(r *ghttp.Request) {
 // @router  /rapi/auth [GET]
 // @success 200 {object} response.JsonResponse{data=int}  "返回结果"
 func (*userApi) AuthGet(r *ghttp.Request) {
-	state, err := service.UserService.AuthState(r.Context())
-	if err != nil {
-		panic(err)
-	}
-	response.JsonOkExit(r, state)
+	u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
+	response.JsonOkExit(r, u.AuthState)
 }
 
 // PushToken
