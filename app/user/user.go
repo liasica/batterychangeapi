@@ -73,6 +73,21 @@ func (*userApi) Auth(r *ghttp.Request) {
 	}
 }
 
+// AuthGet
+// @summary 骑手-获取实名认证状态 [每次切换页面都进行查询]
+// @tags    骑手
+// @Accept  json
+// @Produce  json
+// @router  /rapi/auth [GET]
+// @success 200 {object} response.JsonResponse{data=int}  "返回结果"
+func (*userApi) AuthGet(r *ghttp.Request) {
+	state, err := service.UserService.AuthState(r.Context())
+	if err != nil {
+		panic(err)
+	}
+	response.JsonOkExit(r, state)
+}
+
 // PushToken
 // @summary 骑手-上报推送token
 // @tags    骑手-消息
