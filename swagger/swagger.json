@@ -795,7 +795,6 @@
         },
         "/rapi/message/:id": {
             "get": {
-                "description": "type 为 100， 101， 102， 104 时需要跳转详情页面",
                 "consumes": [
                     "application/json"
                 ],
