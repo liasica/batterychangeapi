@@ -39,7 +39,6 @@ func (*managerApi) Login(r *ghttp.Request) {
 // @tags    店长
 // @Accept  json
 // @Produce  json
-// @param   entity  body model.ShopManagerLoginReq true "登录数据"
 // @router  /sapi/qr [GET]
 // @success 200 {object} response.JsonResponse 二维码结果 data 为二维码数据，需本地生成图片
 func (*managerApi) Qr(r *ghttp.Request) {

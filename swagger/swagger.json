@@ -1729,17 +1729,6 @@
                     "店长"
                 ],
                 "summary": "店长-获取店本店二维码",
-                "parameters": [
-                    {
-                        "description": "登录数据",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ShopManagerLoginReq"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
