@@ -51,3 +51,20 @@ func (*messageApi) Read(r *ghttp.Request) {
 	user := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
 	response.JsonOkExit(r, service.MessageService.Read(r.Context(), user.Id, 1, req.MessageIds))
 }
+
+// Detail
+// @summary 骑手-消息详情
+// @tags    骑手-消息
+// @Accept  json
+// @Produce  json
+// @param 	id path integer  true "消息ID"
+// @router  /rapi/message/:id [GET]
+// @success 200 {object} response.JsonResponse{data=model.Message} "返回结果"
+func (*messageApi) Detail(r *ghttp.Request) {
+	var req model.IdReq
+	if err := r.Parse(&req); err != nil {
+		response.Json(r, response.RespCodeArgs, err.Error())
+	}
+	msg, _ := service.MessageService.Detail(r.Context(), req.Id)
+	response.JsonOkExit(r, msg)
+}
