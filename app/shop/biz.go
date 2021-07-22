@@ -97,7 +97,7 @@ func (*bizApi) Post(r *ghttp.Request) {
 
 	case model.UserBizBatteryUnSave: //恢复计费
 		if user.BatteryState != model.BatteryStateSave {
-			response.Json(r, response.RespCodeArgs, "用户不是租借中状态，不能办理恢复计费")
+			response.Json(r, response.RespCodeArgs, "用户不是寄存中状态，不能办理恢复计费")
 		}
 		if user.GroupId > 0 {
 			response.Json(r, response.RespCodeArgs, "团签用户，不能办理恢复计费")
