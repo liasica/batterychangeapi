@@ -465,7 +465,7 @@ func (s *userService) GetUserByAccessToken(accessToken string) (user model.User,
 
 // GroupUserSignDone 团签用户选择电池型号
 func (s *userService) GroupUserSignDone(ctx context.Context, sign model.Sign) error {
-	res, err := dao.User.WherePri(sign.UserId).
+	res, err := dao.User.Ctx(ctx).WherePri(sign.UserId).
 		Where(dao.User.Columns.GroupId, sign.GroupId).
 		Where(dao.User.Columns.BatteryState, model.BatteryStateDefault).
 		Update(g.Map{
