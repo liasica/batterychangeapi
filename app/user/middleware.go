@@ -42,7 +42,7 @@ func (s *contextUser) SetUser(ctx context.Context, r *model.ContextRider) {
 	rider.BatteryType = r.BatteryType
 	rider.Qr = r.Qr
 	rider.PackagesOrderId = r.PackagesOrderId
-	rider.ExpirationAt = r.ExpirationAt
+	rider.BatteryReturnAt = r.BatteryReturnAt
 	rider.BizBatteryRenewalCnt = r.BizBatteryRenewalCnt
 	rider.BizBatteryRenewalSeconds = r.BizBatteryRenewalSeconds
 	rider.BizBatterySecondsStartAt = r.BizBatterySecondsStartAt
@@ -68,7 +68,7 @@ func (m *middleware) Ctx(r *ghttp.Request) {
 			rider.BatteryState = u.BatteryState
 			rider.Qr = u.Qr
 			rider.PackagesOrderId = u.PackagesOrderId
-			rider.ExpirationAt = u.BatteryReturnAt
+			rider.BatteryReturnAt = u.BatteryReturnAt
 			rider.BizBatteryRenewalCnt = u.BizBatteryRenewalCnt
 			rider.BizBatteryRenewalSeconds = u.BizBatteryRenewalSeconds
 			rider.BizBatterySecondsStartAt = u.BizBatterySecondsStartAt

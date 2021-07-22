@@ -61,3 +61,12 @@ func (*userBizService) ListShopMonthTotal(ctx context.Context, req model.UserBiz
 	rep.Cnt, _ = m.Count()
 	return
 }
+
+// UserLastSave 获取个签用户最后一次寄存记录
+func (*userBizService) UserLastSave(ctx context.Context, userId uint64) (res model.UserBiz, err error) {
+	err = dao.UserBiz.Ctx(ctx).
+		Where(dao.UserBiz.Columns.UserId, userId).
+		Where(dao.UserBiz.Columns.Type, model.UserBizBatterySave).
+		OrderDesc(dao.UserBiz.Columns.Id).Limit(1).Scan(&res)
+	return
+}

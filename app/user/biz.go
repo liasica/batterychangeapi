@@ -17,6 +17,7 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/golang-module/carbon"
 	"github.com/wechatpay-apiv3/wechatpay-go/services/payments/app"
 )
 
@@ -420,18 +421,11 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 	if user.BatteryState != model.BatteryStateOverdue {
 		response.Json(r, response.RespCodeArgs, "当前套餐正常使用")
 	}
-
-	t := gtime.Now().Timestamp() - user.ExpirationAt.Timestamp()
-	days := t / 86400
-	if t%86400 > 0 {
-		days = days + 1
-	}
-
+	days := carbon.Parse(user.BatteryReturnAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
 	amount, err := service.PackagesService.PenaltyAmount(r.Context(), user.PackagesId, uint(days))
 	if amount <= 0 || err != nil {
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
-
 	firstOrder, _ := service.PackagesOrderService.Detail(r.Context(), user.PackagesOrderId)
 	packages, _ := service.PackagesService.Detail(r.Context(), user.PackagesId)
 	order, err := service.PackagesOrderService.Penalty(r.Context(), req.PaymentType, amount, firstOrder)

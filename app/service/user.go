@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/golang-module/carbon"
 	"math/rand"
 	"time"
 )
@@ -301,7 +302,7 @@ func (*userService) MyPackage(ctx context.Context) (rep model.UserCurrentPackage
 			city, _ := DistrictsService.Detail(ctx, packages.CityId)
 			rep.CityName = city.Name
 		}
-		rep.ExpirationAt = u.ExpirationAt
+		rep.ExpirationAt = u.BatteryReturnAt
 	} else {
 		err = errors.New("还未购买套餐")
 	}
@@ -334,7 +335,7 @@ func (s *userService) BizProfile(ctx context.Context, qr string) model.BizProfil
 	return rep
 }
 
-// BizBatterySave 用户寄存电池
+// BizBatterySave 个签用户寄存电池
 func (s *userService) BizBatterySave(ctx context.Context, user model.User) error {
 	var seconds int64 = 0
 	if !user.BizBatterySecondsStartAt.IsZero() {
@@ -357,14 +358,26 @@ func (s *userService) BizBatterySave(ctx context.Context, user model.User) error
 	return err
 }
 
-// BizBatteryUnSave 用户恢复计费
+// BizBatteryUnSave 个签用户恢复计费
 func (s *userService) BizBatteryUnSave(ctx context.Context, user model.User) error {
+	saveBiz, err := UserBizService.UserLastSave(ctx, user.Id)
+	if err != nil {
+		return err
+	}
 	now := gtime.Now()
+	days := carbon.Parse(saveBiz.CreatedAt.String()).DiffInDays(carbon.Parse(now.String()))
+	var returnAt *gtime.Time
+	if days == 0 {
+		//同一天寄取，归还电池时间不变
+		returnAt = user.BatteryReturnAt
+	} else {
+		returnAt = user.BatteryReturnAt.Add(time.Hour * 24 * time.Duration(days))
+	}
 	res, err := dao.User.Ctx(ctx).WherePri(user.Id).
 		Where(dao.User.Columns.GroupId, 0).
 		Where(dao.User.Columns.BatteryState, model.BatteryStateSave).
 		Update(g.Map{
-			dao.User.Columns.BatteryReturnAt:          user.BatteryReturnAt.Add(time.Duration(now.Timestamp()-user.BatteryReturnAt.Timestamp()) * time.Second),
+			dao.User.Columns.BatteryReturnAt:          returnAt,
 			dao.User.Columns.BatteryState:             model.BatteryStateUse,
 			dao.User.Columns.BizBatterySecondsStartAt: now,
 		})
@@ -372,7 +385,7 @@ func (s *userService) BizBatteryUnSave(ctx context.Context, user model.User) err
 		if rows, err := res.RowsAffected(); rows > 0 && err == nil {
 			return nil
 		}
-		err = errors.New("寄存失败")
+		err = errors.New("恢复计费失败")
 	}
 	return err
 }
@@ -429,9 +442,9 @@ func (*userService) PenaltyPackagesSuccess(ctx context.Context, order model.Pack
 	var user model.User
 	err := dao.User.Ctx(ctx).WherePri(order.UserId).Scan(&user)
 	if err == nil {
-		y, m, d := gtime.Now().Date()
+		days := carbon.Parse(user.BatteryReturnAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
 		_, err = dao.User.Ctx(ctx).WherePri(order.UserId).Update(g.Map{
-			dao.User.Columns.BatteryReturnAt: gtime.NewFromStr(fmt.Sprintf("%d-%d-%d 23:59:59", y, m, d)),
+			dao.User.Columns.BatteryReturnAt: user.BatteryReturnAt.Add(time.Hour * 24 * time.Duration(days)),
 		})
 	}
 	return err
@@ -511,10 +524,13 @@ func (*userService) PackagesStartUse(ctx context.Context, order model.PackagesOr
 		return err
 	}
 	now := gtime.Now()
+	//使用时间按自然天计算
+	y, m, d := now.Add(time.Duration(packages.Days-1) * 24 * time.Hour).Date()
+	returnAt := gtime.NewFromStr(fmt.Sprintf("%d-%d-%d 23:59:59", y, m, d))
 	res, err := dao.User.Ctx(ctx).WherePri(order.UserId).
 		Where(dao.User.Columns.BatteryState, model.BatteryStateNew).
 		Update(g.Map{
-			dao.User.Columns.BatteryReturnAt:          now.Add(time.Duration(packages.Days) * 24 * time.Hour),
+			dao.User.Columns.BatteryReturnAt:          returnAt,
 			dao.User.Columns.BatteryState:             model.BatteryStateUse,
 			dao.User.Columns.BizBatterySecondsStartAt: now,
 		})
