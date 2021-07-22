@@ -337,17 +337,15 @@ func (s *userService) BizProfile(ctx context.Context, qr string) model.BizProfil
 
 // BizBatterySave 个签用户寄存电池
 func (s *userService) BizBatterySave(ctx context.Context, user model.User) error {
-	var seconds int64 = 0
-	if !user.BizBatterySecondsStartAt.IsZero() {
-		seconds = gtime.Now().Timestamp() - user.BizBatterySecondsStartAt.Timestamp()
-	}
+	days := carbon.Parse(user.BizBatteryRenewalDaysStartAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
 	res, err := dao.User.Ctx(ctx).WherePri(user.Id).
 		Where(dao.User.Columns.GroupId, 0).
 		Where(dao.User.Columns.BatteryState, model.BatteryStateUse).
 		Update(g.Map{
-			dao.User.Columns.BatteryState:             model.BatteryStateSave,
-			dao.User.Columns.BizBatterySecondsStartAt: nil,
-			dao.User.Columns.BizBatteryRenewalSeconds: user.BizBatteryRenewalSeconds + uint(seconds),
+			dao.User.Columns.BatteryState:                 model.BatteryStateSave,
+			dao.User.Columns.BatterySaveAt:                gtime.Now(),
+			dao.User.Columns.BizBatteryRenewalDays:        user.BizBatteryRenewalDays + uint(days),
+			dao.User.Columns.BizBatteryRenewalDaysStartAt: nil,
 		})
 	if err == nil {
 		if rows, err := res.RowsAffected(); rows > 0 && err == nil {
@@ -360,12 +358,8 @@ func (s *userService) BizBatterySave(ctx context.Context, user model.User) error
 
 // BizBatteryUnSave 个签用户恢复计费
 func (s *userService) BizBatteryUnSave(ctx context.Context, user model.User) error {
-	saveBiz, err := UserBizService.UserLastSave(ctx, user.Id)
-	if err != nil {
-		return err
-	}
 	now := gtime.Now()
-	days := carbon.Parse(saveBiz.CreatedAt.String()).DiffInDays(carbon.Parse(now.String()))
+	days := carbon.Parse(user.BatterySaveAt.String()).DiffInDays(carbon.Parse(now.String()))
 	var returnAt *gtime.Time
 	if days == 0 {
 		//同一天寄取，归还电池时间不变
@@ -377,9 +371,10 @@ func (s *userService) BizBatteryUnSave(ctx context.Context, user model.User) err
 		Where(dao.User.Columns.GroupId, 0).
 		Where(dao.User.Columns.BatteryState, model.BatteryStateSave).
 		Update(g.Map{
-			dao.User.Columns.BatteryReturnAt:          returnAt,
-			dao.User.Columns.BatteryState:             model.BatteryStateUse,
-			dao.User.Columns.BizBatterySecondsStartAt: now,
+			dao.User.Columns.BatteryReturnAt:              returnAt,
+			dao.User.Columns.BatteryState:                 model.BatteryStateUse,
+			dao.User.Columns.BatterySaveAt:                nil,
+			dao.User.Columns.BizBatteryRenewalDaysStartAt: gtime.Now(),
 		})
 	if err == nil {
 		if rows, err := res.RowsAffected(); rows > 0 && err == nil {
@@ -392,16 +387,17 @@ func (s *userService) BizBatteryUnSave(ctx context.Context, user model.User) err
 
 // BizBatteryExit 用户退租
 func (s *userService) BizBatteryExit(ctx context.Context, user model.User) error {
-	var seconds int64 = 0
-	if !user.BizBatterySecondsStartAt.IsZero() {
-		seconds = gtime.Now().Timestamp() - user.BizBatterySecondsStartAt.Timestamp()
+	var days int64
+	if !user.BizBatteryRenewalDaysStartAt.IsZero() {
+		days = carbon.Parse(user.BizBatteryRenewalDaysStartAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
 	}
 	_, err := dao.User.Ctx(ctx).WherePri(user.Id).
 		WhereIn(dao.User.Columns.BatteryState, []int{model.BatteryStateUse, model.BatteryStateSave}).
 		Update(g.Map{
-			dao.User.Columns.BatteryState:             model.BatteryStateExit,
-			dao.User.Columns.BizBatterySecondsStartAt: nil,
-			dao.User.Columns.BizBatteryRenewalSeconds: user.BizBatteryRenewalSeconds + uint(seconds),
+			dao.User.Columns.BatteryState:                 model.BatteryStateExit,
+			dao.User.Columns.BatterySaveAt:                nil,
+			dao.User.Columns.BizBatteryRenewalDaysStartAt: nil,
+			dao.User.Columns.BizBatteryRenewalDays:        user.BizBatteryRenewalDays + uint(days),
 		})
 	return err
 }
@@ -487,12 +483,6 @@ func (s *userService) IncrBizBatteryRenewalCnt(ctx context.Context, userId uint6
 	return err
 }
 
-// IncrBizBatteryRenewalSeconds 增加用户使用电池时间
-func (s *userService) IncrBizBatteryRenewalSeconds(ctx context.Context, userId uint64, seconds uint) error {
-	_, err := dao.User.Ctx(ctx).WherePri(userId).Increment(dao.User.Columns.BizBatteryRenewalSeconds, seconds)
-	return err
-}
-
 // GetByIds 使用ID获取用户
 func (s *userService) GetByIds(ctx context.Context, userIds []uint64) (res []model.User) {
 	_ = dao.User.Ctx(ctx).WhereIn(dao.User.Columns.Id, userIds).Scan(&res)
@@ -518,21 +508,23 @@ func (s *userService) DetailByQr(ctx context.Context, qr string) (res model.User
 }
 
 // PackagesStartUse 个签用户新购套餐首次领取
-func (*userService) PackagesStartUse(ctx context.Context, order model.PackagesOrder) error {
+func (s *userService) PackagesStartUse(ctx context.Context, order model.PackagesOrder) error {
 	packages, err := PackagesService.Detail(ctx, order.PackageId)
 	if err != nil {
 		return err
 	}
-	now := gtime.Now()
+	user := s.Detail(ctx, order.UserId)
 	//使用时间按自然天计算
+	now := gtime.Now()
 	y, m, d := now.Add(time.Duration(packages.Days-1) * 24 * time.Hour).Date()
 	returnAt := gtime.NewFromStr(fmt.Sprintf("%d-%d-%d 23:59:59", y, m, d))
 	res, err := dao.User.Ctx(ctx).WherePri(order.UserId).
 		Where(dao.User.Columns.BatteryState, model.BatteryStateNew).
 		Update(g.Map{
-			dao.User.Columns.BatteryReturnAt:          returnAt,
-			dao.User.Columns.BatteryState:             model.BatteryStateUse,
-			dao.User.Columns.BizBatterySecondsStartAt: now,
+			dao.User.Columns.BatteryReturnAt:              returnAt,
+			dao.User.Columns.BatteryState:                 model.BatteryStateUse,
+			dao.User.Columns.BizBatteryRenewalDaysStartAt: gtime.Now(),
+			dao.User.Columns.BizBatteryRenewalDays:        user.BizBatteryRenewalDays + 1,
 		})
 	if err == nil {
 		if rows, err := res.RowsAffected(); rows > 0 && err == nil {
@@ -545,13 +537,14 @@ func (*userService) PackagesStartUse(ctx context.Context, order model.PackagesOr
 }
 
 // GroupUserStartUse 团签用户首次领取电池
-func (*userService) GroupUserStartUse(ctx context.Context, userId uint64) error {
-
+func (s *userService) GroupUserStartUse(ctx context.Context, userId uint64) error {
+	user := s.Detail(ctx, userId)
 	res, err := dao.User.Ctx(ctx).WherePri(userId).
 		Where(dao.User.Columns.BatteryState, model.BatteryStateNew).
 		Update(g.Map{
-			dao.User.Columns.BatteryState:             model.BatteryStateUse,
-			dao.User.Columns.BizBatterySecondsStartAt: time.Now(),
+			dao.User.Columns.BatteryState:                 model.BatteryStateUse,
+			dao.User.Columns.BizBatteryRenewalDaysStartAt: gtime.Now(),
+			dao.User.Columns.BizBatteryRenewalDays:        user.BizBatteryRenewalDays + 1,
 		})
 	if err == nil {
 		if rows, err := res.RowsAffected(); rows > 0 && err == nil {

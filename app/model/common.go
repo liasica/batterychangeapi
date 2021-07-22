@@ -23,20 +23,21 @@ type ContextShop struct {
 
 // ContextRider 骑手上下文
 type ContextRider struct {
-	Id                       uint64
-	Mobile                   string
-	GroupId                  uint
-	PackagesId               uint
-	PackagesOrderId          uint64
-	BatteryType              uint
-	BatteryState             uint
-	AuthState                uint
-	EsignAccountId           string
-	Qr                       string
-	BatteryReturnAt          *gtime.Time
-	BizBatterySecondsStartAt *gtime.Time
-	BizBatteryRenewalCnt     uint
-	BizBatteryRenewalSeconds uint
+	Id                           uint64
+	Mobile                       string
+	GroupId                      uint
+	PackagesId                   uint
+	PackagesOrderId              uint64
+	BatteryType                  uint
+	BatteryState                 uint
+	AuthState                    uint
+	EsignAccountId               string
+	Qr                           string
+	BatteryReturnAt              *gtime.Time
+	BizBatterySecondsStartAt     *gtime.Time
+	BizBatteryRenewalCnt         uint
+	BizBatteryRenewalDays        uint
+	BizBatteryRenewalDaysStartAt *gtime.Time
 }
 
 // ContextShopManager 店长上下文

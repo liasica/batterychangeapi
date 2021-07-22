@@ -35,13 +35,9 @@ type bizApi struct {
 // @success 200 {object} response.JsonResponse{data=model.UserBizRecordStatRep}  "返回结果"
 func (*bizApi) RecordStat(r *ghttp.Request) {
 	user := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
-	var days uint = 0
-	if !user.BizBatterySecondsStartAt.IsZero() {
-		user.BizBatteryRenewalSeconds = user.BizBatteryRenewalSeconds + uint(gtime.Now().Timestamp()-user.BizBatterySecondsStartAt.Timestamp())
-	}
-	days = user.BizBatteryRenewalSeconds / 86400
-	if user.BizBatteryRenewalSeconds%86400 > 0 {
-		days = days + 1
+	days := user.BizBatteryRenewalDays
+	if !user.BizBatteryRenewalDaysStartAt.IsZero() {
+		days = days + uint(carbon.Parse(user.BizBatteryRenewalDaysStartAt.String()).DiffInDays(carbon.Parse(gtime.Now().String())))
 	}
 	response.JsonOkExit(r, model.UserBizRecordStatRep{
 		Count: user.BizBatteryRenewalCnt,

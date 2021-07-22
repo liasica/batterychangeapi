@@ -44,8 +44,8 @@ func (s *contextUser) SetUser(ctx context.Context, r *model.ContextRider) {
 	rider.PackagesOrderId = r.PackagesOrderId
 	rider.BatteryReturnAt = r.BatteryReturnAt
 	rider.BizBatteryRenewalCnt = r.BizBatteryRenewalCnt
-	rider.BizBatteryRenewalSeconds = r.BizBatteryRenewalSeconds
-	rider.BizBatterySecondsStartAt = r.BizBatterySecondsStartAt
+	rider.BizBatteryRenewalDays = r.BizBatteryRenewalDays
+	rider.BizBatteryRenewalDaysStartAt = r.BizBatteryRenewalDaysStartAt
 }
 
 var Middleware = middleware{}
@@ -70,8 +70,8 @@ func (m *middleware) Ctx(r *ghttp.Request) {
 			rider.PackagesOrderId = u.PackagesOrderId
 			rider.BatteryReturnAt = u.BatteryReturnAt
 			rider.BizBatteryRenewalCnt = u.BizBatteryRenewalCnt
-			rider.BizBatteryRenewalSeconds = u.BizBatteryRenewalSeconds
-			rider.BizBatterySecondsStartAt = u.BizBatterySecondsStartAt
+			rider.BizBatteryRenewalDays = u.BizBatteryRenewalDays
+			rider.BizBatteryRenewalDaysStartAt = u.BizBatteryRenewalDaysStartAt
 		}
 	}
 	r.Middleware.Next()

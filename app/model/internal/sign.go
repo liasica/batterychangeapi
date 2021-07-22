@@ -15,8 +15,8 @@ type Sign struct {
 	GroupId         uint        `orm:"groupId"         json:"groupId"`         //
 	PackagesOrderId uint64      `orm:"packagesOrderId" json:"packagesOrderId"` //
 	BatteryType     uint        `orm:"batteryType"     json:"batteryType"`     // 电池型号
-	FlowId          string      `orm:"flowId"          json:"flowId"`          // 易签签约流程ID
-	FileId          string      `orm:"fileId"          json:"fileId"`          // 易签签约文件ID
+	FlowId          string      `orm:"flowId,unique"   json:"flowId"`          // 易签签约流程ID
+	FileId          string      `orm:"fileId,unique"   json:"fileId"`          // 易签签约文件ID
 	State           uint        `orm:"state"           json:"state"`           // 签约状态 0 未签约 1 已签约
 	CreatedAt       *gtime.Time `orm:"createdAt"       json:"createdAt"`       //
 	UpdatedAt       *gtime.Time `orm:"updatedAt"       json:"updatedAt"`       //
