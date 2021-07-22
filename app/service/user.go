@@ -254,6 +254,12 @@ func (s *userService) Profile(ctx context.Context) (rep model.UserProfileRep) {
 		rep.User.PackagesName = packages.Name
 		rep.User.BatteryState = user.BatteryState
 		rep.User.BatteryReturnAt = user.BatteryReturnAt
+		// 违约
+		if user.BatteryState == model.BatteryStateUse {
+			if user.BatteryReturnAt.Timestamp() < gtime.Now().Timestamp() {
+				rep.User.BatteryState = model.BatteryStateOverdue
+			}
+		}
 	}
 	if user.Type == model.UserTypeGroupRider {
 		rep.GroupUser.BatteryState = user.BatteryState
