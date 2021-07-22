@@ -93,7 +93,7 @@ func packageOrderPenaltySuccess(ctx context.Context, payAt *gtime.Time, no, payP
 		if err := service.PackagesOrderService.PaySuccess(ctx, payAt, no, payPlatformNo, payType); err != nil {
 			return err
 		}
-		if err := service.UserService.BuyPackagesSuccess(ctx, order); err != nil {
+		if err := service.UserService.PenaltyPackagesSuccess(ctx, order); err != nil {
 			return err
 		}
 		return nil
