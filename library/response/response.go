@@ -13,11 +13,11 @@ const (
 )
 
 var CodeMsg = map[int]string{
-	RespCodeSuccess:      "Success",
-	RespCodeArgs:         "Parameter error",
-	RespCodeUnauthorized: "Unauthorized",
-	RespCodeNotFound:     "Not Found",
-	RespCodeSystemError:  "System busy, please try again later",
+	RespCodeSuccess:      "成功",
+	RespCodeArgs:         "参数错误",
+	RespCodeUnauthorized: "请先登录",
+	RespCodeNotFound:     "不存在的资源",
+	RespCodeSystemError:  "系统繁忙，请稍后再试！",
 }
 
 // JsonResponse 数据返回通用JSON数据结构
