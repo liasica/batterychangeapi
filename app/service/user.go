@@ -429,8 +429,9 @@ func (*userService) PenaltyPackagesSuccess(ctx context.Context, order model.Pack
 	var user model.User
 	err := dao.User.Ctx(ctx).WherePri(order.UserId).Scan(&user)
 	if err == nil {
+		y, m, d := gtime.Now().Date()
 		_, err = dao.User.Ctx(ctx).WherePri(order.UserId).Update(g.Map{
-			dao.User.Columns.BatteryReturnAt: gtime.Now(),
+			dao.User.Columns.BatteryReturnAt: gtime.NewFromStr(fmt.Sprintf("%d-%d-%d 23:59:59", y, m, d)),
 		})
 	}
 	return err
