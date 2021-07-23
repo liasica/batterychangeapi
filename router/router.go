@@ -139,7 +139,7 @@ func init() {
 		group.GET("/asset/battery_stat", shop.AssetApi.BatteryStat)
 		group.GET("/asset/battery_list", shop.AssetApi.BatteryList)
 
-		group.GET("/exception", shop.ExceptionApi.Report)
+		group.POST("/exception", shop.ExceptionApi.Report)
 	})
 
 	//后台管理员
