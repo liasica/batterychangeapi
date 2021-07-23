@@ -405,10 +405,6 @@ func (*bizApi) Renewal(r *ghttp.Request) {
 // @router  /rapi/biz_penalty [GET]
 // @success 200 {object} response.JsonResponse{data=model.UserBizPenaltyProfileRep}  "返回结果"
 func (*bizApi) PenaltyProfile(r *ghttp.Request) {
-	var req model.UserBizPenaltyReq
-	if err := r.Parse(&req); err != nil {
-		response.Json(r, response.RespCodeArgs, err.Error())
-	}
 	user := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
 	if user.GroupId > 0 {
 		response.Json(r, response.RespCodeArgs, "团签用户无需办理违约")
