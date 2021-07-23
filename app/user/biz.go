@@ -414,6 +414,7 @@ func (*bizApi) PenaltyProfile(r *ghttp.Request) {
 	}
 	days := carbon.Parse(user.BatteryReturnAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
 	amount, err := service.PackagesService.PenaltyAmount(r.Context(), user.PackagesId, uint(days))
+	amount = 0.01 //TODO 删除 测试使用
 	if amount <= 0 || err != nil {
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
@@ -450,6 +451,7 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 	}
 	days := carbon.Parse(user.BatteryReturnAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
 	amount, err := service.PackagesService.PenaltyAmount(r.Context(), user.PackagesId, uint(days))
+	amount = 0.01 //TODO 删除 测试使用
 	if amount <= 0 || err != nil {
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
