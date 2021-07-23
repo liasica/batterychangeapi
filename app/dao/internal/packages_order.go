@@ -33,7 +33,7 @@ type packagesOrderColumns struct {
 	PayPlatformNo string // 支付平台单号
 	PayAt         string // 支付时间
 	PayState      string // 支付状态 1 待支付 2 已支付
-	FirstUserAt   string // 开始使用时间，即首次领取电池时间
+	FirstUseAt    string // 开始使用时间，即首次领取电池时间
 	Month         string //
 	CreatedAt     string //
 	UpdatedAt     string //
@@ -57,7 +57,7 @@ func NewPackagesOrderDao() *PackagesOrderDao {
 			PayPlatformNo: "payPlatformNo",
 			PayAt:         "payAt",
 			PayState:      "payState",
-			FirstUserAt:   "firstUserAt",
+			FirstUseAt:    "firstUseAt",
 			Month:         "month",
 			CreatedAt:     "createdAt",
 			UpdatedAt:     "updatedAt",

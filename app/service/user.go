@@ -294,7 +294,7 @@ func (*userService) MyPackage(ctx context.Context) (rep model.UserCurrentPackage
 			rep.OrderNo = order.No
 			rep.PayAt = order.PayAt
 			rep.PayType = order.PayType
-			rep.StartUseAt = order.FirstUserAt
+			rep.StartUseAt = order.FirstUseAt
 		}
 		packages, err := PackagesService.Detail(ctx, u.PackagesId)
 		if err == nil {

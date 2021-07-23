@@ -18,7 +18,7 @@ type UserBiz internal.UserBiz
 
 // UserBizReq 业务办理请求数据
 type UserBizReq struct {
-	Code string `validate:"required" v:"required"`   //用户二维码code
+	Code string `validate:"required" v:"required"`          //用户二维码code
 	Type uint   `validate:"required" v:"required|in:3,4,5"` //业务类型:  3 寄存(仅个签用户使用)， 4 恢复计费，5 退租
 }
 
@@ -55,7 +55,7 @@ type UserBizSignReq struct {
 // UserBizNewReq 个签骑手签约之后获取支付信息
 type UserBizNewReq struct {
 	PayType uint   `validate:"required" json:"payType" v:"required|integer|in:1,2"` //支付方式 1 支付宝 2 微信支付
-	FlowId  string `validate:"required" json:"flowId" v:"required"` // 签约流程ID
+	FlowId  string `validate:"required" json:"flowId" v:"required"`                 // 签约流程ID
 }
 
 // UserBizNewRep 个签骑手新签套餐响应数据
@@ -81,6 +81,15 @@ type UserBizPenaltyReq struct {
 // UserBizPenaltyRep 个签骑手支付违约响应数据
 type UserBizPenaltyRep struct {
 	PayOrderInfo string `validate:"required" json:"PayOrderInfo"` //发起支付使用数据
+}
+
+// UserBizPenaltyProfileRep 个签骑手获取违约金额响应数据
+type UserBizPenaltyProfileRep struct {
+	Amount      float64     `validate:"required" json:"amount"`      //金额
+	PackageName string      `validate:"required" json:"packageName"` //套餐名称
+	Days        int64       `validate:"required" json:"days"`        //逾期天数
+	StartAt     *gtime.Time `validate:"required" json:"startAt"`     //开始时间
+	EndAt       *gtime.Time `validate:"required" json:"endAt"`       //结束时间
 }
 
 // UserBizGroupNewReq 团签骑手新领电池

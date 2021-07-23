@@ -105,8 +105,8 @@ func (s *packagesOrderService) PaySuccess(ctx context.Context, payAt *gtime.Time
 // ShopClaim 店铺认领订单
 func (s *packagesOrderService) ShopClaim(ctx context.Context, no string, shopId uint) error {
 	res, err := dao.PackagesOrder.Ctx(ctx).Where(dao.PackagesOrder.Columns.No, no).Where(dao.PackagesOrder.Columns.ShopId, 0).Update(g.Map{
-		dao.PackagesOrder.Columns.ShopId:      shopId,
-		dao.PackagesOrder.Columns.FirstUserAt: gtime.Now(),
+		dao.PackagesOrder.Columns.ShopId:     shopId,
+		dao.PackagesOrder.Columns.FirstUseAt: gtime.Now(),
 	})
 	if err == nil {
 		rows, err := res.RowsAffected()

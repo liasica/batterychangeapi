@@ -397,6 +397,41 @@ func (*bizApi) Renewal(r *ghttp.Request) {
 	response.JsonErrExit(r, response.RespCodeSystemError)
 }
 
+// PenaltyProfile 违约金
+// @summary 骑手-个签用户逾期获取违约金详情
+// @Accept  json
+// @Produce  json
+// @tags    骑手-业务办理
+// @router  /rapi/biz_penalty [GET]
+// @success 200 {object} response.JsonResponse{data=model.UserBizPenaltyProfileRep}  "返回结果"
+func (*bizApi) PenaltyProfile(r *ghttp.Request) {
+	var req model.UserBizPenaltyReq
+	if err := r.Parse(&req); err != nil {
+		response.Json(r, response.RespCodeArgs, err.Error())
+	}
+	user := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
+	if user.GroupId > 0 {
+		response.Json(r, response.RespCodeArgs, "团签用户无需办理违约")
+	}
+	if user.BatteryState != model.BatteryStateOverdue {
+		response.Json(r, response.RespCodeArgs, "当前套餐正常使用")
+	}
+	days := carbon.Parse(user.BatteryReturnAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
+	amount, err := service.PackagesService.PenaltyAmount(r.Context(), user.PackagesId, uint(days))
+	if amount <= 0 || err != nil {
+		response.JsonErrExit(r, response.RespCodeSystemError)
+	}
+	firstOrder, _ := service.PackagesOrderService.Detail(r.Context(), user.PackagesOrderId)
+	packages, _ := service.PackagesService.Detail(r.Context(), user.PackagesId)
+	response.JsonOkExit(r, model.UserBizPenaltyProfileRep{
+		Amount:      amount,
+		Days:        days,
+		PackageName: packages.Name,
+		StartAt:     firstOrder.FirstUseAt,
+		EndAt:       user.BatteryReturnAt,
+	})
+}
+
 // Penalty 违约金
 // @summary 骑手-个签用户逾期缴纳违约金
 // @Accept  json

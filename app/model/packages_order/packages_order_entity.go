@@ -24,7 +24,7 @@ type Entity struct {
     PayPlatformNo string      `orm:"payPlatformNo" json:"pay_platform_no"` // 支付平台单号                      
     PayAt         *gtime.Time `orm:"payAt"         json:"pay_at"`          // 支付时间                          
     PayState      uint        `orm:"payState"      json:"pay_state"`       // 支付状态 1 待支付 2 已支付        
-    FirstUserAt   *gtime.Time `orm:"firstUserAt"   json:"first_user_at"`   // 开始使用时间，即首次领取电池时间  
+    FirstUseAt    *gtime.Time `orm:"firstUseAt"    json:"first_use_at"`    // 开始使用时间，即首次领取电池时间  
     Month         int         `orm:"month"         json:"month"`           //                                   
     CreatedAt     *gtime.Time `orm:"createdAt"     json:"created_at"`      //                                   
     UpdatedAt     *gtime.Time `orm:"updatedAt"     json:"updated_at"`      //                                   

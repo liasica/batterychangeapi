@@ -45,7 +45,7 @@ type userColumns struct {
 	EsignAccountId               string // 易签账户ID
 	BizBatteryRenewalCnt         string // 积累换次数
 	BizBatteryRenewalDays        string // 累计换电自然天数
-	BizBatteryRenewalDaysStartAt string // 需要统计使用天数的开始时间，为空需要统计所有时间
+	BizBatteryRenewalDaysStartAt string // 需要统计使用天数的开始时间，为空则无需计算
 	CreatedAt                    string //
 	UpdatedAt                    string //
 }

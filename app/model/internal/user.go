@@ -34,7 +34,7 @@ type User struct {
 	EsignAccountId               string      `orm:"esignAccountId"               json:"esignAccountId"`               // 易签账户ID
 	BizBatteryRenewalCnt         uint        `orm:"bizBatteryRenewalCnt"         json:"bizBatteryRenewalCnt"`         // 积累换次数
 	BizBatteryRenewalDays        uint        `orm:"bizBatteryRenewalDays"        json:"bizBatteryRenewalDays"`        // 累计换电自然天数
-	BizBatteryRenewalDaysStartAt *gtime.Time `orm:"bizBatteryRenewalDaysStartAt" json:"bizBatteryRenewalDaysStartAt"` // 需要统计使用天数的开始时间，为空需要统计所有时间
+	BizBatteryRenewalDaysStartAt *gtime.Time `orm:"bizBatteryRenewalDaysStartAt" json:"bizBatteryRenewalDaysStartAt"` // 需要统计使用天数的开始时间，为空则无需计算
 	CreatedAt                    *gtime.Time `orm:"createdAt"                    json:"createdAt"`                    //
 	UpdatedAt                    *gtime.Time `orm:"updatedAt"                    json:"updatedAt"`                    //
 }
