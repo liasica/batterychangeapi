@@ -290,6 +290,38 @@
             }
         },
         "/rapi/biz_penalty": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-业务办理"
+                ],
+                "summary": "骑手-个签用户逾期获取违约金详情",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserBizPenaltyProfileRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -2749,6 +2781,38 @@
                 "payType": {
                     "description": "支付方式 1 支付宝 2 微信支付",
                     "type": "integer"
+                }
+            }
+        },
+        "model.UserBizPenaltyProfileRep": {
+            "type": "object",
+            "required": [
+                "amount",
+                "days",
+                "endAt",
+                "packageName",
+                "startAt"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "金额",
+                    "type": "number"
+                },
+                "days": {
+                    "description": "逾期天数",
+                    "type": "integer"
+                },
+                "endAt": {
+                    "description": "结束时间",
+                    "type": "string"
+                },
+                "packageName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "startAt": {
+                    "description": "开始时间",
+                    "type": "string"
                 }
             }
         },
