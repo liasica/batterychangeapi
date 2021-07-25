@@ -1,1 +1,1 @@
-gf run main.go --args "--gf.gcfg.file=config/config.toml"
+go mod download all && go run main.go --args "--gf.gcfg.file=config/config.toml"
