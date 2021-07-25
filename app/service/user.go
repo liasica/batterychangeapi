@@ -215,7 +215,7 @@ func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserReal
 		AuthType: "PSN_FACEAUTH_BYURL",
 		ContextInfo: beans.ContextInfo{
 			NotifyUrl:   g.Cfg().GetString("api.host") + "/esign/callback/real_name",
-			RedirectUrl: "https://h5.shiguangjv.com/pages/verify-success.html",
+			RedirectUrl: "sgjdriver://driverapp.shiguangjv.com?path=/webview&from=/verify&mode=off&data=success",
 		},
 		ConfigParams: beans.ConfigParams{
 			IndivUneditableInfo: []string{"name", "certNo", "mobileNo"},
