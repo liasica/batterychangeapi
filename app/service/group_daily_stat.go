@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
 	"strconv"
@@ -78,48 +77,46 @@ func (s *groupDailyStatService) GenerateWeek(ctx context.Context, groupId uint, 
 		Date    uint
 		Total   uint
 	}
-	return dao.GroupDailyStat.DB.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-		maxTime := gtime.NewFromTimeStamp(gtime.Now().Timestamp() - 86400)
-		if err := dao.GroupDailyStat.Ctx(ctx).
-			Fields(dao.GroupDailyStat.Columns.Date, dao.GroupDailyStat.Columns.UserIds, dao.GroupDailyStat.Columns.Total, dao.GroupDailyStat.Columns.GroupId).
-			Where(dao.GroupDailyStat.Columns.GroupId, groupId).
-			Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
-			OrderDesc(dao.GroupDailyStat.Columns.Id).
-			LockUpdate().
-			Scan(&max); err == nil {
-			today, _ := strconv.ParseUint(s.Date(gtime.Now()), 10, 64)
-			if max.Date-uint(today) < 7 {
-				maxTime = gtime.NewFromStr(fmt.Sprintf("%d-%02d-%02d 23:59:59", max.Date/10000, max.Date%10000/100, max.Date%100))
-			} else {
-				return nil
-			}
+	maxTime := gtime.NewFromTimeStamp(gtime.Now().Timestamp() - 86400)
+	if err := dao.GroupDailyStat.Ctx(ctx).
+		Fields(dao.GroupDailyStat.Columns.Date, dao.GroupDailyStat.Columns.UserIds, dao.GroupDailyStat.Columns.Total, dao.GroupDailyStat.Columns.GroupId).
+		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
+		Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
+		OrderDesc(dao.GroupDailyStat.Columns.Id).
+		LockUpdate().
+		Scan(&max); err == nil {
+		today, _ := strconv.ParseUint(s.Date(gtime.Now()), 10, 64)
+		if max.Date-uint(today) < 7 {
+			maxTime = gtime.NewFromStr(fmt.Sprintf("%d-%02d-%02d 23:59:59", max.Date/10000, max.Date%10000/100, max.Date%100))
+		} else {
+			return nil
 		}
-		newMaxTime := gtime.Now().Add(24 * 7 * time.Hour)
-		newStat := g.List{}
-		for {
-			if maxTime.Timestamp() >= newMaxTime.Timestamp() {
-				break
-			}
-			maxTime = maxTime.Add(24 * time.Hour)
-			newStat = append(newStat, g.Map{
-				dao.GroupDailyStat.Columns.GroupId:     groupId,
-				dao.GroupDailyStat.Columns.BatteryType: batteryType,
-				dao.GroupDailyStat.Columns.Date:        s.Date(maxTime),
-				dao.GroupDailyStat.Columns.Total:       max.Total,
-				dao.GroupDailyStat.Columns.UserIds:     max.UserIds,
-			})
+	}
+	newMaxTime := gtime.Now().Add(24 * 7 * time.Hour)
+	newStat := g.List{}
+	for {
+		if maxTime.Timestamp() >= newMaxTime.Timestamp() {
+			break
 		}
-		if len(newStat) > 0 {
-			res, err := dao.GroupDailyStat.Ctx(ctx).Data(newStat).Insert()
-			if err != nil {
-				return err
-			}
-			if row, _err := res.RowsAffected(); int(row) != len(newStat) || _err != nil {
-				return errors.New("执行失败")
-			}
+		maxTime = maxTime.Add(24 * time.Hour)
+		newStat = append(newStat, g.Map{
+			dao.GroupDailyStat.Columns.GroupId:     groupId,
+			dao.GroupDailyStat.Columns.BatteryType: batteryType,
+			dao.GroupDailyStat.Columns.Date:        s.Date(maxTime),
+			dao.GroupDailyStat.Columns.Total:       max.Total,
+			dao.GroupDailyStat.Columns.UserIds:     max.UserIds,
+		})
+	}
+	if len(newStat) > 0 {
+		res, err := dao.GroupDailyStat.Ctx(ctx).Data(newStat).Insert()
+		if err != nil {
+			return err
 		}
-		return nil
-	})
+		if row, _err := res.RowsAffected(); int(row) != len(newStat) || _err != nil {
+			return errors.New("执行失败")
+		}
+	}
+	return nil
 }
 
 type groupDailyStatDateRangeItem struct {
