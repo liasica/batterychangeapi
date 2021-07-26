@@ -18,6 +18,7 @@ type Entity struct {
     IsArrears   uint        `orm:"isArrears"   json:"is_arrears"`   // 是否未付款 1 是 0 不是  
     Date        uint        `orm:"date"        json:"date"`         // 日期 如 20210705        
     Total       uint        `orm:"total"       json:"total"`        // 使用人数                
+    UserIds     string      `orm:"userIds"     json:"user_ids"`     //                         
     CreatedAt   *gtime.Time `orm:"createdAt"   json:"created_at"`   // 创建时间                
     UpdatedAt   *gtime.Time `orm:"updatedAt"   json:"updated_at"`   //                         
 }

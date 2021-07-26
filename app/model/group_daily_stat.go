@@ -4,12 +4,13 @@
 
 package model
 
-import (
-	"battery/app/model/internal"
-)
+import "battery/app/model/internal"
 
 // GroupDailyStat is the golang structure for table group_daily_stat.
-type GroupDailyStat internal.GroupDailyStat
+type GroupDailyStat struct {
+	internal.GroupDailyStat
+	UserIds []uint64
+}
 
 // Fill with you ideas below.
 

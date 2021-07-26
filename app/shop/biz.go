@@ -180,7 +180,7 @@ func (*bizApi) Post(r *ghttp.Request) {
 				}
 			}
 			if user.GroupId > 0 {
-				if err := service.GroupDailyStatService.RiderBizExit(ctx, user.GroupId, user.BatteryType); err != nil {
+				if err := service.GroupDailyStatService.RiderBizExit(ctx, user.GroupId, user.BatteryType, user.Id); err != nil {
 					return err
 				}
 			} else {

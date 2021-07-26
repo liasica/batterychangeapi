@@ -240,7 +240,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
 				return err
 			}
 			//人数统计
-			if err := service.GroupDailyStatService.RiderBizNew(ctx, user.GroupId, user.BatteryType); err != nil {
+			if err := service.GroupDailyStatService.RiderBizNew(ctx, user.GroupId, user.BatteryType, user.Id); err != nil {
 				return err
 			}
 			return nil

@@ -45,10 +45,22 @@ func (*groupApi) List(r *ghttp.Request) {
 	if len(userIds) > 0 {
 		users := service.UserService.GetByIds(r.Context(), userIds)
 		list := make([]model.UserGroupListRep, len(users))
+		userArrearsDays := make(map[uint64]uint, len(userIds))
+		for _, userId := range userIds {
+			userArrearsDays[userId] = 0
+		}
+		arrearsList, _ := service.GroupDailyStatService.ArrearsList(r.Context(), user.GroupId)
+		for _, row := range arrearsList {
+			for _, userId := range row.UserIds {
+				if _, ok := userArrearsDays[userId]; ok {
+					userArrearsDays[userId]++
+				}
+			}
+		}
 		for key, u := range users {
 			list[key] = model.UserGroupListRep{
 				Name: u.RealName,
-				//TODO 使用天数
+				Days: userArrearsDays[u.Id],
 			}
 		}
 		response.JsonOkExit(r, list)

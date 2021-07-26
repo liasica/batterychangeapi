@@ -26,35 +26,62 @@ func (s *groupDailyStatService) Date(t *gtime.Time) string {
 }
 
 // RiderBizNew 用户新领取
-func (s *groupDailyStatService) RiderBizNew(ctx context.Context, groupId uint, batteryType uint) error {
+func (s *groupDailyStatService) RiderBizNew(ctx context.Context, groupId uint, batteryType uint, userId uint64) error {
+	var max model.GroupDailyStat
+	if err := dao.GroupDailyStat.Ctx(ctx).
+		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
+		Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
+		Scan(&max); err != nil {
+		return err
+	}
 	now := gtime.Now()
 	_, err := dao.GroupDailyStat.Ctx(ctx).Where(dao.GroupDailyStat.Columns.GroupId, groupId).
 		Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
 		WhereGTE(dao.GroupDailyStat.Columns.Date, s.Date(now)).
-		Increment(dao.GroupDailyStat.Columns.Total, 1)
+		Update(g.Map{
+			dao.GroupDailyStat.Columns.Total:   max.Total + 1,
+			dao.GroupDailyStat.Columns.UserIds: append(max.UserIds, userId),
+		})
 	return err
 }
 
 // RiderBizExit 用户退租
-func (s *groupDailyStatService) RiderBizExit(ctx context.Context, groupId uint, batteryType uint) error {
+func (s *groupDailyStatService) RiderBizExit(ctx context.Context, groupId uint, batteryType uint, userId uint64) error {
+	var max model.GroupDailyStat
+	if err := dao.GroupDailyStat.Ctx(ctx).
+		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
+		Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
+		Scan(&max); err != nil {
+		return err
+	}
 	now := gtime.Now()
+	newUserIds := make([]uint64, 1)
+	for _, id := range max.UserIds {
+		if id != userId {
+			newUserIds = append(newUserIds, id)
+		}
+	}
 	_, err := dao.GroupDailyStat.Ctx(ctx).Where(dao.GroupDailyStat.Columns.GroupId, groupId).
 		Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
 		WhereGT(dao.GroupDailyStat.Columns.Date, s.Date(now)).
-		Decrement(dao.GroupDailyStat.Columns.Total, 1)
+		Update(g.Map{
+			dao.GroupDailyStat.Columns.Total:   max.Total - 1,
+			dao.GroupDailyStat.Columns.UserIds: newUserIds,
+		})
 	return err
 }
 
 func (s *groupDailyStatService) GenerateWeek(ctx context.Context, groupId uint, batteryType uint) error {
 	var max struct {
 		GroupId uint
+		UserIds []uint64
 		Date    uint
 		Total   uint
 	}
 	return dao.GroupDailyStat.DB.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
 		maxTime := gtime.NewFromTimeStamp(gtime.Now().Timestamp() - 86400)
 		if err := dao.GroupDailyStat.Ctx(ctx).
-			Fields(dao.GroupDailyStat.Columns.Date, dao.GroupDailyStat.Columns.Total, dao.GroupDailyStat.Columns.GroupId).
+			Fields(dao.GroupDailyStat.Columns.Date, dao.GroupDailyStat.Columns.UserIds, dao.GroupDailyStat.Columns.Total, dao.GroupDailyStat.Columns.GroupId).
 			Where(dao.GroupDailyStat.Columns.GroupId, groupId).
 			Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
 			OrderDesc(dao.GroupDailyStat.Columns.Id).
@@ -79,6 +106,7 @@ func (s *groupDailyStatService) GenerateWeek(ctx context.Context, groupId uint, 
 				dao.GroupDailyStat.Columns.BatteryType: batteryType,
 				dao.GroupDailyStat.Columns.Date:        s.Date(maxTime),
 				dao.GroupDailyStat.Columns.Total:       max.Total,
+				dao.GroupDailyStat.Columns.UserIds:     max.UserIds,
 			})
 		}
 		if len(newStat) > 0 {
@@ -161,5 +189,17 @@ func (s *groupDailyStatService) ArrearsDays(ctx context.Context, groupId uint) (
 		Where(dao.GroupDailyStat.Columns.IsArrears, model.GroupDailyStatIsArrearsYes).
 		Group(dao.GroupDailyStat.Columns.BatteryType).
 		Scan(&res)
+	return
+}
+
+// ArrearsList 获取团队未付款统计记录
+func (s *groupDailyStatService) ArrearsList(ctx context.Context, groupId uint) (list []model.GroupDailyStat, err error) {
+	now := gtime.Now()
+	err = dao.GroupDailyStat.Ctx(ctx).
+		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
+		WhereLTE(dao.GroupDailyStat.Columns.Date, fmt.Sprintf("%d%d%d", now.Year(), now.Month(), now.Day())).
+		Where(dao.GroupDailyStat.Columns.IsArrears, model.GroupDailyStatIsArrearsYes).
+		Group(dao.GroupDailyStat.Columns.BatteryType).
+		Scan(&list)
 	return
 }

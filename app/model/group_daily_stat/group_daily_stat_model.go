@@ -31,6 +31,7 @@ var (
         IsArrears    string // 是否未付款 1 是 0 不是  
         Date         string // 日期 如 20210705        
         Total        string // 使用人数                
+        UserIds      string //                         
         CreatedAt    string // 创建时间                
         UpdatedAt    string //
 	}{
@@ -40,6 +41,7 @@ var (
         IsArrears:   "isArrears",    
         Date:        "date",         
         Total:       "total",        
+        UserIds:     "userIds",      
         CreatedAt:   "createdAt",    
         UpdatedAt:   "updatedAt",
 	}
