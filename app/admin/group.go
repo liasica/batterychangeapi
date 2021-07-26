@@ -98,19 +98,16 @@ func (*groupApi) Create(r *ghttp.Request) {
 			})
 		} else {
 			if _err := service.UserService.SetUserTypeGroupBoss(ctx, req.ContactName, groupId); _err != nil {
-				fmt.Println(err)
 				return _err
 			}
 		}
 		if len(userInsertData) > 0 {
 			if _err := service.UserService.CreateGroupUsers(ctx, userInsertData); _err != nil {
-				fmt.Println(err)
 				return _err
 			}
 		}
 		if len(usersIds) > 0 {
 			if _err := service.UserService.SetUsersGroupId(ctx, usersIds, groupId); _err != nil {
-				fmt.Println(err)
 				return _err
 			}
 		}
@@ -120,7 +117,12 @@ func (*groupApi) Create(r *ghttp.Request) {
 			groupUserIds[i] = user.Id
 		}
 		if _err := service.GroupUserService.BatchCreate(ctx, groupUserIds, groupId); _err != nil {
-			fmt.Println(err)
+			return _err
+		}
+		if _err := service.GroupDailyStatService.GenerateWeek(ctx, groupId, 60); _err != nil {
+			return _err
+		}
+		if _err := service.GroupDailyStatService.GenerateWeek(ctx, groupId, 72); _err != nil {
 			return _err
 		}
 		return nil
