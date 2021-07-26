@@ -2,6 +2,7 @@ package service
 
 import (
 	"battery/app/dao"
+	"battery/app/model"
 	"context"
 	"errors"
 	"fmt"
@@ -143,5 +144,22 @@ func (s *groupDailyStatService) StatDateRange(ctx context.Context, groupIds []ui
 			}
 		}
 	}
+	return
+}
+
+type resArrearsDays []struct {
+	BatteryType uint
+	Cnt         uint
+}
+
+// ArrearsDays 获取团队未付款天数
+func (s *groupDailyStatService) ArrearsDays(ctx context.Context, groupId uint) (res resArrearsDays, err error) {
+	now := gtime.Now()
+	err = dao.GroupDailyStat.Ctx(ctx).Fields("sum(total) as cnt").
+		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
+		WhereLTE(dao.GroupDailyStat.Columns.Date, fmt.Sprintf("%d%d%d", now.Year(), now.Month(), now.Day())).
+		Where(dao.GroupDailyStat.Columns.IsArrears, model.GroupDailyStatIsArrearsYes).
+		Group(dao.GroupDailyStat.Columns.BatteryType).
+		Scan(&res)
 	return
 }

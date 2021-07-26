@@ -21,9 +21,14 @@ type groupApi struct {
 // @success 200 {object} response.JsonResponse{data=model.UserGroupStatRep}  "返回结果"
 func (*groupApi) Stat(r *ghttp.Request) {
 	user := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
+	var days uint = 0
+	res, _ := service.GroupDailyStatService.ArrearsDays(r.Context(), user.GroupId)
+	for _, day := range res {
+		days = days + day.Cnt
+	}
 	response.JsonOkExit(r, model.UserGroupStatRep{
 		UserCnt: service.GroupUserService.UserCnt(r.Context(), user.GroupId),
-		Days:    service.GroupService.StatDays(r.Context(), user.GroupId),
+		Days:    days,
 	})
 }
 

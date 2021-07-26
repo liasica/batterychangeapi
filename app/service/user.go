@@ -267,8 +267,13 @@ func (s *userService) Profile(ctx context.Context) (rep model.UserProfileRep) {
 		rep.GroupUser.BatteryType = u.BatteryType
 	}
 	if user.Type == model.UserTypeGroupBoss {
-		rep.GroupBoos.UserCnt = 0 //TODO
-		rep.GroupBoos.Days = 0    //TODO
+		var days uint = 0
+		res, _ := GroupDailyStatService.ArrearsDays(ctx, user.GroupId)
+		for _, day := range res {
+			days = days + day.Cnt
+		}
+		rep.GroupBoos.Days = days
+		rep.GroupBoos.UserCnt = GroupUserService.UserCnt(ctx, user.GroupId)
 	}
 	return
 }

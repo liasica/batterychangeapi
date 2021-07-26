@@ -18,7 +18,7 @@ func (*groupService) StatDays(ctx context.Context, groupId uint) uint {
 	now := gtime.Now()
 	days, _ := dao.GroupDailyStat.Ctx(ctx).
 		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
-		WhereGTE(dao.GroupDailyStat.Columns.Date, fmt.Sprintf("%d%d%d", now.Year(), now.Month(), now.Day())).
+		WhereLTE(dao.GroupDailyStat.Columns.Date, fmt.Sprintf("%d%d%d", now.Year(), now.Month(), now.Day())).
 		Sum(dao.GroupDailyStat.Columns.Total)
 	return uint(days)
 }

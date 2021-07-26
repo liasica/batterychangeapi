@@ -12,3 +12,5 @@ import (
 type GroupDailyStat internal.GroupDailyStat
 
 // Fill with you ideas below.
+
+const GroupDailyStatIsArrearsYes = 1

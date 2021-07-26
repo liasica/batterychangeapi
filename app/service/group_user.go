@@ -14,7 +14,7 @@ type groupUserService struct {
 
 // UserCnt 获取团体总人数
 func (*groupUserService) UserCnt(ctx context.Context, groupId uint) uint {
-	cnt, _ := dao.GroupUser.Ctx(ctx).Unscoped().Where(dao.GroupUser.Columns.GroupId, groupId).Group(dao.GroupUser.Columns.UserId).Count()
+	cnt, _ := dao.GroupUser.Ctx(ctx).Where(dao.GroupUser.Columns.GroupId, groupId).Group(dao.GroupUser.Columns.UserId).Count()
 	return uint(cnt)
 }
 
