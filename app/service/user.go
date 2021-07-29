@@ -138,10 +138,7 @@ func (*userService) SetUserTypeGroupBoss(ctx context.Context, mobile string, gro
 // Login 用户登录
 func (s *userService) Login(ctx context.Context, req model.UserLoginReq) (rep model.UserLoginRep, err error) {
 	var user model.User
-	err = dao.User.Ctx(ctx).Where(dao.User.Columns.Mobile, req.Mobile).Scan(&user)
-	if err != nil {
-		return
-	}
+	_ = dao.User.Ctx(ctx).Where(dao.User.Columns.Mobile, req.Mobile).Scan(&user)
 	if user.Id == 0 {
 		userId, err := s.Register(ctx, model.UserRegisterReq{
 			Mobile: req.Mobile,
