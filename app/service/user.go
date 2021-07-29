@@ -151,16 +151,15 @@ func (s *userService) Login(ctx context.Context, req model.UserLoginReq) (rep mo
 		if err != nil {
 			return rep, err
 		}
-		goto GenerateAccessToken
+	} else {
+		if !SmsServer.Verify(ctx, model.SmsVerifyReq{
+			Mobile: req.Mobile,
+			Code:   req.Sms,
+		}) {
+			err = errors.New("手机号或验证码错误登录失败")
+			return
+		}
 	}
-	if !SmsServer.Verify(ctx, model.SmsVerifyReq{
-		Mobile: req.Mobile,
-		Code:   req.Sms,
-	}) {
-		err = errors.New("手机号或验证码错误登录失败")
-		return
-	}
-GenerateAccessToken:
 	token := dao.User.GenerateAccessToken(user.Id, user.Salt)
 	_, err = dao.User.Where(dao.User.Columns.Id, user.Id).Update(g.Map{
 		dao.User.Columns.AccessToken: token,
