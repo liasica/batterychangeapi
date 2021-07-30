@@ -33,7 +33,7 @@ func init() {
 
 	s.BindStatusHandler(http.StatusNotFound, func(r *ghttp.Request) {
 
-		//TODO 易签回调404
+		// TODO 易签回调404
 		if r.URL.String() == "/esign/callback/real_name" {
 			esign.CallbackApi.RealName(r)
 		}
@@ -44,16 +44,19 @@ func init() {
 
 	})
 
-	//认证签约回调
+	// 认证签约回调
 	s.Group("/esign", func(group *ghttp.RouterGroup) {
-		//group.Middleware(
+		// group.Middleware(
 		//	esign.Middleware.Ip,
-		//)
+		// )
 		group.POST("/callback/real_name", esign.CallbackApi.RealName)
 		group.POST("/callback/sign", esign.CallbackApi.Sign)
+		group.GET("/:flowId", esign.CallbackApi.SignState)
 	})
 
-	//支付回调
+
+
+	// 支付回调
 	s.Group("/payment_callback", func(group *ghttp.RouterGroup) {
 		group.POST("/package_new/alipay", payment.AlipayApi.PackageOrderNewSuccessCallback)
 		group.POST("/package_new/wechat", payment.WechatApi.PackageOrderNewSuccessCallback)
@@ -65,13 +68,13 @@ func init() {
 		group.POST("/package_penalty/wechat", payment.WechatApi.PackageOrderPenaltySuccessCallback)
 	})
 
-	//公用
+	// 公用
 	s.Group("/api", func(group *ghttp.RouterGroup) {
 		group.POST("/upload/image", api.Upload.Image)
 		group.POST("/sms", api.SmsApi.Send)
 	})
 
-	//骑手
+	// 骑手
 	s.Group("/rapi", func(group *ghttp.RouterGroup) {
 		group.POST("/register", user.UserApi.Register)
 		group.POST("/login", user.UserApi.Login)
@@ -111,7 +114,7 @@ func init() {
 		group.PUT("/message/read", user.MessageApi.Read)
 	})
 
-	//店长
+	// 店长
 	s.Group("/sapi", func(group *ghttp.RouterGroup) {
 		group.POST("/login", shop.ManagerApi.Login)
 		group.Middleware(
@@ -142,7 +145,7 @@ func init() {
 		group.POST("/exception", shop.ExceptionApi.Report)
 	})
 
-	//后台管理员
+	// 后台管理员
 	s.Group("/adm", func(group *ghttp.RouterGroup) {
 		group.POST("/login", admin.UserApi.Login)
 		group.Middleware(
