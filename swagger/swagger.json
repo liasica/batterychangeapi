@@ -77,7 +77,7 @@
                 }
             }
         },
-        "/esign/state/:flowId": {
+        "/esign/state/:fileId": {
             "get": {
                 "consumes": [
                     "application/json"

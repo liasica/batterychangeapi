@@ -98,12 +98,12 @@ func (*callbackApi) Sign(r *ghttp.Request) {
 // @tags    公用
 // @Accept  json
 // @Produce  json
-// @router  /esign/state/:flowId [GET]
+// @router  /esign/state/:fileId [GET]
 // @success 200 {object} response.JsonResponse{data=int}  "返回结果"
 func (*callbackApi) SignState(r *ghttp.Request) {
-	flowId := r.Get("flowId").(string)
+	fileId := r.Get("fileId").(string)
 
-	s, err := service.SignService.GetDetailBayFlowId(r.Context(), flowId)
+	s, err := service.SignService.GetDetailBayFileId(r.Context(), fileId)
 	if err != nil {
 		r.Response.Status = http.StatusInternalServerError
 		r.Exit()

@@ -261,7 +261,8 @@ func (*bizApi) Sign(r *ghttp.Request) {
 			BusinessScene: g.Cfg().GetString("eSign.personal.businessScene"),
 			FlowConfigInfo: beansSign.CreateFlowOneStepReqDocFlowInfoFlowConfigInfo{
 				NoticeDeveloperUrl: g.Cfg().GetString("api.host") + "/esign/callback/sign",
-				RedirectUrl:        "sgjdriver://driverapp.shiguangjv.com?path=back&data=success&from=/single-webview",
+				RedirectUrl:        "sgjdriver://driverapp.shiguangjv.com?path=back&data=success&from=/single-webview&signFileId=" + res.Data.FileId,
+				SignPlatform: 		"1",
 			},
 		},
 		Signers: []beansSign.CreateFlowOneStepReqDocSigner{
@@ -544,7 +545,8 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 			BusinessScene: g.Cfg().GetString("eSign.group.businessScene"),
 			FlowConfigInfo: beansSign.CreateFlowOneStepReqDocFlowInfoFlowConfigInfo{
 				NoticeDeveloperUrl: g.Cfg().GetString("api.host") + "/esign/callback/sign",
-				RedirectUrl:        "sgjdriver://driverapp.shiguangjv.com?path=back&data=success&from=/single-webview",
+				RedirectUrl:        "sgjdriver://driverapp.shiguangjv.com?path=back&data=success&from=/single-webview&signFileId=" + res.Data.FileId,
+				SignPlatform: 		"1",
 			},
 		},
 		Signers: []beansSign.CreateFlowOneStepReqDocSigner{

@@ -17,9 +17,17 @@ func (*signService) Create(ctx context.Context, data model.Sign) (uint64, error)
 	return uint64(id), err
 }
 
+// GetDetailBayFlowId 根据flowId获取签约信息
 func (*signService) GetDetailBayFlowId(ctx context.Context, flowId string) (model.Sign, error) {
 	var sign model.Sign
 	err := dao.Sign.Ctx(ctx).Where(dao.Sign.Columns.FlowId, flowId).Limit(1).Scan(&sign)
+	return sign, err
+}
+
+// GetDetailBayFileId 根据fileId获取签约信息
+func (*signService) GetDetailBayFileId(ctx context.Context, fileId string) (model.Sign, error) {
+	var sign model.Sign
+	err := dao.Sign.Ctx(ctx).Where(dao.Sign.Columns.FileId, fileId).Limit(1).Scan(&sign)
 	return sign, err
 }
 

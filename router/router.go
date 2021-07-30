@@ -51,7 +51,7 @@ func init() {
 		// )
 		group.POST("/callback/real_name", esign.CallbackApi.RealName)
 		group.POST("/callback/sign", esign.CallbackApi.Sign)
-		group.GET("/:flowId", esign.CallbackApi.SignState)
+		group.GET("/:fileId", esign.CallbackApi.SignState)
 	})
 
 
