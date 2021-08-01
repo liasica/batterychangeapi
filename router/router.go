@@ -91,6 +91,7 @@ func init() {
 
 		group.POST("/biz_sign", user.BizApi.Sign)
 		group.POST("/biz_new", user.BizApi.New)
+		group.GET("/biz_new/:orderId/payState", user.BizApi.NewPackagerOrderState)
 		group.POST("/biz_renewal", user.BizApi.Renewal)
 		group.POST("/biz_new_group", user.BizApi.GroupNew)
 		group.GET("/biz_penalty", user.BizApi.PenaltyProfile)

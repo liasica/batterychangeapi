@@ -176,6 +176,7 @@ func (*bizApi) New(r *ghttp.Request) {
 			}); err == nil {
 				b, _ := json.Marshal(res)
 				response.JsonOkExit(r, model.UserBizNewRep{
+					OrderId: order.Id,
 					PayOrderInfo: string(b),
 				})
 				return
@@ -190,6 +191,7 @@ func (*bizApi) New(r *ghttp.Request) {
 				NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_new/alipay",
 			}); err == nil {
 				response.JsonOkExit(r, model.UserBizNewRep{
+					OrderId: order.Id,
 					PayOrderInfo: res,
 				})
 				return
@@ -204,6 +206,29 @@ func (*bizApi) New(r *ghttp.Request) {
 	// 经过错误处理之后遇到需要中断的[错误返回]可以直接panic
 	panic(err)
 }
+
+// NewPackagerOrderState
+// @summary 骑手-个签骑手签约支付之后获取订单支付状态
+// @Accept  json
+// @Produce  json
+// @tags    骑手-业务办理
+// @param 	orderId path integer true "订单ID"
+// @router  /rapi/biz_new/:orderId/payState [GET]
+// @success 200 {object} response.JsonResponse{data=model.UserBizNewPackageOrderStateRep}"返回结果"
+func (*bizApi) NewPackagerOrderState(r *ghttp.Request) {
+	orderId := r.GetUint64("orderId", 0)
+	if orderId == 0 {
+		response.Json(r, response.RespCodeArgs, "参数错误")
+	}
+	order, err := service.PackagesOrderService.Detail(r.Context(), orderId)
+	if err != nil {
+		response.Json(r, response.RespCodeNotFound, "不存在的订单")
+	}
+	response.JsonOkExit(r, model.UserBizNewPackageOrderStateRep{
+		PayState: order.PayState,
+	})
+}
+
 
 // Sign 新签
 // @summary 骑手-个签用户新签约套餐

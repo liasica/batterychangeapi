@@ -278,6 +278,49 @@
                 }
             }
         },
+        "/rapi/biz_new/:orderId/payState": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手-业务办理"
+                ],
+                "summary": "骑手-个签骑手签约支付之后获取订单支付状态",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订单ID",
+                        "name": "orderId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserBizNewPackageOrderStateRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/rapi/biz_new_group": {
             "post": {
                 "consumes": [
@@ -2789,15 +2832,28 @@
                 }
             }
         },
+        "model.UserBizNewPackageOrderStateRep": {
+            "type": "object",
+            "properties": {
+                "payState": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.UserBizNewRep": {
             "type": "object",
             "required": [
-                "PayOrderInfo"
+                "PayOrderInfo",
+                "orderId"
             ],
             "properties": {
                 "PayOrderInfo": {
                     "description": "发起支付使用数据",
                     "type": "string"
+                },
+                "orderId": {
+                    "description": "订单ID",
+                    "type": "integer"
                 }
             }
         },

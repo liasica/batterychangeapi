@@ -60,7 +60,13 @@ type UserBizNewReq struct {
 
 // UserBizNewRep 个签骑手新签套餐响应数据
 type UserBizNewRep struct {
+	OrderId uint64 `validate:"required" json:"orderId"` // 订单ID
 	PayOrderInfo string `validate:"required" json:"PayOrderInfo"` //发起支付使用数据
+
+}
+// UserBizNewPackageOrderStateRep 个签骑手获取支付状态响应数据
+type UserBizNewPackageOrderStateRep struct {
+	PayState uint `json:"payState"`
 }
 
 // UserBizRenewalReq 个签骑手续约请求数据
