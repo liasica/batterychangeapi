@@ -20,9 +20,13 @@ var SmsServer = smsService{
 	accessKeySecret: g.Cfg().GetString("sms.accessKeySecret"),
 }
 
-const (
-	storeTestPhone   = "18501234567"
-	storeTestSmsCode = "123456"
+// 商店审核、debug
+var (
+	testPhone   = map[string]string{
+		"18501234567": "123456",
+		"18501358308": "123456",
+		"18911604215": "123456",
+	}
 )
 
 type smsService struct {
@@ -68,10 +72,7 @@ func (s *smsService) Send(ctx context.Context, req model.SmsSendReq) error {
 // Verify 短信验证
 func (s *smsService) Verify(ctx context.Context, req model.SmsVerifyReq) bool {
 	// 是否商店审核账号和短信: 18501234567 123456
-	if req.Mobile == storeTestPhone && req.Code == storeTestSmsCode {
-		return true
-	}
-	if req.Mobile == "18911604215" { //TODO delete
+	if code, ok := testPhone[req.Mobile]; ok && req.Code == code {
 		return true
 	}
 	var sms model.Sms
