@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/smartwalle/alipay/v3"
 	"net/http"
+	"path/filepath"
 	"strconv"
 )
 
@@ -23,14 +24,20 @@ func Service() *service {
 }
 
 func (s *service) client() *alipay.Client {
+	appId := g.Cfg().GetString("payment.alipay.appId")
 	client, err := alipay.New(
-		g.Cfg().GetString("payment.alipay.appId"),
+		appId,
 		g.Cfg().GetString("payment.alipay.privateKey"),
 		true,
 	)
 	if err != nil {
-		panic("alipay error")
+		panic("[alipay] client error")
 	}
+	// 加载公钥证书
+	p := filepath.Join("config", "alipay", appId)
+	_ = client.LoadAppPublicCertFromFile(p + "/appCertPublicKey_2021002155655488.cer") // 加载应用公钥证书
+	_ = client.LoadAliPayRootCertFromFile(p + "/alipayRootCert.cer")                   // 加载支付宝根证书
+	_ = client.LoadAliPayPublicCertFromFile(p + "/alipayCertPublicKey_RSA2.cer")       // 加载支付宝公钥证书
 	return client
 }
 
