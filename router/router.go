@@ -46,9 +46,6 @@ func init() {
 
 	// 认证签约回调
 	s.Group("/esign", func(group *ghttp.RouterGroup) {
-		// group.Middleware(
-		//	esign.Middleware.Ip,
-		// )
 		group.POST("/callback/real_name", esign.CallbackApi.RealName)
 		group.POST("/callback/sign", esign.CallbackApi.Sign)
 		group.GET("/:fileId", esign.CallbackApi.SignState)

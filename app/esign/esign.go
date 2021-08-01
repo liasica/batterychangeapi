@@ -6,8 +6,10 @@ import (
 	"battery/app/service"
 	"battery/library/response"
 	"context"
+	"encoding/json"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/net/ghttp"
+	"log"
 	"net/http"
 )
 
@@ -60,6 +62,8 @@ type SignReq struct {
 
 // Sign 签约完成回调
 func (*callbackApi) Sign(r *ghttp.Request) {
+	b, _ := json.MarshalIndent(r.Body, "", "  ")
+	log.Printf("签约完成回调参数: %s", string(b))
 	var req SignReq
 	if err := r.Parse(&req); err != nil {
 		r.Response.Status = http.StatusBadRequest
