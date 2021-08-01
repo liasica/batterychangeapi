@@ -66,7 +66,7 @@ type UserBizNewRep struct {
 }
 // UserBizNewPackageOrderStateRep 个签骑手获取支付状态响应数据
 type UserBizNewPackageOrderStateRep struct {
-	PayState uint `json:"payState"`
+	PayState uint `json:"payState"` // 1 待支付 2 已支付
 }
 
 // UserBizRenewalReq 个签骑手续约请求数据

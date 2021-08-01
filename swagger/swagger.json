@@ -2836,6 +2836,7 @@
             "type": "object",
             "properties": {
                 "payState": {
+                    "description": "1 待支付 2 已支付",
                     "type": "integer"
                 }
             }
