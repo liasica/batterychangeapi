@@ -163,7 +163,6 @@ func (s *userService) Login(ctx context.Context, req model.UserLoginReq) (rep mo
 	token := dao.User.GenerateAccessToken(user.Id, user.Salt)
 	_, err = dao.User.Where(dao.User.Columns.Id, user.Id).Update(g.Map{
 		dao.User.Columns.AccessToken: token,
-		dao.User.Columns.Qr:          snowflake.Service().Generate(),
 	})
 	if err == nil {
 		rep.AccessToken = token
