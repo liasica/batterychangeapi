@@ -26,7 +26,8 @@ func (s *service) client() *alipay.Client {
 	client, err := alipay.New(
 		g.Cfg().GetString("payment.alipay.appId"),
 		g.Cfg().GetString("payment.alipay.privateKey"),
-		g.Cfg().GetBool("payment.alipay.isProd"))
+		true,
+	)
 	if err != nil {
 		panic("alipay error")
 	}
