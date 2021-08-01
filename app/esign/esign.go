@@ -6,10 +6,8 @@ import (
 	"battery/app/service"
 	"battery/library/response"
 	"context"
-	"encoding/json"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/net/ghttp"
-	"log"
 	"net/http"
 )
 
@@ -46,6 +44,8 @@ func (*callbackApi) RealName(r *ghttp.Request) {
 	r.Exit()
 }
 
+// SignReq 签署人签署完成回调通知结构
+// https://open.esign.cn/doc/detail?id=opendoc%2Fpaas_api%2Fawifwu&namespace=opendoc%2Fpaas_api
 type SignReq struct {
 	Action              string `json:"action"`              // 标记该通知的业务类型，该通知固定为：SIGN_FLOW_UPDATE
 	FlowId              string `json:"flowId"`              // 流程id
@@ -60,17 +60,28 @@ type SignReq struct {
 	ThirdPartyUserId    string `json:"thirdPartyUserId"`    // 本次签署任务中对应的签署账号唯一标识，和创建当前签署账号时所传入的thirdPartyUserId值一致
 }
 
+// SignFinishReq 流程结束回调通知
+// https://open.esign.cn/doc/detail?id=opendoc%2Fpaas_api%2Fld5udg&namespace=opendoc%2Fpaas_api
+type SignFinishReq struct {
+	Action            string `json:"action"`            // 标记该通知的业务类型，该通知固定为：SIGN_FLOW_FINISH
+	FlowId            string `json:"flowId"`            // 流程id
+	BusinessScence    string `json:"businessScence"`    // 签署文件主题描述
+	FlowStatus        string `json:"flowStatus"`        // 任务状态 2-已完成: 所有签署人完成签署； 3-已撤销: 发起方撤销签署任务； 5-已过期: 签署截止日到期后触发； 7-已拒签
+	StatusDescription string `json:"statusDescription"` // 当流程异常结束时，附加终止原因描述
+	CreateTime        string `json:"createTime"`        // 签署任务发起时间 格式yyyy-MM-dd HH:mm:ss
+	EndTime           string `json:"endTime"`           // 签署任务结束时间 格式yyyy-MM-dd HH:mm:ss
+	Timestamp         int64  `json:"timestamp"`         // 时间戳
+}
+
 // Sign 签约完成回调
 func (*callbackApi) Sign(r *ghttp.Request) {
-	b, _ := json.MarshalIndent(r.Body, "", "  ")
-	log.Printf("签约完成回调参数: %s", string(b))
-	var req SignReq
+	var req SignFinishReq
 	if err := r.Parse(&req); err != nil {
 		r.Response.Status = http.StatusBadRequest
 		r.Exit()
 	}
-	// 只处理签约成功的
-	if req.Action != "SIGN_FLOW_UPDATE" && req.SignResult == 2 {
+	// 签署人签署完成回调通知
+	if req.Action == "SIGN_FLOW_FINISH" && req.FlowStatus == "2" {
 		sign, err := service.SignService.GetDetailBayFlowId(r.Context(), req.FlowId)
 		if err != nil {
 			r.Response.Status = http.StatusInternalServerError
