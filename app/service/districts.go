@@ -70,7 +70,7 @@ func (s *districtsService) MapIdName(ctx context.Context, ids []uint) map[uint]s
 	return rep
 }
 
-// MapIdName 获取地区名IDMap
+// GetByIds 获取地区名IDMap
 func (s *districtsService) GetByIds(ctx context.Context, ids []uint) (list []model.Districts) {
 	_ = dao.Districts.Ctx(ctx).WhereIn(dao.Shop.Columns.Id, ids).Scan(&list)
 	return
