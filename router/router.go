@@ -98,6 +98,7 @@ func init() {
 		group.POST("/biz_penalty", user.BizApi.Penalty)
 
 		group.GET("/packages", user.PackagesApi.List)
+		group.GET("/packages/:id", user.PackagesApi.Detail)
 		group.GET("/shop", user.ShopApi.List)
 
 		group.POST("/biz_battery_renewal", user.BizApi.BatteryRenewal)
