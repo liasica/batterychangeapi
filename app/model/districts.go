@@ -25,3 +25,12 @@ type DistrictsCurrentCityRep struct {
 	Id   uint   `validate:"required" json:"id"`
 	Name string `validate:"required" json:"name"`
 }
+
+// OpenCityListRepItem 获取开城市列表返回
+type OpenCityListRepItem struct {
+	Id     uint    `validate:"required" json:"id"`          // ID
+	Name   string  `validate:"required" json:"name"`        // 名称
+	AdCode uint    `validate:"required" json:"adCode"`      // 行政区代码
+	Lng    float64 `validate:"required" json:"lng"` 		// 经度
+	Lat    float64 `validate:"required" json:"lat"`         // 纬度
+}

@@ -1001,7 +1001,7 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-选择已经开放的城市",
+                "summary": "骑手-获取已经开放的城市",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -1016,7 +1016,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.DistrictsChildRep"
+                                                "$ref": "#/definitions/model.OpenCityListRepItem"
                                             }
                                         }
                                     }
@@ -2077,21 +2077,6 @@
                 }
             }
         },
-        "model.DistrictsChildRep": {
-            "type": "object",
-            "required": [
-                "id",
-                "name"
-            ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "model.DistrictsCurrentCityRep": {
             "type": "object",
             "required": [
@@ -2243,6 +2228,38 @@
                 },
                 "type": {
                     "description": "订单类型 type 为 100，102 时返回",
+                    "type": "string"
+                }
+            }
+        },
+        "model.OpenCityListRepItem": {
+            "type": "object",
+            "required": [
+                "adCode",
+                "id",
+                "lat",
+                "lng",
+                "name"
+            ],
+            "properties": {
+                "adCode": {
+                    "description": "行政区代码",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "lat": {
+                    "description": "纬度",
+                    "type": "number"
+                },
+                "lng": {
+                    "description": "经度",
+                    "type": "number"
+                },
+                "name": {
+                    "description": "名称",
                     "type": "string"
                 }
             }

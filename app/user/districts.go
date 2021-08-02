@@ -33,20 +33,23 @@ func (*districtsApi) CurrentCity(r *ghttp.Request) {
 }
 
 // OpenCityList
-// @summary 骑手-选择已经开放的城市
+// @summary 骑手-获取已经开放的城市
 // @tags    骑手
 // @Produce  json
 // @router  /rapi/open_city [GET]
-// @success 200 {object} response.JsonResponse{data=[]model.DistrictsChildRep}  "返回结果"
+// @success 200 {object} response.JsonResponse{data=[]model.OpenCityListRepItem}  "返回结果"
 func (*districtsApi) OpenCityList(r *ghttp.Request) {
 	cityIds := service.PackagesService.GetCityIds(r.Context())
 	if len(cityIds) > 0 {
-		rep := make([]model.DistrictsChildRep, len(cityIds))
+		rep := make([]model.OpenCityListRepItem, len(cityIds))
 		districtsList := service.DistrictsService.GetByIds(r.Context(), cityIds)
 		for key, city := range districtsList {
-			rep[key] = model.DistrictsChildRep{
+			rep[key] = model.OpenCityListRepItem{
 				Id:   city.Id,
 				Name: city.Name,
+				AdCode: city.AdCode,
+				Lng: city.Lng,
+				Lat: city.Lat,
 			}
 		}
 		response.JsonOkExit(r, rep)
