@@ -25,7 +25,6 @@ func (*alipayApi) PackageOrderNewSuccessCallback(r *ghttp.Request) {
 		r.Exit()
 	}
 	if res.TradeStatus == alipayV3.TradeStatusSuccess {
-		//TODO 查询校验
 		if packageOrderNewSuccess(r.Context(), gtime.New(res.GmtPayment), res.OutTradeNo, res.TradeNo, model.PayTypeAliPay) != nil {
 			r.Response.Status = http.StatusInternalServerError
 			r.Response.Write("error")
@@ -47,7 +46,6 @@ func (*alipayApi) PackageOrderRenewalSuccessCallback(r *ghttp.Request) {
 		r.Exit()
 	}
 	if res.TradeStatus == alipayV3.TradeStatusSuccess {
-		//TODO 查询校验
 		if packageOrderRenewalSuccess(r.Context(), gtime.New(res.GmtPayment), res.OutTradeNo, res.TradeNo, model.PayTypeAliPay) != nil {
 			r.Response.Status = http.StatusInternalServerError
 			r.Response.Write("error")
@@ -70,7 +68,6 @@ func (*alipayApi) PackageOrderPenaltySuccessCallback(r *ghttp.Request) {
 		return
 	}
 	if res.TradeStatus == alipayV3.TradeStatusSuccess {
-		//TODO 查询校验
 		if packageOrderPenaltySuccess(r.Context(), gtime.New(res.GmtPayment), res.OutTradeNo, res.TradeNo, model.PayTypeAliPay) != nil {
 			r.Response.Status = http.StatusInternalServerError
 			r.Response.Write("error")
