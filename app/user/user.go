@@ -66,6 +66,9 @@ func (*userApi) Auth(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
+	if user, err := service.UserService.GetUserByIdCardNo(r.Context(), req.IdCardNo); err == nil && user.AuthState == model.AuthStateVerifySuccess{
+		response.Json(r, response.RespCodeArgs, fmt.Sprintf("证件号码 %s 已认证超过，请检查证件号码", req.IdCardNo))
+	}
 	if res, err := service.UserService.RealNameAuthSubmit(r.Context(), req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	} else {

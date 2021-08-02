@@ -172,6 +172,12 @@ func (s *userService) Login(ctx context.Context, req model.UserLoginReq) (rep mo
 	return
 }
 
+// GetUserByIdCardNo 使用证件号码获取用户
+func(s *userService)  GetUserByIdCardNo(ctx context.Context, idCardNo string) (model.User, error) {
+	var user model.User
+	err := dao.User.Ctx(ctx).Where(dao.User.Columns.IdCardNo, idCardNo).Limit(1).Scan(&user)
+	return user, err
+}
 // RealNameAuthSubmit 骑手实名认证提交
 func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserRealNameAuthReq) (rep model.UserRealNameAuthRep, err error) {
 	user := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
