@@ -29,3 +29,31 @@ func (*packagesApi) List(r *ghttp.Request) {
 	}
 	response.JsonOkExit(r, service.PackagesService.ListUser(r.Context(), req))
 }
+
+
+// Detail 个签用户套餐列表
+// @summary 骑手-个签用户套餐详情
+// @tags    骑手
+// @Accept  json
+// @Produce  json
+// @param 	id path integer  true "套餐ID"
+// @router  /rapi/packages/:id [GET]
+// @success 200 {object} response.JsonResponse{data=model.PackagesRiderListRepItem}  "返回结果"
+func (*packagesApi) Detail(r *ghttp.Request) {
+	var req model.IdReq
+	if err := r.Parse(&req); err != nil {
+		response.Json(r, response.RespCodeArgs, err.Error())
+	}
+	packages, err := service.PackagesService.Detail(r.Context(), uint(req.Id))
+	if err != nil {
+		response.JsonErrExit(r, response.RespCodeNotFound)
+	}
+	response.JsonOkExit(r, model.PackagesRiderListRepItem{
+		Id:          packages.Id,
+		Name:        packages.Name,
+		Days:        packages.Days,
+		BatteryType: packages.BatteryType,
+		Amount:      packages.Amount,
+		Earnest:     packages.Earnest,
+	})
+}
