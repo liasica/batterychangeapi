@@ -81,7 +81,7 @@ func (s *smsService) Verify(ctx context.Context, req model.SmsVerifyReq) bool {
 		return false
 	}
 	// 两分钟过期时间
-	if sms.Code == req.Code && sms.CreatedAt.Add(time.Minute*2).After(gtime.Now()) {
+	if sms.Code == req.Code && sms.CreatedAt.Add(time.Minute*5).After(gtime.Now()) {
 		// 直接删除已经使用的短信
 		_, _ = dao.Sms.Ctx(ctx).Where(dao.Sms.Columns.Mobile, sms.Mobile).Delete()
 		return true
