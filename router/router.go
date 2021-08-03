@@ -3,6 +3,7 @@ package router
 import (
 	"battery/app/admin"
 	"battery/app/api"
+	"battery/app/debug"
 	"battery/app/esign"
 	"battery/app/payment"
 	"battery/app/service"
@@ -51,7 +52,9 @@ func init() {
 		group.GET("/:fileId", esign.CallbackApi.SignState)
 	})
 
-
+	s.Group("/debug", func(group *ghttp.RouterGroup) {
+		group.GET("/user/reset", debug.User.Reset)
+	})
 
 	// 支付回调
 	s.Group("/payment_callback", func(group *ghttp.RouterGroup) {
