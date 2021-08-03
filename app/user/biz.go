@@ -12,7 +12,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -554,7 +553,6 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 	})
 
 	if err != nil || res.Code != 0 {
-		fmt.Println(470, err.Error())
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	// 发起签署
@@ -611,7 +609,6 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 		},
 	})
 	if err != nil || res.Code != 0 {
-		fmt.Println(525, err)
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	// 获取签署地址
@@ -620,7 +617,6 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 		AccountId: user.EsignAccountId,
 	})
 	if err != nil || res.Code != 0 {
-		fmt.Println(534, err.Error())
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	if _, _err := service.SignService.Create(r.Context(), model.Sign{
@@ -632,7 +628,6 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 		FileId:          res.Data.FileId,
 		FlowId:          resFlow.Data.FlowId,
 	}); _err != nil {
-		fmt.Println(546, _err.Error())
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	response.JsonOkExit(r, model.SignRep{
