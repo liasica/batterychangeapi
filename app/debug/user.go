@@ -25,7 +25,7 @@ func (*_user) Reset(r *ghttp.Request) {
     columns := dao.User.Columns
     data := g.Map{
         columns.GroupId:         0,
-        columns.Type:            0,
+        columns.Type:            1,
         columns.BatteryState:    0,
         columns.BatteryType:     0,
         columns.PackagesOrderId: 0,
