@@ -326,7 +326,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 		},
 	})
 	if err != nil || resFlow.Code != 0 {
-		g.Log().Error(err)
+		g.Log().Error(err, resFlow)
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	// 获取签署地址
