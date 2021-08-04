@@ -2,46 +2,16 @@ package payment
 
 import (
 	"battery/app/model"
-	"battery/app/service"
 	"battery/library/payment/wechat"
-	"context"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
-	"github.com/shopspring/decimal"
 	"net/http"
 )
 
 var WechatApi = wechatApi{}
 
 type wechatApi struct {
-}
-
-// verifyPackagerOrderContent 查询订单并校验，返回校验结果
-func (*wechatApi) verifyPackagerOrderContent(ctx context.Context, content *wechatPaySuccessNotifyContent) bool {
-	if content.TradeState != "SUCCESS" {
-		return false
-	}
-
-	res, err := wechat.Service().QueryOrderByOutTradeNo(ctx, content.OutTradeNo)
-	if err != nil {
-		return false
-	}
-	if *res.TradeState != "SUCCESS" {
-		return false
-	}
-
-	order, err := service.PackagesOrderService.DetailByNo(ctx, content.OutTradeNo)
-	if err != nil {
-		g.Log().Errorf("微信支付回调订单错误: %v", content)
-		return false
-	}
-	if *res.Amount.PayerTotal != decimal.NewFromFloat(order.Amount).Mul(decimal.NewFromInt(100)).IntPart() { //以查询金额为准
-		g.Log().Errorf("微信支付回调金额错误: %v", content)
-		return false
-	}
-
-	return true
 }
 
 // PackageOrderNewSuccessCallback 新购套餐支付成功回调
@@ -54,10 +24,6 @@ func (api *wechatApi) PackageOrderNewSuccessCallback(r *ghttp.Request) {
 	}
 
 	if content.TradeState == "SUCCESS" {
-		if !api.verifyPackagerOrderContent(r.Context(), &content) {
-			r.Response.Status = http.StatusBadRequest
-			r.Exit()
-		}
 		if err := packageOrderNewSuccess(r.Context(), content.SuccessTime, content.OutTradeNo, content.TransactionId, model.PayTypeWechat); err != nil {
 			g.Log().Error(err.Error())
 			r.Response.Status = http.StatusInternalServerError
@@ -81,10 +47,6 @@ func (api *wechatApi) PackageOrderRenewalSuccessCallback(r *ghttp.Request) {
 		r.Exit()
 	}
 	if content.TradeState == "SUCCESS" {
-		if !api.verifyPackagerOrderContent(r.Context(), &content) {
-			r.Response.Status = http.StatusBadRequest
-			r.Exit()
-		}
 		if err := packageOrderRenewalSuccess(r.Context(), content.SuccessTime, content.OutTradeNo, content.TransactionId, model.PayTypeWechat); err != nil {
 			g.Log().Error(err.Error())
 			r.Response.Status = http.StatusInternalServerError
@@ -107,10 +69,6 @@ func (api *wechatApi) PackageOrderPenaltySuccessCallback(r *ghttp.Request) {
 		r.Exit()
 	}
 	if content.TradeState == "SUCCESS" {
-		if !api.verifyPackagerOrderContent(r.Context(), &content) {
-			r.Response.Status = http.StatusBadRequest
-			r.Exit()
-		}
 		if err := packageOrderPenaltySuccess(r.Context(), content.SuccessTime, content.OutTradeNo, content.TransactionId, model.PayTypeWechat); err != nil {
 			r.Response.Status = http.StatusInternalServerError
 			r.Exit()
