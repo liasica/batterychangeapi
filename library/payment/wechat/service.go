@@ -109,7 +109,7 @@ func (s *service) Refund(ctx context.Context, transactionId, outTradeNo, outRefu
 	if err != nil {
 		return "", err
 	}
-	if resp.Status == refunddomestic.STATUS_SUCCESS.Ptr() || resp.Status == refunddomestic.STATUS_PROCESSING.Ptr() {
+	if *resp.Status == *refunddomestic.STATUS_SUCCESS.Ptr() || *resp.Status == *refunddomestic.STATUS_PROCESSING.Ptr() {
 		return *resp.RefundId, nil
 	} else {
 		g.Log().Error("退款失败:", res, resp)
