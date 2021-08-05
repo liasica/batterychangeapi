@@ -9,12 +9,22 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
+func init() {
+	if GroupCron.start() != nil {
+		panic("团签定时任务初始化失败")
+	}
+
+	if RefundCron.start() != nil {
+		panic("退款定时任务初始化失败")
+	}
+}
+
 var GroupCron = group{}
 
 type group struct {
 }
 
-func (*group) Init() error {
+func (*group) start() error {
 	if !g.Cfg().GetBool("cron.group.stat.enable", false) {
 		return nil
 	}

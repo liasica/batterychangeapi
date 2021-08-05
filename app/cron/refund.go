@@ -16,7 +16,7 @@ var RefundCron = refund{}
 type refund struct {
 }
 
-func (*refund) Start() error {
+func (*refund) start() error {
 	if !g.Cfg().GetBool("cron.order.refund.enable", false) {
 		return nil
 	}
