@@ -65,6 +65,7 @@ func (s *service) GetTradeNotification(ctx context.Context, r *http.Request) (*a
 // Refund 退款
 func (s *service) Refund(ctx context.Context, tradeNo, outTradeNo, outRequestNo, refundAmount, refundReason string) (string, error) {
 	client := s.client()
+
 	p := filepath.Join("config", "alipay", g.Cfg().GetString("payment.alipay.appId"))
 	// 加载支付宝根证书
 	if err := client.LoadAliPayRootCertFromFile(p + "/alipayRootCert.cer"); err != nil {
