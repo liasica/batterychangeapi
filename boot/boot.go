@@ -14,7 +14,7 @@ func init() {
 		panic("团签定时任务初始化失败")
 	}
 
-	if cron.RefundCron.Init() != nil {
+	if cron.RefundCron.Start() != nil {
 		panic("退款定时任务初始化失败")
 	}
 	service.MessageService.SendWorkFlowInit()
