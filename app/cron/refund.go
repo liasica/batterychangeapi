@@ -37,7 +37,10 @@ func (*refund) Init() error {
 				minId = refundOrder.Id
 				page.PageIndex++
 				if refundOrder.RelationType == model.RefundRelationTypePackagesOrder {
-					packagesOrder, _ := service.PackagesOrderService.Detail(context.TODO(), refundOrder.RelationId)
+					packagesOrder, err := service.PackagesOrderService.Detail(context.TODO(), refundOrder.RelationId)
+					if err != nil {
+						g.Log().Error(err.Error())
+					}
 					if packagesOrder.PayType == model.PayTypeAliPay {
 						platformRefundNo, err := alipay.Service().Refund(context.TODO(),
 							packagesOrder.PayPlatformNo,
@@ -46,6 +49,7 @@ func (*refund) Init() error {
 							strconv.FormatFloat(refundOrder.Amount, 'f', 2, 10),
 							refundOrder.Reason)
 						if err != nil {
+							g.Log().Error("退款失败", err.Error())
 							continue
 						}
 						_ = service.RefundService.Success(context.TODO(), refundOrder.No, platformRefundNo)
@@ -59,6 +63,7 @@ func (*refund) Init() error {
 							refundOrder.Amount,
 							packagesOrder.Amount)
 						if err != nil {
+							g.Log().Error("退款失败", err.Error())
 							continue
 						}
 						_ = service.RefundService.Success(context.TODO(), refundOrder.No, platformRefundNo)
