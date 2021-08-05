@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/glog"
 	"strings"
 )
 
@@ -207,7 +208,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
 		}
 		groupUser := service.GroupUserService.GetBuyUserId(r.Context(), user.Id)
 		shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
-		if dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+		if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
 			//领取记录
 			bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
 				CityId:       shop.CityId,
@@ -244,10 +245,12 @@ func (*orderApi) Claim(r *ghttp.Request) {
 				return err
 			}
 			return nil
-		}) == nil {
+		}); err == nil {
 			response.JsonOkExit(r)
+		} else {
+			glog.Error("店主订单认领错误：", err.Error())
+			response.JsonErrExit(r)
 		}
-		response.JsonErrExit(r)
 	} else {
 		order, err := service.PackagesOrderService.DetailByNo(r.Context(), req.Code)
 		if err != nil {
@@ -261,7 +264,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
 		if packages.CityId != shop.CityId {
 			response.Json(r, response.RespCodeArgs, "订单和店铺不在同一城市，不能认领")
 		}
-		if dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+		if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
 			//订单状态
 			if err := service.PackagesOrderService.ShopClaim(ctx, order.No, shop.Id); err != nil {
 				return err
@@ -299,9 +302,11 @@ func (*orderApi) Claim(r *ghttp.Request) {
 				return err
 			}
 			return nil
-		}) == nil {
+		}); err == nil {
 			response.JsonOkExit(r)
+		} else {
+			glog.Error("店主订单认领错误：", err.Error())
+			response.JsonErrExit(r)
 		}
-		response.JsonErrExit(r)
 	}
 }
