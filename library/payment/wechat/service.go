@@ -106,13 +106,13 @@ func (s *service) Refund(ctx context.Context, transactionId, outTradeNo, outRefu
 			Total:    core.Int64(decimal.NewFromFloat(orderAmount).Mul(decimal.NewFromInt(100)).IntPart()),
 		},
 	})
+	g.Log().Info("退款响应:", res, resp, err)
 	if err != nil {
 		return "", err
 	}
 	if *resp.Status == *refunddomestic.STATUS_SUCCESS.Ptr() || *resp.Status == *refunddomestic.STATUS_PROCESSING.Ptr() {
 		return *resp.RefundId, nil
 	} else {
-		g.Log().Error("退款失败:", res, resp)
 		return "", errors.New("退款失败")
 	}
 }
