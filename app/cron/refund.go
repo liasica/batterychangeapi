@@ -6,6 +6,7 @@ import (
 	"battery/library/payment/alipay"
 	"battery/library/payment/wechat"
 	"context"
+	"fmt"
 	"github.com/gogf/gf/frame/g"
 	"github.com/robfig/cron/v3"
 	"strconv"
@@ -42,6 +43,9 @@ func (*refund) Start() error {
 						g.Log().Error(err.Error())
 					}
 					if packagesOrder.PayType == model.PayTypeAliPay {
+
+						fmt.Println("支付宝退款：", packagesOrder)
+
 						platformRefundNo, err := alipay.Service().Refund(context.TODO(),
 							packagesOrder.PayPlatformNo,
 							packagesOrder.No,

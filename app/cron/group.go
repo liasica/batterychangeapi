@@ -18,7 +18,7 @@ func (*group) Start() error {
 	if !g.Cfg().GetBool("cron.group.stat.enable", false) {
 		return nil
 	}
-	g.Log().Info("退款任务启动")
+	g.Log().Info("团签统计任务启动")
 	c := cron.New()
 	_, err := c.AddFunc(g.Cfg().GetString("cron.group.stat.spec"), func() {
 		fmt.Println("GroupDailyGenerateInit start !!!")

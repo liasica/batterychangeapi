@@ -6,18 +6,13 @@ import (
 	"battery/app/service"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/swagger"
-	"sync"
 )
 
 func init() {
 	s := g.Server()
 	s.Plugin(&swagger.Swagger{})
 
-	o := sync.Once{}
-	o.Do(func() {
-		_ = cron.GroupCron.Start()
-		_ = cron.RefundCron.Start()
-		service.MessageService.SendWorkFlowInit()
-	})
-
+	_ = cron.GroupCron.Start()
+	_ = cron.RefundCron.Start()
+	service.MessageService.SendWorkFlowInit()
 }
