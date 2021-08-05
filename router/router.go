@@ -8,6 +8,7 @@ import (
 	"battery/app/payment"
 	"battery/app/service"
 	"battery/app/shop"
+	"battery/app/tools"
 	"battery/app/user"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -72,6 +73,11 @@ func init() {
 	s.Group("/api", func(group *ghttp.RouterGroup) {
 		group.POST("/upload/image", api.Upload.Image)
 		group.POST("/sms", api.SmsApi.Send)
+	})
+
+	// 工具
+	s.Group("/tools", func(group *ghttp.RouterGroup) {
+		group.GET("/weather", tools.Weather.Now)
 	})
 
 	// 骑手

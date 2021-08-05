@@ -3,11 +3,9 @@ package service
 import (
 	"battery/app/dao"
 	"battery/app/model"
+	"battery/library/amap"
 	"context"
-	"encoding/json"
 	"fmt"
-	"github.com/gogf/gf/frame/g"
-	"io/ioutil"
 )
 
 var DistrictsService = districtsService{}
@@ -24,32 +22,12 @@ func (s *districtsService) Child(parentId uint64) []model.DistrictsChildRep {
 
 // CurrentCity 获取当前城市
 func (s *districtsService) CurrentCity(ctx context.Context, req model.DistrictsCurrentCityReq) (rep model.DistrictsCurrentCityRep, err error) {
-	geoRep, err := g.Client().Get(fmt.Sprintf("https://restapi.amap.com/v3/geocode/regeo?key=%s&location=%s,%s&radius=1000&extensions=base", g.Cfg().GetString("amap.key"), req.Lng, req.Lat))
+	var geo = new(amap.Regeo)
+	geo, err = amap.GetRegeo(fmt.Sprintf("%f", req.Lng), fmt.Sprintf("%f", req.Lat))
 	if err != nil {
 		return
 	}
-	//默认城市北京
-	cityCode := model.DistrictsDefaultCityCode
-	if bodyText, err := ioutil.ReadAll(geoRep.Body); err == nil {
-		var Result struct {
-			Status    string `json:"status"`
-			Regeocode struct {
-				AddressComponent struct {
-					Province string `json:"province"`
-					Adcode   string `json:"adcode"`
-					District string `json:"district"`
-					Country  string `json:"country"`
-					Township string `json:"township"`
-					Citycode string `json:"citycode"`
-				} `json:"addressComponent"`
-			} `json:"regeocode"`
-			Info     string `json:"info"`
-			Infocode string `json:"infocode"`
-		}
-		if err := json.Unmarshal(bodyText, &Result); err == nil && Result.Status == "1" {
-			cityCode = Result.Regeocode.AddressComponent.Citycode
-		}
-	}
+	cityCode := geo.Regeocode.AddressComponent.Citycode
 	err = dao.Districts.Ctx(ctx).Where(dao.Districts.Columns.CityCode, cityCode).Where(dao.Districts.Columns.Level, "city").Fields(rep).Limit(1).Scan(&rep)
 	return
 }

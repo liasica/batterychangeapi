@@ -2074,6 +2074,56 @@
                     }
                 }
             }
+        },
+        "/tools/weather": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "公用"
+                ],
+                "summary": "工具-获取天气",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "经度",
+                        "name": "lng",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "纬度",
+                        "name": "lat",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/service.WeatherNow"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -3394,6 +3444,71 @@
                 },
                 "message": {
                     "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "service.WeatherNow": {
+            "type": "object",
+            "properties": {
+                "cloud": {
+                    "description": "云量，百分比数值",
+                    "type": "string"
+                },
+                "dew": {
+                    "description": "露点温度",
+                    "type": "string"
+                },
+                "feelsLike": {
+                    "description": "体感温度，默认单位：摄氏度",
+                    "type": "string"
+                },
+                "humidity": {
+                    "description": "相对湿度，百分比数值",
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "天气状况和图标的代码",
+                    "type": "string"
+                },
+                "obsTime": {
+                    "description": "数据观测时间",
+                    "type": "string"
+                },
+                "precip": {
+                    "description": "当前小时累计降水量，默认单位：毫米",
+                    "type": "string"
+                },
+                "pressure": {
+                    "description": "大气压强，默认单位：百帕",
+                    "type": "string"
+                },
+                "temp": {
+                    "description": "温度，默认单位：摄氏度",
+                    "type": "string"
+                },
+                "text": {
+                    "description": "天气状况的文字描述，包括阴晴雨雪等天气状态的描述",
+                    "type": "string"
+                },
+                "vis": {
+                    "description": "能见度，默认单位：公里",
+                    "type": "string"
+                },
+                "wind360": {
+                    "description": "风向360角度",
+                    "type": "string"
+                },
+                "windDir": {
+                    "description": "风向",
+                    "type": "string"
+                },
+                "windScale": {
+                    "description": "风力等级",
+                    "type": "string"
+                },
+                "windSpeed": {
+                    "description": "风速，公里/小时",
                     "type": "string"
                 }
             }
