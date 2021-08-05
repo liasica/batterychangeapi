@@ -101,8 +101,9 @@ func (s *service) Refund(ctx context.Context, transactionId, outTradeNo, outRefu
 		OutRefundNo:   core.String(outRefundNo),
 		Reason:        core.String(reason),
 		Amount: &refunddomestic.AmountReq{
-			Refund: core.Int64(decimal.NewFromFloat(refundAmount).Mul(decimal.NewFromInt(100)).IntPart()),
-			Total:  core.Int64(decimal.NewFromFloat(orderAmount).Mul(decimal.NewFromInt(100)).IntPart()),
+			Currency: core.String("CNY"),
+			Refund:   core.Int64(decimal.NewFromFloat(refundAmount).Mul(decimal.NewFromInt(100)).IntPart()),
+			Total:    core.Int64(decimal.NewFromFloat(orderAmount).Mul(decimal.NewFromInt(100)).IntPart()),
 		},
 	})
 	if err != nil {
