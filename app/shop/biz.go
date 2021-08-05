@@ -46,7 +46,7 @@ func (*bizApi) Post(r *ghttp.Request) {
 	}
 	profile := service.UserService.BizProfile(r.Context(), req.Code)
 
-	if profile.BatteryState != model.BatteryStateOverdue {
+	if profile.BatteryState == model.BatteryStateOverdue {
 		response.Json(r, response.RespCodeArgs, "用户已经逾期，请提醒用户先缴纳违约金")
 	}
 	shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
