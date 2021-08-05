@@ -143,6 +143,7 @@ func init() {
 
 		group.GET("/user_biz/:code", shop.UserBizApi.Profile)
 		group.POST("/user_biz", shop.UserBizApi.Post)
+		group.GET("/user_biz_profile", shop.UserBizApi.Profile)
 
 		group.GET("biz_record", shop.UserBizApi.RecordUser)
 		group.GET("biz_record_total", shop.UserBizApi.RecordUserTotal)
