@@ -71,6 +71,7 @@ func (s *service) Refund(ctx context.Context, tradeNo, outTradeNo, outRequestNo,
 		RefundAmount: refundAmount,
 		RefundReason: refundReason,
 	})
+	g.Log().Info("阿里退款响应：", res, err)
 	if err != nil {
 		return "", err
 	}
