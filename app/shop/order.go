@@ -8,8 +8,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/gogf/gf/database/gdb"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
-	"github.com/gogf/gf/os/glog"
 	"strings"
 )
 
@@ -248,7 +248,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
 		}); err == nil {
 			response.JsonOkExit(r)
 		} else {
-			glog.Error("店主订单认领错误：", err.Error())
+			g.Log().Error("店主订单认领错误：", err.Error())
 			response.JsonErrExit(r)
 		}
 	} else {
@@ -305,7 +305,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
 		}); err == nil {
 			response.JsonOkExit(r)
 		} else {
-			glog.Error("店主订单认领错误：", err.Error())
+			g.Log().Error("店主订单认领错误：", err.Error())
 			response.JsonErrExit(r)
 		}
 	}
