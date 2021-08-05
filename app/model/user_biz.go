@@ -76,6 +76,7 @@ type UserBizRenewalReq struct {
 
 // UserBizRenewalRep 个签骑手续约响应数据
 type UserBizRenewalRep struct {
+	OrderId uint64 `validate:"required" json:"orderId"` // 订单ID
 	PayOrderInfo string `validate:"required" json:"PayOrderInfo"` //发起支付使用数据
 }
 
@@ -86,6 +87,7 @@ type UserBizPenaltyReq struct {
 
 // UserBizPenaltyRep 个签骑手支付违约响应数据
 type UserBizPenaltyRep struct {
+	OrderId uint64 `validate:"required" json:"orderId"` // 订单ID
 	PayOrderInfo string `validate:"required" json:"PayOrderInfo"` //发起支付使用数据
 }
 

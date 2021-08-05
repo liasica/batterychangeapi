@@ -3020,12 +3020,17 @@
         "model.UserBizPenaltyRep": {
             "type": "object",
             "required": [
-                "PayOrderInfo"
+                "PayOrderInfo",
+                "orderId"
             ],
             "properties": {
                 "PayOrderInfo": {
                     "description": "发起支付使用数据",
                     "type": "string"
+                },
+                "orderId": {
+                    "description": "订单ID",
+                    "type": "integer"
                 }
             }
         },
@@ -3083,12 +3088,17 @@
         "model.UserBizRenewalRep": {
             "type": "object",
             "required": [
-                "PayOrderInfo"
+                "PayOrderInfo",
+                "orderId"
             ],
             "properties": {
                 "PayOrderInfo": {
                     "description": "发起支付使用数据",
                     "type": "string"
+                },
+                "orderId": {
+                    "description": "订单ID",
+                    "type": "integer"
                 }
             }
         },

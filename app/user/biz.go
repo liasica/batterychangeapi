@@ -402,6 +402,7 @@ func (*bizApi) Renewal(r *ghttp.Request) {
 		}); err == nil {
 			b, _ := json.Marshal(res)
 			response.JsonOkExit(r, model.UserBizNewRep{
+				OrderId: order.Id,
 				PayOrderInfo: string(b),
 			})
 		}
@@ -415,6 +416,7 @@ func (*bizApi) Renewal(r *ghttp.Request) {
 			NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_renewal/alipay",
 		}); err == nil {
 			response.JsonOkExit(r, model.UserBizNewRep{
+				OrderId: order.Id,
 				PayOrderInfo: res,
 			})
 		}
@@ -494,6 +496,7 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 		}); err == nil {
 			b, _ := json.Marshal(res)
 			response.JsonOkExit(r, model.UserBizNewRep{
+				OrderId: order.Id,
 				PayOrderInfo: string(b),
 			})
 		}
@@ -507,6 +510,7 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 			NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_penalty/alipay",
 		}); err == nil {
 			response.JsonOkExit(r, model.UserBizNewRep{
+				OrderId: order.Id,
 				PayOrderInfo: res,
 			})
 		}
