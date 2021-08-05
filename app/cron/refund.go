@@ -14,13 +14,13 @@ import (
 var RefundCron = refund{}
 
 type refund struct {
-
 }
 
 func (*refund) Init() error {
 	if !g.Cfg().GetBool("cron.order.refund.enable", false) {
 		return nil
 	}
+	g.Log().Info("退款任务启动")
 	c := cron.New()
 	_, err := c.AddFunc(g.Cfg().GetString("cron.order.refund.spec"), func() {
 		var minId uint64 = 0
