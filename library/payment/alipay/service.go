@@ -64,7 +64,7 @@ func (s *service) GetTradeNotification(ctx context.Context, r *http.Request) (*a
 
 // Refund 退款
 func (s *service) Refund(ctx context.Context, tradeNo, outTradeNo, outRequestNo, refundAmount, refundReason string) (string, error) {
-	res, err := s.client().TradeRefund(alipay.TradeRefund{
+	res, err := s.client(true).TradeRefund(alipay.TradeRefund{
 		TradeNo:      tradeNo,
 		OutTradeNo:   outTradeNo,
 		OutRequestNo: outRequestNo,
