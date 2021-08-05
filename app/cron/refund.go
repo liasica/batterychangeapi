@@ -14,6 +14,7 @@ import (
 var RefundCron = refund{}
 
 type refund struct {
+
 }
 
 func (*refund) Init() error {
