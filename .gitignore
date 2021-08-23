@@ -19,3 +19,4 @@ gf-empty
 .vscode
 go.sum
 config/*
+/uploads/
