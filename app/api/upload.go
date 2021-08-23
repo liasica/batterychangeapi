@@ -97,6 +97,6 @@ func (*uploadApi) Base64Image(r *ghttp.Request) {
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	response.JsonOkExit(r, model.UploadImageRep{
-		Path: fmt.Sprintf(fmt.Sprintf("%s/%s", dir, fileName)),
+		Path: fmt.Sprintf(fmt.Sprintf("%s%d%d%d/%s/%s", "/uploads/", now.Year(), now.Month(), now.Day(), contentMd5[30:], fileName)),
 	})
 }
