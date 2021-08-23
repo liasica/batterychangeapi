@@ -1,6 +1,10 @@
 package router
 
 import (
+	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/net/ghttp"
+	"net/http"
+
 	"battery/app/admin"
 	"battery/app/api"
 	"battery/app/debug"
@@ -10,9 +14,6 @@ import (
 	"battery/app/shop"
 	"battery/app/tools"
 	"battery/app/user"
-	"github.com/gogf/gf/frame/g"
-	"github.com/gogf/gf/net/ghttp"
-	"net/http"
 )
 
 func init() {
@@ -72,6 +73,7 @@ func init() {
 	// 公用
 	s.Group("/api", func(group *ghttp.RouterGroup) {
 		group.POST("/upload/image", api.Upload.Image)
+		group.POST("/upload/base64_image", api.Upload.Base64Image)
 		group.POST("/sms", api.SmsApi.Send)
 	})
 
@@ -179,4 +181,7 @@ func init() {
 		group.PUT("/group/:id", admin.GroupApi.Edit)
 	})
 
+	s.SetIndexFolder(true)
+	s.SetServerRoot("./uploads")
+	s.AddStaticPath("/uploads", "./uploads")
 }
