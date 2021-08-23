@@ -14,7 +14,7 @@ type ShopManagerLoginReq struct {
 
 // ShopManagerLoginRep 店长登录返回数据
 type ShopManagerLoginRep struct {
-	AccessToken string // 请求 token
+	AccessToken string `json:"accessToken"` // 请求 token
 }
 
 // ShopManagerShopStateReq 店长登录返回数据
