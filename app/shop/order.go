@@ -62,12 +62,16 @@ func (*orderApi) List(r *ghttp.Request) {
 		}
 		userList := service.UserService.GetByIds(r.Context(), userIds)
 
-		g.Log().Println(userIds, userList)
+		g.Log().Println(userIds)
+		g.Log().Println(userList)
 
 		userIdList := make(map[uint64]model.User, len(userList))
 		for _, user := range userList {
 			userIdList[user.Id] = user
 		}
+
+		g.Log().Println(userIdList)
+
 		res := make([]model.ShopOrderListItem, len(orderList))
 		packagesList := service.PackagesService.GetByIds(r.Context(), packagesIds)
 		packagesIdList := make(map[uint]model.Packages, len(packagesList))
