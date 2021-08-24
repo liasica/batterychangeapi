@@ -265,6 +265,7 @@ func (*bizApi) RecordUser(r *ghttp.Request) {
 				res[key].GroupName = groupIdList[record.GoroupId].Name
 			}
 		}
+		response.JsonOkExit(r, res)
 	}
 	response.JsonOkExit(r, make([]model.UserBizShopRecordRep, 0))
 }
