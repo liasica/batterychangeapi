@@ -1,10 +1,11 @@
 package shop
 
 import (
+	"github.com/gogf/gf/net/ghttp"
+
 	"battery/app/model"
 	"battery/app/service"
 	"battery/library/response"
-	"github.com/gogf/gf/net/ghttp"
 )
 
 var (
@@ -69,7 +70,7 @@ func (*managerApi) Profile(r *ghttp.Request) {
 // @Accept  json
 // @Produce  json
 // @param   entity  body model.ShopManagerChangeStateReq true "请求数据"
-// @router  /sapi/state [PUT]
+// @router  /sapi/shop/state [PUT]
 // @success 200 {object} response.JsonResponse{}  "返回结果"
 func (*managerApi) ShopState(r *ghttp.Request) {
 	var req model.ShopManagerChangeStateReq

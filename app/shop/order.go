@@ -1,16 +1,17 @@
 package shop
 
 import (
-	"battery/app/dao"
-	"battery/app/model"
-	"battery/app/service"
-	"battery/library/response"
 	"context"
 	"fmt"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"strings"
+
+	"battery/app/dao"
+	"battery/app/model"
+	"battery/app/service"
+	"battery/library/response"
 )
 
 var OrderApi = orderApi{}
@@ -60,6 +61,9 @@ func (*orderApi) List(r *ghttp.Request) {
 			packagesIds = append(packagesIds, order.PackageId)
 		}
 		userList := service.UserService.GetByIds(r.Context(), userIds)
+
+		g.Log().Println(userIds, userList)
+
 		userIdList := make(map[uint64]model.User, len(userList))
 		for _, user := range userList {
 			userIdList[user.Id] = user

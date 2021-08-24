@@ -1,13 +1,14 @@
 package shop
 
 import (
+	"context"
+	"github.com/gogf/gf/database/gdb"
+	"github.com/gogf/gf/net/ghttp"
+
 	"battery/app/dao"
 	"battery/app/model"
 	"battery/app/service"
 	"battery/library/response"
-	"context"
-	"github.com/gogf/gf/database/gdb"
-	"github.com/gogf/gf/net/ghttp"
 )
 
 var UserBizApi = bizApi{}
@@ -28,7 +29,11 @@ func (*bizApi) Profile(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
-	response.JsonOkExit(r, service.UserService.BizProfile(r.Context(), req.Code))
+	profile := service.UserService.BizProfile(r.Context(), req.Code)
+	if profile.Id == 0 {
+		response.Json(r, response.RespCodeArgs, "code错误")
+	}
+	response.JsonOkExit(r, profile)
 }
 
 // Post
