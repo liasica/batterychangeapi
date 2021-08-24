@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"battery/app/dao"
 	"battery/app/model"
@@ -38,6 +40,10 @@ func (*userBizService) ListShop(ctx context.Context, req model.UserBizShopRecord
 		WhereIn(dao.UserBiz.Columns.Type, []uint{model.UserBizBatteryRenewal, model.UserBizBatterySave, model.UserBizClose}).
 		OrderDesc(dao.UserBiz.Columns.Id).
 		Page(req.PageIndex, req.PageLimit)
+	if req.Month > 0 {
+		st, _ := time.Parse("2006-01-02 15:04:05", fmt.Sprintf("%d-%2d-01 00:00:00", req.Month/100, req.Month%100))
+		m = m.WhereGTE(dao.UserBiz.Columns.CreatedAt, st)
+	}
 	if req.UserType == 1 {
 		m = m.Where(dao.UserBiz.Columns.GoroupId, 0)
 	} else if req.UserType == 2 {
