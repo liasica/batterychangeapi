@@ -79,6 +79,9 @@ func (*orderApi) List(r *ghttp.Request) {
 			packagesIdList[packages.Id] = packages
 		}
 		for key, order := range orderList {
+
+			g.Log().Println(order.UserId)
+
 			res[key] = model.ShopOrderListItem{
 				Id:          order.Id,
 				OrderNo:     order.No,
