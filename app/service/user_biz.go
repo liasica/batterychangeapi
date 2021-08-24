@@ -1,9 +1,10 @@
 package service
 
 import (
+	"context"
+
 	"battery/app/dao"
 	"battery/app/model"
-	"context"
 )
 
 var UserBizService = userBizService{}
@@ -39,7 +40,7 @@ func (*userBizService) ListShop(ctx context.Context, req model.UserBizShopRecord
 		Page(req.PageIndex, req.PageLimit)
 	if req.UserType == 1 {
 		m = m.Where(dao.UserBiz.Columns.GoroupId, 0)
-	} else {
+	} else if req.UserType == 2 {
 		m = m.WhereGT(dao.UserBiz.Columns.GoroupId, 0)
 	}
 	_ = m.Scan(&rep)

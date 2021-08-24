@@ -211,7 +211,7 @@ func (*bizApi) Post(r *ghttp.Request) {
 }
 
 // RecordUser
-// @summary 店长-业务-记录列表
+// @summary 店长-业务-换电记录列表
 // @tags    店长-业务
 // @Accept  json
 // @Produce  json
