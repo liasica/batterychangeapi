@@ -41,7 +41,7 @@ func (*userBizService) ListShop(ctx context.Context, req model.UserBizShopRecord
 		OrderDesc(dao.UserBiz.Columns.Id).
 		Page(req.PageIndex, req.PageLimit)
 	if req.Month > 0 {
-		st, _ := time.Parse("2006-01-02 15:04:05", fmt.Sprintf("%d-%2d-01 00:00:00", req.Month/100, req.Month%100))
+		st, _ := time.Parse("2006-01-02 15:04:05", fmt.Sprintf("%d-%02d-01 00:00:00", req.Month/100, req.Month%100))
 		m = m.WhereGTE(dao.UserBiz.Columns.CreatedAt, st)
 	}
 	if req.UserType == 1 {
