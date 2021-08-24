@@ -1,8 +1,9 @@
 package model
 
 import (
-	"battery/app/model/internal"
 	"github.com/gogf/gf/os/gtime"
+
+	"battery/app/model/internal"
 )
 
 const (
@@ -60,10 +61,11 @@ type UserBizNewReq struct {
 
 // UserBizNewRep 个签骑手新签套餐响应数据
 type UserBizNewRep struct {
-	OrderId uint64 `validate:"required" json:"orderId"` // 订单ID
+	OrderId      uint64 `validate:"required" json:"orderId"`      // 订单ID
 	PayOrderInfo string `validate:"required" json:"PayOrderInfo"` //发起支付使用数据
 
 }
+
 // UserBizNewPackageOrderStateRep 个签骑手获取支付状态响应数据
 type UserBizNewPackageOrderStateRep struct {
 	PayState uint `json:"payState"` // 1 待支付 2 已支付
@@ -76,7 +78,7 @@ type UserBizRenewalReq struct {
 
 // UserBizRenewalRep 个签骑手续约响应数据
 type UserBizRenewalRep struct {
-	OrderId uint64 `validate:"required" json:"orderId"` // 订单ID
+	OrderId      uint64 `validate:"required" json:"orderId"`      // 订单ID
 	PayOrderInfo string `validate:"required" json:"PayOrderInfo"` //发起支付使用数据
 }
 
@@ -87,7 +89,7 @@ type UserBizPenaltyReq struct {
 
 // UserBizPenaltyRep 个签骑手支付违约响应数据
 type UserBizPenaltyRep struct {
-	OrderId uint64 `validate:"required" json:"orderId"` // 订单ID
+	OrderId      uint64 `validate:"required" json:"orderId"`      // 订单ID
 	PayOrderInfo string `validate:"required" json:"PayOrderInfo"` //发起支付使用数据
 }
 
@@ -108,9 +110,9 @@ type UserBizGroupNewReq struct {
 // UserBizShopRecordReq 店长获取业务记录请求
 type UserBizShopRecordReq struct {
 	Page
-	Month    uint `validate:"required" json:"batteryType" v:"required"`     //月份数字 如： 20210705
-	UserType uint `validate:"required" json:"userTpe" v:"required|in:1,2"`  //用户类型 1 个签 2 团签
-	BizType  uint `validate:"required" json:"bizTpe" v:"required|in:3,2,5"` //用户类型 2 换电 3 寄存(仅个签可用)，5 退租
+	Month    uint `validate:"required" json:"batteryType" v:"required"` //月份数字 如： 20210705
+	UserType uint `json:"userTpe" v:"in:1,2"`                           //用户类型 1 个签 2 团签
+	BizType  uint `json:"bizTpe" v:"in:3,2,5"`                          //用户类型 2 换电 3 寄存(仅个签可用)，5 退租
 }
 
 // UserBizShopRecordRep 店长获取业务记录响应

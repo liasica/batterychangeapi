@@ -219,7 +219,7 @@ func (*bizApi) Post(r *ghttp.Request) {
 // @param 	pageLimit query integer  true "每页行数"
 // @param 	month 	  query integer  true "月份数字，如 202106"
 // @param 	bizType   query integer  false "业务类型 2 换电 3 寄存(仅个签可用)，5 退租"
-// @param 	userType  query integer  true  "业务类型 1 个签  2 团签"
+// @param 	userType  query integer  true  "用户类型 1 个签  2 团签"
 // @router  /sapi/biz_record [GET]
 // @success 200 {object} response.JsonResponse{data=[]model.UserBizShopRecordRep} "返回结果"
 func (*bizApi) RecordUser(r *ghttp.Request) {
