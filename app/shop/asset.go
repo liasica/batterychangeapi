@@ -68,7 +68,7 @@ func (*assetApi) BatteryList(r *ghttp.Request) {
 	}
 	for key, record := range recordList {
 		rep[key] = model.ShopBatteryRecordListRep{
-			Type:        record.BizType,
+			BizType:     record.BizType,
 			UserName:    record.UserName,
 			Num:         record.Num,
 			BatteryType: record.BatteryType,
