@@ -71,7 +71,7 @@ func (*userBizService) ListShopMonthTotal(ctx context.Context, req model.UserBiz
 		OrderDesc(dao.UserBiz.Columns.Id)
 	if req.UserType == 1 {
 		m = m.Where(dao.UserBiz.Columns.GoroupId, 0)
-	} else {
+	} else if req.UserType == 2 {
 		m = m.WhereGT(dao.UserBiz.Columns.GoroupId, 0)
 	}
 	if req.Month > 0 {
