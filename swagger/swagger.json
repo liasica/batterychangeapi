@@ -1553,6 +1553,12 @@
                         "name": "userType",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "业务类型 2 换电 3 寄存(仅个签可用)，5 退租",
+                        "name": "bizType",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -2903,7 +2909,7 @@
             "properties": {
                 "amount": {
                     "description": "总额",
-                    "type": "integer"
+                    "type": "number"
                 },
                 "cnt": {
                     "description": "总记录数",
