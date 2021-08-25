@@ -1,8 +1,9 @@
 package model
 
 import (
-	"battery/app/model/internal"
 	"github.com/gogf/gf/os/gtime"
+
+	"battery/app/model/internal"
 )
 
 type ShopBatteryRecord internal.ShopBatteryRecord
@@ -26,7 +27,7 @@ type ShopBatteryRecordListReq struct {
 
 // ShopBatteryRecordListRep 店长资电池管理明细
 type ShopBatteryRecordListRep struct {
-	Type        uint        `json:"type"`        // 0 平台调拨
+	BizType     uint        `json:"bizType"`     // 0 平台调拨,  1 新签,  2 换电池 ,3 寄存, 4 恢复计费 , 5 退租
 	UserName    string      `json:"userName"`    //用户名  平台调拨为空
 	Num         uint        `json:"num"`         //数量
 	BatteryType uint        `json:"batteryType"` // 60 / 72

@@ -2585,16 +2585,16 @@
                     "description": "60 / 72",
                     "type": "integer"
                 },
+                "bizType": {
+                    "description": "0 平台调拨,  1 新签,  2 换电池 ,3 寄存, 4 恢复计费 , 5 退租",
+                    "type": "integer"
+                },
                 "dayCnt": {
                     "description": "当天总数",
                     "type": "integer"
                 },
                 "num": {
                     "description": "数量",
-                    "type": "integer"
-                },
-                "type": {
-                    "description": "0 平台调拨",
                     "type": "integer"
                 },
                 "userName": {
