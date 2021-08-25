@@ -1465,7 +1465,7 @@
                 "tags": [
                     "店长-业务"
                 ],
-                "summary": "店长-业务-记录列表",
+                "summary": "店长-业务-换电记录列表",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1496,7 +1496,7 @@
                     },
                     {
                         "type": "integer",
-                        "description": "业务类型 1 个签  2 团签",
+                        "description": "用户类型 1 个签  2 团签",
                         "name": "userType",
                         "in": "query",
                         "required": true
@@ -1949,7 +1949,29 @@
                 }
             }
         },
-        "/sapi/profile": {
+        "/sapi/qr": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "店长"
+                ],
+                "summary": "店长-获取店本店二维码",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sapi/shop/profile": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -1978,28 +2000,6 @@
                                     }
                                 }
                             ]
-                        }
-                    }
-                }
-            }
-        },
-        "/sapi/qr": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "店长"
-                ],
-                "summary": "店长-获取店本店二维码",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonResponse"
                         }
                     }
                 }

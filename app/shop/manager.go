@@ -53,7 +53,7 @@ func (*managerApi) Qr(r *ghttp.Request) {
 // @tags    店长
 // @Accept  json
 // @Produce  json
-// @router  /sapi/profile [GET]
+// @router  /sapi/shop/profile [GET]
 // @success 200 {object} response.JsonResponse{data=model.Shop}  "返回结果"
 func (*managerApi) Profile(r *ghttp.Request) {
 	manager := r.Context().Value(model.ContextShopManagerKey).(model.ContextShopManager)

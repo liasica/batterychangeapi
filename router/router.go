@@ -135,6 +135,7 @@ func init() {
 		group.PUT("/shop/state", shop.ManagerApi.ShopState)
 		group.PUT("/shop/device ", shop.ManagerApi.PushToken)
 		group.PUT("/shop/mobile ", shop.ManagerApi.ResetMobile)
+		group.PUT("/shop/profile ", shop.ManagerApi.Profile)
 
 		group.GET("/order_scan/:code", shop.OrderApi.ScanDetail)
 		group.POST("/order_claim", shop.OrderApi.Claim)
