@@ -159,7 +159,7 @@ func (*orderApi) ScanDetail(r *ghttp.Request) {
 	} else {
 		order, err := service.PackagesOrderService.DetailByNo(r.Context(), req.Code)
 		if err != nil {
-			response.JsonErrExit(r)
+			response.Json(r, response.RespCodeArgs, "二维码错误")
 		}
 		user := service.UserService.Detail(r.Context(), order.UserId)
 		packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
