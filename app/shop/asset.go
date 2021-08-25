@@ -1,10 +1,11 @@
 package shop
 
 import (
+	"github.com/gogf/gf/net/ghttp"
+
 	"battery/app/model"
 	"battery/app/service"
 	"battery/library/response"
-	"github.com/gogf/gf/net/ghttp"
 )
 
 var AssetApi = assetApi{}
@@ -59,6 +60,7 @@ func (*assetApi) BatteryList(r *ghttp.Request) {
 	for key, record := range recordList {
 		days[key] = record.Day
 	}
+	// 按天统计
 	daysTotal := service.ShopBatteryRecordService.ShopDaysTotal(r.Context(), days, req.Type)
 	daysTotalCnt := map[int]uint{}
 	for _, day := range daysTotal {
