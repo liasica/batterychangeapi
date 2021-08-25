@@ -37,9 +37,13 @@ func (*userBizService) ListShop(ctx context.Context, req model.UserBizShopRecord
 	manager := ctx.Value(model.ContextShopManagerKey).(*model.ContextShopManager)
 	m := dao.UserBiz.Ctx(ctx).
 		Where(dao.UserBiz.Columns.ShopId, manager.ShopId).
-		WhereIn(dao.UserBiz.Columns.Type, []uint{model.UserBizBatteryRenewal, model.UserBizBatterySave, model.UserBizClose}).
 		OrderDesc(dao.UserBiz.Columns.Id).
 		Page(req.PageIndex, req.PageLimit)
+	if req.BizType == 0 {
+		m = m.WhereIn(dao.UserBiz.Columns.Type, []uint{model.UserBizBatteryRenewal, model.UserBizBatterySave, model.UserBizClose})
+	} else {
+		m = m.Where(dao.UserBiz.Columns.Type, req.BizType)
+	}
 	if req.Month > 0 {
 		year := int(req.Month / 100)
 		month := time.Month(req.Month % 100)
