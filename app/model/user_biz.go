@@ -112,7 +112,7 @@ type UserBizShopRecordReq struct {
 	Page
 	Month    uint `validate:"required" json:"batteryType" v:"required"` //月份数字 如： 20210705
 	UserType uint `json:"userTpe" v:"in:1,2"`                           //用户类型 1 个签 2 团签
-	BizType  uint `json:"bizTpe" v:"in:3,2,5"`                          //用户类型 2 换电 3 寄存(仅个签可用)，5 退租
+	BizType  uint `json:"bizTpe" v:"in:3,2,5"`                          //业务类型 2 换电 3 寄存(仅个签可用)，5 退租
 }
 
 // UserBizShopRecordRep 店长获取业务记录响应
@@ -128,7 +128,8 @@ type UserBizShopRecordRep struct {
 // UserBizShopRecordMonthTotalReq 店长获取业务记录按月统计请求
 type UserBizShopRecordMonthTotalReq struct {
 	Month    uint `validate:"required" json:"batteryType" v:"required"`    // "月份数字，如 202106"
-	UserType uint `validate:"required" json:"userTpe" v:"required|in:1,2"` //  "业务类型 1 个签  2 团签"
+	UserType uint `validate:"required" json:"userTpe" v:"required|in:1,2"` // "用户类型 1 个签  2 团签"
+	BizType  uint `json:"bizTpe" v:"in:3,2,5"`                             // 业务类型 2 换电 3 寄存(仅个签可用)，5 退租
 }
 
 // UserBizShopRecordMonthTotalRep 店长获取业务记录按月统计响应

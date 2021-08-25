@@ -74,6 +74,20 @@ func (*userBizService) ListShopMonthTotal(ctx context.Context, req model.UserBiz
 	} else {
 		m = m.WhereGT(dao.UserBiz.Columns.GoroupId, 0)
 	}
+	if req.Month > 0 {
+		year := int(req.Month / 100)
+		month := time.Month(req.Month % 100)
+		firstOfMonth := time.Date(year, month, 1, 0, 0, 0, 0, time.Now().Location())
+		m = m.WhereGTE(dao.UserBiz.Columns.CreatedAt, firstOfMonth)
+		lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
+		et, _ := time.Parse("2006-01-02 15:04:05", fmt.Sprintf("%d-%02d-%02d 23:59:59", lastOfMonth.Year(), lastOfMonth.Month(), lastOfMonth.Day()))
+		m = m.WhereLTE(dao.UserBiz.Columns.CreatedAt, et)
+	}
+	if req.BizType == 0 {
+		m = m.WhereIn(dao.UserBiz.Columns.Type, []uint{model.UserBizBatteryRenewal, model.UserBizBatterySave, model.UserBizClose})
+	} else {
+		m = m.Where(dao.UserBiz.Columns.Type, req.BizType)
+	}
 	rep.Cnt, _ = m.Count()
 	return
 }

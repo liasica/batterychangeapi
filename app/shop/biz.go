@@ -277,6 +277,7 @@ func (*bizApi) RecordUser(r *ghttp.Request) {
 // @Produce  json
 // @param 	month 	query integer  true "月份数字，如 202106"
 // @param 	userType  query integer  true  "业务类型 1 个签  2 团签"
+// @param 	bizType   query integer  false "业务类型 2 换电 3 寄存(仅个签可用)，5 退租"
 // @router  /sapi/biz_record_total [GET]
 // @success 200 {object} response.JsonResponse{data=model.UserBizShopRecordMonthTotalRep} "返回结果"
 func (*bizApi) RecordUserTotal(r *ghttp.Request) {
