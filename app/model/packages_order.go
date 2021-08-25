@@ -44,8 +44,8 @@ type ShopOrderTotalReq struct {
 
 //ShopOrderTotalRep 店长订单列表
 type ShopOrderTotalRep struct {
-	Cnt    int64 `json:"cnt"`    //总记录数
-	Amount uint  `json:"amount"` //总额
+	Cnt    int64   `json:"cnt"`    //总记录数
+	Amount float64 `json:"amount"` //总额
 }
 
 // UserCurrentPackageOrder 个签骑手当前套餐信息
