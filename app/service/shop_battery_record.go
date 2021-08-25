@@ -1,10 +1,11 @@
 package service
 
 import (
-	"battery/app/dao"
-	"battery/app/model"
 	"context"
 	"github.com/gogf/gf/os/gtime"
+
+	"battery/app/dao"
+	"battery/app/model"
 )
 
 var ShopBatteryRecordService = shopBatteryRecordService{}
@@ -56,7 +57,7 @@ func (*shopBatteryRecordService) Platform(ctx context.Context, recordType, shopI
 func (*shopBatteryRecordService) ShopList(ctx context.Context, shopId uint, recordType uint, st *gtime.Time, et *gtime.Time) (list []model.ShopBatteryRecord) {
 	m := dao.ShopBatteryRecord.Ctx(ctx).
 		Where(dao.ShopBatteryRecord.Columns.ShopId, shopId).
-		Where(dao.ShopBatteryRecord.Columns.BatteryType, recordType).
+		Where(dao.ShopBatteryRecord.Columns.Type, recordType).
 		OrderDesc(dao.ShopBatteryRecord.Columns.Id)
 	if !st.IsZero() {
 		m = m.WhereGTE(dao.ShopBatteryRecord.Columns.CreatedAt, st)
