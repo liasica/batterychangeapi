@@ -37,6 +37,7 @@ func (*uploadApi) Image(r *ghttp.Request) {
 	if ext != ".jpg" && ext != ".png" && ext != ".jpeg" {
 		response.Json(r, response.RespCodeArgs, "只支持jpg/png图片上传")
 	}
+
 	f, _ := file.Open()
 	defer f.Close()
 	now := time.Now()
