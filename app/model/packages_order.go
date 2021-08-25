@@ -38,6 +38,7 @@ type ShopOrderListItem struct {
 }
 
 type ShopOrderTotalReq struct {
+	Type  uint `json:"type"`                                   // 1 新签， 2 续费
 	Month uint `validate:"required" v:"required" json:"month"` //月份
 }
 

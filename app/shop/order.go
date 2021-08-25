@@ -25,6 +25,7 @@ type orderApi struct {
 // @Accept  json
 // @Produce  json
 // @param 	month query integer  true "月份 如：202106"
+// @param 	type query integer  false "订单类型 1 新签 2 续费"
 // @router  /sapi/order_total [GET]
 // @success 200 {object} response.JsonResponse{data=model.ShopOrderTotalRep} "返回结果"
 func (*orderApi) Total(r *ghttp.Request) {
@@ -32,7 +33,7 @@ func (*orderApi) Total(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
-	res := service.PackagesOrderService.ShopMonthTotal(r.Context(), req.Month, r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
+	res := service.PackagesOrderService.ShopMonthTotal(r.Context(), req.Month, r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId, req.Type)
 	response.JsonOkExit(r, res)
 }
 

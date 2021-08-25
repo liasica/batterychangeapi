@@ -1931,6 +1931,12 @@
                         "name": "month",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "订单类型 1 新签 2 续费",
+                        "name": "type",
+                        "in": "query"
                     }
                 ],
                 "responses": {

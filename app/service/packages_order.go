@@ -120,12 +120,16 @@ func (s *packagesOrderService) ShopClaim(ctx context.Context, no string, shopId 
 }
 
 // ShopMonthTotal 店铺订单月统计
-func (s *packagesOrderService) ShopMonthTotal(ctx context.Context, month, shopId uint) (res model.ShopOrderTotalRep) {
-	_ = dao.PackagesOrder.Ctx(ctx).
+func (s *packagesOrderService) ShopMonthTotal(ctx context.Context, month, shopId uint, orderType uint) (res model.ShopOrderTotalRep) {
+	m := dao.PackagesOrder.Ctx(ctx).
 		Fields("sum(amount) as amount, count(*) as cnt").
 		Where(dao.PackagesOrder.Columns.Month, month).
 		Where(dao.PackagesOrder.Columns.PayState, model.PayStateSuccess).
-		Where(dao.PackagesOrder.Columns.ShopId, shopId).Scan(&res)
+		Where(dao.PackagesOrder.Columns.ShopId, shopId)
+	if orderType != 0 {
+		m = m.Where(dao.PackagesOrder.Columns.Type, orderType)
+	}
+	_ = m.Scan(&res)
 	return
 }
 
