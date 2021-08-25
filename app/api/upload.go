@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"io/ioutil"
 	"os"
@@ -45,6 +46,7 @@ func (*uploadApi) Image(r *ghttp.Request) {
 	}
 	newName, err := file.Save(dir, true)
 	if err != nil {
+		g.Log().Error(err.Error())
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
 	response.JsonOkExit(r, model.UploadImageRep{
