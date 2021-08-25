@@ -77,7 +77,7 @@ func (*shopBatteryRecordService) ShopDaysTotal(ctx context.Context, days []int, 
 	_ = dao.ShopBatteryRecord.Ctx(ctx).
 		Fields(dao.ShopBatteryRecord.Columns.Day, "count(*) cnt").
 		WhereIn(dao.ShopBatteryRecord.Columns.Day, days).
-		Where(dao.ShopBatteryRecord.Columns.BatteryType, recordType).
+		Where(dao.ShopBatteryRecord.Columns.Type, recordType).
 		Group(dao.ShopBatteryRecord.Columns.Day).
 		Scan(&list)
 	return
