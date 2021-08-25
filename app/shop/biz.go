@@ -31,7 +31,7 @@ func (*bizApi) Profile(r *ghttp.Request) {
 	}
 	profile := service.UserService.BizProfile(r.Context(), req.Code)
 	if profile.Id == 0 {
-		response.Json(r, response.RespCodeArgs, "code错误")
+		response.Json(r, response.RespCodeArgs, "二维码错误")
 	}
 	response.JsonOkExit(r, profile)
 }
