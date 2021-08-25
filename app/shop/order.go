@@ -44,6 +44,7 @@ func (*orderApi) Total(r *ghttp.Request) {
 // @param 	pageIndex query integer  true "当前页码"
 // @param 	pageLimit query integer  true "每页行数"
 // @param 	month query integer  true "月份 如：202106"
+// @param 	type query integer  false "订单类型 1 新签 2 续费"
 // @param 	keywords query string  false "搜索关键字"
 // @router  /sapi/order [GET]
 // @success 200 {object} response.JsonResponse{data=[]model.ShopOrderListItem} "返回结果"

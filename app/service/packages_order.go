@@ -1,14 +1,15 @@
 package service
 
 import (
-	"battery/app/dao"
-	"battery/app/model"
-	"battery/library/snowflake"
 	"context"
 	"errors"
 	"fmt"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
+
+	"battery/app/dao"
+	"battery/app/model"
+	"battery/library/snowflake"
 )
 
 var PackagesOrderService = packagesOrderService{}
@@ -130,11 +131,16 @@ func (s *packagesOrderService) ShopMonthTotal(ctx context.Context, month, shopId
 
 // ShopMonthList 店铺订单月度列表
 func (s *packagesOrderService) ShopMonthList(ctx context.Context, shopId uint, filter model.ShopOrderListReq) (res []model.PackagesOrder) {
-	_ = dao.PackagesOrder.Ctx(ctx).
+	m := dao.PackagesOrder.Ctx(ctx).
 		Where(dao.PackagesOrder.Columns.Month, filter.Month).
 		Where(dao.PackagesOrder.Columns.ShopId, shopId).
 		Where(dao.PackagesOrder.Columns.PayState, model.PayStateSuccess).
-		Page(filter.PageIndex, filter.PageLimit).
-		Scan(&res)
+		Page(filter.PageIndex, filter.PageLimit)
+
+	if filter.Type != 0 {
+		m = m.Where(dao.PackagesOrder.Columns.Type, filter.Type)
+	}
+
+	_ = m.Scan(&res)
 	return
 }

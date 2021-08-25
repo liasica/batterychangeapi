@@ -1756,6 +1756,12 @@
                         "required": true
                     },
                     {
+                        "type": "integer",
+                        "description": "订单类型 1 新签 2 续费",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
                         "description": "搜索关键字",
                         "name": "keywords",

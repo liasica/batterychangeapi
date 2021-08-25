@@ -1,8 +1,9 @@
 package model
 
 import (
-	"battery/app/model/internal"
 	"github.com/gogf/gf/os/gtime"
+
+	"battery/app/model/internal"
 )
 
 type PackagesOrder internal.PackagesOrder
@@ -20,6 +21,7 @@ const PayStateSuccess = 2 // 已支付
 //ShopOrderListReq 店长订单列表
 type ShopOrderListReq struct {
 	Page
+	Type  uint `json:"type"` // 1 新签， 2 续费
 	Month uint `validate:"required" v:"required" json:"month"`
 }
 
