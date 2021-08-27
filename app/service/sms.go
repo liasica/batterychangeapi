@@ -1,9 +1,8 @@
 package service
 
 import (
-	"battery/app/dao"
-	"battery/app/model"
 	"context"
+	"errors"
 	"fmt"
 	openapi "github.com/alibabacloud-go/darabonba-openapi/client"
 	dySmsApi20170525 "github.com/alibabacloud-go/dysmsapi-20170525/v2/client"
@@ -13,6 +12,9 @@ import (
 	"github.com/gogf/gf/os/gtime"
 	"math/rand"
 	"time"
+
+	"battery/app/dao"
+	"battery/app/model"
 )
 
 var SmsServer = smsService{
@@ -22,7 +24,7 @@ var SmsServer = smsService{
 
 // 商店审核、debug
 var (
-	testPhone   = map[string]string{
+	testPhone = map[string]string{
 		"18501234567": "123456",
 		"18501358308": "123456",
 		"18911604215": "123456",
@@ -60,6 +62,12 @@ func (s *smsService) Send(ctx context.Context, req model.SmsSendReq) error {
 		TemplateCode:  tea.String("SMS_206600136"),
 		TemplateParam: tea.String(fmt.Sprintf("{\"code\":\"%s\"}", code)),
 	})
+
+	if err != nil || *res.Body.Code != "OK" {
+		g.Log().Error(res, err)
+		return errors.New("发送失败")
+	}
+
 	if res != nil && *res.Body.Code == "OK" && err == nil {
 		_, err = dao.Sms.Ctx(ctx).Insert(g.Map{
 			dao.Sms.Columns.Mobile: req.Mobile,
