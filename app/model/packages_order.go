@@ -73,7 +73,7 @@ type ShopManagerPackagesOrderScanDetailRep struct {
 
 	OrderNo string      `validate:"required" json:"orderNo,omitempty"` //订单编号，个签用户返回
 	Amount  float64     `validate:"required" json:"amount,omitempty"`  //支付金额，个签用户返回
-	Earnest float64     `validate:"required" json:"earnest,omitempty"` //押金金额，个签用户返回
+	Earnest float64     `validate:"required" json:"earnest"`           //押金金额，个签用户返回
 	PayType uint        `validate:"required" json:"payType,omitempty"` //支付方式 1 支付宝 2 微信，个签用户返回
 	PayAt   *gtime.Time `validate:"required" json:"payAt,omitempty"`   //支付时间，个签用户返回
 
