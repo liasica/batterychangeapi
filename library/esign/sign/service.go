@@ -1,12 +1,13 @@
 package sign
 
 import (
-	"battery/library/esign"
-	"battery/library/esign/sign/beans"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+
+	"battery/library/esign"
+	"battery/library/esign/sign/beans"
 )
 
 type service struct {
@@ -45,6 +46,18 @@ func (*service) CreateFlowOneStep(req beans.CreateFlowOneStepReq) (res beans.Cre
 // FlowExecuteUrl 获取签约Url
 func (*service) FlowExecuteUrl(req beans.FlowExecuteUrlReq) (res beans.FlowExecuteUrlRep, err error) {
 	apiUrl := fmt.Sprintf("/v1/signflows/%s/executeUrl?accountId=%s", req.FlowId, req.AccountId)
+	initResult, httpStatus := esign.SendCommHttp(apiUrl, nil, "GET")
+	if httpStatus == http.StatusOK {
+		err = json.Unmarshal(initResult, &res)
+	} else {
+		err = errors.New("请求失败")
+	}
+	return
+}
+
+// SignFlowDocuments 获取签约文件地址
+func (*service) SignFlowDocuments(flowId string) (res beans.SignFlowDocumentsRep, err error) {
+	apiUrl := fmt.Sprintf("/v1/signflows/{flowId}/documents", flowId)
 	initResult, httpStatus := esign.SendCommHttp(apiUrl, nil, "GET")
 	if httpStatus == http.StatusOK {
 		err = json.Unmarshal(initResult, &res)

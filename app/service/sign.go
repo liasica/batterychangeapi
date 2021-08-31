@@ -1,10 +1,11 @@
 package service
 
 import (
-	"battery/app/dao"
-	"battery/app/model"
 	"context"
 	"github.com/gogf/gf/frame/g"
+
+	"battery/app/dao"
+	"battery/app/model"
 )
 
 var SignService = signService{}
@@ -50,4 +51,17 @@ func (*signService) Done(ctx context.Context, flowId string) error {
 		dao.Sign.Columns.State: model.SignStateDone,
 	})
 	return err
+}
+
+// UserLatestDoneDetail 用户最后完成的签约并支付成功的签约信息
+func (*signService) UserLatestDoneDetail(ctx context.Context, packagesOrderId, userId uint64, groupId uint) (sign *model.Sign, err error) {
+	err = dao.Sign.Ctx(ctx).
+		Where(dao.Sign.Columns.UserId, userId).
+		Where(dao.Sign.Columns.PackagesOrderId, packagesOrderId).
+		Where(dao.Sign.Columns.GroupId, groupId).
+		Where(dao.Sign.Columns.State, model.SignStateDone).
+		OrderDesc(dao.Sign.Columns.Id).
+		Limit(1).
+		FindScan(sign)
+	return
 }

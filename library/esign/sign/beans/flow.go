@@ -107,3 +107,16 @@ type FlowExecuteUrlRep struct {
 		ShortUrl string `json:"shortUrl,omitempty"`
 	} `json:"data,omitempty"`
 }
+
+// SignFlowDocumentsRep 获取签约文件地址
+type SignFlowDocumentsRep struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    struct {
+		Docs []struct {
+			FileId   string `json:"fileId"`
+			FileName string `json:"fileName"`
+			FileUrl  string `json:"fileUrl"`
+		} `json:"docs"`
+	} `json:"data"`
+}

@@ -1,12 +1,14 @@
 package user
 
 import (
-	"battery/app/model"
-	"battery/app/service"
-	"battery/library/qr"
-	"battery/library/response"
 	"fmt"
 	"github.com/gogf/gf/net/ghttp"
+
+	"battery/app/model"
+	"battery/app/service"
+	"battery/library/esign/sign"
+	"battery/library/qr"
+	"battery/library/response"
 )
 
 var UserApi = userApi{}
@@ -66,7 +68,7 @@ func (*userApi) Auth(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
-	if user, err := service.UserService.GetUserByIdCardNo(r.Context(), req.IdCardNo); err == nil && user.AuthState == model.AuthStateVerifySuccess{
+	if user, err := service.UserService.GetUserByIdCardNo(r.Context(), req.IdCardNo); err == nil && user.AuthState == model.AuthStateVerifySuccess {
 		response.Json(r, response.RespCodeArgs, fmt.Sprintf("证件号码 %s 已认证超过，请检查证件号码", req.IdCardNo))
 	}
 	if res, err := service.UserService.RealNameAuthSubmit(r.Context(), req); err != nil {
@@ -157,4 +159,21 @@ func (*userApi) Profile(r *ghttp.Request) {
 	profile := service.UserService.Profile(r.Context())
 	profile.Qr = qr.Code.AddPrefix(profile.Qr)
 	response.JsonOkExit(r, profile)
+}
+
+// SignFile
+// @summary 骑手-签约文件地址
+// @tags    骑手
+// @Accept  json
+// @Produce  json
+// @router  /rapi/sign_file  [GET]
+// @success 200 {object} response.JsonResponse{data=model.UserProfileRep}  "返回结果"
+func (*userApi) SignFile(r *ghttp.Request) {
+	u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
+	s, err := service.SignService.UserLatestDoneDetail(r.Context(), u.Id, u.PackagesOrderId, u.GroupId)
+	if err != nil || s == nil {
+		response.JsonErrExit(r, response.RespCodeNotFound)
+	}
+	res, _ := sign.Service().SignFlowDocuments(s.FlowId)
+	response.JsonOkExit(r, res)
 }

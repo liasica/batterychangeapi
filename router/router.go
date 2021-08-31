@@ -120,6 +120,8 @@ func init() {
 		group.GET("/group/stat", user.GroupApi.Stat)
 		group.GET("/group/list", user.GroupApi.List)
 
+		group.GET("/sign_file", user.UserApi.SignFile)
+
 		group.GET("/message", user.MessageApi.List)
 		group.PUT("/message/read", user.MessageApi.Read)
 	})
