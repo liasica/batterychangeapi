@@ -44,6 +44,25 @@ func (*userBizService) ListShop(ctx context.Context, req model.UserBizShopRecord
 	} else {
 		m = m.Where(dao.UserBiz.Columns.Type, req.BizType)
 	}
+
+	if req.Keywords != "" {
+		users := []struct {
+			Id uint64
+		}{}
+		_ = dao.User.Where(dao.User.Columns.Mobile, req.Keywords).
+			WhereOrLike(dao.User.Columns.RealName, fmt.Sprintf("%%%s%%", req.Keywords)).
+			Fields(dao.User.Columns.Id).Scan(&users)
+
+		if len(users) == 0 {
+			return []model.UserBiz{}
+		}
+		userIds := make([]uint64, len(users))
+		for i, u := range users {
+			userIds[i] = u.Id
+		}
+		m = m.WhereIn(dao.UserBiz.Columns.UserId, userIds)
+	}
+
 	if req.Month > 0 {
 		year := int(req.Month / 100)
 		month := time.Month(req.Month % 100)
