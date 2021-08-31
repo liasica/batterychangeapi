@@ -110,9 +110,9 @@ type UserBizGroupNewReq struct {
 // UserBizShopRecordReq 店长获取业务记录请求
 type UserBizShopRecordReq struct {
 	Page
-	Month    uint `validate:"required" json:"batteryType" v:"required"` //月份数字 如： 20210705
-	UserType uint `json:"userTpe" v:"in:1,2"`                           //用户类型 1 个签 2 团签
-	BizType  uint `json:"bizTpe" v:"in:3,2,5"`                          //业务类型 2 换电 3 寄存(仅个签可用)，5 退租
+	Month    uint `json:"batteryType"`         //月份数字 如： 20210705
+	UserType uint `json:"userTpe" v:"in:1,2"`  //用户类型 1 个签 2 团签
+	BizType  uint `json:"bizTpe" v:"in:3,2,5"` //业务类型 2 换电 3 寄存(仅个签可用)，5 退租
 }
 
 // UserBizShopRecordRep 店长获取业务记录响应
