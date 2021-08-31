@@ -136,11 +136,14 @@ func (s *packagesOrderService) ShopMonthTotal(ctx context.Context, month, shopId
 // ShopMonthList 店铺订单月度列表
 func (s *packagesOrderService) ShopMonthList(ctx context.Context, shopId uint, filter model.ShopOrderListReq) (res []model.PackagesOrder) {
 	m := dao.PackagesOrder.Ctx(ctx).
-		Where(dao.PackagesOrder.Columns.Month, filter.Month).
 		Where(dao.PackagesOrder.Columns.ShopId, shopId).
 		Where(dao.PackagesOrder.Columns.PayState, model.PayStateSuccess).
+		OrderDesc(dao.PackagesOrder.Columns.Id).
 		Page(filter.PageIndex, filter.PageLimit)
 
+	if filter.Month != 0 {
+		m = m.Where(dao.PackagesOrder.Columns.Month, filter.Month)
+	}
 	if filter.Type != 0 {
 		m = m.Where(dao.PackagesOrder.Columns.Type, filter.Type)
 	}

@@ -21,8 +21,8 @@ const PayStateSuccess = 2 // 已支付
 //ShopOrderListReq 店长订单列表
 type ShopOrderListReq struct {
 	Page
-	Type  uint `json:"type"` // 1 新签， 2 续费
-	Month uint `validate:"required" v:"required" json:"month"`
+	Type  uint `json:"type"`  // 1 新签， 2 续费
+	Month uint `json:"month"` // 月份
 }
 
 //ShopOrderListItem 店长订单列表
