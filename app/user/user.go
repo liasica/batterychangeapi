@@ -178,7 +178,7 @@ type UserSignFileRep []*UserSignFileRepItem
 func (*userApi) SignFile(r *ghttp.Request) {
 	u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
 	s, err := service.SignService.UserLatestDoneDetail(r.Context(), u.Id, u.PackagesOrderId, u.GroupId)
-	if err != nil || s == nil {
+	if err != nil {
 		response.JsonErrExit(r, response.RespCodeNotFound)
 	}
 	res, err := sign.Service().SignFlowDocuments(s.FlowId)

@@ -55,6 +55,7 @@ func (*signService) Done(ctx context.Context, flowId string) error {
 
 // UserLatestDoneDetail 用户最后完成的签约并支付成功的签约信息
 func (*signService) UserLatestDoneDetail(ctx context.Context, userId, packagesOrderId uint64, groupId uint) (sign *model.Sign, err error) {
+	sign = &model.Sign{}
 	err = dao.Sign.Ctx(ctx).
 		Where(dao.Sign.Columns.UserId, userId).
 		Where(dao.Sign.Columns.PackagesOrderId, packagesOrderId).
