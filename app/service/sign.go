@@ -63,5 +63,5 @@ func (*signService) UserLatestDoneDetail(ctx context.Context, userId, packagesOr
 		OrderDesc(dao.Sign.Columns.Id).
 		Limit(1).
 		Scan(sign)
-	return
+	return sign, err
 }
