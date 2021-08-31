@@ -169,11 +169,12 @@ func (*userApi) Profile(r *ghttp.Request) {
 // @router  /rapi/sign_file  [GET]
 // @success 200 {object} response.JsonResponse{data=model.UserProfileRep}  "返回结果"
 func (*userApi) SignFile(r *ghttp.Request) {
-	u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
-	s, err := service.SignService.UserLatestDoneDetail(r.Context(), u.Id, u.PackagesOrderId, u.GroupId)
-	if err != nil || s == nil {
-		response.JsonErrExit(r, response.RespCodeNotFound)
-	}
-	res, _ := sign.Service().SignFlowDocuments(s.FlowId)
+	//u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
+	//s, err := service.SignService.UserLatestDoneDetail(r.Context(), u.Id, u.PackagesOrderId, u.GroupId)
+	//if err != nil || s == nil {
+	//	response.JsonErrExit(r, response.RespCodeNotFound)
+	//}
+	//res, _ := sign.Service().SignFlowDocuments(s.FlowId)
+	res, _ := sign.Service().SignFlowDocuments("f726b14e7dba426897a07fa88702ce17")
 	response.JsonOkExit(r, res)
 }
