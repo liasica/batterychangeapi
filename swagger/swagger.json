@@ -1332,6 +1332,46 @@
                 }
             }
         },
+        "/rapi/sign_file": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-签约文件地址",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/definitions/user.UserSignFileRepItem"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/sapi/asset/battery_list": {
             "get": {
                 "consumes": [
@@ -3600,6 +3640,19 @@
                     "items": {
                         "type": "integer"
                     }
+                }
+            }
+        },
+        "user.UserSignFileRepItem": {
+            "type": "object",
+            "properties": {
+                "fileName": {
+                    "description": "文件名称",
+                    "type": "string"
+                },
+                "fileUrl": {
+                    "description": "文件地址",
+                    "type": "string"
                 }
             }
         }

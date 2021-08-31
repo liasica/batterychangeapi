@@ -57,7 +57,7 @@ func (*service) FlowExecuteUrl(req beans.FlowExecuteUrlReq) (res beans.FlowExecu
 
 // SignFlowDocuments 获取签约文件地址
 func (*service) SignFlowDocuments(flowId string) (res beans.SignFlowDocumentsRep, err error) {
-	apiUrl := fmt.Sprintf("/v1/signflows/{flowId}/documents", flowId)
+	apiUrl := fmt.Sprintf("/v1/signflows/%s/documents", flowId)
 	initResult, httpStatus := esign.SendCommHttp(apiUrl, nil, "GET")
 	if httpStatus == http.StatusOK {
 		err = json.Unmarshal(initResult, &res)
