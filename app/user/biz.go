@@ -1,14 +1,6 @@
 package user
 
 import (
-	"battery/app/dao"
-	"battery/app/model"
-	"battery/app/service"
-	"battery/library/esign/sign"
-	beansSign "battery/library/esign/sign/beans"
-	"battery/library/payment/alipay"
-	"battery/library/payment/wechat"
-	"battery/library/response"
 	"context"
 	"encoding/json"
 	"errors"
@@ -18,6 +10,15 @@ import (
 	"github.com/gogf/gf/os/gtime"
 	"github.com/golang-module/carbon"
 	"github.com/wechatpay-apiv3/wechatpay-go/services/payments/app"
+
+	"battery/app/dao"
+	"battery/app/model"
+	"battery/app/service"
+	"battery/library/esign/sign"
+	beansSign "battery/library/esign/sign/beans"
+	"battery/library/payment/alipay"
+	"battery/library/payment/wechat"
+	"battery/library/response"
 )
 
 var BizApi = bizApi{}
@@ -175,7 +176,7 @@ func (*bizApi) New(r *ghttp.Request) {
 			}); err == nil {
 				b, _ := json.Marshal(res)
 				response.JsonOkExit(r, model.UserBizNewRep{
-					OrderId: order.Id,
+					OrderId:      order.Id,
 					PayOrderInfo: string(b),
 				})
 				return
@@ -190,7 +191,7 @@ func (*bizApi) New(r *ghttp.Request) {
 				NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_new/alipay",
 			}); err == nil {
 				response.JsonOkExit(r, model.UserBizNewRep{
-					OrderId: order.Id,
+					OrderId:      order.Id,
 					PayOrderInfo: res,
 				})
 				return
@@ -227,7 +228,6 @@ func (*bizApi) NewPackagerOrderState(r *ghttp.Request) {
 		PayState: order.PayState,
 	})
 }
-
 
 // Sign 新签
 // @summary 骑手-个签用户新签约套餐
@@ -287,7 +287,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 				NoticeDeveloperUrl: g.Cfg().GetString("api.host") + "/esign/callback/sign",
 				RedirectUrl:        "sgjdriver://driverapp.shiguangjv.com?path=back&data=success&from=/single-webview&signFileId=" + res.Data.FileId,
 				SignPlatform:       "1",
-				//WillTypes:          []string{"FACE_ZHIMA_XY"}, //仅使用支付宝刷脸
+				WillTypes:          []string{"FACE_ZHIMA_XY"}, //仅使用支付宝刷脸
 			},
 		},
 		Signers: []beansSign.CreateFlowOneStepReqDocSigner{
@@ -402,7 +402,7 @@ func (*bizApi) Renewal(r *ghttp.Request) {
 		}); err == nil {
 			b, _ := json.Marshal(res)
 			response.JsonOkExit(r, model.UserBizNewRep{
-				OrderId: order.Id,
+				OrderId:      order.Id,
 				PayOrderInfo: string(b),
 			})
 		}
@@ -416,7 +416,7 @@ func (*bizApi) Renewal(r *ghttp.Request) {
 			NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_renewal/alipay",
 		}); err == nil {
 			response.JsonOkExit(r, model.UserBizNewRep{
-				OrderId: order.Id,
+				OrderId:      order.Id,
 				PayOrderInfo: res,
 			})
 		}
@@ -496,7 +496,7 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 		}); err == nil {
 			b, _ := json.Marshal(res)
 			response.JsonOkExit(r, model.UserBizNewRep{
-				OrderId: order.Id,
+				OrderId:      order.Id,
 				PayOrderInfo: string(b),
 			})
 		}
@@ -510,7 +510,7 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 			NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_penalty/alipay",
 		}); err == nil {
 			response.JsonOkExit(r, model.UserBizNewRep{
-				OrderId: order.Id,
+				OrderId:      order.Id,
 				PayOrderInfo: res,
 			})
 		}
@@ -574,7 +574,7 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 			FlowConfigInfo: beansSign.CreateFlowOneStepReqDocFlowInfoFlowConfigInfo{
 				NoticeDeveloperUrl: g.Cfg().GetString("api.host") + "/esign/callback/sign",
 				RedirectUrl:        "sgjdriver://driverapp.shiguangjv.com?path=back&data=success&from=/single-webview&signFileId=" + res.Data.FileId,
-				SignPlatform: 		"1",
+				SignPlatform:       "1",
 			},
 		},
 		Signers: []beansSign.CreateFlowOneStepReqDocSigner{

@@ -2832,6 +2832,7 @@
                 "earnest",
                 "groupName",
                 "orderNo",
+                "packagesAmount",
                 "packagesName",
                 "payAt",
                 "payType",
@@ -2863,6 +2864,10 @@
                 "orderNo": {
                     "description": "订单编号，个签用户返回",
                     "type": "string"
+                },
+                "packagesAmount": {
+                    "description": "套餐价格，个签用户返回",
+                    "type": "number"
                 },
                 "packagesName": {
                     "description": "套餐名称，个签用户返回",

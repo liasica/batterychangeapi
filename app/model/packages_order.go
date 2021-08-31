@@ -63,11 +63,12 @@ type UserCurrentPackageOrder struct {
 
 // ShopManagerPackagesOrderScanDetailRep 店长认领订单，获取订单信息响应数据
 type ShopManagerPackagesOrderScanDetailRep struct {
-	UserType     uint   `validate:"required" json:"userType"`               // 1 个签 2 团签 3 团签BOOS
-	UserName     string `validate:"required" json:"userName"`               //客户名称
-	UserMobile   string `validate:"required" json:"userMobile"`             //客户手机号
-	PackagesName string `validate:"required" json:"packagesName,omitempty"` //套餐名称，个签用户返回
-	BatteryType  uint   `validate:"required" json:"batteryType"`            //电池型号 60 / 72
+	UserType       uint    `validate:"required" json:"userType"`                 // 1 个签 2 团签 3 团签BOOS
+	UserName       string  `validate:"required" json:"userName"`                 //客户名称
+	UserMobile     string  `validate:"required" json:"userMobile"`               //客户手机号
+	PackagesName   string  `validate:"required" json:"packagesName,omitempty"`   //套餐名称，个签用户返回
+	PackagesAmount float64 `validate:"required" json:"packagesAmount,omitempty"` //套餐价格，个签用户返回
+	BatteryType    uint    `validate:"required" json:"batteryType"`              //电池型号 60 / 72
 
 	GroupName string `validate:"required" json:"groupName,omitempty"` //团签公司名称，团签签用户返回
 

@@ -164,17 +164,18 @@ func (*orderApi) ScanDetail(r *ghttp.Request) {
 		user := service.UserService.Detail(r.Context(), order.UserId)
 		packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
 		rep := model.ShopManagerPackagesOrderScanDetailRep{
-			UserType:     user.Type,
-			UserName:     user.RealName,
-			UserMobile:   user.Mobile,
-			PackagesName: packages.Name,
-			BatteryType:  packages.BatteryType,
-			Amount:       order.Amount,
-			Earnest:      order.Earnest,
-			PayType:      order.PayType,
-			OrderNo:      order.No,
-			PayAt:        order.PayAt,
-			ClaimState:   1,
+			UserType:       user.Type,
+			UserName:       user.RealName,
+			UserMobile:     user.Mobile,
+			PackagesName:   packages.Name,
+			PackagesAmount: packages.Amount,
+			BatteryType:    packages.BatteryType,
+			Amount:         order.Amount,
+			Earnest:        order.Earnest,
+			PayType:        order.PayType,
+			OrderNo:        order.No,
+			PayAt:          order.PayAt,
+			ClaimState:     1,
 		}
 		if order.ShopId > 0 {
 			rep.ClaimState = 2
