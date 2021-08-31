@@ -107,8 +107,15 @@ func (*orderApi) ListDetail(r *ghttp.Request) {
 	if order.ShopId != r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId {
 		response.Json(r, response.RespCodeArgs, "无权查看")
 	}
+
+	user := service.UserService.Detail(r.Context(), order.UserId)
+
 	packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
 	response.JsonOkExit(r, model.ShopManagerPackagesOrderListDetailRep{
+		UserMobile:   user.Mobile,
+		UserName:     user.RealName,
+		PackagesName: packages.Name,
+
 		BatteryType: packages.BatteryType,
 		OrderNo:     order.No,
 		Amount:      order.Amount,
