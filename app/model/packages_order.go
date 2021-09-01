@@ -51,15 +51,16 @@ type ShopOrderTotalRep struct {
 
 // UserCurrentPackageOrder 个签骑手当前套餐信息
 type UserCurrentPackageOrder struct {
-	PackageName  string      `validate:"required" json:"packageName"`  //套餐名称
-	ExpirationAt *gtime.Time `validate:"required" json:"expirationAt"` //截止日期
-	CityName     string      `validate:"required" json:"cityName"`     //可用城市
-	OrderNo      string      `validate:"required" json:"orderNo"`      //订单编号
-	PayType      uint        `validate:"required" json:"payType"`      //支付方式 1 支付宝 2 微信
-	Amount       float64     `validate:"required" json:"amount"`       //支付金额
-	Earnest      float64     `validate:"required" json:"earnest"`      //押金金额 0 为没有押金
-	PayAt        *gtime.Time `validate:"required" json:"payAt"`        //支付时间
-	StartUseAt   *gtime.Time `validate:"required" json:"startUseAt"`   //开通时间
+	PackageName   string      `validate:"required" json:"packageName"`   //套餐名称
+	PackageAmount float64     `validate:"required" json:"packageAmount"` //套餐金额
+	ExpirationAt  *gtime.Time `validate:"required" json:"expirationAt"`  //截止日期
+	CityName      string      `validate:"required" json:"cityName"`      //可用城市
+	OrderNo       string      `validate:"required" json:"orderNo"`       //订单编号
+	PayType       uint        `validate:"required" json:"payType"`       //支付方式 1 支付宝 2 微信
+	Amount        float64     `validate:"required" json:"amount"`        //支付金额
+	Earnest       float64     `validate:"required" json:"earnest"`       //押金金额 0 为没有押金
+	PayAt         *gtime.Time `validate:"required" json:"payAt"`         //支付时间
+	StartUseAt    *gtime.Time `validate:"required" json:"startUseAt"`    //开通时间
 }
 
 // ShopManagerPackagesOrderScanDetailRep 店长认领订单，获取订单信息响应数据

@@ -3302,6 +3302,7 @@
                 "earnest",
                 "expirationAt",
                 "orderNo",
+                "packageAmount",
                 "packageName",
                 "payAt",
                 "payType",
@@ -3327,6 +3328,10 @@
                 "orderNo": {
                     "description": "订单编号",
                     "type": "string"
+                },
+                "packageAmount": {
+                    "description": "套餐金额",
+                    "type": "number"
                 },
                 "packageName": {
                     "description": "套餐名称",

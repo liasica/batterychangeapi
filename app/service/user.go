@@ -1,11 +1,6 @@
 package service
 
 import (
-	"battery/app/dao"
-	"battery/app/model"
-	"battery/library/esign/realname"
-	"battery/library/esign/realname/beans"
-	"battery/library/snowflake"
 	"context"
 	"errors"
 	"fmt"
@@ -14,6 +9,12 @@ import (
 	"github.com/golang-module/carbon"
 	"math/rand"
 	"time"
+
+	"battery/app/dao"
+	"battery/app/model"
+	"battery/library/esign/realname"
+	"battery/library/esign/realname/beans"
+	"battery/library/snowflake"
 )
 
 var UserService = userService{}
@@ -173,11 +174,12 @@ func (s *userService) Login(ctx context.Context, req model.UserLoginReq) (rep mo
 }
 
 // GetUserByIdCardNo 使用证件号码获取用户
-func(s *userService)  GetUserByIdCardNo(ctx context.Context, idCardNo string) (model.User, error) {
+func (s *userService) GetUserByIdCardNo(ctx context.Context, idCardNo string) (model.User, error) {
 	var user model.User
 	err := dao.User.Ctx(ctx).Where(dao.User.Columns.IdCardNo, idCardNo).Limit(1).Scan(&user)
 	return user, err
 }
+
 // RealNameAuthSubmit 骑手实名认证提交
 func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserRealNameAuthReq) (rep model.UserRealNameAuthRep, err error) {
 	user := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
@@ -305,6 +307,7 @@ func (*userService) MyPackage(ctx context.Context) (rep model.UserCurrentPackage
 		packages, err := PackagesService.Detail(ctx, u.PackagesId)
 		if err == nil {
 			rep.PackageName = packages.Name
+			rep.PackageAmount = packages.Price
 			city, _ := DistrictsService.Detail(ctx, packages.CityId)
 			rep.CityName = city.Name
 		}
