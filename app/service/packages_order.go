@@ -141,6 +141,23 @@ func (s *packagesOrderService) ShopMonthList(ctx context.Context, shopId uint, f
 		OrderDesc(dao.PackagesOrder.Columns.Id).
 		Page(filter.PageIndex, filter.PageLimit)
 
+	if filter.Keywords != "" {
+		var users []struct {
+			Id uint64
+		}
+		_ = dao.User.Where(dao.User.Columns.Mobile, filter.Keywords).
+			WhereOrLike(dao.User.Columns.RealName, fmt.Sprintf("%%%s%%", filter.Keywords)).
+			Fields(dao.User.Columns.Id).Scan(&users)
+		if len(users) == 0 {
+			return []model.PackagesOrder{}
+		}
+		userIds := make([]uint64, len(users))
+		for i, u := range users {
+			userIds[i] = u.Id
+		}
+		m = m.WhereIn(dao.PackagesOrder.Columns.UserId, userIds)
+	}
+
 	if filter.Month != 0 {
 		m = m.Where(dao.PackagesOrder.Columns.Month, filter.Month)
 	}
