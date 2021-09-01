@@ -215,7 +215,8 @@ func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserReal
 	}
 
 	resWeb, err := realname.Service().WebIndivIdentityUrl(beans.WebIndivIdentityUrlInfo{
-		AuthType: "PSN_FACEAUTH_BYURL",
+		AuthType:           "PSN_FACEAUTH_BYURL",
+		AvailableAuthTypes: []string{"PSN_FACEAUTH_BYURL"},
 		ContextInfo: beans.ContextInfo{
 			NotifyUrl:   g.Cfg().GetString("api.host") + "/esign/callback/real_name",
 			RedirectUrl: "sgjdriver://driverapp.shiguangjv.com?path=/webview&from=/verify&mode=off&data=success",
