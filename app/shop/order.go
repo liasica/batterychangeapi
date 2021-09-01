@@ -175,7 +175,7 @@ func (*orderApi) ScanDetail(r *ghttp.Request) {
 			UserName:       user.RealName,
 			UserMobile:     user.Mobile,
 			PackagesName:   packages.Name,
-			PackagesAmount: packages.Amount,
+			PackagesAmount: packages.Price,
 			BatteryType:    packages.BatteryType,
 			Amount:         order.Amount,
 			Earnest:        order.Earnest,
