@@ -33,7 +33,6 @@ func (*bizApi) Profile(r *ghttp.Request) {
 	if profile.Id == 0 {
 		response.Json(r, response.RespCodeArgs, "二维码错误")
 	}
-	profile.PackagesName = "测试名称"
 	response.JsonOkExit(r, profile)
 }
 
