@@ -336,6 +336,11 @@ func (s *userService) BizProfile(ctx context.Context, qr string) model.BizProfil
 		group := GroupService.Detail(ctx, user.GroupId)
 		rep.GroupName = group.Name
 	} else {
+		if user.PackagesId > 0 {
+			if packages, err := PackagesService.Detail(ctx, user.PackagesId); err == nil {
+				rep.PackagesName = packages.Name
+			}
+		}
 		if user.BatteryState == model.BatteryStateUse {
 			if user.BatteryReturnAt.Timestamp() < gtime.Now().Timestamp() {
 				rep.BatteryState = model.BatteryStateOverdue

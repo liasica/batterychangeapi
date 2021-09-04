@@ -2238,10 +2238,6 @@
         "model.BizProfileRep": {
             "type": "object",
             "properties": {
-                "PackagesName": {
-                    "description": "套餐名称",
-                    "type": "string"
-                },
                 "authState": {
                     "description": "实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过",
                     "type": "integer"
@@ -2270,6 +2266,10 @@
                     "type": "string"
                 },
                 "mobile": {
+                    "type": "string"
+                },
+                "packagesName": {
+                    "description": "套餐名称",
                     "type": "string"
                 },
                 "realName": {

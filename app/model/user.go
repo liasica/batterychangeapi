@@ -1,8 +1,9 @@
 package model
 
 import (
-	"battery/app/model/internal"
 	"github.com/gogf/gf/os/gtime"
+
+	"battery/app/model/internal"
 )
 
 const (
@@ -50,7 +51,7 @@ type UserLoginRep struct {
 type UserRealNameAuthReq struct {
 	RealName   string `validate:"required" v:"required|length:2,10"`              // 真实姓名
 	IdCardNo   string `validate:"required" v:"required|length:15,18|resident-id"` // 身份证号码
-	IdType 	   string // 证件类型 CRED_PSN_CH_IDCARD 中国大陆居民身份证 CRED_PSN_CH_HONGKONG 香港来往大陆通行证 CRED_PSN_CH_MACAO 澳门来往大陆通行证 CRED_PSN_CH_TWCARD 台湾来往大陆通行证 CRED_PSN_PASSPORT 护照
+	IdType     string // 证件类型 CRED_PSN_CH_IDCARD 中国大陆居民身份证 CRED_PSN_CH_HONGKONG 香港来往大陆通行证 CRED_PSN_CH_MACAO 澳门来往大陆通行证 CRED_PSN_CH_TWCARD 台湾来往大陆通行证 CRED_PSN_PASSPORT 护照
 	IdCardImg1 string // 身份证正面照片
 	IdCardImg2 string // 身份证反面照片
 	IdCardImg3 string // 身份证手持照片
@@ -89,7 +90,7 @@ type BizProfileRep struct {
 	AuthState    uint   `json:"authState"`              //实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过
 	BatteryState uint   `json:"batteryState"`           //换电状态：0 未开通，1 租借中，2 寄存中，3 已退租 4 已逾期
 	BatteryType  uint   `json:"batteryType"`            //电池类型 60 / 72
-	PackagesName string `json:"PackagesName,omitempty"` //套餐名称
+	PackagesName string `json:"packagesName,omitempty"` //套餐名称
 	GroupId      uint   `json:"groupId"`                //团体Id，个签用户为 0
 	GroupName    string `json:"groupName,omitempty"`    //团体名称
 }
