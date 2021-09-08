@@ -2243,7 +2243,7 @@
                     "type": "integer"
                 },
                 "batteryState": {
-                    "description": "换电状态：0 未开通，1 租借中，2 寄存中，3 已退租 4 已逾期",
+                    "description": "换电状态：0 未开通，1 新购待领取 （团用户未领取），2 租借中，3 寄存中，4 已退租 5 已逾期",
                     "type": "integer"
                 },
                 "batteryType": {
@@ -3298,6 +3298,7 @@
             "type": "object",
             "required": [
                 "amount",
+                "batteryState",
                 "cityName",
                 "earnest",
                 "expirationAt",
@@ -3312,6 +3313,10 @@
                 "amount": {
                     "description": "支付金额",
                     "type": "number"
+                },
+                "batteryState": {
+                    "description": "个签骑手换电状态：0 未开通， 1 新签未领 ，2 租借中，3 寄存中，4 已退租， 5 已逾期",
+                    "type": "integer"
                 },
                 "cityName": {
                     "description": "可用城市",

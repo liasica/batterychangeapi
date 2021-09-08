@@ -122,6 +122,8 @@ func (*userApi) Packages(r *ghttp.Request) {
 	if err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
+	u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
+	rep.BatteryState = u.BatteryState
 	response.JsonOkExit(r, rep)
 }
 
@@ -162,8 +164,8 @@ func (*userApi) Profile(r *ghttp.Request) {
 }
 
 type UserSignFileRepItem struct {
-	FileName string `json:"fileName"` //文件名称
-	FileUrl  string `json:"fileUrl"`  //文件地址
+	FileName string `json:"fileName"` // 文件名称
+	FileUrl  string `json:"fileUrl"`  // 文件地址
 }
 
 type UserSignFileRep []*UserSignFileRepItem
