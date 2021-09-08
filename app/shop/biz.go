@@ -58,7 +58,7 @@ func (*bizApi) Post(r *ghttp.Request) {
 	user := service.UserService.Detail(r.Context(), profile.Id)
 	var err error
 	switch req.Type {
-	case model.UserBizBatterySave: //寄存
+	case model.UserBizBatterySave: // 寄存
 		if user.BatteryState != model.BatteryStateUse {
 			response.Json(r, response.RespCodeArgs, "用户不是租借中状态，不能办理寄存")
 		}
@@ -66,11 +66,11 @@ func (*bizApi) Post(r *ghttp.Request) {
 			response.Json(r, response.RespCodeArgs, "团签用户，不能办理寄存")
 		}
 		err = dao.User.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-			//用户状态
+			// 用户状态
 			if err := service.UserService.BizBatterySave(ctx, user); err != nil {
 				return nil
 			}
-			//寄存记录
+			// 寄存记录
 			bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
 				CityId:       shop.CityId,
 				ShopId:       shop.Id,
@@ -84,7 +84,7 @@ func (*bizApi) Post(r *ghttp.Request) {
 			if err != nil {
 				return err
 			}
-			//电池入库
+			// 电池入库
 			if err := service.ShopService.BatteryIn(ctx, shop.Id, user.BatteryType, 1); err != nil {
 				return err
 			}
@@ -100,19 +100,22 @@ func (*bizApi) Post(r *ghttp.Request) {
 			return nil
 		})
 
-	case model.UserBizBatteryUnSave: //恢复计费
+	case model.UserBizBatteryUnSave: // 恢复计费
 		if user.BatteryState != model.BatteryStateSave {
 			response.Json(r, response.RespCodeArgs, "用户不是寄存中状态，不能办理恢复计费")
+		}
+		if user.BatteryState == model.BatteryStateExpired {
+			response.Json(r, response.RespCodeArgs, "用户套餐已过期，不能办理恢复计费")
 		}
 		if user.GroupId > 0 {
 			response.Json(r, response.RespCodeArgs, "团签用户，不能办理恢复计费")
 		}
 		err = dao.User.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-			//用户状态
+			// 用户状态
 			if err := service.UserService.BizBatteryUnSave(ctx, user); err != nil {
 				return nil
 			}
-			//取电记录
+			// 取电记录
 			bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
 				CityId:       shop.CityId,
 				ShopId:       shop.Id,
@@ -126,7 +129,7 @@ func (*bizApi) Post(r *ghttp.Request) {
 			if err != nil {
 				return err
 			}
-			//电池出库
+			// 电池出库
 			if err := service.ShopService.BatteryOut(ctx, shop.Id, user.BatteryType, 1); err != nil {
 				return err
 			}
@@ -142,8 +145,10 @@ func (*bizApi) Post(r *ghttp.Request) {
 			return nil
 		})
 
-	case model.UserBizClose: //退租
-		if user.BatteryState != model.BatteryStateUse && user.BatteryState != model.BatteryStateSave {
+	case model.UserBizClose: // 退租
+		if user.BatteryState != model.BatteryStateUse &&
+			user.BatteryState != model.BatteryStateSave &&
+			user.BatteryState != model.BatteryStateExpired {
 			response.Json(r, response.RespCodeArgs, "用户未开通或已退租，不能办理退租")
 		}
 
@@ -151,11 +156,11 @@ func (*bizApi) Post(r *ghttp.Request) {
 		var refundNo string
 
 		err = dao.User.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-			//用户状态
+			// 用户状态
 			if err := service.UserService.BizBatteryExit(ctx, user); err != nil {
 				return nil
 			}
-			//业务记录
+			// 业务记录
 			bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
 				CityId:       shop.CityId,
 				ShopId:       shop.Id,
@@ -170,7 +175,7 @@ func (*bizApi) Post(r *ghttp.Request) {
 				return err
 			}
 			if user.BatteryState == model.BatteryStateUse {
-				//电池入库
+				// 电池入库
 				if err := service.ShopService.BatteryIn(ctx, shop.Id, user.BatteryType, 1); err != nil {
 					return err
 				}
