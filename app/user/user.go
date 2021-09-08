@@ -122,6 +122,7 @@ func (*userApi) Packages(r *ghttp.Request) {
 	if err != nil {
 		response.Json(r, response.RespCodeArgs, err.Error())
 	}
+
 	u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
 	rep.BatteryState = u.BatteryState
 	response.JsonOkExit(r, rep)
