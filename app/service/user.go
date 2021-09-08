@@ -265,6 +265,12 @@ func (s *userService) Profile(ctx context.Context) (rep model.UserProfileRep) {
 				rep.User.BatteryState = model.BatteryStateOverdue
 			}
 		}
+		// 过期
+		if user.BatteryState == model.BatteryStateSave {
+			if user.BatteryReturnAt.Timestamp() < gtime.Now().Timestamp() {
+				rep.User.BatteryState = model.BatteryStateExpired
+			}
+		}
 	}
 	if user.Type == model.UserTypeGroupRider {
 		rep.GroupUser.BatteryState = user.BatteryState
@@ -319,7 +325,7 @@ func (*userService) MyPackage(ctx context.Context) (rep model.UserCurrentPackage
 	return
 }
 
-//BizProfile 用户办理业务获取用户信息
+// BizProfile 用户办理业务获取用户信息
 func (s *userService) BizProfile(ctx context.Context, qr string) model.BizProfileRep {
 	user := s.DetailByQr(ctx, qr)
 	rep := model.BizProfileRep{
@@ -341,9 +347,16 @@ func (s *userService) BizProfile(ctx context.Context, qr string) model.BizProfil
 				rep.PackagesName = packages.Name
 			}
 		}
+		// 已逾期
 		if user.BatteryState == model.BatteryStateUse {
 			if user.BatteryReturnAt.Timestamp() < gtime.Now().Timestamp() {
 				rep.BatteryState = model.BatteryStateOverdue
+			}
+		}
+		// 已过期
+		if user.BatteryState == model.BatteryStateSave {
+			if user.BatteryReturnAt.Timestamp() < gtime.Now().Timestamp() {
+				rep.BatteryState = model.BatteryStateExpired
 			}
 		}
 	}
@@ -377,7 +390,7 @@ func (s *userService) BizBatteryUnSave(ctx context.Context, user model.User) err
 	days := carbon.Parse(user.BatterySaveAt.String()).DiffInDays(carbon.Parse(now.String()))
 	var returnAt *gtime.Time
 	if days == 0 {
-		//同一天寄取，归还电池时间不变
+		// 同一天寄取，归还电池时间不变
 		returnAt = user.BatteryReturnAt
 	} else {
 		returnAt = user.BatteryReturnAt.Add(time.Hour * 24 * time.Duration(days))
@@ -529,7 +542,7 @@ func (s *userService) PackagesStartUse(ctx context.Context, order model.Packages
 		return err
 	}
 	user := s.Detail(ctx, order.UserId)
-	//使用时间按自然天计算
+	// 使用时间按自然天计算
 	now := gtime.Now()
 	y, m, d := now.Add(time.Duration(packages.Days-1) * 24 * time.Hour).Date()
 	returnAt := gtime.NewFromStr(fmt.Sprintf("%d-%d-%d 23:59:59", y, m, d))

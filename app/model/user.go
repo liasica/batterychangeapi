@@ -20,6 +20,7 @@ const (
 	BatteryStateSave    = 3 // 寄存中
 	BatteryStateExit    = 4 // 已退租
 	BatteryStateOverdue = 5 // 已逾期
+	BatteryStateExpired = 6 // 已过期
 
 	UserTypePersonal   = 1 // 个签用户
 	UserTypeGroupRider = 2 // 团签骑手
