@@ -441,6 +441,7 @@ func (*userService) BuyPackagesSuccess(ctx context.Context, order model.Packages
 		dao.User.Columns.PackagesId:      order.PackageId,
 		dao.User.Columns.BatteryType:     packages.BatteryType,
 		dao.User.Columns.BatteryState:    model.BatteryStateNew,
+		dao.User.Columns.BatteryReturnAt: nil,
 	})
 	return err
 }
