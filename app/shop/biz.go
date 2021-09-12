@@ -58,6 +58,28 @@ func (*bizApi) Post(r *ghttp.Request) {
 	user := service.UserService.Detail(r.Context(), profile.Id)
 	var err error
 	switch req.Type {
+	case model.UserBizBatteryRenewal: // 换电
+		if user.BatteryState != model.BatteryStateUse {
+			response.Json(r, response.RespCodeArgs, "没有正在租借中的电池，不能办理换电")
+		}
+		err = dao.User.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+			if _, err := service.UserBizService.Create(ctx, model.UserBiz{
+				ShopId:      shop.Id,
+				CityId:      shop.CityId,
+				UserId:      user.Id,
+				GoroupId:    user.GroupId,
+				Type:        model.UserBizBatteryRenewal,
+				PackagesId:  user.PackagesId,
+				BatteryType: user.BatteryType,
+			}); err != nil {
+				return err
+			}
+			if err := service.UserService.IncrBizBatteryRenewalCnt(ctx, user.Id, 1); err != nil {
+				return err
+			}
+			return nil
+		})
+
 	case model.UserBizBatterySave: // 寄存
 		if user.BatteryState != model.BatteryStateUse {
 			response.Json(r, response.RespCodeArgs, "用户不是租借中状态，不能办理寄存")

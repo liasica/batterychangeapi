@@ -3239,7 +3239,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "description": "业务类型:  3 寄存(仅个签用户使用)， 4 恢复计费，5 退租",
+                    "description": "业务类型:  2 换电 3 寄存(仅个签用户使用)， 4 恢复计费，5 退租",
                     "type": "integer"
                 }
             }

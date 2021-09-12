@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"github.com/gogf/gf/os/gtime"
 	"time"
 
 	"battery/app/dao"
@@ -16,6 +17,9 @@ type userBizService struct {
 
 // Create 添加记录
 func (*userBizService) Create(ctx context.Context, req model.UserBiz) (uint64, error) {
+	at := gtime.Now()
+	req.CreatedAt = at
+	req.UpdatedAt = at
 	id, err := dao.UserBiz.Ctx(ctx).InsertAndGetId(req)
 	return uint64(id), err
 }

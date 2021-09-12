@@ -14,8 +14,8 @@ var Context = contextAdmin{}
 type contextAdmin struct{}
 
 // Init 初始化上下文对象指针到上下文对象中，以便后续的请求流程中可以修改。
-func (s *contextAdmin) Init(r *ghttp.Request, rider *model.ContextAdmin) {
-	r.SetCtxVar(model.ContextAdminKey, rider)
+func (s *contextAdmin) Init(r *ghttp.Request, admin *model.ContextAdmin) {
+	r.SetCtxVar(model.ContextAdminKey, admin)
 }
 
 // GetUser GetAdmin 获得上下文变量，如果没有设置，那么返回nil

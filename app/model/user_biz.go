@@ -19,8 +19,8 @@ type UserBiz internal.UserBiz
 
 // UserBizReq 业务办理请求数据
 type UserBizReq struct {
-	Code string `validate:"required" v:"required"`          // 用户二维码code
-	Type uint   `validate:"required" v:"required|in:3,4,5"` // 业务类型:  3 寄存(仅个签用户使用)， 4 恢复计费，5 退租
+	Code string `validate:"required" v:"required"`            // 用户二维码code
+	Type uint   `validate:"required" v:"required|in:2,3,4,5"` // 业务类型:  2 换电 3 寄存(仅个签用户使用)， 4 恢复计费，5 退租
 }
 
 // UserBizRecordListRep 骑手获取换电记录响应
