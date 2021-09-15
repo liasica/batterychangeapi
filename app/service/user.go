@@ -467,9 +467,9 @@ func (*userService) PenaltyPackagesSuccess(ctx context.Context, order model.Pack
 	var user model.User
 	err := dao.User.Ctx(ctx).WherePri(order.UserId).Scan(&user)
 	if err == nil {
-		days := carbon.Parse(user.BatteryReturnAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
 		_, err = dao.User.Ctx(ctx).WherePri(order.UserId).Update(g.Map{
-			dao.User.Columns.BatteryReturnAt: user.BatteryReturnAt.Add(time.Hour * 24 * time.Duration(days)),
+			// 更新用户的换电时间到当日凌晨
+			dao.User.Columns.BatteryReturnAt: gtime.NewFromStr(fmt.Sprintf("%d-%02d-%02d 23:59:59", order.CreatedAt.Year(), order.CreatedAt.Month(), order.CreatedAt.Day())),
 		})
 	}
 	return err
