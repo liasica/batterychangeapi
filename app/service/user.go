@@ -402,6 +402,7 @@ func (s *userService) BizBatteryUnSave(ctx context.Context, user model.User) err
 			dao.User.Columns.BatteryReturnAt:              returnAt,
 			dao.User.Columns.BatteryState:                 model.BatteryStateUse,
 			dao.User.Columns.BatterySaveAt:                nil,
+			dao.User.Columns.BizBatteryRenewalCnt:         user.BizBatteryRenewalCnt + 1,
 			dao.User.Columns.BizBatteryRenewalDaysStartAt: gtime.Now(),
 		})
 	if err == nil {
@@ -553,6 +554,7 @@ func (s *userService) PackagesStartUse(ctx context.Context, order model.Packages
 			dao.User.Columns.BatteryReturnAt:              returnAt,
 			dao.User.Columns.BatteryState:                 model.BatteryStateUse,
 			dao.User.Columns.BizBatteryRenewalDaysStartAt: gtime.Now(),
+			dao.User.Columns.BizBatteryRenewalCnt:         user.BizBatteryRenewalCnt + 1,
 			dao.User.Columns.BizBatteryRenewalDays:        user.BizBatteryRenewalDays + 1,
 		})
 	if err == nil {

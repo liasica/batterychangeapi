@@ -220,7 +220,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
 		groupUser := service.GroupUserService.GetBuyUserId(r.Context(), user.Id)
 		shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
 		if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-			//领取记录
+			// 领取记录
 			bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
 				CityId:       shop.CityId,
 				ShopId:       shop.Id,
@@ -234,11 +234,11 @@ func (*orderApi) Claim(r *ghttp.Request) {
 			if err != nil {
 				return err
 			}
-			//用户状态
+			// 用户状态
 			if err := service.UserService.GroupUserStartUse(ctx, user.Id); err != nil {
 				return err
 			}
-			//电池出库
+			// 电池出库
 			if err := service.ShopService.BatteryOut(ctx, shop.Id, user.BatteryType, 1); err != nil {
 				return err
 			}
@@ -251,7 +251,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
 				user.BatteryType); err != nil {
 				return err
 			}
-			//人数统计
+			// 人数统计
 			if err := service.GroupDailyStatService.RiderBizNew(ctx, user.GroupId, user.BatteryType, user.Id); err != nil {
 				return err
 			}
@@ -276,11 +276,11 @@ func (*orderApi) Claim(r *ghttp.Request) {
 			response.Json(r, response.RespCodeArgs, "订单和店铺不在同一城市，不能认领")
 		}
 		if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-			//订单状态
+			// 订单状态
 			if err := service.PackagesOrderService.ShopClaim(ctx, order.No, shop.Id); err != nil {
 				return err
 			}
-			//领取记录
+			// 领取记录
 			bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
 				CityId:       shop.CityId,
 				ShopId:       shop.Id,
@@ -294,11 +294,11 @@ func (*orderApi) Claim(r *ghttp.Request) {
 			if err != nil {
 				return err
 			}
-			//用户状态
+			// 用户状态
 			if err := service.UserService.PackagesStartUse(ctx, order); err != nil {
 				return err
 			}
-			//电池出库
+			// 电池出库
 			if err := service.ShopService.BatteryOut(ctx, shop.Id, packages.BatteryType, 1); err != nil {
 				return err
 			}

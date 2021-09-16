@@ -26,7 +26,7 @@ var BizApi = bizApi{}
 type bizApi struct {
 }
 
-//RecordStat 骑手换电记录统计
+// RecordStat 骑手换电记录统计
 // @summary 骑手-换电记录统计
 // @Accept  json
 // @Produce  json
@@ -45,7 +45,7 @@ func (*bizApi) RecordStat(r *ghttp.Request) {
 	})
 }
 
-//RecordList 骑手换电记录列表
+// RecordList 骑手换电记录列表
 // @summary 骑手-换电记录列表
 // @Accept  json
 // @Produce  json
@@ -287,7 +287,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 				NoticeDeveloperUrl: g.Cfg().GetString("api.host") + "/esign/callback/sign",
 				RedirectUrl:        "sgjdriver://driverapp.shiguangjv.com?path=back&data=success&from=/single-webview&signFileId=" + res.Data.FileId,
 				SignPlatform:       "1",
-				WillTypes:          []string{"FACE_ZHIMA_XY"}, //仅使用支付宝刷脸
+				WillTypes:          []string{"FACE_ZHIMA_XY"}, // 仅使用支付宝刷脸
 			},
 		},
 		Signers: []beansSign.CreateFlowOneStepReqDocSigner{
@@ -442,7 +442,7 @@ func (*bizApi) PenaltyProfile(r *ghttp.Request) {
 	}
 	days := carbon.Parse(user.BatteryReturnAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
 	amount, err := service.PackagesService.PenaltyAmount(r.Context(), user.PackagesId, uint(days))
-	amount = 0.01 //TODO 删除 测试使用
+	amount = 0.01 // TODO 删除 测试使用
 	if amount <= 0 || err != nil {
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
@@ -479,7 +479,7 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 	}
 	days := carbon.Parse(user.BatteryReturnAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
 	amount, err := service.PackagesService.PenaltyAmount(r.Context(), user.PackagesId, uint(days))
-	amount = 0.01 //TODO 删除 测试使用
+	amount = 0.01 // TODO 删除 测试使用
 	if amount <= 0 || err != nil {
 		response.JsonErrExit(r, response.RespCodeSystemError)
 	}
