@@ -35,7 +35,7 @@ type ShopOrderListItem struct {
 	UserMobile  string      `json:"userMobile"`  // 用户电话
 	OrderNo     string      `json:"orderNo"`     // 订单编号
 	Type        uint        `json:"type"`        // 1 新签， 2 续费
-	PayAt       *gtime.Time `json:"shopId"`      // 支付时间
+	PayAt       *gtime.Time `json:"payAt"`       // 支付时间
 }
 
 type ShopOrderTotalReq struct {

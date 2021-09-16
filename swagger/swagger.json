@@ -2931,7 +2931,7 @@
                     "description": "套餐名称",
                     "type": "string"
                 },
-                "shopId": {
+                "payAt": {
                     "description": "支付时间",
                     "type": "string"
                 },
