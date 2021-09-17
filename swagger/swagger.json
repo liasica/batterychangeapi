@@ -2490,6 +2490,14 @@
                 "name": {
                     "description": "名称",
                     "type": "string"
+                },
+                "usableCityName": {
+                    "description": "可用城市名称",
+                    "type": "string"
+                },
+                "usableShopCnt": {
+                    "description": "可用店铺数量",
+                    "type": "integer"
                 }
             }
         },

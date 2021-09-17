@@ -19,6 +19,14 @@ func (s *packagesService) ListUser(ctx context.Context, req model.PackagesListUs
 		Where(dao.Packages.Columns.CityId, req.CityId).
 		Page(req.PageIndex, req.PageLimit).
 		Scan(&rep)
+	if l := len(rep); l > 0 {
+		city, _ := DistrictsService.Detail(ctx, uint(req.CityId))
+		cnt, _ := dao.Shop.Ctx(ctx).Where(dao.Shop.Columns.CityId, req.CityId).Count()
+		for i := range rep {
+			rep[i].UsableCityName = city.Name
+			rep[i].UsableShopCnt = cnt
+		}
+	}
 	return rep
 }
 
