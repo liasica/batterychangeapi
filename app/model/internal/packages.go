@@ -23,5 +23,5 @@ type Packages struct {
 	Earnest     float64     `orm:"earnest"     json:"earnest"`     // 保证金
 	ProvinceId  uint        `orm:"provinceId"  json:"provinceId"`  // 省级行政编码
 	CityId      uint        `orm:"cityId"      json:"cityId"`      // 市级行政编码
-	Packagescol string      `orm:"packagescol" json:"packagescol"` //
+	Desc        string      `orm:"desc"        json:"desc"`        // 介绍
 }

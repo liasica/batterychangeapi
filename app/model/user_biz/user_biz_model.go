@@ -25,29 +25,29 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table user_biz.
 	Columns = struct {
-		Id            string //                                             
-        CityId        string //                                             
-        ShopId        string // 店铺ID                                      
-        UserId        string //                                             
-        GoroupId      string // 团体ID                                      
-        GoroupUserId  string //                                             
-        Type          string // 业务类型:  1 新签， 2 换电，3 寄存，4 退租  
-        PackagesId    string // 个签 套餐ID                                 
-        BatteryType   string // 电池型号 60 / 72                            
-        CreatedAt     string // 扫码时间                                    
-        UpdatedAt     string //
+		Id           string //
+		CityId       string //
+		ShopId       string // 店铺ID
+		UserId       string //
+		GoroupId     string // 团体ID
+		GoroupUserId string //
+		Type         string // 业务类型:  1 新签， 2 换电，3 寄存，4 退租
+		PackagesId   string // 个签 套餐ID
+		BatteryType  string // 电池型号 60 / 72
+		CreatedAt    string // 扫码时间
+		UpdatedAt    string //
 	}{
-		Id:           "id",            
-        CityId:       "cityId",        
-        ShopId:       "shopId",        
-        UserId:       "userId",        
-        GoroupId:     "goroupId",      
-        GoroupUserId: "goroupUserId",  
-        Type:         "type",          
-        PackagesId:   "packagesId",    
-        BatteryType:  "batteryType",   
-        CreatedAt:    "createdAt",     
-        UpdatedAt:    "updatedAt",
+		Id:           "id",
+		CityId:       "cityId",
+		ShopId:       "shopId",
+		UserId:       "userId",
+		GoroupId:     "goroupId",
+		GoroupUserId: "goroupUserId",
+		Type:         "type",
+		PackagesId:   "packagesId",
+		BatteryType:  "batteryType",
+		CreatedAt:    "createdAt",
+		UpdatedAt:    "updatedAt",
 	}
 )
 
@@ -86,7 +86,7 @@ func (m *arModel) Slave() *arModel {
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) LeftJoin(table ...string) *arModel {
-	return &arModel{m.M.LeftJoin(table ...)}
+	return &arModel{m.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -95,7 +95,7 @@ func (m *arModel) LeftJoin(table ...string) *arModel {
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) RightJoin(table ...string) *arModel {
-	return &arModel{m.M.RightJoin(table ...)}
+	return &arModel{m.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -104,7 +104,7 @@ func (m *arModel) RightJoin(table ...string) *arModel {
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) InnerJoin(table ...string) *arModel {
-	return &arModel{m.M.InnerJoin(table ...)}
+	return &arModel{m.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.

@@ -22,11 +22,10 @@ type ShopDao struct {
 // ShopColumns defines and stores column names for table shop.
 type shopColumns struct {
 	Id              string //
-	Name            string // 店铺名称
-	Img             string //
-	Tags            string // 标签
-	Mobile          string // 手机号
+	State           string // 店铺状态 0 休息总，1 营业中，2 外出中
 	ManagerName     string //
+	Name            string // 店铺名称
+	Mobile          string // 手机号
 	ReturnAt        string // 外出大致返回时间
 	BatteryOutCnt60 string // 60伏电池出库数量
 	BatteryInCnt60  string // 60伏电池入库数量
@@ -40,7 +39,6 @@ type shopColumns struct {
 	Lng             string // 经度
 	Lat             string // 纬度
 	Qr              string // 二维码编号
-	State           string // 店铺状态 0 休息总，1 营业中，2 外出中
 	ProvinceId      string // 省级行政编码
 	CityId          string // 市级行政编码
 	DistrictId      string // 区县行政编码
@@ -56,11 +54,10 @@ func NewShopDao() *ShopDao {
 		Table: "shop",
 		Columns: shopColumns{
 			Id:              "id",
-			Name:            "name",
-			Img:             "img",
-			Tags:            "tags",
-			Mobile:          "mobile",
+			State:           "state",
 			ManagerName:     "managerName",
+			Name:            "name",
+			Mobile:          "mobile",
 			ReturnAt:        "returnAt",
 			BatteryOutCnt60: "batteryOutCnt60",
 			BatteryInCnt60:  "batteryInCnt60",
@@ -74,7 +71,6 @@ func NewShopDao() *ShopDao {
 			Lng:             "lng",
 			Lat:             "lat",
 			Qr:              "qr",
-			State:           "state",
 			ProvinceId:      "provinceId",
 			CityId:          "cityId",
 			DistrictId:      "districtId",

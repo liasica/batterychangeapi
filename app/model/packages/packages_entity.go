@@ -12,20 +12,20 @@ import (
 
 // Entity is the golang structure for table packages.
 type Entity struct {
-    Id          uint        `orm:"id,primary"  json:"id"`           //                         
-    DeletedAt   *gtime.Time `orm:"deletedAt"   json:"deleted_at"`   //                         
-    CreatedAt   *gtime.Time `orm:"createdAt"   json:"created_at"`   //                         
-    UpdatedAt   *gtime.Time `orm:"updatedAt"   json:"updated_at"`   // k                       
-    Type        uint        `orm:"type"        json:"type"`         // 套餐类型 1 个人 2 团体  
-    BatteryType uint        `orm:"batteryType" json:"battery_type"` // 60 / 72                 
-    Name        string      `orm:"name"        json:"name"`         // 名称                    
-    Days        uint        `orm:"days"        json:"days"`         // 套餐时长天数            
-    Amount      float64     `orm:"amount"      json:"amount"`       // 套餐价格(包含保证金额)  
-    Price       float64     `orm:"price"       json:"price"`        //                         
-    Earnest     float64     `orm:"earnest"     json:"earnest"`      // 保证金                  
-    ProvinceId  uint        `orm:"provinceId"  json:"province_id"`  // 省级行政编码            
-    CityId      uint        `orm:"cityId"      json:"city_id"`      // 市级行政编码            
-    Packagescol string      `orm:"packagescol" json:"packagescol"`  //                         
+	Id          uint        `orm:"id,primary"  json:"id"`           //
+	DeletedAt   *gtime.Time `orm:"deletedAt"   json:"deleted_at"`   //
+	CreatedAt   *gtime.Time `orm:"createdAt"   json:"created_at"`   //
+	UpdatedAt   *gtime.Time `orm:"updatedAt"   json:"updated_at"`   // k
+	Type        uint        `orm:"type"        json:"type"`         // 套餐类型 1 个人 2 团体
+	BatteryType uint        `orm:"batteryType" json:"battery_type"` // 60 / 72
+	Name        string      `orm:"name"        json:"name"`         // 名称
+	Days        uint        `orm:"days"        json:"days"`         // 套餐时长天数
+	Amount      float64     `orm:"amount"      json:"amount"`       // 套餐价格(包含保证金额)
+	Price       float64     `orm:"price"       json:"price"`        //
+	Earnest     float64     `orm:"earnest"     json:"earnest"`      // 保证金
+	ProvinceId  uint        `orm:"provinceId"  json:"province_id"`  // 省级行政编码
+	CityId      uint        `orm:"cityId"      json:"city_id"`      // 市级行政编码
+	Desc        string      `orm:"desc"        json:"desc"`         // 介绍
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

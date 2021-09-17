@@ -30,7 +30,7 @@ type User struct {
 	AccessToken                  string      `orm:"accessToken,unique"           json:"accessToken"`                  //
 	Salt                         string      `orm:"salt"                         json:"salt"`                         //
 	DeviceType                   int         `orm:"deviceType"                   json:"deviceType"`                   // 1 安卓  2  iOS
-	DeviceToken                  string      `orm:"deviceToken"                  json:"deviceToken"`                  // 用户推送消息唯一ID
+	DeviceToken                  string      `orm:"deviceToken"                  json:"deviceToken"`                  // 用户推送token
 	EsignAccountId               string      `orm:"esignAccountId"               json:"esignAccountId"`               // 易签账户ID
 	BizBatteryRenewalCnt         uint        `orm:"bizBatteryRenewalCnt"         json:"bizBatteryRenewalCnt"`         // 积累换次数
 	BizBatteryRenewalDays        uint        `orm:"bizBatteryRenewalDays"        json:"bizBatteryRenewalDays"`        // 累计换电自然天数

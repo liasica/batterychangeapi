@@ -25,9 +25,9 @@ type groupDailyStatColumns struct {
 	GroupId     string //
 	BatteryType string // 电池型号 60 / 72
 	IsArrears   string // 是否未付款 1 是 0 不是
+	UserIds     string // 使用的用户ID
 	Date        string // 日期 如 20210705
 	Total       string // 使用人数
-	UserIds     string //
 	CreatedAt   string // 创建时间
 	UpdatedAt   string //
 }
@@ -42,9 +42,9 @@ func NewGroupDailyStatDao() *GroupDailyStatDao {
 			GroupId:     "groupId",
 			BatteryType: "batteryType",
 			IsArrears:   "isArrears",
+			UserIds:     "userIds",
 			Date:        "date",
 			Total:       "total",
-			UserIds:     "userIds",
 			CreatedAt:   "createdAt",
 			UpdatedAt:   "updatedAt",
 		},

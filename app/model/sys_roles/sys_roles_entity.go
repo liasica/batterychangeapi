@@ -12,11 +12,11 @@ import (
 
 // Entity is the golang structure for table sys_roles.
 type Entity struct {
-    Id          uint        `orm:"id,primary"  json:"id"`          //           
-    Name        string      `orm:"name"        json:"name"`        // 角色名称  
-    Permissions string      `orm:"permissions" json:"permissions"` // 角色数组  
-    CreateAt    *gtime.Time `orm:"create_at"   json:"create_at"`   //           
-    UpdateAt    *gtime.Time `orm:"update_at"   json:"update_at"`   //           
+	Id          uint        `orm:"id,primary"  json:"id"`          //
+	Name        string      `orm:"name"        json:"name"`        // 角色名称
+	Permissions string      `orm:"permissions" json:"permissions"` // 角色数组
+	CreateAt    *gtime.Time `orm:"create_at"   json:"create_at"`   //
+	UpdateAt    *gtime.Time `orm:"update_at"   json:"update_at"`   //
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

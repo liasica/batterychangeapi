@@ -67,6 +67,7 @@ type packagesCreateReq struct {
 	Earnest     float64 `v:"required|regex:'/(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/'" json:"earnest"` // 保证金
 	ProvinceId  uint    `v:"required|integer|min:1" json:"provinceId"`                                     // 省级行政编码
 	CityId      uint    `v:"required|integer|min:1" json:"cityId"`                                         // 市级行政编码
+	Desc        string  `v:"required" json:"desc"`                                                         // 介绍
 }
 
 func (*packagesApi) Create(r *ghttp.Request) {
@@ -85,6 +86,7 @@ func (*packagesApi) Create(r *ghttp.Request) {
 		ProvinceId:  req.ProvinceId,
 		Days:        req.Days,
 		CityId:      req.CityId,
+		Desc:        req.Desc,
 	}); err != nil {
 		response.JsonErrExit(r)
 	}

@@ -12,22 +12,22 @@ import (
 
 // Entity is the golang structure for table packages_order.
 type Entity struct {
-    Id            uint64      `orm:"id,primary"    json:"id"`              //                                   
-    ShopId        uint        `orm:"shopId"        json:"shop_id"`         //                                   
-    UserId        uint64      `orm:"userId"        json:"user_id"`         // 用户ID                            
-    No            string      `orm:"no,unique"     json:"no"`              // 订单编号                          
-    Type          uint        `orm:"type"          json:"type"`            // 1 新签， 2 续费, 3 违约金         
-    PackageId     uint        `orm:"packageId"     json:"package_id"`      // 套餐ID                            
-    Amount        float64     `orm:"amount"        json:"amount"`          // 总金额，包含押金                  
-    Earnest       float64     `orm:"earnest"       json:"earnest"`         // 保证金                            
-    PayType       uint        `orm:"payType"       json:"pay_type"`        // 1 支付宝 2 微信                   
-    PayPlatformNo string      `orm:"payPlatformNo" json:"pay_platform_no"` // 支付平台单号                      
-    PayAt         *gtime.Time `orm:"payAt"         json:"pay_at"`          // 支付时间                          
-    PayState      uint        `orm:"payState"      json:"pay_state"`       // 支付状态 1 待支付 2 已支付        
-    FirstUseAt    *gtime.Time `orm:"firstUseAt"    json:"first_use_at"`    // 开始使用时间，即首次领取电池时间  
-    Month         int         `orm:"month"         json:"month"`           //                                   
-    CreatedAt     *gtime.Time `orm:"createdAt"     json:"created_at"`      //                                   
-    UpdatedAt     *gtime.Time `orm:"updatedAt"     json:"updated_at"`      //                                   
+	Id            uint64      `orm:"id,primary"    json:"id"`              //
+	ShopId        uint        `orm:"shopId"        json:"shop_id"`         //
+	UserId        uint64      `orm:"userId"        json:"user_id"`         // 用户ID
+	No            string      `orm:"no,unique"     json:"no"`              // 订单编号
+	Type          uint        `orm:"type"          json:"type"`            // 1 新签， 2 续费, 3 违约金
+	PackageId     uint        `orm:"packageId"     json:"package_id"`      // 套餐ID
+	Amount        float64     `orm:"amount"        json:"amount"`          // 总金额，包含押金
+	Earnest       float64     `orm:"earnest"       json:"earnest"`         // 保证金
+	PayType       uint        `orm:"payType"       json:"pay_type"`        // 1 支付宝 2 微信
+	PayPlatformNo string      `orm:"payPlatformNo" json:"pay_platform_no"` // 支付平台单号
+	PayAt         *gtime.Time `orm:"payAt"         json:"pay_at"`          // 支付时间
+	PayState      uint        `orm:"payState"      json:"pay_state"`       // 支付状态 1 待支付 2 已支付
+	FirstUseAt    *gtime.Time `orm:"firstUseAt"    json:"first_use_at"`    // 开始使用时间，即首次领取电池时间
+	Month         int         `orm:"month"         json:"month"`           //
+	CreatedAt     *gtime.Time `orm:"createdAt"     json:"created_at"`      //
+	UpdatedAt     *gtime.Time `orm:"updatedAt"     json:"updated_at"`      //
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

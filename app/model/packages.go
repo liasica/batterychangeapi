@@ -25,4 +25,5 @@ type PackagesRiderListRepItem struct {
 	Earnest        float64 `json:"earnest"`        // 押金
 	UsableCityName string  `json:"usableCityName"` // 可用城市名称
 	UsableShopCnt  int     `json:"usableShopCnt"`  // 可用店铺数量
+	Desc           string  `json:"desc"`           // 套餐介绍
 }

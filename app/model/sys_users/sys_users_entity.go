@@ -12,19 +12,19 @@ import (
 
 // Entity is the golang structure for table sys_users.
 type Entity struct {
-    Id           uint        `orm:"id,primary"      json:"id"`           //                        
-    Name         string      `orm:"name"            json:"name"`         //                        
-    Username     string      `orm:"username,unique" json:"username"`     //                        
-    Password     string      `orm:"password"        json:"password"`     //                        
-    Salt         string      `orm:"salt"            json:"salt"`         //                        
-    Avatar       string      `orm:"avatar"          json:"avatar"`       //                        
-    Roles        string      `orm:"roles"           json:"roles"`        //                        
-    Introduction string      `orm:"introduction"    json:"introduction"` //                        
-    AccessToken  string      `orm:"access_token"    json:"access_token"` //                        
-    State        uint        `orm:"state"           json:"state"`        // 状态 1 可用，0 不可用  
-    DeleteAt     *gtime.Time `orm:"delete_at"       json:"delete_at"`    // 删除时间               
-    CreateAt     *gtime.Time `orm:"create_at"       json:"create_at"`    //                        
-    UpdateAt     *gtime.Time `orm:"update_at"       json:"update_at"`    //                        
+	Id           uint        `orm:"id,primary"      json:"id"`           //
+	Name         string      `orm:"name"            json:"name"`         //
+	Username     string      `orm:"username,unique" json:"username"`     //
+	Password     string      `orm:"password"        json:"password"`     //
+	Salt         string      `orm:"salt"            json:"salt"`         //
+	Avatar       string      `orm:"avatar"          json:"avatar"`       //
+	Roles        string      `orm:"roles"           json:"roles"`        //
+	Introduction string      `orm:"introduction"    json:"introduction"` //
+	AccessToken  string      `orm:"access_token"    json:"access_token"` //
+	State        uint        `orm:"state"           json:"state"`        // 状态 1 可用，0 不可用
+	DeleteAt     *gtime.Time `orm:"delete_at"       json:"delete_at"`    // 删除时间
+	CreateAt     *gtime.Time `orm:"create_at"       json:"create_at"`    //
+	UpdateAt     *gtime.Time `orm:"update_at"       json:"update_at"`    //
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

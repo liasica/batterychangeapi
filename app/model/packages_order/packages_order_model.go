@@ -25,39 +25,39 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table packages_order.
 	Columns = struct {
-		Id             string //                                   
-        ShopId         string //                                   
-        UserId         string // 用户ID                            
-        No             string // 订单编号                          
-        Type           string // 1 新签， 2 续费, 3 违约金         
-        PackageId      string // 套餐ID                            
-        Amount         string // 总金额，包含押金                  
-        Earnest        string // 保证金                            
-        PayType        string // 1 支付宝 2 微信                   
-        PayPlatformNo  string // 支付平台单号                      
-        PayAt          string // 支付时间                          
-        PayState       string // 支付状态 1 待支付 2 已支付        
-        FirstUseAt     string // 开始使用时间，即首次领取电池时间  
-        Month          string //                                   
-        CreatedAt      string //                                   
-        UpdatedAt      string //
+		Id            string //
+		ShopId        string //
+		UserId        string // 用户ID
+		No            string // 订单编号
+		Type          string // 1 新签， 2 续费, 3 违约金
+		PackageId     string // 套餐ID
+		Amount        string // 总金额，包含押金
+		Earnest       string // 保证金
+		PayType       string // 1 支付宝 2 微信
+		PayPlatformNo string // 支付平台单号
+		PayAt         string // 支付时间
+		PayState      string // 支付状态 1 待支付 2 已支付
+		FirstUseAt    string // 开始使用时间，即首次领取电池时间
+		Month         string //
+		CreatedAt     string //
+		UpdatedAt     string //
 	}{
-		Id:            "id",             
-        ShopId:        "shopId",         
-        UserId:        "userId",         
-        No:            "no",             
-        Type:          "type",           
-        PackageId:     "packageId",      
-        Amount:        "amount",         
-        Earnest:       "earnest",        
-        PayType:       "payType",        
-        PayPlatformNo: "payPlatformNo",  
-        PayAt:         "payAt",          
-        PayState:      "payState",       
-        FirstUseAt:    "firstUseAt",     
-        Month:         "month",          
-        CreatedAt:     "createdAt",      
-        UpdatedAt:     "updatedAt",
+		Id:            "id",
+		ShopId:        "shopId",
+		UserId:        "userId",
+		No:            "no",
+		Type:          "type",
+		PackageId:     "packageId",
+		Amount:        "amount",
+		Earnest:       "earnest",
+		PayType:       "payType",
+		PayPlatformNo: "payPlatformNo",
+		PayAt:         "payAt",
+		PayState:      "payState",
+		FirstUseAt:    "firstUseAt",
+		Month:         "month",
+		CreatedAt:     "createdAt",
+		UpdatedAt:     "updatedAt",
 	}
 )
 
@@ -96,7 +96,7 @@ func (m *arModel) Slave() *arModel {
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) LeftJoin(table ...string) *arModel {
-	return &arModel{m.M.LeftJoin(table ...)}
+	return &arModel{m.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -105,7 +105,7 @@ func (m *arModel) LeftJoin(table ...string) *arModel {
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) RightJoin(table ...string) *arModel {
-	return &arModel{m.M.RightJoin(table ...)}
+	return &arModel{m.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -114,7 +114,7 @@ func (m *arModel) RightJoin(table ...string) *arModel {
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) InnerJoin(table ...string) *arModel {
-	return &arModel{m.M.InnerJoin(table ...)}
+	return &arModel{m.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.

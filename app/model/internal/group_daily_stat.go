@@ -14,9 +14,9 @@ type GroupDailyStat struct {
 	GroupId     uint        `orm:"groupId"     json:"groupId"`     //
 	BatteryType uint        `orm:"batteryType" json:"batteryType"` // 电池型号 60 / 72
 	IsArrears   uint        `orm:"isArrears"   json:"isArrears"`   // 是否未付款 1 是 0 不是
+	UserIds     string      `orm:"userIds"     json:"userIds"`     // 使用的用户ID
 	Date        uint        `orm:"date"        json:"date"`        // 日期 如 20210705
 	Total       uint        `orm:"total"       json:"total"`       // 使用人数
-	UserIds     string      `orm:"userIds"     json:"userIds"`     //
 	CreatedAt   *gtime.Time `orm:"createdAt"   json:"createdAt"`   // 创建时间
 	UpdatedAt   *gtime.Time `orm:"updatedAt"   json:"updatedAt"`   //
 }

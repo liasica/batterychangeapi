@@ -41,7 +41,7 @@ type userColumns struct {
 	AccessToken                  string //
 	Salt                         string //
 	DeviceType                   string // 1 安卓  2  iOS
-	DeviceToken                  string // 用户推送消息唯一ID
+	DeviceToken                  string // 用户推送token
 	EsignAccountId               string // 易签账户ID
 	BizBatteryRenewalCnt         string // 积累换次数
 	BizBatteryRenewalDays        string // 累计换电自然天数

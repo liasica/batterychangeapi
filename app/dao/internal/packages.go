@@ -34,7 +34,7 @@ type packagesColumns struct {
 	Earnest     string // 保证金
 	ProvinceId  string // 省级行政编码
 	CityId      string // 市级行政编码
-	Packagescol string //
+	Desc        string // 介绍
 }
 
 func NewPackagesDao() *PackagesDao {
@@ -56,7 +56,7 @@ func NewPackagesDao() *PackagesDao {
 			Earnest:     "earnest",
 			ProvinceId:  "provinceId",
 			CityId:      "cityId",
-			Packagescol: "packagescol",
+			Desc:        "desc",
 		},
 	}
 }

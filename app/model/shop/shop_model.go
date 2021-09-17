@@ -25,59 +25,55 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table shop.
 	Columns = struct {
-		Id               string //                                        
-        Name             string // 店铺名称                               
-        Img              string //                                        
-        Tags             string // 标签                                   
-        Mobile           string // 手机号                                 
-        ManagerName      string //                                        
-        ReturnAt         string // 外出大致返回时间                       
-        BatteryOutCnt60  string // 60伏电池出库数量                       
-        BatteryInCnt60   string // 60伏电池入库数量                       
-        BatteryInCnt72   string // 72伏电池入库数量                       
-        BatteryOutCnt72  string // 72伏电池出库数量                       
-        ChargerInCnt     string // 充电器入库数量                         
-        ChargerOutCnt    string // 充电器出库数量                         
-        BatteryCnt72     string // 72伏电池数量                           
-        BatteryCnt60     string // 60伏电池数量                           
-        ChargerCnt       string // 充电器数量                             
-        Lng              string // 经度                                   
-        Lat              string // 纬度                                   
-        Qr               string // 二维码编号                             
-        State            string // 店铺状态 0 休息总，1 营业中，2 外出中  
-        ProvinceId       string // 省级行政编码                           
-        CityId           string // 市级行政编码                           
-        DistrictId       string // 区县行政编码                           
-        Address          string // 详细地址                               
-        CreatedAt        string //                                        
-        UpdatedAt        string //
+		Id              string //
+		State           string // 店铺状态 0 休息总，1 营业中，2 外出中
+		ManagerName     string //
+		Name            string // 店铺名称
+		Mobile          string // 手机号
+		ReturnAt        string // 外出大致返回时间
+		BatteryOutCnt60 string // 60伏电池出库数量
+		BatteryInCnt60  string // 60伏电池入库数量
+		BatteryInCnt72  string // 72伏电池入库数量
+		BatteryOutCnt72 string // 72伏电池出库数量
+		ChargerInCnt    string // 充电器入库数量
+		ChargerOutCnt   string // 充电器出库数量
+		BatteryCnt72    string // 72伏电池数量
+		BatteryCnt60    string // 60伏电池数量
+		ChargerCnt      string // 充电器数量
+		Lng             string // 经度
+		Lat             string // 纬度
+		Qr              string // 二维码编号
+		ProvinceId      string // 省级行政编码
+		CityId          string // 市级行政编码
+		DistrictId      string // 区县行政编码
+		Address         string // 详细地址
+		CreatedAt       string //
+		UpdatedAt       string //
 	}{
-		Id:              "id",               
-        Name:            "name",             
-        Img:             "img",              
-        Tags:            "tags",             
-        Mobile:          "mobile",           
-        ManagerName:     "managerName",      
-        ReturnAt:        "returnAt",         
-        BatteryOutCnt60: "batteryOutCnt60",  
-        BatteryInCnt60:  "batteryInCnt60",   
-        BatteryInCnt72:  "batteryInCnt72",   
-        BatteryOutCnt72: "batteryOutCnt72",  
-        ChargerInCnt:    "chargerInCnt",     
-        ChargerOutCnt:   "chargerOutCnt",    
-        BatteryCnt72:    "batteryCnt72",     
-        BatteryCnt60:    "batteryCnt60",     
-        ChargerCnt:      "chargerCnt",       
-        Lng:             "lng",              
-        Lat:             "lat",              
-        Qr:              "qr",               
-        State:           "state",            
-        ProvinceId:      "provinceId",       
-        CityId:          "cityId",           
-        DistrictId:      "districtId",       
-        Address:         "address",          
-        CreatedAt:       "createdAt",        
-        UpdatedAt:       "updatedAt",
+		Id:              "id",
+		State:           "state",
+		ManagerName:     "managerName",
+		Name:            "name",
+		Mobile:          "mobile",
+		ReturnAt:        "returnAt",
+		BatteryOutCnt60: "batteryOutCnt60",
+		BatteryInCnt60:  "batteryInCnt60",
+		BatteryInCnt72:  "batteryInCnt72",
+		BatteryOutCnt72: "batteryOutCnt72",
+		ChargerInCnt:    "chargerInCnt",
+		ChargerOutCnt:   "chargerOutCnt",
+		BatteryCnt72:    "batteryCnt72",
+		BatteryCnt60:    "batteryCnt60",
+		ChargerCnt:      "chargerCnt",
+		Lng:             "lng",
+		Lat:             "lat",
+		Qr:              "qr",
+		ProvinceId:      "provinceId",
+		CityId:          "cityId",
+		DistrictId:      "districtId",
+		Address:         "address",
+		CreatedAt:       "createdAt",
+		UpdatedAt:       "updatedAt",
 	}
 )
 
@@ -116,7 +112,7 @@ func (m *arModel) Slave() *arModel {
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) LeftJoin(table ...string) *arModel {
-	return &arModel{m.M.LeftJoin(table ...)}
+	return &arModel{m.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -125,7 +121,7 @@ func (m *arModel) LeftJoin(table ...string) *arModel {
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) RightJoin(table ...string) *arModel {
-	return &arModel{m.M.RightJoin(table ...)}
+	return &arModel{m.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -134,7 +130,7 @@ func (m *arModel) RightJoin(table ...string) *arModel {
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) InnerJoin(table ...string) *arModel {
-	return &arModel{m.M.InnerJoin(table ...)}
+	return &arModel{m.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.

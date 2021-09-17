@@ -30,8 +30,7 @@ func (*packagesApi) List(r *ghttp.Request) {
 	response.JsonOkExit(r, service.PackagesService.ListUser(r.Context(), req))
 }
 
-
-// Detail 个签用户套餐列表
+// Detail 个签用户套餐详情
 // @summary 骑手-个签用户套餐详情
 // @tags    骑手
 // @Accept  json
@@ -55,5 +54,6 @@ func (*packagesApi) Detail(r *ghttp.Request) {
 		BatteryType: packages.BatteryType,
 		Amount:      packages.Amount,
 		Earnest:     packages.Earnest,
+		Desc:        packages.Desc,
 	})
 }

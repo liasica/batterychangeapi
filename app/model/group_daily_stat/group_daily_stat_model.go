@@ -25,25 +25,25 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table group_daily_stat.
 	Columns = struct {
-		Id           string //                         
-        GroupId      string //                         
-        BatteryType  string // 电池型号 60 / 72        
-        IsArrears    string // 是否未付款 1 是 0 不是  
-        Date         string // 日期 如 20210705        
-        Total        string // 使用人数                
-        UserIds      string //                         
-        CreatedAt    string // 创建时间                
-        UpdatedAt    string //
+		Id          string //
+		GroupId     string //
+		BatteryType string // 电池型号 60 / 72
+		IsArrears   string // 是否未付款 1 是 0 不是
+		UserIds     string // 使用的用户ID
+		Date        string // 日期 如 20210705
+		Total       string // 使用人数
+		CreatedAt   string // 创建时间
+		UpdatedAt   string //
 	}{
-		Id:          "id",           
-        GroupId:     "groupId",      
-        BatteryType: "batteryType",  
-        IsArrears:   "isArrears",    
-        Date:        "date",         
-        Total:       "total",        
-        UserIds:     "userIds",      
-        CreatedAt:   "createdAt",    
-        UpdatedAt:   "updatedAt",
+		Id:          "id",
+		GroupId:     "groupId",
+		BatteryType: "batteryType",
+		IsArrears:   "isArrears",
+		UserIds:     "userIds",
+		Date:        "date",
+		Total:       "total",
+		CreatedAt:   "createdAt",
+		UpdatedAt:   "updatedAt",
 	}
 )
 
@@ -82,7 +82,7 @@ func (m *arModel) Slave() *arModel {
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) LeftJoin(table ...string) *arModel {
-	return &arModel{m.M.LeftJoin(table ...)}
+	return &arModel{m.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -91,7 +91,7 @@ func (m *arModel) LeftJoin(table ...string) *arModel {
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) RightJoin(table ...string) *arModel {
-	return &arModel{m.M.RightJoin(table ...)}
+	return &arModel{m.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -100,7 +100,7 @@ func (m *arModel) RightJoin(table ...string) *arModel {
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) InnerJoin(table ...string) *arModel {
-	return &arModel{m.M.InnerJoin(table ...)}
+	return &arModel{m.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.

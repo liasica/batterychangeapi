@@ -10,14 +10,14 @@ import (
 
 // Refund is the golang structure for table refund.
 type Refund struct {
-	Id               uint64      `orm:"id,primary"              json:"id"`               //
+	Id               uint        `orm:"id,primary"              json:"id"`               //
 	UserId           uint64      `orm:"userId"                  json:"userId"`           //
 	No               string      `orm:"no,unique"               json:"no"`               // 退款编号
 	RelationId       uint64      `orm:"relationId"              json:"relationId"`       //
 	RelationType     uint        `orm:"relationType"            json:"relationType"`     //
+	Reason           string      `orm:"reason"                  json:"reason"`           //
 	Amount           float64     `orm:"amount"                  json:"amount"`           // 退款金额
 	PlatformRefundNo string      `orm:"platformRefundNo,unique" json:"platformRefundNo"` // 第三方流水号
-	Reason           string      `orm:"reason"                  json:"reason"`           //
 	State            uint        `orm:"state"                   json:"state"`            //
 	CreatedAt        *gtime.Time `orm:"createdAt"               json:"createdAt"`        //
 	UpdatedAt        *gtime.Time `orm:"updatedAt"               json:"updatedAt"`        //

@@ -12,16 +12,16 @@ import (
 
 // Entity is the golang structure for table shop_battery_record.
 type Entity struct {
-    Id          uint64      `orm:"id,primary"  json:"id"`           //                           
-    ShopId      uint        `orm:"shopId"      json:"shop_id"`      //                           
-    Type        uint        `orm:"type"        json:"type"`         // 1 入  2 出                
-    BizType     uint        `orm:"bizType"     json:"biz_type"`     //                           
-    BizId       uint64      `orm:"bizId"       json:"biz_id"`       // 业务ID 为 0 即为平台调拨  
-    Num         uint        `orm:"num"         json:"num"`          //                           
-    Day         int         `orm:"day"         json:"day"`          //                           
-    UserName    string      `orm:"userName"    json:"user_name"`    //                           
-    BatteryType uint        `orm:"batteryType" json:"battery_type"` // 电池型号 60 / 72          
-    CreatedAt   *gtime.Time `orm:"createdAt"   json:"created_at"`   //                           
+	Id          uint64      `orm:"id,primary"  json:"id"`           //
+	ShopId      uint        `orm:"shopId"      json:"shop_id"`      //
+	Type        uint        `orm:"type"        json:"type"`         // 1 入  2 出
+	BizType     uint        `orm:"bizType"     json:"biz_type"`     //
+	BizId       uint64      `orm:"bizId"       json:"biz_id"`       // 业务ID 为 0 即为平台调拨
+	Num         uint        `orm:"num"         json:"num"`          //
+	Day         int         `orm:"day"         json:"day"`          //
+	UserName    string      `orm:"userName"    json:"user_name"`    //
+	BatteryType uint        `orm:"batteryType" json:"battery_type"` // 电池型号 60 / 72
+	CreatedAt   *gtime.Time `orm:"createdAt"   json:"created_at"`   //
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
