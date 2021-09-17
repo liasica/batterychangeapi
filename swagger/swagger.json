@@ -2480,6 +2480,10 @@
                     "description": "套餐时长天数",
                     "type": "integer"
                 },
+                "desc": {
+                    "description": "套餐介绍",
+                    "type": "string"
+                },
                 "earnest": {
                     "description": "押金",
                     "type": "number"
@@ -2575,9 +2579,6 @@
                 "id": {
                     "type": "integer"
                 },
-                "img": {
-                    "type": "string"
-                },
                 "lat": {
                     "description": "纬度",
                     "type": "number"
@@ -2612,10 +2613,6 @@
                 "state": {
                     "description": "店铺状态 0 休息总，1 营业中，2 外出中",
                     "type": "integer"
-                },
-                "tags": {
-                    "description": "标签",
-                    "type": "string"
                 },
                 "updatedAt": {
                     "type": "string"
