@@ -575,6 +575,7 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
 				NoticeDeveloperUrl: g.Cfg().GetString("api.host") + "/esign/callback/sign",
 				RedirectUrl:        "sgjdriver://driverapp.shiguangjv.com?path=back&data=success&from=/single-webview&signFileId=" + res.Data.FileId,
 				SignPlatform:       "1",
+				WillTypes:          []string{"FACE_ZHIMA_XY"}, // 仅使用支付宝刷脸
 			},
 		},
 		Signers: []beansSign.CreateFlowOneStepReqDocSigner{
