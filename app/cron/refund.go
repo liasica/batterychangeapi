@@ -34,7 +34,7 @@ func (*refund) Start() error {
 				return
 			}
 			for _, refundOrder := range list {
-				minId = refundOrder.Id
+				minId = uint64(refundOrder.Id)
 				page.PageIndex++
 				if refundOrder.RelationType == model.RefundRelationTypePackagesOrder {
 					packagesOrder, err := service.PackagesOrderService.Detail(context.TODO(), refundOrder.RelationId)
