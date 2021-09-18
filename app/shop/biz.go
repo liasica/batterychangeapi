@@ -177,6 +177,8 @@ func (*bizApi) Post(r *ghttp.Request) {
 		var refundId uint64
 		var refundNo string
 
+		groupUser := service.GroupUserService.GetBuyUserId(r.Context(), user.Id)
+
 		err = dao.User.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
 			// 用户状态
 			if err := service.UserService.BizBatteryExit(ctx, user); err != nil {
@@ -187,8 +189,8 @@ func (*bizApi) Post(r *ghttp.Request) {
 				CityId:       shop.CityId,
 				ShopId:       shop.Id,
 				UserId:       user.Id,
-				GoroupId:     0,
-				GoroupUserId: 0,
+				GoroupId:     user.GroupId,
+				GoroupUserId: groupUser.Id,
 				Type:         model.UserBizClose,
 				PackagesId:   user.PackagesId,
 				BatteryType:  user.BatteryType,
