@@ -290,7 +290,7 @@ func (*bizApi) RecordUser(r *ghttp.Request) {
 				BizType:      record.Type,
 				At:           record.CreatedAt,
 			}
-			if record.GoroupUserId > 0 {
+			if record.GoroupId > 0 {
 				res[key].GroupName = groupIdList[record.GoroupId].Name
 			}
 		}
