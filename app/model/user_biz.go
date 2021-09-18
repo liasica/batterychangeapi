@@ -118,12 +118,12 @@ type UserBizShopRecordReq struct {
 
 // UserBizShopRecordRep 店长获取业务记录响应
 type UserBizShopRecordRep struct {
-	UserName     string      `json:"userName"`            // 用户姓名
-	PackagesName string      `json:"packagesName"`        // 套餐名称
-	GroupName    string      `json:"groupName,omitempty"` // 团体名称， 名称为空即为 个签用户
-	UserMobile   string      `json:"userMobile"`          // 手机号
-	BizType      uint        `json:"bizType"`             // 业务类型  2 换电 3 寄存(仅个签可用)，5 退租
-	At           *gtime.Time `json:"at"`                  // 时间
+	UserName     string      `json:"userName"`               // 用户姓名
+	PackagesName string      `json:"packagesName,omitempty"` // 套餐名称
+	GroupName    string      `json:"groupName,omitempty"`    // 团体名称， 名称为空即为 个签用户
+	UserMobile   string      `json:"userMobile"`             // 手机号
+	BizType      uint        `json:"bizType"`                // 业务类型  2 换电 3 寄存(仅个签可用)，5 退租
+	At           *gtime.Time `json:"at"`                     // 时间
 }
 
 // UserBizShopRecordMonthTotalReq 店长获取业务记录按月统计请求

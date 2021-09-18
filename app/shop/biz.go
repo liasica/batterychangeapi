@@ -268,7 +268,7 @@ func (*bizApi) RecordUser(r *ghttp.Request) {
 		}
 		userList := service.UserService.GetByIds(r.Context(), userIds)
 		packagesList := service.PackagesService.GetByIds(r.Context(), packagesIds)
-		groupList := service.GroupService.GetByIds(r.Context(), packagesIds)
+		groupList := service.GroupService.GetByIds(r.Context(), groupIds)
 		userIdList := make(map[uint64]model.User, len(userList))
 		packagesIdList := make(map[uint]model.Packages, len(packagesList))
 		groupIdList := make(map[uint]model.Group, len(groupList))
