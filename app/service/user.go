@@ -493,7 +493,7 @@ func (s *userService) GetUserByAccessToken(accessToken string) (user model.User,
 func (s *userService) GroupUserSignDone(ctx context.Context, sign model.Sign) error {
 	res, err := dao.User.Ctx(ctx).WherePri(sign.UserId).
 		Where(dao.User.Columns.GroupId, sign.GroupId).
-		Where(dao.User.Columns.BatteryState, model.BatteryStateDefault).
+		WhereIn(dao.User.Columns.BatteryState, []int{model.BatteryStateDefault, model.BatteryStateExit}).
 		Update(g.Map{
 			dao.User.Columns.BatteryState: model.BatteryStateNew,
 			dao.User.Columns.BatteryType:  sign.BatteryType,
@@ -501,7 +501,8 @@ func (s *userService) GroupUserSignDone(ctx context.Context, sign model.Sign) er
 	if err != nil {
 		return err
 	}
-	if cnt, _err := res.RowsAffected(); _err == nil && cnt > 0 {
+	cnt, _err := res.RowsAffected()
+	if _err == nil && cnt > 0 {
 		return nil
 	}
 	return errors.New("选择失败")
