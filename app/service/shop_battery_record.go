@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"github.com/gogf/gf/os/gtime"
+	"time"
 
 	"battery/app/dao"
 	"battery/app/model"
@@ -63,7 +64,7 @@ func (*shopBatteryRecordService) ShopList(ctx context.Context, shopId uint, reco
 		m = m.WhereGTE(dao.ShopBatteryRecord.Columns.CreatedAt, st)
 	}
 	if !et.IsZero() {
-		m = m.WhereGTE(dao.ShopBatteryRecord.Columns.CreatedAt, et)
+		m = m.WhereLT(dao.ShopBatteryRecord.Columns.CreatedAt, et.Add(24*time.Hour))
 	}
 	_ = m.Scan(&list)
 	return
