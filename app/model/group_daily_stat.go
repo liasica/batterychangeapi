@@ -9,7 +9,7 @@ import "battery/app/model/internal"
 // GroupDailyStat is the golang structure for table group_daily_stat.
 type GroupDailyStat struct {
 	internal.GroupDailyStat
-	UserIds []uint64
+	UserIds ArrayUint64
 }
 
 // Fill with you ideas below.

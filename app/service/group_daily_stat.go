@@ -179,10 +179,9 @@ type resArrearsDays []struct {
 
 // ArrearsDays 获取团队未付款天数
 func (s *groupDailyStatService) ArrearsDays(ctx context.Context, groupId uint) (res resArrearsDays, err error) {
-	now := gtime.Now()
-	err = dao.GroupDailyStat.Ctx(ctx).Fields("sum(total) as cnt").
+	err = dao.GroupDailyStat.Ctx(ctx).Fields("sum(total) as cnt", dao.GroupDailyStat.Columns.BatteryType).
 		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
-		WhereLTE(dao.GroupDailyStat.Columns.Date, fmt.Sprintf("%d%d%d", now.Year(), now.Month(), now.Day())).
+		WhereLTE(dao.GroupDailyStat.Columns.Date, time.Now().Format("20060102")).
 		Where(dao.GroupDailyStat.Columns.IsArrears, model.GroupDailyStatIsArrearsYes).
 		Group(dao.GroupDailyStat.Columns.BatteryType).
 		Scan(&res)
@@ -191,12 +190,10 @@ func (s *groupDailyStatService) ArrearsDays(ctx context.Context, groupId uint) (
 
 // ArrearsList 获取团队未付款统计记录
 func (s *groupDailyStatService) ArrearsList(ctx context.Context, groupId uint) (list []model.GroupDailyStat, err error) {
-	now := gtime.Now()
 	err = dao.GroupDailyStat.Ctx(ctx).
 		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
-		WhereLTE(dao.GroupDailyStat.Columns.Date, fmt.Sprintf("%d%d%d", now.Year(), now.Month(), now.Day())).
+		WhereLTE(dao.GroupDailyStat.Columns.Date, time.Now().Format("20060102")).
 		Where(dao.GroupDailyStat.Columns.IsArrears, model.GroupDailyStatIsArrearsYes).
-		Group(dao.GroupDailyStat.Columns.BatteryType).
 		Scan(&list)
 	return
 }

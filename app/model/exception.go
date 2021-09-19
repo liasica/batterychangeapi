@@ -6,7 +6,7 @@ import (
 
 type Exception struct {
 	Exception internal.Exception
-	Img       []string
+	Img       ArrayString
 }
 
 // ExceptionReportReq 异常上报请求

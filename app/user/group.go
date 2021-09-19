@@ -12,7 +12,7 @@ var GroupApi = groupApi{}
 type groupApi struct {
 }
 
-//Stat 团队统计
+// Stat 团队统计
 // @summary 骑手-团签团队统计
 // @tags    骑手-团签BOSS
 // @Accept  json
@@ -32,7 +32,7 @@ func (*groupApi) Stat(r *ghttp.Request) {
 	})
 }
 
-//List 团队详情
+// List 团队详情
 // @summary 骑手-团签团队详情
 // @tags    骑手-团签BOSS
 // @Accept  json

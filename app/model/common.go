@@ -1,6 +1,9 @@
 package model
 
-import "github.com/gogf/gf/os/gtime"
+import (
+	"encoding/json"
+	"github.com/gogf/gf/os/gtime"
+)
 
 const (
 	ContextAdminKey       = "CurrentAdmin"
@@ -49,16 +52,55 @@ type ContextShopManager struct {
 
 // Page 分页参数
 type Page struct {
-	PageIndex int `validate:"required" v:"required|integer|min:1"`         //当前页号
-	PageLimit int `validate:"required" v:"required|integer|min:1|max:100"` //页大小
+	PageIndex int `validate:"required" v:"required|integer|min:1"`         // 当前页号
+	PageLimit int `validate:"required" v:"required|integer|min:1|max:100"` // 页大小
 }
 
 // IdReq ID参数
 type IdReq struct {
-	Id uint64 `validate:"required" v:"required|integer|min:0"` //ID
+	Id uint64 `validate:"required" v:"required|integer|min:0"` // ID
 }
 
 // UploadImageRep 图片上传返回信息
 type UploadImageRep struct {
-	Path string `json:"path"` //图片路径
+	Path string `json:"path"` // 图片路径
+}
+
+type ArrayString []string
+
+func (required *ArrayString) UnmarshalValue(value interface{}) error {
+	if value != nil {
+		switch value.(type) {
+		case string:
+			data := []byte(value.(string))
+			return json.Unmarshal(data, &required)
+		case []interface{}:
+			data := value.([]interface{})
+			fields := make([]string, len(data))
+			for key, field := range data {
+				fields[key] = field.(string)
+			}
+			*required = fields
+		}
+	}
+	return nil
+}
+
+type ArrayUint64 []uint64
+
+func (arr *ArrayUint64) UnmarshalValue(value interface{}) error {
+	if value != nil {
+		switch value.(type) {
+		case string:
+			return json.Unmarshal([]byte(value.(string)), &arr)
+		case []interface{}:
+			data := value.([]interface{})
+			fields := make([]uint64, len(data))
+			for key, field := range data {
+				fields[key] = field.(uint64)
+			}
+			*arr = fields
+		}
+	}
+	return nil
 }
