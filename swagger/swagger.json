@@ -3437,7 +3437,7 @@
                     "description": "实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过",
                     "type": "integer"
                 },
-                "groupBoos": {
+                "groupBoss": {
                     "description": "团队BOSS信息， 其它类型用户忽略",
                     "$ref": "#/definitions/model.UserGroupStatRep"
                 },

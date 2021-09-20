@@ -282,8 +282,8 @@ func (s *userService) Profile(ctx context.Context) (rep model.UserProfileRep) {
 		for _, day := range res {
 			days = days + day.Cnt
 		}
-		rep.GroupBoos.Days = days
-		rep.GroupBoos.UserCnt = GroupUserService.UserCnt(ctx, user.GroupId)
+		rep.GroupBoss.Days = days
+		rep.GroupBoss.UserCnt = GroupUserService.UserCnt(ctx, user.GroupId)
 	}
 	return
 }

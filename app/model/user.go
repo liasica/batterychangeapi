@@ -121,5 +121,5 @@ type UserProfileRep struct {
 		BatteryType  uint `json:"batteryType"`  // 电池型号 60 / 72  未开通为 0
 	} `json:"groupUser,omitempty"` // 团签用户骑手信息， 其它类型用户忽略
 
-	GroupBoos UserGroupStatRep `json:"groupBoos,omitempty"` // 团队BOSS信息， 其它类型用户忽略
+	GroupBoss UserGroupStatRep `json:"groupBoss,omitempty"` // 团队BOSS信息， 其它类型用户忽略
 }
