@@ -2986,12 +2986,8 @@
                     "type": "string"
                 },
                 "disable": {
-                    "description": "0启用(默认) 1禁用",
-                    "type": "integer",
-                    "enum": [
-                        0,
-                        1
-                    ]
+                    "description": "是否禁用，当值为true的时候其他参数忽略 false启用(默认) true禁用",
+                    "type": "boolean"
                 },
                 "earnest": {
                     "description": "押金",

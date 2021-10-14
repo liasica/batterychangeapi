@@ -53,5 +53,5 @@ type PackageReq struct {
     ProvinceId  uint    `v:"required|integer|min:1" json:"provinceId"`                                     // 省份ID
     CityId      uint    `v:"required|integer|min:1" json:"cityId"`                                         // 城市ID
     Desc        string  `v:"required" json:"desc"`                                                         // 介绍
-    Disable     uint8   `json:"disable,omitempty" enums:"0,1"`                                             // 0启用(默认) 1禁用
+    Disable     bool    `json:"disable,omitempty"`                                                         // 是否禁用，当值为true的时候其他参数忽略 false启用(默认) true禁用
 }

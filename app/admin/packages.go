@@ -98,8 +98,14 @@ func (*packagesApi) Edit(r *ghttp.Request) {
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
-    amount, _ := decimal.NewFromFloat(req.Price).Add(decimal.NewFromFloat(req.Earnest)).Float64()
-    m := dao.Packages.Data(req).Data("Amount", amount)
-    _, _ = m.Where("id", r.GetInt("id")).Update()
+    if req.Disable {
+        _, _ = dao.Packages.Where("id", r.GetInt("id")).Delete()
+    } else {
+        data := r.GetMap()
+        amount, _ := decimal.NewFromFloat(req.Price).Add(decimal.NewFromFloat(req.Earnest)).Float64()
+        data["amount"] = amount
+        data["deletedAt"] = nil
+        _, _ = dao.Packages.Data(data).Where("id", r.GetInt("id")).Unscoped().Update()
+    }
     response.JsonOkExit(r)
 }

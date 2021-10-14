@@ -17,7 +17,6 @@ func (s *packagesService) ListUser(ctx context.Context, req model.PackagesListUs
     var rep model.PackagesListUserRep
     _ = dao.Packages.Ctx(ctx).
         Where(dao.Packages.Columns.CityId, req.CityId).
-        WhereNull(dao.Packages.Columns.DeletedAt).
         Page(req.PageIndex, req.PageLimit).
         Scan(&rep)
     if l := len(rep); l > 0 {
