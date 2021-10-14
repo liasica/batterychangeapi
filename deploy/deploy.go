@@ -7,7 +7,7 @@
 // Created at 2021-07-12
 // Based on apiv2 by liasica, magicrolan@qq.com.
 
-package deploy
+package main
 
 import (
     "fmt"
@@ -22,7 +22,7 @@ const (
 )
 
 // StartListen GitHub webhook，仅服务器生效（通过hostname判断）
-func StartListen() {
+func main() {
     if h, err := os.Hostname(); err != nil || h != "shiguangju" {
         return
     }
@@ -31,7 +31,7 @@ func StartListen() {
 
     http.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
         // 仅开启push事件
-        payload, err := hook.Parse(r, github.PushEvent)
+        _, err := hook.Parse(r, github.PushEvent)
         if err != nil {
             if err == github.ErrEventNotFound {
                 // ok event wasn;t one of the ones asked to be parsed
@@ -39,9 +39,12 @@ func StartListen() {
             }
         }
 
-        fmt.Printf("%v", payload)
-
-        fmt.Println(exec.Command("bash", "-c", "git pull; go mod download all").Run())
+        output, err := exec.Command("bash", "-c", "cd /var/www/apiv2; git pull; go mod download all; pm2 restart apiv2").Output()
+        if err != nil {
+            fmt.Printf("执行失败: %v", err)
+            return
+        }
+        fmt.Println(string(output))
     })
     _ = http.ListenAndServe(":3761", nil)
 }

@@ -1,11 +1,10 @@
 package main
 
 import (
-	_ "battery/boot"
-	"battery/deploy"
-	_ "battery/router"
+    _ "battery/boot"
+    _ "battery/router"
 
-	"github.com/gogf/gf/frame/g"
+    "github.com/gogf/gf/frame/g"
 )
 
 // @title 时光驹API
@@ -18,7 +17,5 @@ import (
 // @name X-ACCESS-TOKEN
 
 func main() {
-	go deploy.StartListen()
-
-	g.Server().Run()
+    g.Server().Run()
 }
