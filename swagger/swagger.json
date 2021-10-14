@@ -7,6 +7,132 @@
     },
     "host": "apiv2.shiguangjv.com",
     "paths": {
+        "/admin/districts": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "城市列表（三级联动）",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/service.DistrictEl"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "登录",
+                "parameters": [
+                    {
+                        "description": "登录数据",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.SysUserLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/logout": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "退出",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/shop": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "店铺列表",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.ShopListResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/sms": {
             "post": {
                 "consumes": [
@@ -2661,6 +2787,72 @@
                 }
             }
         },
+        "model.ShopListItem": {
+            "type": "object",
+            "properties": {
+                "batteryCnt60": {
+                    "description": "60伏电池数量",
+                    "type": "integer"
+                },
+                "batteryCnt72": {
+                    "description": "72伏电池数量",
+                    "type": "integer"
+                },
+                "batteryInCnt60": {
+                    "description": "60伏电池入库数量",
+                    "type": "integer"
+                },
+                "batteryInCnt72": {
+                    "description": "72伏电池入库数量",
+                    "type": "integer"
+                },
+                "batteryOutCnt60": {
+                    "description": "60伏电池出库数量",
+                    "type": "integer"
+                },
+                "batteryOutCnt72": {
+                    "description": "72伏电池出库数量",
+                    "type": "integer"
+                },
+                "cityName": {
+                    "description": "城市名",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "managerName": {
+                    "description": "管理员姓名",
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "管理员电话",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "店铺名称",
+                    "type": "string"
+                },
+                "state": {
+                    "description": "店铺状态 0 休息中，1 营业中，2 外出中",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ShopListResp": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ShopListItem"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.ShopListUserRep": {
             "type": "object",
             "required": [
@@ -3001,6 +3193,17 @@
                     "type": "string"
                 },
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.SysUserLoginReq": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }
@@ -3582,6 +3785,25 @@
                 },
                 "message": {
                     "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "service.DistrictEl": {
+            "type": "object",
+            "properties": {
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/service.DistrictEl"
+                    }
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "名称",
                     "type": "string"
                 }
             }

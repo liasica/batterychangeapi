@@ -5,12 +5,12 @@
 package model
 
 import (
-	"battery/app/model/internal"
+    "battery/app/model/internal"
 )
 
 const (
-	ShopStateOpen  = 1
-	ShopStateClose = 2
+    ShopStateOpen  = 1
+    ShopStateClose = 2
 )
 
 // Shop is the golang structure for table shop.
@@ -18,35 +18,56 @@ type Shop internal.Shop
 
 // ShopManagerChangeStateReq 店长修改店铺状态请求
 type ShopManagerChangeStateReq struct {
-	State uint `validate:"required" v:"required|in:1,2"` //店铺状态 1 营业中 2 休息中
+    State uint `validate:"required" v:"required|in:1,2"` // 店铺状态 1 营业中 2 休息中
 }
 
 // ShopListUserReq 骑手获取店铺列表请求
 type ShopListUserReq struct {
-	Page
-	Lng    float64 `validate:"required" json:"lng"`
-	Lat    float64 `validate:"required" json:"lat"`
-	CityId uint64  `validate:"required" json:"cityId"`
-	Name   string  `json:"name"` //店铺名称。搜索时使用
+    Page
+    Lng    float64 `validate:"required" json:"lng"`
+    Lat    float64 `validate:"required" json:"lat"`
+    CityId uint64  `validate:"required" json:"cityId"`
+    Name   string  `json:"name"` // 店铺名称。搜索时使用
 }
 
 // ShopListAdminReq 管理员获取店铺列表请求
 type ShopListAdminReq struct {
-	Page
-	Name string `json:"name"` //店铺名称。搜索时使用
+    Page
+    Name string `json:"name"` // 店铺名称。搜索时使用
 }
 
 // ShopListUserRep 骑手获取店铺列表响应
 type ShopListUserRep struct {
-	Id           uint     `validate:"required" json:"id"`           //ID
-	Img          string   `validate:"required" json:"img"`          //图片
-	Tags         []string `validate:"required" json:"tags"`         //标签
-	Name         string   `validate:"required" json:"name"`         //名称
-	Lng          float64  `validate:"required" json:"lng"`          //经度
-	Lat          float64  `validate:"required" json:"lat"`          //纬度
-	BatteryTotal uint     `validate:"required" json:"batteryTotal"` //备货
-	Distance     uint     `validate:"required" json:"distance"`     //距离
-	Mobile       string   `validate:"required" json:"mobile"`       //联系手机号码
-	Address      string   `validate:"required" json:"address"`      //详细地址
-	State        uint     `validate:"required" json:"state"`        //店铺状态 1 营业中 2 休息中
+    Id           uint     `validate:"required" json:"id"`           // ID
+    Img          string   `validate:"required" json:"img"`          // 图片
+    Tags         []string `validate:"required" json:"tags"`         // 标签
+    Name         string   `validate:"required" json:"name"`         // 名称
+    Lng          float64  `validate:"required" json:"lng"`          // 经度
+    Lat          float64  `validate:"required" json:"lat"`          // 纬度
+    BatteryTotal uint     `validate:"required" json:"batteryTotal"` // 备货
+    Distance     uint     `validate:"required" json:"distance"`     // 距离
+    Mobile       string   `validate:"required" json:"mobile"`       // 联系手机号码
+    Address      string   `validate:"required" json:"address"`      // 详细地址
+    State        uint     `validate:"required" json:"state"`        // 店铺状态 1 营业中 2 休息中
+}
+
+// ShopListResp 店铺列表返回数据
+type ShopListResp struct {
+    Total int            `json:"total"`
+    Items []ShopListItem `json:"items"`
+}
+
+type ShopListItem struct {
+    Id              uint   `json:"id"`
+    Name            string `json:"name"`            // 店铺名称
+    State           uint   `json:"state"`           // 店铺状态 0 休息中，1 营业中，2 外出中
+    CityName        string `json:"cityName"`        // 城市名
+    ManagerName     string `json:"managerName"`     // 管理员姓名
+    Mobile          string `json:"mobile" `         // 管理员电话
+    BatteryInCnt60  uint   `json:"batteryInCnt60"`  // 60伏电池入库数量
+    BatteryInCnt72  uint   `json:"batteryInCnt72"`  // 72伏电池入库数量
+    BatteryOutCnt60 uint   `json:"batteryOutCnt60"` // 60伏电池出库数量
+    BatteryOutCnt72 uint   `json:"batteryOutCnt72"` // 72伏电池出库数量
+    BatteryCnt60    int    `json:"batteryCnt60"`    // 60伏电池数量
+    BatteryCnt72    int    `json:"batteryCnt72"`    // 72伏电池数量
 }
