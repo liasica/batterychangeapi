@@ -17,13 +17,13 @@ type userApi struct {
 }
 
 // Register
-// @summary 骑手-用户注册
-// @tags    骑手
+// @Summary 骑手-用户注册
+// @Tags    骑手
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.UserRegisterReq true "注册数据"
-// @router  /rapi/register [POST]
-// @success 200 {object} response.JsonResponse  "返回结果"
+// @Router  /rapi/register [POST]
+// @Success 200 {object} response.JsonResponse  "返回结果"
 func (*userApi) Register(r *ghttp.Request) {
     var req model.UserRegisterReq
     if err := r.Parse(&req); err != nil {
@@ -36,13 +36,13 @@ func (*userApi) Register(r *ghttp.Request) {
 }
 
 // Login
-// @summary 骑手-用户登录
-// @tags    骑手
+// @Summary 骑手-用户登录
+// @Tags    骑手
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.UserLoginReq true "登录数据"
-// @router  /rapi/login [POST]
-// @success 200 {object} response.JsonResponse{data=model.UserLoginRep}  "返回结果"
+// @Router  /rapi/login [POST]
+// @Success 200 {object} response.JsonResponse{data=model.UserLoginRep}  "返回结果"
 func (*userApi) Login(r *ghttp.Request) {
     var req model.UserLoginReq
     if err := r.Parse(&req); err != nil {
@@ -56,13 +56,13 @@ func (*userApi) Login(r *ghttp.Request) {
 }
 
 // Auth
-// @summary 骑手-实名认证提交
-// @tags    骑手
+// @Summary 骑手-实名认证提交
+// @Tags    骑手
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.UserRealNameAuthReq true "认证数据"
-// @router  /rapi/auth [POST]
-// @success 200 {object} response.JsonResponse{data=model.UserRealNameAuthRep}  "返回结果"
+// @Router  /rapi/auth [POST]
+// @Success 200 {object} response.JsonResponse{data=model.UserRealNameAuthRep}  "返回结果"
 func (*userApi) Auth(r *ghttp.Request) {
     var req model.UserRealNameAuthReq
     if err := r.Parse(&req); err != nil {
@@ -79,25 +79,25 @@ func (*userApi) Auth(r *ghttp.Request) {
 }
 
 // AuthGet
-// @summary 骑手-获取实名认证状态 [每次切换页面都进行查询]
-// @tags    骑手
+// @Summary 骑手-获取实名认证状态 [每次切换页面都进行查询]
+// @Tags    骑手
 // @Accept  json
 // @Produce  json
-// @router  /rapi/auth [GET]
-// @success 200 {object} response.JsonResponse{data=int}  "返回结果"
+// @Router  /rapi/auth [GET]
+// @Success 200 {object} response.JsonResponse{data=int}  "返回结果"
 func (*userApi) AuthGet(r *ghttp.Request) {
     u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
     response.JsonOkExit(r, u.AuthState)
 }
 
 // PushToken
-// @summary 骑手-上报推送token
-// @tags    骑手-消息
+// @Summary 骑手-上报推送token
+// @Tags    骑手-消息
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.PushTokenReq true "登录数据"
-// @router  /rapi/device  [PUT]
-// @success 200 {object} response.JsonResponse  "返回结果"
+// @Router  /rapi/device  [PUT]
+// @Success 200 {object} response.JsonResponse  "返回结果"
 func (*userApi) PushToken(r *ghttp.Request) {
     var req model.PushTokenReq
     if err := r.Parse(&req); err != nil {
@@ -111,12 +111,12 @@ func (*userApi) PushToken(r *ghttp.Request) {
 }
 
 // Packages
-// @summary 骑手-获取骑手当前套餐详情
-// @tags    骑手
+// @Summary 骑手-获取骑手当前套餐详情
+// @Tags    骑手
 // @Accept  json
 // @Produce  json
-// @router  /rapi/package  [GET]
-// @success 200 {object} response.JsonResponse{data=model.UserCurrentPackageOrder}  "返回结果"
+// @Router  /rapi/package  [GET]
+// @Success 200 {object} response.JsonResponse{data=model.UserCurrentPackageOrder}  "返回结果"
 func (*userApi) Packages(r *ghttp.Request) {
     rep, err := service.UserService.MyPackage(r.Context())
     if err != nil {
@@ -128,12 +128,12 @@ func (*userApi) Packages(r *ghttp.Request) {
 }
 
 // PackagesOrderQr
-// @summary 骑手-获取骑手当前套餐二维码
-// @tags    骑手
+// @Summary 骑手-获取骑手当前套餐二维码
+// @Tags    骑手
 // @Accept  json
 // @Produce  json
-// @router  /rapi/package_order/qr  [GET]
-// @success 200 {object} response.JsonResponse "返回结果, data字段为二维码图片数据，需要本地生成二维码"
+// @Router  /rapi/package_order/qr  [GET]
+// @Success 200 {object} response.JsonResponse "返回结果, data字段为二维码图片数据，需要本地生成二维码"
 func (*userApi) PackagesOrderQr(r *ghttp.Request) {
     u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
     if u.GroupId > 0 {
@@ -151,12 +151,12 @@ func (*userApi) PackagesOrderQr(r *ghttp.Request) {
 }
 
 // Profile
-// @summary 骑手-首页
-// @tags    骑手
+// @Summary 骑手-首页
+// @Tags    骑手
 // @Accept  json
 // @Produce  json
-// @router  /rapi/home  [GET]
-// @success 200 {object} response.JsonResponse{data=model.UserProfileRep}  "返回结果"
+// @Router  /rapi/home  [GET]
+// @Success 200 {object} response.JsonResponse{data=model.UserProfileRep}  "返回结果"
 func (*userApi) Profile(r *ghttp.Request) {
     profile := service.UserService.Profile(r.Context())
     profile.Qr = qr.Code.AddPrefix(profile.Qr)
@@ -171,12 +171,12 @@ type UserSignFileRepItem struct {
 type UserSignFileRep []*UserSignFileRepItem
 
 // SignFile
-// @summary 骑手-签约文件地址
-// @tags    骑手
+// @Summary 骑手-签约文件地址
+// @Tags    骑手
 // @Accept  json
 // @Produce  json
-// @router  /rapi/sign_file  [GET]
-// @success 200 {object} response.JsonResponse{data=[]user.UserSignFileRep}  "返回结果"
+// @Router  /rapi/sign_file  [GET]
+// @Success 200 {object} response.JsonResponse{data=[]user.UserSignFileRep}  "返回结果"
 func (*userApi) SignFile(r *ghttp.Request) {
     u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
     s, err := service.SignService.UserLatestDoneDetail(r.Context(), u.Id, u.PackagesOrderId, u.GroupId)

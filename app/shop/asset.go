@@ -14,14 +14,14 @@ type assetApi struct {
 }
 
 // BatteryStat
-// @summary 店长-资产-电池统计
-// @tags    店长-资产
+// @Summary 店长-资产-电池统计
+// @Tags    店长-资产
 // @Accept  json
 // @Produce  json
 // @Param 	pageIndex query integer  true "当前页码"
 // @Param 	pageLimit query integer  true "每页行数"
-// @router  /sapi/asset/battery_stat [GET]
-// @success 200 {object} response.JsonResponse{data=model.ShopBatteryRecordStatRep} "返回结果"
+// @Router  /sapi/asset/battery_stat [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ShopBatteryRecordStatRep} "返回结果"
 func (*assetApi) BatteryStat(r *ghttp.Request) {
     shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
     response.JsonOkExit(r, model.ShopBatteryRecordStatRep{
@@ -31,8 +31,8 @@ func (*assetApi) BatteryStat(r *ghttp.Request) {
 }
 
 // BatteryList
-// @summary 店长-资产-电池出入库列表
-// @tags    店长-资产
+// @Summary 店长-资产-电池出入库列表
+// @Tags    店长-资产
 // @Accept  json
 // @Produce  json
 // @Param 	pageIndex query integer  true "当前页码"
@@ -40,8 +40,8 @@ func (*assetApi) BatteryStat(r *ghttp.Request) {
 // @Param 	type query integer  true "1 入库 2 出库"
 // @Param 	startTime query string  false "开始时间"
 // @Param 	endTime query string  false "结束时间"
-// @router  /sapi/asset/battery_list  [GET]
-// @success 200 {object} response.JsonResponse{data=[]model.ShopBatteryRecordListRep} "返回结果"
+// @Router  /sapi/asset/battery_list  [GET]
+// @Success 200 {object} response.JsonResponse{data=[]model.ShopBatteryRecordListRep} "返回结果"
 func (*assetApi) BatteryList(r *ghttp.Request) {
     var req model.ShopBatteryRecordListReq
     if err := r.Parse(&req); err != nil {

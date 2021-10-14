@@ -16,12 +16,12 @@ type shopApi struct {
 }
 
 // List
-// @summary 门店列表
-// @tags    管理,门店
+// @Summary 门店列表
+// @Tags    管理
 // @Accept  json
 // @Produce  json
-// @router  /admin/shop [GET]
-// @success 200 {object} response.JsonResponse{data=model.ShopListResp}  "返回结果"
+// @Router  /admin/shop [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ShopListResp}  "返回结果"
 func (*shopApi) List(r *ghttp.Request) {
     var req model.ShopListAdminReq
     if err := r.Parse(&req); err != nil {
@@ -59,13 +59,13 @@ func (*shopApi) List(r *ghttp.Request) {
 }
 
 // Create
-// @summary 创建门店
-// @tags    管理,门店
+// @Summary 创建门店
+// @Tags    管理
 // @Accept  json
 // @Param   entity body model.ShopDetail true "门店详情"
 // @Produce  json
-// @router  /admin/shop [POST]
-// @success 200 {object} response.JsonResponse "返回结果"
+// @Router  /admin/shop [POST]
+// @Success 200 {object} response.JsonResponse "返回结果"
 func (*shopApi) Create(r *ghttp.Request) {
     var req model.ShopDetail
     if err := r.Parse(&req); err != nil {
@@ -117,14 +117,14 @@ func (*shopApi) Create(r *ghttp.Request) {
 }
 
 // Edit
-// @summary 编辑门店
-// @tags    管理,门店
+// @Summary 编辑门店
+// @Tags    管理
 // @Accept  json
 // @Param   id path int true "门店ID"
 // @Param   entity body model.ModifyShopReq true "门店详情"
 // @Produce  json
-// @router  /admin/shop/{id} [PUT]
-// @success 200 {object} response.JsonResponse "返回结果"
+// @Router  /admin/shop/{id} [PUT]
+// @Success 200 {object} response.JsonResponse "返回结果"
 func (*shopApi) Edit(r *ghttp.Request) {
     var req model.ModifyShopReq
     if err := r.Parse(&req); err != nil {
@@ -176,13 +176,13 @@ func (*shopApi) Edit(r *ghttp.Request) {
 }
 
 // Detail
-// @summary 门店详情
-// @tags    管理,门店
+// @Summary 门店详情
+// @Tags    管理
 // @Accept  json
 // @Param   id path int true "门店ID"
 // @Produce  json
-// @router  /admin/shop/{id} [GET]
-// @success 200 {object} response.JsonResponse{data=model.ShopDetail} "返回结果"
+// @Router  /admin/shop/{id} [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ShopDetail} "返回结果"
 func (*shopApi) Detail(r *ghttp.Request) {
     var req model.IdReq
     if err := r.Parse(&req); err != nil {

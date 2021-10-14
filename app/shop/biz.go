@@ -17,13 +17,13 @@ type bizApi struct {
 }
 
 // Profile
-// @summary 店长-业务-办理获取用户信息
-// @tags    店长-业务
+// @Summary 店长-业务-办理获取用户信息
+// @Tags    店长-业务
 // @Accept  json
 // @Produce  json
 // @Param 	code path integer  true "用户二维码"
-// @router  /sapi/user_biz_profile/:code [GET]
-// @success 200 {object} response.JsonResponse{data=model.BizProfileRep}  "返回结果"
+// @Router  /sapi/user_biz_profile/:code [GET]
+// @Success 200 {object} response.JsonResponse{data=model.BizProfileRep}  "返回结果"
 func (*bizApi) Profile(r *ghttp.Request) {
     var req model.BizNewCdeReq
     if err := r.Parse(&req); err != nil {
@@ -37,13 +37,13 @@ func (*bizApi) Profile(r *ghttp.Request) {
 }
 
 // Post
-// @summary 店长-业务-业务办理提交
-// @tags    店长-业务
+// @Summary 店长-业务-业务办理提交
+// @Tags    店长-业务
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.UserBizReq true "请求数据"
-// @router  /sapi/user_biz [POST]
-// @success 200 {object} response.JsonResponse "返回结果"
+// @Router  /sapi/user_biz [POST]
+// @Success 200 {object} response.JsonResponse "返回结果"
 func (*bizApi) Post(r *ghttp.Request) {
     var req model.UserBizReq
     if err := r.Parse(&req); err != nil {
@@ -240,8 +240,8 @@ func (*bizApi) Post(r *ghttp.Request) {
 }
 
 // RecordUser
-// @summary 店长-业务-换电记录列表
-// @tags    店长-业务
+// @Summary 店长-业务-换电记录列表
+// @Tags    店长-业务
 // @Accept  json
 // @Produce  json
 // @Param 	pageIndex query integer  true "当前页码"
@@ -249,8 +249,8 @@ func (*bizApi) Post(r *ghttp.Request) {
 // @Param 	month 	  query integer  true "月份数字，如 202106"
 // @Param 	bizType   query integer  false "业务类型 2 换电 3 寄存(仅个签可用)，5 退租"
 // @Param 	userType  query integer  true  "用户类型 1 个签  2 团签"
-// @router  /sapi/biz_record [GET]
-// @success 200 {object} response.JsonResponse{data=[]model.UserBizShopRecordRep} "返回结果"
+// @Router  /sapi/biz_record [GET]
+// @Success 200 {object} response.JsonResponse{data=[]model.UserBizShopRecordRep} "返回结果"
 func (*bizApi) RecordUser(r *ghttp.Request) {
     var req model.UserBizShopRecordReq
     if err := r.Parse(&req); err != nil {
@@ -300,15 +300,15 @@ func (*bizApi) RecordUser(r *ghttp.Request) {
 }
 
 // RecordUserTotal
-// @summary 店长-业务-记录统计
-// @tags    店长-业务
+// @Summary 店长-业务-记录统计
+// @Tags    店长-业务
 // @Accept  json
 // @Produce  json
 // @Param 	month 	query integer  true "月份数字，如 202106"
 // @Param 	userType  query integer  true  "业务类型 1 个签  2 团签"
 // @Param 	bizType   query integer  false "业务类型 2 换电 3 寄存(仅个签可用)，5 退租"
-// @router  /sapi/biz_record_total [GET]
-// @success 200 {object} response.JsonResponse{data=model.UserBizShopRecordMonthTotalRep} "返回结果"
+// @Router  /sapi/biz_record_total [GET]
+// @Success 200 {object} response.JsonResponse{data=model.UserBizShopRecordMonthTotalRep} "返回结果"
 func (*bizApi) RecordUserTotal(r *ghttp.Request) {
     var req model.UserBizShopRecordMonthTotalReq
     if err := r.Parse(&req); err != nil {

@@ -16,13 +16,13 @@ type managerApi struct {
 }
 
 // Login
-// @summary 店长-登录
-// @tags    店长
+// @Summary 店长-登录
+// @Tags    店长
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.ShopManagerLoginReq true "登录数据"
-// @router  /sapi/login [POST]
-// @success 200 {object} response.JsonResponse{data=model.ShopManagerLoginRep}  "返回结果"
+// @Router  /sapi/login [POST]
+// @Success 200 {object} response.JsonResponse{data=model.ShopManagerLoginRep}  "返回结果"
 func (*managerApi) Login(r *ghttp.Request) {
     var req model.ShopManagerLoginReq
     if err := r.Parse(&req); err != nil {
@@ -36,12 +36,12 @@ func (*managerApi) Login(r *ghttp.Request) {
 }
 
 // Qr
-// @summary 店长-获取店本店二维码
-// @tags    店长
+// @Summary 店长-获取店本店二维码
+// @Tags    店长
 // @Accept  json
 // @Produce  json
-// @router  /sapi/qr [GET]
-// @success 200 {object} response.JsonResponse 二维码结果 data 为二维码数据，需本地生成图片
+// @Router  /sapi/qr [GET]
+// @Success 200 {object} response.JsonResponse 二维码结果 data 为二维码数据，需本地生成图片
 func (*managerApi) Qr(r *ghttp.Request) {
     manager := r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager)
     shop, _ := service.ShopService.Detail(r.Context(), manager.ShopId)
@@ -49,12 +49,12 @@ func (*managerApi) Qr(r *ghttp.Request) {
 }
 
 // Profile
-// @summary 店长-获取门店信息
-// @tags    店长
+// @Summary 店长-获取门店信息
+// @Tags    店长
 // @Accept  json
 // @Produce  json
-// @router  /sapi/shop/profile [GET]
-// @success 200 {object} response.JsonResponse{data=model.Shop}  "返回结果"
+// @Router  /sapi/shop/profile [GET]
+// @Success 200 {object} response.JsonResponse{data=model.Shop}  "返回结果"
 func (*managerApi) Profile(r *ghttp.Request) {
     manager := r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager)
     rep, err := service.ShopService.Detail(r.Context(), manager.ShopId)
@@ -65,13 +65,13 @@ func (*managerApi) Profile(r *ghttp.Request) {
 }
 
 // ShopState
-// @summary 店长-修改门店状态
-// @tags    店长
+// @Summary 店长-修改门店状态
+// @Tags    店长
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.ShopManagerChangeStateReq true "请求数据"
-// @router  /sapi/shop/state [PUT]
-// @success 200 {object} response.JsonResponse{}  "返回结果"
+// @Router  /sapi/shop/state [PUT]
+// @Success 200 {object} response.JsonResponse{}  "返回结果"
 func (*managerApi) ShopState(r *ghttp.Request) {
     var req model.ShopManagerChangeStateReq
     if err := r.Parse(&req); err != nil {
@@ -84,13 +84,13 @@ func (*managerApi) ShopState(r *ghttp.Request) {
 }
 
 // PushToken
-// @summary 店长-上报推送token
-// @tags    店长
+// @Summary 店长-上报推送token
+// @Tags    店长
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.PushTokenReq true "登录数据"
-// @router  /sapi/device  [PUT]
-// @success 200 {object} response.JsonResponse  "返回结果"
+// @Router  /sapi/device  [PUT]
+// @Success 200 {object} response.JsonResponse  "返回结果"
 func (*managerApi) PushToken(r *ghttp.Request) {
     var req model.PushTokenReq
     if err := r.Parse(&req); err != nil {
@@ -103,13 +103,13 @@ func (*managerApi) PushToken(r *ghttp.Request) {
 }
 
 // ResetMobile
-// @summary 店长-修改手机号码
-// @tags    店长
+// @Summary 店长-修改手机号码
+// @Tags    店长
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.ShopManagerResetMobileReq true "登录数据"
-// @router  /sapi/mobile  [PUT]
-// @success 200 {object} response.JsonResponse  "返回结果"
+// @Router  /sapi/mobile  [PUT]
+// @Success 200 {object} response.JsonResponse  "返回结果"
 func (*managerApi) ResetMobile(r *ghttp.Request) {
     var req model.ShopManagerResetMobileReq
     if err := r.Parse(&req); err != nil {

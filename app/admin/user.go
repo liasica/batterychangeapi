@@ -14,13 +14,13 @@ type userApi struct {
 }
 
 // Login
-// @summary 登录
-// @tags    管理
+// @Summary 登录
+// @Tags    管理
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.SysUserLoginReq true "登录数据"
-// @router  /admin/login [POST]
-// @success 200 {object} response.JsonResponse  "返回结果"
+// @Router  /admin/login [POST]
+// @Success 200 {object} response.JsonResponse  "返回结果"
 func (*userApi) Login(r *ghttp.Request) {
     var req model.SysUserLoginReq
     if err := r.Parse(&req); err != nil {
@@ -35,12 +35,12 @@ func (*userApi) Login(r *ghttp.Request) {
 }
 
 // Logout
-// @summary 退出
-// @tags    管理
+// @Summary 退出
+// @Tags    管理
 // @Accept  json
 // @Produce  json
-// @router  /admin/logout [PUT]
-// @success 200 {object} response.JsonResponse  "返回结果"
+// @Router  /admin/logout [PUT]
+// @Success 200 {object} response.JsonResponse  "返回结果"
 func (*userApi) Logout(r *ghttp.Request) {
     err := service.SysUsersService.Logout(r.Context())
     if err != nil {

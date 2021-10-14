@@ -20,14 +20,14 @@ type orderApi struct {
 }
 
 // Total 订单月份统计
-// @summary 店长-订单月份统计
-// @tags    店长-订单
+// @Summary 店长-订单月份统计
+// @Tags    店长-订单
 // @Accept  json
 // @Produce  json
 // @Param 	month query integer  true "月份 如：202106"
 // @Param 	type query integer  false "订单类型 1 新签 2 续费"
-// @router  /sapi/order_total [GET]
-// @success 200 {object} response.JsonResponse{data=model.ShopOrderTotalRep} "返回结果"
+// @Router  /sapi/order_total [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ShopOrderTotalRep} "返回结果"
 func (*orderApi) Total(r *ghttp.Request) {
     var req model.ShopOrderTotalReq
     if err := r.Parse(&req); err != nil {
@@ -38,8 +38,8 @@ func (*orderApi) Total(r *ghttp.Request) {
 }
 
 // List 订单列表
-// @summary 店长-订单列表
-// @tags    店长-订单
+// @Summary 店长-订单列表
+// @Tags    店长-订单
 // @Accept  json
 // @Produce  json
 // @Param 	pageIndex query integer  true "当前页码"
@@ -47,8 +47,8 @@ func (*orderApi) Total(r *ghttp.Request) {
 // @Param 	month query integer  true "月份 如：202106"
 // @Param 	type query integer  false "订单类型 1 新签 2 续费"
 // @Param 	keywords query string  false "搜索关键字"
-// @router  /sapi/order [GET]
-// @success 200 {object} response.JsonResponse{data=[]model.ShopOrderListItem} "返回结果"
+// @Router  /sapi/order [GET]
+// @Success 200 {object} response.JsonResponse{data=[]model.ShopOrderListItem} "返回结果"
 func (*orderApi) List(r *ghttp.Request) {
     var req model.ShopOrderListReq
     if err := r.Parse(&req); err != nil {
@@ -91,13 +91,13 @@ func (*orderApi) List(r *ghttp.Request) {
 }
 
 // ListDetail
-// @summary 店长-订单列表获取订单详情
-// @tags    店长-订单
+// @Summary 店长-订单列表获取订单详情
+// @Tags    店长-订单
 // @Accept  json
 // @Produce  json
 // @Param 	code path integer  true "订单记录获取订单详情"
-// @router  /sapi/order/:id [GET]
-// @success 200 {object} response.JsonResponse{data=model.ShopManagerPackagesOrderListDetailRep} "返回结果"
+// @Router  /sapi/order/:id [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ShopManagerPackagesOrderListDetailRep} "返回结果"
 func (*orderApi) ListDetail(r *ghttp.Request) {
     var req model.IdReq
     if err := r.Parse(&req); err != nil {
@@ -126,13 +126,13 @@ func (*orderApi) ListDetail(r *ghttp.Request) {
 }
 
 // ScanDetail
-// @summary 店长-二维码获取订单详情
-// @tags    店长-订单
+// @Summary 店长-二维码获取订单详情
+// @Tags    店长-订单
 // @Accept  json
 // @Produce  json
 // @Param 	code path string  true "订单二维码扫码获取的code"
-// @router  /sapi/order_scan/:code [GET]
-// @success 200 {object} response.JsonResponse{data=model.ShopManagerPackagesOrderScanDetailRep} "返回结果"
+// @Router  /sapi/order_scan/:code [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ShopManagerPackagesOrderScanDetailRep} "返回结果"
 func (*orderApi) ScanDetail(r *ghttp.Request) {
     var req model.BizNewCdeReq
     if err := r.Parse(&req); err != nil {
@@ -192,13 +192,13 @@ func (*orderApi) ScanDetail(r *ghttp.Request) {
 }
 
 // Claim
-// @summary 店长-认领订单
-// @tags    店长-订单
+// @Summary 店长-认领订单
+// @Tags    店长-订单
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.ShopManagerPackagesOrderClaimReq true "请求数据"
-// @router  /sapi/order_claim [POST]
-// @success 200 {object} response.JsonResponse "返回结果"
+// @Router  /sapi/order_claim [POST]
+// @Success 200 {object} response.JsonResponse "返回结果"
 func (*orderApi) Claim(r *ghttp.Request) {
     var req model.ShopManagerPackagesOrderClaimReq
     if err := r.Parse(&req); err != nil {

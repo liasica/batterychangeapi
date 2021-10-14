@@ -13,13 +13,13 @@ type exceptionApi struct {
 }
 
 // Report
-// @summary 店长-异常上报
-// @tags    店长
+// @Summary 店长-异常上报
+// @Tags    店长
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.ExceptionReportReq true "请求数据"
-// @router  /sapi/exception [POST]
-// @success 200 {object} response.JsonResponse "返回结果"
+// @Router  /sapi/exception [POST]
+// @Success 200 {object} response.JsonResponse "返回结果"
 func (*exceptionApi) Report(r *ghttp.Request) {
     var req model.ExceptionReportReq
     if err := r.Parse(&req); err != nil {

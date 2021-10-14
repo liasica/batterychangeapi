@@ -20,14 +20,14 @@ type weather struct{}
 var Weather = new(weather)
 
 // Now
-// @summary 工具-获取天气
-// @tags    公用
+// @Summary 工具-获取天气
+// @Tags    公用
 // @Accept  json
 // @Produce  json
 // @Param   lng query string true "经度"
 // @Param   lat query string true "纬度"
-// @router  /tools/weather [GET]
-// @success 200 {object} response.JsonResponse{data=service.WeatherNow}  "返回结果"
+// @Router  /tools/weather [GET]
+// @Success 200 {object} response.JsonResponse{data=service.WeatherNow}  "返回结果"
 func (*weather) Now(r *ghttp.Request) {
     lng := r.GetQueryString("lng")
     lat := r.GetQueryString("lat")

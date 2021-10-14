@@ -14,13 +14,13 @@ type smsApi struct {
 }
 
 // Send
-// @summary 公用-发送短信
-// @tags    公用
+// @Summary 公用-发送短信
+// @Tags    公用
 // @Accept  json
 // @Produce  json
 // @Param   entity  body model.SmsSendReq true "注册数据"
-// @router  /api/sms [POST]
-// @success 200 {object} response.JsonResponse  "返回结果"
+// @Router  /api/sms [POST]
+// @Success 200 {object} response.JsonResponse  "返回结果"
 func (*smsApi) Send(r *ghttp.Request) {
     var req model.SmsSendReq
     if err := r.Parse(&req); err != nil {

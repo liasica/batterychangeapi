@@ -27,12 +27,12 @@ type bizApi struct {
 }
 
 // RecordStat 骑手换电记录统计
-// @summary 骑手-换电记录统计
+// @Summary 骑手-换电记录统计
 // @Accept  json
 // @Produce  json
-// @tags    骑手
-// @router  /rapi/biz_record/stat [GET]
-// @success 200 {object} response.JsonResponse{data=model.UserBizRecordStatRep}  "返回结果"
+// @Tags    骑手
+// @Router  /rapi/biz_record/stat [GET]
+// @Success 200 {object} response.JsonResponse{data=model.UserBizRecordStatRep}  "返回结果"
 func (*bizApi) RecordStat(r *ghttp.Request) {
     user := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
     days := user.BizBatteryRenewalDays
@@ -46,14 +46,14 @@ func (*bizApi) RecordStat(r *ghttp.Request) {
 }
 
 // RecordList 骑手换电记录列表
-// @summary 骑手-换电记录列表
+// @Summary 骑手-换电记录列表
 // @Accept  json
 // @Produce  json
-// @tags    骑手
+// @Tags    骑手
 // @Param 	pageIndex query integer  true "当前页码"
 // @Param 	pageLimit query integer  true "每页行数"
-// @router  /rapi/biz_record/list [GET]
-// @success 200 {object} response.JsonResponse{data=[]model.UserBizRecordListRep}  "返回结果"
+// @Router  /rapi/biz_record/list [GET]
+// @Success 200 {object} response.JsonResponse{data=[]model.UserBizRecordListRep}  "返回结果"
 func (*bizApi) RecordList(r *ghttp.Request) {
     var req model.Page
     if err := r.Parse(&req); err != nil {
@@ -83,13 +83,13 @@ func (*bizApi) RecordList(r *ghttp.Request) {
 }
 
 // BatteryRenewal 骑手扫码换电
-// @summary 骑手-骑手扫码换电
+// @Summary 骑手-骑手扫码换电
 // @Accept  json
 // @Produce  json
-// @tags    骑手-业务办理
+// @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizBatteryRenewalReq true "请求数据"
-// @router  /rapi/biz_battery_renewal [POST]
-// @success 200 {object} response.JsonResponse{data=model.UserBizBatteryRenewalRep}  "返回结果"
+// @Router  /rapi/biz_battery_renewal [POST]
+// @Success 200 {object} response.JsonResponse{data=model.UserBizBatteryRenewalRep}  "返回结果"
 func (*bizApi) BatteryRenewal(r *ghttp.Request) {
     var req model.UserBizBatteryRenewalReq
     if err := r.Parse(&req); err != nil {
@@ -137,13 +137,13 @@ func (*bizApi) BatteryRenewal(r *ghttp.Request) {
 }
 
 // New
-// @summary 骑手-个签骑手签约之后获取支付信息
+// @Summary 骑手-个签骑手签约之后获取支付信息
 // @Accept  json
 // @Produce  json
-// @tags    骑手-业务办理
+// @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizNewReq true "请求数据"
-// @router  /rapi/biz_new [POST]
-// @success 200 {object} response.JsonResponse{data=model.UserBizNewRep}"返回结果"
+// @Router  /rapi/biz_new [POST]
+// @Success 200 {object} response.JsonResponse{data=model.UserBizNewRep}"返回结果"
 func (*bizApi) New(r *ghttp.Request) {
     var req model.UserBizNewReq
     if err := r.Parse(&req); err != nil {
@@ -208,13 +208,13 @@ func (*bizApi) New(r *ghttp.Request) {
 }
 
 // NewPackagerOrderState
-// @summary 骑手-个签骑手签约支付之后获取订单支付状态
+// @Summary 骑手-个签骑手签约支付之后获取订单支付状态
 // @Accept  json
 // @Produce  json
-// @tags    骑手-业务办理
+// @Tags    骑手-业务办理
 // @Param 	orderId path integer true "订单ID"
-// @router  /rapi/biz_new/:orderId/payState [GET]
-// @success 200 {object} response.JsonResponse{data=model.UserBizNewPackageOrderStateRep}"返回结果"
+// @Router  /rapi/biz_new/:orderId/payState [GET]
+// @Success 200 {object} response.JsonResponse{data=model.UserBizNewPackageOrderStateRep}"返回结果"
 func (*bizApi) NewPackagerOrderState(r *ghttp.Request) {
     orderId := r.GetUint64("orderId", 0)
     if orderId == 0 {
@@ -230,13 +230,13 @@ func (*bizApi) NewPackagerOrderState(r *ghttp.Request) {
 }
 
 // Sign 新签
-// @summary 骑手-个签用户新签约套餐
+// @Summary 骑手-个签用户新签约套餐
 // @Accept  json
 // @Produce  json
-// @tags    骑手-业务办理
+// @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizSignReq true "请求数据"
-// @router  /rapi/biz_sign [POST]
-// @success 200 {object} response.JsonResponse{data=model.SignRep}  "返回结果"
+// @Router  /rapi/biz_sign [POST]
+// @Success 200 {object} response.JsonResponse{data=model.SignRep}  "返回结果"
 func (*bizApi) Sign(r *ghttp.Request) {
     var req model.UserBizSignReq
     if err := r.Parse(&req); err != nil {
@@ -368,13 +368,13 @@ func (*bizApi) Sign(r *ghttp.Request) {
 }
 
 // Renewal 续约
-// @summary 骑手-个签用户续购套餐
+// @Summary 骑手-个签用户续购套餐
 // @Accept  json
 // @Produce  json
-// @tags    骑手-业务办理
+// @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizRenewalReq true "请求数据"
-// @router  /rapi/biz_renewal [POST]
-// @success 200 {object} response.JsonResponse{data=model.UserBizRenewalRep}  "返回结果"
+// @Router  /rapi/biz_renewal [POST]
+// @Success 200 {object} response.JsonResponse{data=model.UserBizRenewalRep}  "返回结果"
 func (*bizApi) Renewal(r *ghttp.Request) {
     var req model.UserBizRenewalReq
     if err := r.Parse(&req); err != nil {
@@ -426,12 +426,12 @@ func (*bizApi) Renewal(r *ghttp.Request) {
 }
 
 // PenaltyProfile 违约金
-// @summary 骑手-个签用户逾期获取违约金详情
+// @Summary 骑手-个签用户逾期获取违约金详情
 // @Accept  json
 // @Produce  json
-// @tags    骑手-业务办理
-// @router  /rapi/biz_penalty [GET]
-// @success 200 {object} response.JsonResponse{data=model.UserBizPenaltyProfileRep}  "返回结果"
+// @Tags    骑手-业务办理
+// @Router  /rapi/biz_penalty [GET]
+// @Success 200 {object} response.JsonResponse{data=model.UserBizPenaltyProfileRep}  "返回结果"
 func (*bizApi) PenaltyProfile(r *ghttp.Request) {
     user := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
     if user.GroupId > 0 {
@@ -458,13 +458,13 @@ func (*bizApi) PenaltyProfile(r *ghttp.Request) {
 }
 
 // Penalty 违约金
-// @summary 骑手-个签用户逾期缴纳违约金
+// @Summary 骑手-个签用户逾期缴纳违约金
 // @Accept  json
 // @Produce  json
-// @tags    骑手-业务办理
+// @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizPenaltyReq true "请求数据"
-// @router  /rapi/biz_penalty [POST]
-// @success 200 {object} response.JsonResponse{data=model.UserBizPenaltyRep}  "返回结果"
+// @Router  /rapi/biz_penalty [POST]
+// @Success 200 {object} response.JsonResponse{data=model.UserBizPenaltyRep}  "返回结果"
 func (*bizApi) Penalty(r *ghttp.Request) {
     var req model.UserBizPenaltyReq
     if err := r.Parse(&req); err != nil {
@@ -520,13 +520,13 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 }
 
 // GroupNew
-// @summary 骑手-团签用户新签约
+// @Summary 骑手-团签用户新签约
 // @Accept  json
 // @Produce  json
-// @tags    骑手-业务办理
+// @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizGroupNewReq true "请求数据"
-// @router  /rapi/biz_new_group [POST]
-// @success 200 {object} response.JsonResponse{data=model.SignRep}  "返回结果"
+// @Router  /rapi/biz_new_group [POST]
+// @Success 200 {object} response.JsonResponse{data=model.SignRep}  "返回结果"
 func (*bizApi) GroupNew(r *ghttp.Request) {
     var req model.UserBizGroupNewReq
     if err := r.Parse(&req); err != nil {

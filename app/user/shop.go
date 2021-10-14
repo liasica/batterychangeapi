@@ -13,8 +13,8 @@ type shopApi struct {
 }
 
 // List
-// @summary 骑手-门店列表
-// @tags    骑手
+// @Summary 骑手-门店列表
+// @Tags    骑手
 // @Produce  json
 // @Param 	pageIndex query integer  true "当前页码"
 // @Param 	pageLimit query integer  true "每页行数"
@@ -22,8 +22,8 @@ type shopApi struct {
 // @Param 	lng query number  true "经度"
 // @Param 	lat query number  true "纬度"
 // @Param 	name query string   false "门店名称"
-// @router  /rapi/shop [GET]
-// @success 200 {object} response.JsonResponse{data=model.ShopListUserRep}  "返回结果"
+// @Router  /rapi/shop [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ShopListUserRep}  "返回结果"
 func (*shopApi) List(r *ghttp.Request) {
     var req model.ShopListUserReq
     if err := r.Parse(&req); err != nil {

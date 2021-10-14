@@ -108,8 +108,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "管理",
-                    "门店"
+                    "管理"
                 ],
                 "summary": "门店列表",
                 "responses": {
@@ -141,8 +140,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "管理",
-                    "门店"
+                    "管理"
                 ],
                 "summary": "创建门店",
                 "parameters": [
@@ -175,8 +173,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "管理",
-                    "门店"
+                    "管理"
                 ],
                 "summary": "门店详情",
                 "parameters": [
@@ -217,8 +214,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "管理",
-                    "门店"
+                    "管理"
                 ],
                 "summary": "编辑门店",
                 "parameters": [

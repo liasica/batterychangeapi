@@ -23,11 +23,11 @@ var Upload = uploadApi{}
 type uploadApi struct{}
 
 // Image
-// @summary 公用-单图片上传
-// @tags    公用
+// @Summary 公用-单图片上传
+// @Tags    公用
 // @Param image formData file true "jpg/png图片"
-// @router  /api/upload/image [POST]
-// @success 200 {object} response.JsonResponse{data=model.UploadImageRep}  "返回结果"
+// @Router  /api/upload/image [POST]
+// @Success 200 {object} response.JsonResponse{data=model.UploadImageRep}  "返回结果"
 func (*uploadApi) Image(r *ghttp.Request) {
     file := r.GetUploadFile("image")
     if file == nil {
@@ -60,11 +60,11 @@ type imageBase64Req struct {
 }
 
 // Base64Image
-// @summary 公用-单图片上传(base64)
-// @tags    公用
+// @Summary 公用-单图片上传(base64)
+// @Tags    公用
 // @Param   entity  body imageBase64Req true "请求数据"
-// @router  /api/upload/base64_image [POST]
-// @success 200 {object} response.JsonResponse{data=model.UploadImageRep}  "返回结果"
+// @Router  /api/upload/base64_image [POST]
+// @Success 200 {object} response.JsonResponse{data=model.UploadImageRep}  "返回结果"
 func (*uploadApi) Base64Image(r *ghttp.Request) {
     var req imageBase64Req
     if err := r.Parse(&req); err != nil {
