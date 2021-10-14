@@ -62,12 +62,12 @@ func (*shopApi) List(r *ghttp.Request) {
 // @summary 创建门店
 // @tags    管理,门店
 // @Accept  json
-// @param   entity body model.CreateShopResp true "门店详情"
+// @Param   entity body model.ShopDetail true "门店详情"
 // @Produce  json
 // @router  /admin/shop [POST]
 // @success 200 {object} response.JsonResponse "返回结果"
 func (*shopApi) Create(r *ghttp.Request) {
-    var req model.CreateShopResp
+    var req model.ShopDetail
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
@@ -116,22 +116,17 @@ func (*shopApi) Create(r *ghttp.Request) {
     response.JsonOkExit(r)
 }
 
-type editReq struct {
-    Id          uint    `json:"id" v:"required|integer|min:1"`
-    Name        string  `json:"name"  v:"required"`
-    State       uint    `json:"state" v:"required|in:1,2"`
-    ManagerName string  `json:"managerName" v:"required"`
-    Mobile      string  `json:"mobile" v:"required|phone-loose"`
-    ProvinceId  uint    `json:"provinceId" v:"required|integer|min:1"`
-    CityId      uint    `json:"cityId" v:"required|integer|min:1"`
-    DistrictId  uint    `json:"districtId" v:"required|integer|min:1"`
-    Address     string  `json:"address" v:"required"`
-    Lng         float64 `json:"lng" v:"required"`
-    Lat         float64 `json:"lat" v:"required"`
-}
-
+// Edit
+// @summary 编辑门店
+// @tags    管理,门店
+// @Accept  json
+// @Param   id path int true "门店ID"
+// @Param   entity body model.ModifyShopReq true "门店详情"
+// @Produce  json
+// @router  /admin/shop/{id} [PUT]
+// @success 200 {object} response.JsonResponse "返回结果"
 func (*shopApi) Edit(r *ghttp.Request) {
-    var req editReq
+    var req model.ModifyShopReq
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
@@ -180,6 +175,14 @@ func (*shopApi) Edit(r *ghttp.Request) {
     response.JsonOkExit(r)
 }
 
+// Detail
+// @summary 门店详情
+// @tags    管理,门店
+// @Accept  json
+// @Param   id path int true "门店ID"
+// @Produce  json
+// @router  /admin/shop/{id} [GET]
+// @success 200 {object} response.JsonResponse{data=model.ShopDetail} "返回结果"
 func (*shopApi) Detail(r *ghttp.Request) {
     var req model.IdReq
     if err := r.Parse(&req); err != nil {
@@ -189,7 +192,7 @@ func (*shopApi) Detail(r *ghttp.Request) {
     if err != nil || shop.Id == 0 {
         response.JsonErrExit(r, response.RespCodeNotFound)
     }
-    response.JsonOkExit(r, model.CreateShopResp{
+    response.JsonOkExit(r, model.ShopDetail{
         Name:           shop.Name,
         State:          shop.State,
         ManagerName:    shop.ManagerName,

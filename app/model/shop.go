@@ -72,8 +72,8 @@ type ShopListItem struct {
     BatteryCnt72    int    `json:"batteryCnt72"`    // 72伏电池数量
 }
 
-// CreateShopResp 门店详情
-type CreateShopResp struct {
+// ShopDetail 门店详情
+type ShopDetail struct {
     Name           string  `json:"name"  v:"required"`                                 // 门店名称
     State          uint    `json:"state" v:"required|in:1,2"`                          // 初始状态
     ManagerName    string  `json:"managerName" v:"required"`                           // 管理员
@@ -86,4 +86,19 @@ type CreateShopResp struct {
     Address        string  `json:"address" v:"required"`                               // 详细地址
     Lng            float64 `json:"lng" v:"required"`                                   // 经度
     Lat            float64 `json:"lat" v:"required"`                                   // 纬度
+}
+
+// ModifyShopReq 编辑门店
+type ModifyShopReq struct {
+    Id          uint    `json:"id" v:"required|integer|min:1"`
+    Name        string  `json:"name"  v:"required"`
+    State       uint    `json:"state" v:"required|in:1,2"`
+    ManagerName string  `json:"managerName" v:"required"`
+    Mobile      string  `json:"mobile" v:"required|phone-loose"`
+    ProvinceId  uint    `json:"provinceId" v:"required|integer|min:1"`
+    CityId      uint    `json:"cityId" v:"required|integer|min:1"`
+    DistrictId  uint    `json:"districtId" v:"required|integer|min:1"`
+    Address     string  `json:"address" v:"required"`
+    Lng         float64 `json:"lng" v:"required"`
+    Lat         float64 `json:"lat" v:"required"`
 }

@@ -152,7 +152,90 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.CreateShopResp"
+                            "$ref": "#/definitions/model.ShopDetail"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/shop/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理",
+                    "门店"
+                ],
+                "summary": "门店详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "门店ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.ShopDetail"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理",
+                    "门店"
+                ],
+                "summary": "编辑门店",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "门店ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "门店详情",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ModifyShopReq"
                         }
                     }
                 ],
@@ -2437,59 +2520,6 @@
                 }
             }
         },
-        "model.CreateShopResp": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "description": "详细地址",
-                    "type": "string"
-                },
-                "batteryInCnt60": {
-                    "description": "60伏电池入库数量",
-                    "type": "integer"
-                },
-                "batteryInCnt72": {
-                    "description": "72伏电池入库数量",
-                    "type": "integer"
-                },
-                "cityId": {
-                    "description": "城市ID",
-                    "type": "integer"
-                },
-                "districtId": {
-                    "description": "区县ID",
-                    "type": "integer"
-                },
-                "lat": {
-                    "description": "纬度",
-                    "type": "number"
-                },
-                "lng": {
-                    "description": "经度",
-                    "type": "number"
-                },
-                "managerName": {
-                    "description": "管理员",
-                    "type": "string"
-                },
-                "mobile": {
-                    "description": "手机号",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "门店名称",
-                    "type": "string"
-                },
-                "provinceId": {
-                    "description": "省份ID",
-                    "type": "integer"
-                },
-                "state": {
-                    "description": "初始状态",
-                    "type": "integer"
-                }
-            }
-        },
         "model.DistrictsCurrentCityRep": {
             "type": "object",
             "required": [
@@ -2642,6 +2672,44 @@
                 "type": {
                     "description": "订单类型 type 为 100，102 时返回",
                     "type": "string"
+                }
+            }
+        },
+        "model.ModifyShopReq": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "cityId": {
+                    "type": "integer"
+                },
+                "districtId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "lng": {
+                    "type": "number"
+                },
+                "managerName": {
+                    "type": "string"
+                },
+                "mobile": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "provinceId": {
+                    "type": "integer"
+                },
+                "state": {
+                    "type": "integer"
                 }
             }
         },
@@ -2869,6 +2937,59 @@
                 },
                 "outTotal": {
                     "description": "出库总数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ShopDetail": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "详细地址",
+                    "type": "string"
+                },
+                "batteryInCnt60": {
+                    "description": "60伏电池入库数量",
+                    "type": "integer"
+                },
+                "batteryInCnt72": {
+                    "description": "72伏电池入库数量",
+                    "type": "integer"
+                },
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
+                "districtId": {
+                    "description": "区县ID",
+                    "type": "integer"
+                },
+                "lat": {
+                    "description": "纬度",
+                    "type": "number"
+                },
+                "lng": {
+                    "description": "经度",
+                    "type": "number"
+                },
+                "managerName": {
+                    "description": "管理员",
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "门店名称",
+                    "type": "string"
+                },
+                "provinceId": {
+                    "description": "省份ID",
+                    "type": "integer"
+                },
+                "state": {
+                    "description": "初始状态",
                     "type": "integer"
                 }
             }

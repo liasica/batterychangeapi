@@ -20,7 +20,7 @@ type managerApi struct {
 // @tags    店长
 // @Accept  json
 // @Produce  json
-// @param   entity  body model.ShopManagerLoginReq true "登录数据"
+// @Param   entity  body model.ShopManagerLoginReq true "登录数据"
 // @router  /sapi/login [POST]
 // @success 200 {object} response.JsonResponse{data=model.ShopManagerLoginRep}  "返回结果"
 func (*managerApi) Login(r *ghttp.Request) {
@@ -69,7 +69,7 @@ func (*managerApi) Profile(r *ghttp.Request) {
 // @tags    店长
 // @Accept  json
 // @Produce  json
-// @param   entity  body model.ShopManagerChangeStateReq true "请求数据"
+// @Param   entity  body model.ShopManagerChangeStateReq true "请求数据"
 // @router  /sapi/shop/state [PUT]
 // @success 200 {object} response.JsonResponse{}  "返回结果"
 func (*managerApi) ShopState(r *ghttp.Request) {
@@ -88,7 +88,7 @@ func (*managerApi) ShopState(r *ghttp.Request) {
 // @tags    店长
 // @Accept  json
 // @Produce  json
-// @param   entity  body model.PushTokenReq true "登录数据"
+// @Param   entity  body model.PushTokenReq true "登录数据"
 // @router  /sapi/device  [PUT]
 // @success 200 {object} response.JsonResponse  "返回结果"
 func (*managerApi) PushToken(r *ghttp.Request) {
@@ -107,7 +107,7 @@ func (*managerApi) PushToken(r *ghttp.Request) {
 // @tags    店长
 // @Accept  json
 // @Produce  json
-// @param   entity  body model.ShopManagerResetMobileReq true "登录数据"
+// @Param   entity  body model.ShopManagerResetMobileReq true "登录数据"
 // @router  /sapi/mobile  [PUT]
 // @success 200 {object} response.JsonResponse  "返回结果"
 func (*managerApi) ResetMobile(r *ghttp.Request) {

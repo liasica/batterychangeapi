@@ -50,8 +50,8 @@ func (*bizApi) RecordStat(r *ghttp.Request) {
 // @Accept  json
 // @Produce  json
 // @tags    骑手
-// @param 	pageIndex query integer  true "当前页码"
-// @param 	pageLimit query integer  true "每页行数"
+// @Param 	pageIndex query integer  true "当前页码"
+// @Param 	pageLimit query integer  true "每页行数"
 // @router  /rapi/biz_record/list [GET]
 // @success 200 {object} response.JsonResponse{data=[]model.UserBizRecordListRep}  "返回结果"
 func (*bizApi) RecordList(r *ghttp.Request) {
@@ -87,7 +87,7 @@ func (*bizApi) RecordList(r *ghttp.Request) {
 // @Accept  json
 // @Produce  json
 // @tags    骑手-业务办理
-// @param   entity  body model.UserBizBatteryRenewalReq true "请求数据"
+// @Param   entity  body model.UserBizBatteryRenewalReq true "请求数据"
 // @router  /rapi/biz_battery_renewal [POST]
 // @success 200 {object} response.JsonResponse{data=model.UserBizBatteryRenewalRep}  "返回结果"
 func (*bizApi) BatteryRenewal(r *ghttp.Request) {
@@ -141,7 +141,7 @@ func (*bizApi) BatteryRenewal(r *ghttp.Request) {
 // @Accept  json
 // @Produce  json
 // @tags    骑手-业务办理
-// @param   entity  body model.UserBizNewReq true "请求数据"
+// @Param   entity  body model.UserBizNewReq true "请求数据"
 // @router  /rapi/biz_new [POST]
 // @success 200 {object} response.JsonResponse{data=model.UserBizNewRep}"返回结果"
 func (*bizApi) New(r *ghttp.Request) {
@@ -212,7 +212,7 @@ func (*bizApi) New(r *ghttp.Request) {
 // @Accept  json
 // @Produce  json
 // @tags    骑手-业务办理
-// @param 	orderId path integer true "订单ID"
+// @Param 	orderId path integer true "订单ID"
 // @router  /rapi/biz_new/:orderId/payState [GET]
 // @success 200 {object} response.JsonResponse{data=model.UserBizNewPackageOrderStateRep}"返回结果"
 func (*bizApi) NewPackagerOrderState(r *ghttp.Request) {
@@ -234,7 +234,7 @@ func (*bizApi) NewPackagerOrderState(r *ghttp.Request) {
 // @Accept  json
 // @Produce  json
 // @tags    骑手-业务办理
-// @param   entity  body model.UserBizSignReq true "请求数据"
+// @Param   entity  body model.UserBizSignReq true "请求数据"
 // @router  /rapi/biz_sign [POST]
 // @success 200 {object} response.JsonResponse{data=model.SignRep}  "返回结果"
 func (*bizApi) Sign(r *ghttp.Request) {
@@ -372,7 +372,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 // @Accept  json
 // @Produce  json
 // @tags    骑手-业务办理
-// @param   entity  body model.UserBizRenewalReq true "请求数据"
+// @Param   entity  body model.UserBizRenewalReq true "请求数据"
 // @router  /rapi/biz_renewal [POST]
 // @success 200 {object} response.JsonResponse{data=model.UserBizRenewalRep}  "返回结果"
 func (*bizApi) Renewal(r *ghttp.Request) {
@@ -462,7 +462,7 @@ func (*bizApi) PenaltyProfile(r *ghttp.Request) {
 // @Accept  json
 // @Produce  json
 // @tags    骑手-业务办理
-// @param   entity  body model.UserBizPenaltyReq true "请求数据"
+// @Param   entity  body model.UserBizPenaltyReq true "请求数据"
 // @router  /rapi/biz_penalty [POST]
 // @success 200 {object} response.JsonResponse{data=model.UserBizPenaltyRep}  "返回结果"
 func (*bizApi) Penalty(r *ghttp.Request) {
@@ -524,7 +524,7 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 // @Accept  json
 // @Produce  json
 // @tags    骑手-业务办理
-// @param   entity  body model.UserBizGroupNewReq true "请求数据"
+// @Param   entity  body model.UserBizGroupNewReq true "请求数据"
 // @router  /rapi/biz_new_group [POST]
 // @success 200 {object} response.JsonResponse{data=model.SignRep}  "返回结果"
 func (*bizApi) GroupNew(r *ghttp.Request) {

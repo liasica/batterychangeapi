@@ -24,8 +24,8 @@ var Weather = new(weather)
 // @tags    公用
 // @Accept  json
 // @Produce  json
-// @param   lng query string true "经度"
-// @param   lat query string true "纬度"
+// @Param   lng query string true "经度"
+// @Param   lat query string true "纬度"
 // @router  /tools/weather [GET]
 // @success 200 {object} response.JsonResponse{data=service.WeatherNow}  "返回结果"
 func (*weather) Now(r *ghttp.Request) {
