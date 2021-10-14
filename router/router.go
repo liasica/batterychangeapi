@@ -176,8 +176,8 @@ func init() {
         group.GET("/shop/:id", admin.ShopApi.Detail)
         group.PUT("/shop/:id", admin.ShopApi.Edit)
 
-        group.GET("/package", admin.PackagesApi.List)
-        group.POST("/package", admin.PackagesApi.Create)
+        group.GET("/pack", admin.PackagesApi.List)
+        group.POST("/pack", admin.PackagesApi.Create)
 
         group.GET("/group", admin.GroupApi.List)
         group.POST("/group", admin.GroupApi.Create)

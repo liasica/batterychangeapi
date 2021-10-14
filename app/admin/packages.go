@@ -87,9 +87,10 @@ func (*packagesApi) Create(r *ghttp.Request) {
 // @Summary 编辑套餐
 // @Tags    管理
 // @Accept  json
+// @Param   id path int true "套餐ID"
 // @Param   entity body model.PackageCreateReq true "门店详情"
 // @Produce  json
-// @Router  /admin/package [POST]
+// @Router  /admin/package [PUT]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*packagesApi) Edit(r *ghttp.Request) {
 
