@@ -5,7 +5,8 @@
 package model
 
 import (
-	"battery/app/model/internal"
+    "battery/app/model/internal"
+    "github.com/gogf/gf/os/gtime"
 )
 
 // Group is the golang structure for table group.
@@ -13,20 +14,58 @@ type Group internal.Group
 
 // Fill with you ideas below.
 
-//UserGroupStatRep 我的团队统计
-type UserGroupStatRep struct {
-	UserCnt uint `json:"userCnt"` //团队人数
-	Days    uint `json:"days"`    //待付款累计天数
+// GroupListItem 团签详情
+type GroupListItem struct {
+    Id               uint   `json:"id"`
+    Name             string `json:"name"`
+    ProvinceId       uint   `json:"provinceId"`
+    CityId           uint   `json:"cityId"`
+    UserCnt          uint   `json:"userCnt"`
+    DaysCnt60        uint   `json:"daysCnt60"`
+    DaysCnt72        uint   `json:"daysCnt72"`
+    ArrearsDaysCnt60 uint   `json:"arrearsDaysCnt60"`
+    ArrearsDaysCnt72 uint   `json:"arrearsDaysCnt72"`
+    ContactName      string `json:"contactName"`
+    ContactMobile    string `json:"contactMobile"`
 }
 
-//UserGroupListRep 我的团队详情列表
+// GroupListReq 列表请求参数
+type GroupListReq struct {
+    GroupListAdminReq
+    StartDate *gtime.Time `json:"startDate"` // 开始日期
+    EndDate   *gtime.Time `json:"endDate"`   // 结束日期
+}
+
+// GroupFormReq 团签请求表单
+type GroupFormReq struct {
+    Name          string               `v:"required" json:"name"`                     // 名称
+    ContactName   string               `v:"required" json:"contactName"`              // 联系人
+    ContactMobile string               `v:"required" json:"contactMobile"`            // 联系人手机号
+    ProvinceId    uint                 `v:"required|integer|min:1" json:"provinceId"` // 省份ID
+    CityId        uint                 `v:"required|integer|min:1" json:"cityId"`     // 城市ID
+    UserList      []GroupCreateUserReq `v:"required" json:"userList"`                 // 用户列表
+}
+
+// GroupCreateUserReq 团签用户表单
+type GroupCreateUserReq struct {
+    Name   string `v:"required|length=6,30" json:"name"`   // 姓名
+    Mobile string `v:"required|phone-loose" json:"mobile"` // 电话
+}
+
+// UserGroupStatRep 我的团队统计
+type UserGroupStatRep struct {
+    UserCnt uint `json:"userCnt"` // 团队人数
+    Days    uint `json:"days"`    // 待付款累计天数
+}
+
+// UserGroupListRep 我的团队详情列表
 type UserGroupListRep struct {
-	Name string `json:"name"` //名称
-	Days uint   `json:"days"` //使用天数
+    Name string `json:"name"` // 名称
+    Days uint   `json:"days"` // 使用天数
 }
 
 // GroupListAdminReq 管理列表请求数据
 type GroupListAdminReq struct {
-	Page
-	Keywords string `json:"keywords"`
+    Page
+    Keywords string `json:"keywords"`
 }

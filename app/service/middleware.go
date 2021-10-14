@@ -26,6 +26,12 @@ func (s *middlewareService) CORS(r *ghttp.Request) {
     r.Middleware.Next()
 }
 
+// ETAG 输出Etag todo 未完成
+func (s *middlewareService) ETAG(r *ghttp.Request) {
+    r.Middleware.Next()
+    // etag.Handler(r, false)
+}
+
 // ErrorHandle 全局错误处理
 func (s *middlewareService) ErrorHandle(r *ghttp.Request) {
     r.Middleware.Next()

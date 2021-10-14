@@ -20,6 +20,7 @@ func init() {
     s := g.Server()
     s.BindMiddlewareDefault(
         service.Middleware.ErrorHandle,
+        // service.Middleware.ETAG,
         service.Middleware.CORS,
         // func(r *ghttp.Request) {
         //     r.Middleware.Next()
