@@ -28,7 +28,7 @@ var (
 		Id          string //
 		Name        string // 店长姓名
 		Mobile      string // 手机号码
-		ShopId      string // 店铺ID
+		ShopId      string // 门店ID
 		AccessToken string //
 		DeviceType  string // 0 未上报 1 安卓  2  iOS
 		DeviceToken string // 用户推送token

@@ -14,7 +14,7 @@ import (
 type Entity struct {
 	Id           uint64      `orm:"id,primary"   json:"id"`             //
 	CityId       uint        `orm:"cityId"       json:"city_id"`        //
-	ShopId       uint        `orm:"shopId"       json:"shop_id"`        // 店铺ID
+	ShopId       uint        `orm:"shopId"       json:"shop_id"`        // 门店ID
 	UserId       uint64      `orm:"userId"       json:"user_id"`        //
 	GoroupId     uint        `orm:"goroupId"     json:"goroup_id"`      // 团体ID
 	GoroupUserId uint        `orm:"goroupUserId" json:"goroup_user_id"` //

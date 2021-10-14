@@ -13,9 +13,9 @@ import (
 // Entity is the golang structure for table shop.
 type Entity struct {
 	Id              uint        `orm:"id,primary"      json:"id"`                 //
-	State           uint        `orm:"state"           json:"state"`              // 店铺状态 0 休息总，1 营业中，2 外出中
+	State           uint        `orm:"state"           json:"state"`              // 门店状态 0 休息总，1 营业中，2 外出中
 	ManagerName     string      `orm:"managerName"     json:"manager_name"`       //
-	Name            string      `orm:"name,unique"     json:"name"`               // 店铺名称
+	Name            string      `orm:"name,unique"     json:"name"`               // 门店名称
 	Mobile          string      `orm:"mobile,unique"   json:"mobile"`             // 手机号
 	ReturnAt        *gtime.Time `orm:"returnAt"        json:"return_at"`          // 外出大致返回时间
 	BatteryOutCnt60 uint        `orm:"batteryOutCnt60" json:"battery_out_cnt_60"` // 60伏电池出库数量

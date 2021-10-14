@@ -15,7 +15,7 @@ type Entity struct {
 	Id          uint64      `orm:"id,primary"         json:"id"`           //
 	Name        string      `orm:"name"               json:"name"`         // 店长姓名
 	Mobile      string      `orm:"mobile"             json:"mobile"`       // 手机号码
-	ShopId      uint        `orm:"shopId"             json:"shop_id"`      // 店铺ID
+	ShopId      uint        `orm:"shopId"             json:"shop_id"`      // 门店ID
 	AccessToken string      `orm:"accessToken,unique" json:"access_token"` //
 	DeviceType  int         `orm:"deviceType"         json:"device_type"`  // 0 未上报 1 安卓  2  iOS
 	DeviceToken string      `orm:"deviceToken,unique" json:"device_token"` // 用户推送token

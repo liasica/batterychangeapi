@@ -26,9 +26,9 @@ var (
 	// Columns defines and stores column names for table shop.
 	Columns = struct {
 		Id              string //
-		State           string // 店铺状态 0 休息总，1 营业中，2 外出中
+		State           string // 门店状态 0 休息总，1 营业中，2 外出中
 		ManagerName     string //
-		Name            string // 店铺名称
+		Name            string // 门店名称
 		Mobile          string // 手机号
 		ReturnAt        string // 外出大致返回时间
 		BatteryOutCnt60 string // 60伏电池出库数量

@@ -1,17 +1,17 @@
 package shop
 
 import (
-	"context"
-	"fmt"
-	"github.com/gogf/gf/database/gdb"
-	"github.com/gogf/gf/frame/g"
-	"github.com/gogf/gf/net/ghttp"
-	"strings"
+    "context"
+    "fmt"
+    "github.com/gogf/gf/database/gdb"
+    "github.com/gogf/gf/frame/g"
+    "github.com/gogf/gf/net/ghttp"
+    "strings"
 
-	"battery/app/dao"
-	"battery/app/model"
-	"battery/app/service"
-	"battery/library/response"
+    "battery/app/dao"
+    "battery/app/model"
+    "battery/app/service"
+    "battery/library/response"
 )
 
 var OrderApi = orderApi{}
@@ -29,12 +29,12 @@ type orderApi struct {
 // @router  /sapi/order_total [GET]
 // @success 200 {object} response.JsonResponse{data=model.ShopOrderTotalRep} "返回结果"
 func (*orderApi) Total(r *ghttp.Request) {
-	var req model.ShopOrderTotalReq
-	if err := r.Parse(&req); err != nil {
-		response.Json(r, response.RespCodeArgs, err.Error())
-	}
-	res := service.PackagesOrderService.ShopMonthTotal(r.Context(), req.Month, r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId, req.Type)
-	response.JsonOkExit(r, res)
+    var req model.ShopOrderTotalReq
+    if err := r.Parse(&req); err != nil {
+        response.Json(r, response.RespCodeArgs, err.Error())
+    }
+    res := service.PackagesOrderService.ShopMonthTotal(r.Context(), req.Month, r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId, req.Type)
+    response.JsonOkExit(r, res)
 }
 
 // List 订单列表
@@ -50,44 +50,44 @@ func (*orderApi) Total(r *ghttp.Request) {
 // @router  /sapi/order [GET]
 // @success 200 {object} response.JsonResponse{data=[]model.ShopOrderListItem} "返回结果"
 func (*orderApi) List(r *ghttp.Request) {
-	var req model.ShopOrderListReq
-	if err := r.Parse(&req); err != nil {
-		response.Json(r, response.RespCodeArgs, err.Error())
-	}
-	orderList := service.PackagesOrderService.ShopMonthList(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId, req)
-	if len(orderList) > 0 {
-		userIds := make([]uint64, 0)
-		packagesIds := make([]uint, 0)
-		for _, order := range orderList {
-			userIds = append(userIds, order.UserId)
-			packagesIds = append(packagesIds, order.PackageId)
-		}
-		userList := service.UserService.GetByIds(r.Context(), userIds)
-		userIdList := make(map[uint64]model.User, len(userList))
-		for _, user := range userList {
-			userIdList[user.Id] = user
-		}
-		res := make([]model.ShopOrderListItem, len(orderList))
-		packagesList := service.PackagesService.GetByIds(r.Context(), packagesIds)
-		packagesIdList := make(map[uint]model.Packages, len(packagesList))
-		for _, packages := range packagesList {
-			packagesIdList[packages.Id] = packages
-		}
-		for key, order := range orderList {
-			res[key] = model.ShopOrderListItem{
-				Id:          order.Id,
-				OrderNo:     order.No,
-				Amount:      order.Amount,
-				Type:        order.Type,
-				UserName:    userIdList[order.UserId].RealName,
-				UserMobile:  userIdList[order.UserId].Mobile,
-				PayAt:       order.PayAt,
-				PackageName: packagesIdList[order.PackageId].Name,
-			}
-		}
-		response.JsonOkExit(r, res)
-	}
-	response.JsonOkExit(r, make([]model.ShopOrderListItem, 0))
+    var req model.ShopOrderListReq
+    if err := r.Parse(&req); err != nil {
+        response.Json(r, response.RespCodeArgs, err.Error())
+    }
+    orderList := service.PackagesOrderService.ShopMonthList(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId, req)
+    if len(orderList) > 0 {
+        userIds := make([]uint64, 0)
+        packagesIds := make([]uint, 0)
+        for _, order := range orderList {
+            userIds = append(userIds, order.UserId)
+            packagesIds = append(packagesIds, order.PackageId)
+        }
+        userList := service.UserService.GetByIds(r.Context(), userIds)
+        userIdList := make(map[uint64]model.User, len(userList))
+        for _, user := range userList {
+            userIdList[user.Id] = user
+        }
+        res := make([]model.ShopOrderListItem, len(orderList))
+        packagesList := service.PackagesService.GetByIds(r.Context(), packagesIds)
+        packagesIdList := make(map[uint]model.Packages, len(packagesList))
+        for _, packages := range packagesList {
+            packagesIdList[packages.Id] = packages
+        }
+        for key, order := range orderList {
+            res[key] = model.ShopOrderListItem{
+                Id:          order.Id,
+                OrderNo:     order.No,
+                Amount:      order.Amount,
+                Type:        order.Type,
+                UserName:    userIdList[order.UserId].RealName,
+                UserMobile:  userIdList[order.UserId].Mobile,
+                PayAt:       order.PayAt,
+                PackageName: packagesIdList[order.PackageId].Name,
+            }
+        }
+        response.JsonOkExit(r, res)
+    }
+    response.JsonOkExit(r, make([]model.ShopOrderListItem, 0))
 }
 
 // ListDetail
@@ -99,30 +99,30 @@ func (*orderApi) List(r *ghttp.Request) {
 // @router  /sapi/order/:id [GET]
 // @success 200 {object} response.JsonResponse{data=model.ShopManagerPackagesOrderListDetailRep} "返回结果"
 func (*orderApi) ListDetail(r *ghttp.Request) {
-	var req model.IdReq
-	if err := r.Parse(&req); err != nil {
-		response.Json(r, response.RespCodeArgs, err.Error())
-	}
-	order, _ := service.PackagesOrderService.Detail(r.Context(), req.Id)
-	if order.ShopId != r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId {
-		response.Json(r, response.RespCodeArgs, "无权查看")
-	}
+    var req model.IdReq
+    if err := r.Parse(&req); err != nil {
+        response.Json(r, response.RespCodeArgs, err.Error())
+    }
+    order, _ := service.PackagesOrderService.Detail(r.Context(), req.Id)
+    if order.ShopId != r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId {
+        response.Json(r, response.RespCodeArgs, "无权查看")
+    }
 
-	user := service.UserService.Detail(r.Context(), order.UserId)
+    user := service.UserService.Detail(r.Context(), order.UserId)
 
-	packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
-	response.JsonOkExit(r, model.ShopManagerPackagesOrderListDetailRep{
-		UserMobile:   user.Mobile,
-		UserName:     user.RealName,
-		PackagesName: packages.Name,
+    packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
+    response.JsonOkExit(r, model.ShopManagerPackagesOrderListDetailRep{
+        UserMobile:   user.Mobile,
+        UserName:     user.RealName,
+        PackagesName: packages.Name,
 
-		BatteryType: packages.BatteryType,
-		OrderNo:     order.No,
-		Amount:      order.Amount,
-		Earnest:     order.Earnest,
-		PayType:     order.PayType,
-		PayAt:       order.PayAt,
-	})
+        BatteryType: packages.BatteryType,
+        OrderNo:     order.No,
+        Amount:      order.Amount,
+        Earnest:     order.Earnest,
+        PayType:     order.PayType,
+        PayAt:       order.PayAt,
+    })
 }
 
 // ScanDetail
@@ -134,61 +134,61 @@ func (*orderApi) ListDetail(r *ghttp.Request) {
 // @router  /sapi/order_scan/:code [GET]
 // @success 200 {object} response.JsonResponse{data=model.ShopManagerPackagesOrderScanDetailRep} "返回结果"
 func (*orderApi) ScanDetail(r *ghttp.Request) {
-	var req model.BizNewCdeReq
-	if err := r.Parse(&req); err != nil {
-		response.Json(r, response.RespCodeArgs, err.Error())
-	}
-	codes := strings.Split(req.Code, "-")
-	if len(codes) == 3 {
-		groupId := codes[0]
-		userQr := codes[1]
-		batteryType := codes[2]
-		user := service.UserService.DetailByQr(r.Context(), userQr)
-		if user.GroupId == 0 || fmt.Sprintf("%d", user.GroupId) != groupId || fmt.Sprintf("%d", user.BatteryType) != batteryType {
-			response.Json(r, response.RespCodeArgs, "参数错误")
-		}
-		if user.BatteryState == model.BatteryStateDefault {
-			response.Json(r, response.RespCodeArgs, "骑手未选择电池类型")
-		}
-		group := service.GroupService.Detail(r.Context(), user.GroupId)
-		rep := model.ShopManagerPackagesOrderScanDetailRep{
-			UserName:    user.RealName,
-			UserMobile:  user.Mobile,
-			UserType:    user.Type,
-			BatteryType: user.BatteryType,
-			GroupName:   group.Name,
-			ClaimState:  1,
-		}
-		if user.BatteryState > model.BatteryStateNew {
-			rep.ClaimState = 2
-		}
-		response.JsonOkExit(r, rep)
-	} else {
-		order, err := service.PackagesOrderService.DetailByNo(r.Context(), req.Code)
-		if err != nil {
-			response.Json(r, response.RespCodeArgs, "二维码错误")
-		}
-		user := service.UserService.Detail(r.Context(), order.UserId)
-		packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
-		rep := model.ShopManagerPackagesOrderScanDetailRep{
-			UserType:       user.Type,
-			UserName:       user.RealName,
-			UserMobile:     user.Mobile,
-			PackagesName:   packages.Name,
-			PackagesAmount: packages.Price,
-			BatteryType:    packages.BatteryType,
-			Amount:         order.Amount,
-			Earnest:        order.Earnest,
-			PayType:        order.PayType,
-			OrderNo:        order.No,
-			PayAt:          order.PayAt,
-			ClaimState:     1,
-		}
-		if order.ShopId > 0 {
-			rep.ClaimState = 2
-		}
-		response.JsonOkExit(r, rep)
-	}
+    var req model.BizNewCdeReq
+    if err := r.Parse(&req); err != nil {
+        response.Json(r, response.RespCodeArgs, err.Error())
+    }
+    codes := strings.Split(req.Code, "-")
+    if len(codes) == 3 {
+        groupId := codes[0]
+        userQr := codes[1]
+        batteryType := codes[2]
+        user := service.UserService.DetailByQr(r.Context(), userQr)
+        if user.GroupId == 0 || fmt.Sprintf("%d", user.GroupId) != groupId || fmt.Sprintf("%d", user.BatteryType) != batteryType {
+            response.Json(r, response.RespCodeArgs, "参数错误")
+        }
+        if user.BatteryState == model.BatteryStateDefault {
+            response.Json(r, response.RespCodeArgs, "骑手未选择电池类型")
+        }
+        group := service.GroupService.Detail(r.Context(), user.GroupId)
+        rep := model.ShopManagerPackagesOrderScanDetailRep{
+            UserName:    user.RealName,
+            UserMobile:  user.Mobile,
+            UserType:    user.Type,
+            BatteryType: user.BatteryType,
+            GroupName:   group.Name,
+            ClaimState:  1,
+        }
+        if user.BatteryState > model.BatteryStateNew {
+            rep.ClaimState = 2
+        }
+        response.JsonOkExit(r, rep)
+    } else {
+        order, err := service.PackagesOrderService.DetailByNo(r.Context(), req.Code)
+        if err != nil {
+            response.Json(r, response.RespCodeArgs, "二维码错误")
+        }
+        user := service.UserService.Detail(r.Context(), order.UserId)
+        packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
+        rep := model.ShopManagerPackagesOrderScanDetailRep{
+            UserType:       user.Type,
+            UserName:       user.RealName,
+            UserMobile:     user.Mobile,
+            PackagesName:   packages.Name,
+            PackagesAmount: packages.Price,
+            BatteryType:    packages.BatteryType,
+            Amount:         order.Amount,
+            Earnest:        order.Earnest,
+            PayType:        order.PayType,
+            OrderNo:        order.No,
+            PayAt:          order.PayAt,
+            ClaimState:     1,
+        }
+        if order.ShopId > 0 {
+            rep.ClaimState = 2
+        }
+        response.JsonOkExit(r, rep)
+    }
 }
 
 // Claim
@@ -200,124 +200,124 @@ func (*orderApi) ScanDetail(r *ghttp.Request) {
 // @router  /sapi/order_claim [POST]
 // @success 200 {object} response.JsonResponse "返回结果"
 func (*orderApi) Claim(r *ghttp.Request) {
-	var req model.ShopManagerPackagesOrderClaimReq
-	if err := r.Parse(&req); err != nil {
-		response.Json(r, response.RespCodeArgs, err.Error())
-	}
-	codes := strings.Split(req.Code, "-")
-	if len(codes) == 3 {
-		userQr := codes[1]
-		user := service.UserService.DetailByQr(r.Context(), userQr)
-		if user.Id == 0 {
-			response.Json(r, response.RespCodeArgs, "未知用户")
-		}
-		if user.GroupId == 0 {
-			response.Json(r, response.RespCodeArgs, "不是团签用户")
-		}
-		if user.BatteryState != model.BatteryStateNew {
-			response.Json(r, response.RespCodeArgs, "没有选择电池类型, 或已领取")
-		}
-		groupUser := service.GroupUserService.GetBuyUserId(r.Context(), user.Id)
-		shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
-		if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-			// 领取记录
-			bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
-				CityId:       shop.CityId,
-				ShopId:       shop.Id,
-				UserId:       user.Id,
-				GoroupId:     user.GroupId,
-				GoroupUserId: groupUser.Id,
-				Type:         model.UserBizNew,
-				PackagesId:   0,
-				BatteryType:  user.BatteryType,
-			})
-			if err != nil {
-				return err
-			}
-			// 用户状态
-			if err := service.UserService.GroupUserStartUse(ctx, user.Id); err != nil {
-				return err
-			}
-			// 电池出库
-			if err := service.ShopService.BatteryOut(ctx, shop.Id, user.BatteryType, 1); err != nil {
-				return err
-			}
-			if err := service.ShopBatteryRecordService.User(ctx,
-				model.ShopBatteryRecordTypeOut,
-				model.UserBizNew,
-				shop.Id,
-				bizId,
-				user.RealName,
-				user.BatteryType); err != nil {
-				return err
-			}
-			// 人数统计
-			if err := service.GroupDailyStatService.RiderBizNew(ctx, user.GroupId, user.BatteryType, user.Id); err != nil {
-				return err
-			}
-			return nil
-		}); err == nil {
-			response.JsonOkExit(r)
-		} else {
-			g.Log().Error("店主订单认领错误：", err.Error())
-			response.JsonErrExit(r)
-		}
-	} else {
-		order, err := service.PackagesOrderService.DetailByNo(r.Context(), req.Code)
-		if err != nil {
-			response.JsonErrExit(r)
-		}
-		if order.ShopId > 0 {
-			response.Json(r, response.RespCodeArgs, "订单已被认领，不能重复认领")
-		}
-		packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
-		shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
-		if packages.CityId != shop.CityId {
-			response.Json(r, response.RespCodeArgs, "订单和店铺不在同一城市，不能认领")
-		}
-		if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-			// 订单状态
-			if err := service.PackagesOrderService.ShopClaim(ctx, order.No, shop.Id); err != nil {
-				return err
-			}
-			// 领取记录
-			bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
-				CityId:       shop.CityId,
-				ShopId:       shop.Id,
-				UserId:       order.UserId,
-				GoroupId:     0,
-				GoroupUserId: 0,
-				Type:         model.UserBizNew,
-				PackagesId:   packages.Id,
-				BatteryType:  packages.BatteryType,
-			})
-			if err != nil {
-				return err
-			}
-			// 用户状态
-			if err := service.UserService.PackagesStartUse(ctx, order); err != nil {
-				return err
-			}
-			// 电池出库
-			if err := service.ShopService.BatteryOut(ctx, shop.Id, packages.BatteryType, 1); err != nil {
-				return err
-			}
-			user := service.UserService.Detail(ctx, order.UserId)
-			if err := service.ShopBatteryRecordService.User(ctx,
-				model.ShopBatteryRecordTypeOut,
-				model.UserBizNew,
-				shop.Id,
-				bizId,
-				user.RealName,
-				packages.BatteryType); err != nil {
-				return err
-			}
-			return nil
-		}); err == nil {
-			response.JsonOkExit(r)
-		} else {
-			g.Log().Error("店主订单认领错误：", err.Error())
-			response.JsonErrExit(r)
-		}
-	}
+    var req model.ShopManagerPackagesOrderClaimReq
+    if err := r.Parse(&req); err != nil {
+        response.Json(r, response.RespCodeArgs, err.Error())
+    }
+    codes := strings.Split(req.Code, "-")
+    if len(codes) == 3 {
+        userQr := codes[1]
+        user := service.UserService.DetailByQr(r.Context(), userQr)
+        if user.Id == 0 {
+            response.Json(r, response.RespCodeArgs, "未知用户")
+        }
+        if user.GroupId == 0 {
+            response.Json(r, response.RespCodeArgs, "不是团签用户")
+        }
+        if user.BatteryState != model.BatteryStateNew {
+            response.Json(r, response.RespCodeArgs, "没有选择电池类型, 或已领取")
+        }
+        groupUser := service.GroupUserService.GetBuyUserId(r.Context(), user.Id)
+        shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
+        if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+            // 领取记录
+            bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
+                CityId:       shop.CityId,
+                ShopId:       shop.Id,
+                UserId:       user.Id,
+                GoroupId:     user.GroupId,
+                GoroupUserId: groupUser.Id,
+                Type:         model.UserBizNew,
+                PackagesId:   0,
+                BatteryType:  user.BatteryType,
+            })
+            if err != nil {
+                return err
+            }
+            // 用户状态
+            if err := service.UserService.GroupUserStartUse(ctx, user.Id); err != nil {
+                return err
+            }
+            // 电池出库
+            if err := service.ShopService.BatteryOut(ctx, shop.Id, user.BatteryType, 1); err != nil {
+                return err
+            }
+            if err := service.ShopBatteryRecordService.User(ctx,
+                model.ShopBatteryRecordTypeOut,
+                model.UserBizNew,
+                shop.Id,
+                bizId,
+                user.RealName,
+                user.BatteryType); err != nil {
+                return err
+            }
+            // 人数统计
+            if err := service.GroupDailyStatService.RiderBizNew(ctx, user.GroupId, user.BatteryType, user.Id); err != nil {
+                return err
+            }
+            return nil
+        }); err == nil {
+            response.JsonOkExit(r)
+        } else {
+            g.Log().Error("店主订单认领错误：", err.Error())
+            response.JsonErrExit(r)
+        }
+    } else {
+        order, err := service.PackagesOrderService.DetailByNo(r.Context(), req.Code)
+        if err != nil {
+            response.JsonErrExit(r)
+        }
+        if order.ShopId > 0 {
+            response.Json(r, response.RespCodeArgs, "订单已被认领，不能重复认领")
+        }
+        packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
+        shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
+        if packages.CityId != shop.CityId {
+            response.Json(r, response.RespCodeArgs, "订单和门店不在同一城市，不能认领")
+        }
+        if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+            // 订单状态
+            if err := service.PackagesOrderService.ShopClaim(ctx, order.No, shop.Id); err != nil {
+                return err
+            }
+            // 领取记录
+            bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
+                CityId:       shop.CityId,
+                ShopId:       shop.Id,
+                UserId:       order.UserId,
+                GoroupId:     0,
+                GoroupUserId: 0,
+                Type:         model.UserBizNew,
+                PackagesId:   packages.Id,
+                BatteryType:  packages.BatteryType,
+            })
+            if err != nil {
+                return err
+            }
+            // 用户状态
+            if err := service.UserService.PackagesStartUse(ctx, order); err != nil {
+                return err
+            }
+            // 电池出库
+            if err := service.ShopService.BatteryOut(ctx, shop.Id, packages.BatteryType, 1); err != nil {
+                return err
+            }
+            user := service.UserService.Detail(ctx, order.UserId)
+            if err := service.ShopBatteryRecordService.User(ctx,
+                model.ShopBatteryRecordTypeOut,
+                model.UserBizNew,
+                shop.Id,
+                bizId,
+                user.RealName,
+                packages.BatteryType); err != nil {
+                return err
+            }
+            return nil
+        }); err == nil {
+            response.JsonOkExit(r)
+        } else {
+            g.Log().Error("店主订单认领错误：", err.Error())
+            response.JsonErrExit(r)
+        }
+    }
 }

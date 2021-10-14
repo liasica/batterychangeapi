@@ -108,9 +108,10 @@
                     "application/json"
                 ],
                 "tags": [
-                    "管理"
+                    "管理",
+                    "门店"
                 ],
-                "summary": "店铺列表",
+                "summary": "门店列表",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -128,6 +129,38 @@
                                     }
                                 }
                             ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理",
+                    "门店"
+                ],
+                "summary": "创建门店",
+                "parameters": [
+                    {
+                        "description": "门店详情",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateShopResp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
                         }
                     }
                 }
@@ -1392,7 +1425,7 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-店铺列表",
+                "summary": "骑手-门店列表",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1431,7 +1464,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "店铺名称",
+                        "description": "门店名称",
                         "name": "name",
                         "in": "query"
                     }
@@ -2166,7 +2199,7 @@
                 "tags": [
                     "店长"
                 ],
-                "summary": "店长-获取店铺信息",
+                "summary": "店长-获取门店信息",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -2200,7 +2233,7 @@
                 "tags": [
                     "店长"
                 ],
-                "summary": "店长-修改店铺状态",
+                "summary": "店长-修改门店状态",
                 "parameters": [
                     {
                         "description": "请求数据",
@@ -2404,6 +2437,59 @@
                 }
             }
         },
+        "model.CreateShopResp": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "详细地址",
+                    "type": "string"
+                },
+                "batteryInCnt60": {
+                    "description": "60伏电池入库数量",
+                    "type": "integer"
+                },
+                "batteryInCnt72": {
+                    "description": "72伏电池入库数量",
+                    "type": "integer"
+                },
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
+                "districtId": {
+                    "description": "区县ID",
+                    "type": "integer"
+                },
+                "lat": {
+                    "description": "纬度",
+                    "type": "number"
+                },
+                "lng": {
+                    "description": "经度",
+                    "type": "number"
+                },
+                "managerName": {
+                    "description": "管理员",
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "门店名称",
+                    "type": "string"
+                },
+                "provinceId": {
+                    "description": "省份ID",
+                    "type": "integer"
+                },
+                "state": {
+                    "description": "初始状态",
+                    "type": "integer"
+                }
+            }
+        },
         "model.DistrictsCurrentCityRep": {
             "type": "object",
             "required": [
@@ -2550,7 +2636,7 @@
                     "type": "integer"
                 },
                 "shopName": {
-                    "description": "店铺名称 type 为 104 时返回",
+                    "description": "门店名称 type 为 104 时返回",
                     "type": "string"
                 },
                 "type": {
@@ -2626,7 +2712,7 @@
                     "type": "string"
                 },
                 "usableShopCnt": {
-                    "description": "可用店铺数量",
+                    "description": "可用门店数量",
                     "type": "integer"
                 }
             }
@@ -2721,7 +2807,7 @@
                     "type": "string"
                 },
                 "name": {
-                    "description": "店铺名称",
+                    "description": "门店名称",
                     "type": "string"
                 },
                 "provinceId": {
@@ -2737,7 +2823,7 @@
                     "type": "string"
                 },
                 "state": {
-                    "description": "店铺状态 0 休息总，1 营业中，2 外出中",
+                    "description": "门店状态 0 休息总，1 营业中，2 外出中",
                     "type": "integer"
                 },
                 "updatedAt": {
@@ -2830,11 +2916,11 @@
                     "type": "string"
                 },
                 "name": {
-                    "description": "店铺名称",
+                    "description": "门店名称",
                     "type": "string"
                 },
                 "state": {
-                    "description": "店铺状态 0 休息中，1 营业中，2 外出中",
+                    "description": "门店状态 0 休息中，1 营业中，2 外出中",
                     "type": "integer"
                 }
             }
@@ -2906,7 +2992,7 @@
                     "type": "string"
                 },
                 "state": {
-                    "description": "店铺状态 1 营业中 2 休息中",
+                    "description": "门店状态 1 营业中 2 休息中",
                     "type": "integer"
                 },
                 "tags": {
@@ -2925,7 +3011,7 @@
             ],
             "properties": {
                 "state": {
-                    "description": "店铺状态 1 营业中 2 休息中",
+                    "description": "门店状态 1 营业中 2 休息中",
                     "type": "integer"
                 }
             }
@@ -3234,7 +3320,7 @@
                     "type": "integer"
                 },
                 "shopName": {
-                    "description": "店铺名称",
+                    "description": "门店名称",
                     "type": "string"
                 }
             }
@@ -3246,7 +3332,7 @@
             ],
             "properties": {
                 "code": {
-                    "description": "店铺二维码扫码获得",
+                    "description": "门店二维码扫码获得",
                     "type": "string"
                 }
             }
@@ -3384,7 +3470,7 @@
                     "type": "string"
                 },
                 "shopName": {
-                    "description": "店铺名称",
+                    "description": "门店名称",
                     "type": "string"
                 }
             }

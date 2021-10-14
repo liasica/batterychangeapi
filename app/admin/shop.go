@@ -16,8 +16,8 @@ type shopApi struct {
 }
 
 // List
-// @summary 店铺列表
-// @tags    管理
+// @summary 门店列表
+// @tags    管理,门店
 // @Accept  json
 // @Produce  json
 // @router  /admin/shop [GET]
@@ -58,23 +58,16 @@ func (*shopApi) List(r *ghttp.Request) {
     response.JsonOkExit(r, rep)
 }
 
-type createReq struct {
-    Name           string  `json:"name"  v:"required"`
-    State          uint    `json:"state" v:"required|in:1,2"`
-    ManagerName    string  `json:"managerName" v:"required"`
-    Mobile         string  `json:"mobile" v:"required|phone-loose"`
-    BatteryInCnt60 uint    `json:"batteryInCnt60" v:"required|integer|between:1,9999"`
-    BatteryInCnt72 uint    `json:"batteryInCnt72" v:"required|integer|between:1,9999"`
-    ProvinceId     uint    `json:"provinceId" v:"required|integer|min:1"`
-    CityId         uint    `json:"cityId" v:"required|integer|min:1"`
-    DistrictId     uint    `json:"districtId" v:"required|integer|min:1"`
-    Address        string  `json:"address" v:"required"`
-    Lng            float64 `json:"lng" v:"required"`
-    Lat            float64 `json:"lat" v:"required"`
-}
-
+// Create
+// @summary 创建门店
+// @tags    管理,门店
+// @Accept  json
+// @param   entity body model.CreateShopResp true "门店详情"
+// @Produce  json
+// @router  /admin/shop [POST]
+// @success 200 {object} response.JsonResponse "返回结果"
 func (*shopApi) Create(r *ghttp.Request) {
-    var req createReq
+    var req model.CreateShopResp
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
@@ -82,7 +75,7 @@ func (*shopApi) Create(r *ghttp.Request) {
         response.Json(r, response.RespCodeArgs, "手机号码已被使用")
     }
     if !service.ShopService.CheckName(r.Context(), 0, req.Name) {
-        response.Json(r, response.RespCodeArgs, "店铺名称已被使用")
+        response.Json(r, response.RespCodeArgs, "门店名称已被使用")
     }
     if dao.Shop.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
         shopId, err := service.ShopService.Create(ctx, model.Shop{
@@ -146,7 +139,7 @@ func (*shopApi) Edit(r *ghttp.Request) {
         response.Json(r, response.RespCodeArgs, "手机号码已被使用")
     }
     if !service.ShopService.CheckName(r.Context(), req.Id, req.Name) {
-        response.Json(r, response.RespCodeArgs, "店铺名称已被使用")
+        response.Json(r, response.RespCodeArgs, "门店名称已被使用")
     }
     if dao.Shop.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
         shop, err := service.ShopService.Detail(ctx, req.Id)
@@ -196,7 +189,7 @@ func (*shopApi) Detail(r *ghttp.Request) {
     if err != nil || shop.Id == 0 {
         response.JsonErrExit(r, response.RespCodeNotFound)
     }
-    response.JsonOkExit(r, createReq{
+    response.JsonOkExit(r, model.CreateShopResp{
         Name:           shop.Name,
         State:          shop.State,
         ManagerName:    shop.ManagerName,

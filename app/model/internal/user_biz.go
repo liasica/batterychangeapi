@@ -12,7 +12,7 @@ import (
 type UserBiz struct {
 	Id           uint64      `orm:"id,primary"   json:"id"`           //
 	CityId       uint        `orm:"cityId"       json:"cityId"`       //
-	ShopId       uint        `orm:"shopId"       json:"shopId"`       // 店铺ID
+	ShopId       uint        `orm:"shopId"       json:"shopId"`       // 门店ID
 	UserId       uint64      `orm:"userId"       json:"userId"`       //
 	GoroupId     uint        `orm:"goroupId"     json:"goroupId"`     // 团体ID
 	GoroupUserId uint        `orm:"goroupUserId" json:"goroupUserId"` //

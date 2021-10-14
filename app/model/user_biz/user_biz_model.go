@@ -27,7 +27,7 @@ var (
 	Columns = struct {
 		Id           string //
 		CityId       string //
-		ShopId       string // 店铺ID
+		ShopId       string // 门店ID
 		UserId       string //
 		GoroupId     string // 团体ID
 		GoroupUserId string //

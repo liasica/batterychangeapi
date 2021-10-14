@@ -13,7 +13,7 @@ type ShopManager struct {
 	Id          uint64      `orm:"id,primary"         json:"id"`          //
 	Name        string      `orm:"name"               json:"name"`        // 店长姓名
 	Mobile      string      `orm:"mobile"             json:"mobile"`      // 手机号码
-	ShopId      uint        `orm:"shopId"             json:"shopId"`      // 店铺ID
+	ShopId      uint        `orm:"shopId"             json:"shopId"`      // 门店ID
 	AccessToken string      `orm:"accessToken,unique" json:"accessToken"` //
 	DeviceType  int         `orm:"deviceType"         json:"deviceType"`  // 0 未上报 1 安卓  2  iOS
 	DeviceToken string      `orm:"deviceToken,unique" json:"deviceToken"` // 用户推送token
