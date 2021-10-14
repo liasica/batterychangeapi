@@ -20,15 +20,16 @@ type shopApi struct {
 // @Tags    管理
 // @Accept  json
 // @Produce  json
+// @Param   entity body model.ShopListAdminReq true "门店列表请求"
 // @Router  /admin/shop [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ShopListResp}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.ShopListItem}}  "返回结果"
 func (*shopApi) List(r *ghttp.Request) {
     var req model.ShopListAdminReq
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
 
-    var rep model.ShopListResp
+    var rep model.ItemsWithTotal
     total, items := service.ShopService.ListAdmin(r.Context(), req)
     rep.Total = total
     if rep.Total > 0 {
@@ -36,23 +37,23 @@ func (*shopApi) List(r *ghttp.Request) {
         for key, item := range items {
             cityIds[key] = item.CityId
         }
-        cityIdName := service.DistrictsService.MapIdName(r.Context(), cityIds)
-        rep.Items = make([]model.ShopListItem, len(items))
-        for key, item := range items {
-            rep.Items[key] = model.ShopListItem{
+        for _, item := range items {
+            rep.Items = append(rep.Items, model.ShopListItem{
                 Id:              item.Id,
                 Name:            item.Name,
                 State:           item.State,
                 Mobile:          item.Mobile,
                 ManagerName:     item.ManagerName,
-                CityName:        cityIdName[item.CityId],
+                CityId:          item.CityId,
+                ProvinceId:      item.ProvinceId,
+                DistrictId:      item.DistrictId,
                 BatteryInCnt60:  item.BatteryInCnt60,
                 BatteryInCnt72:  item.BatteryInCnt72,
                 BatteryOutCnt60: item.BatteryOutCnt60,
                 BatteryOutCnt72: item.BatteryOutCnt72,
                 BatteryCnt60:    item.BatteryCnt60,
                 BatteryCnt72:    item.BatteryCnt72,
-            }
+            })
         }
     }
     response.JsonOkExit(r, rep)

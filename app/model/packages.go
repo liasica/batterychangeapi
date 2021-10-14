@@ -27,3 +27,30 @@ type PackagesRiderListRepItem struct {
     UsableShopCnt  int     `json:"usableShopCnt"`  // 可用门店数量
     Desc           string  `json:"desc"`           // 套餐介绍
 }
+
+// PackageListItem 套餐列表项
+type PackageListItem struct {
+    Id          uint    `json:"id"`
+    Name        string  `json:"name"`        // 套餐名
+    Amount      float64 `json:"amount"`      // 套餐总价（包含押金）
+    Price       float64 `json:"price"`       // 套餐价格
+    BatteryType uint    `json:"batteryType"` // 电池类型
+    Days        uint    `json:"days"`        // 套餐时长天数
+    Earnest     float64 `json:"earnest"`     // 押金
+    ProvinceId  uint    `json:"provinceId"`  // 省份ID
+    CityId      uint    `json:"cityId"`      // 城市ID
+    DeleteAt    string  `json:"deleteAt"`    // 套餐停用时间
+}
+
+// PackageCreateReq 套餐创建字段
+type PackageCreateReq struct {
+    BatteryType uint    `v:"required|in:60,72" json:"batteryType"`                                         // 电池类型
+    Type        uint    `v:"required" json:"type"`                                                         // 套餐类型
+    Name        string  `v:"required" json:"name"`                                                         // 名称
+    Days        uint    `v:"required|integer|min:1" json:"days"`                                           // 套餐时长天数
+    Price       float64 `v:"required|regex:'/(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})$)/'" json:"price"`    // 套餐价格
+    Earnest     float64 `v:"required|regex:'/(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/'" json:"earnest"` // 押金
+    ProvinceId  uint    `v:"required|integer|min:1" json:"provinceId"`                                     // 省份ID
+    CityId      uint    `v:"required|integer|min:1" json:"cityId"`                                         // 城市ID
+    Desc        string  `v:"required" json:"desc"`                                                         // 介绍
+}

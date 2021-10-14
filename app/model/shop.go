@@ -51,17 +51,13 @@ type ShopListUserRep struct {
     State        uint     `validate:"required" json:"state"`        // 门店状态 1 营业中 2 休息中
 }
 
-// ShopListResp 门店列表返回数据
-type ShopListResp struct {
-    Total int            `json:"total"`
-    Items []ShopListItem `json:"items"`
-}
-
 type ShopListItem struct {
     Id              uint   `json:"id"`
     Name            string `json:"name"`            // 门店名称
     State           uint   `json:"state"`           // 门店状态 0 休息中，1 营业中，2 外出中
-    CityName        string `json:"cityName"`        // 城市名
+    DistrictId      uint   `json:"districtId"`      // 区县ID
+    CityId          uint   `json:"cityId"`          // 城市ID
+    ProvinceId      uint   `json:"provinceId"`      // 省份ID
     ManagerName     string `json:"managerName"`     // 管理员姓名
     Mobile          string `json:"mobile" `         // 管理员电话
     BatteryInCnt60  uint   `json:"batteryInCnt60"`  // 60伏电池入库数量

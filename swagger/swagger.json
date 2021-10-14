@@ -99,7 +99,7 @@
                 }
             }
         },
-        "/admin/shop": {
+        "/admin/package": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -110,7 +110,18 @@
                 "tags": [
                     "管理"
                 ],
-                "summary": "门店列表",
+                "summary": "套餐列表",
+                "parameters": [
+                    {
+                        "description": "分页参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Page"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -123,7 +134,113 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.ShopListResp"
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/model.ItemsWithTotal"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "items": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/model.PackageListItem"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "编辑套餐",
+                "parameters": [
+                    {
+                        "description": "门店详情",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.PackageCreateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/shop": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "门店列表",
+                "parameters": [
+                    {
+                        "description": "门店列表请求",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ShopListAdminReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/model.ItemsWithTotal"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "items": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/model.ShopListItem"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
                                         }
                                     }
                                 }
@@ -2586,6 +2703,22 @@
                 }
             }
         },
+        "model.ItemsWithTotal": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "description": "数据",
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "total": {
+                    "description": "总数",
+                    "type": "integer"
+                }
+            }
+        },
         "model.Message": {
             "type": "object",
             "properties": {
@@ -2741,6 +2874,91 @@
                 }
             }
         },
+        "model.PackageCreateReq": {
+            "type": "object",
+            "properties": {
+                "batteryType": {
+                    "description": "电池类型",
+                    "type": "integer"
+                },
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
+                "days": {
+                    "description": "套餐时长天数",
+                    "type": "integer"
+                },
+                "desc": {
+                    "description": "介绍",
+                    "type": "string"
+                },
+                "earnest": {
+                    "description": "押金",
+                    "type": "number"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "套餐价格",
+                    "type": "number"
+                },
+                "provinceId": {
+                    "description": "省份ID",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "套餐类型",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.PackageListItem": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "套餐总价（包含押金）",
+                    "type": "number"
+                },
+                "batteryType": {
+                    "description": "电池类型",
+                    "type": "integer"
+                },
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
+                "days": {
+                    "description": "套餐时长天数",
+                    "type": "integer"
+                },
+                "deleteAt": {
+                    "description": "套餐停用时间",
+                    "type": "string"
+                },
+                "earnest": {
+                    "description": "押金",
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "套餐名",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "套餐价格",
+                    "type": "number"
+                },
+                "provinceId": {
+                    "description": "省份ID",
+                    "type": "integer"
+                }
+            }
+        },
         "model.PackagesRiderListRepItem": {
             "type": "object",
             "properties": {
@@ -2777,6 +2995,23 @@
                 },
                 "usableShopCnt": {
                     "description": "可用门店数量",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.Page": {
+            "type": "object",
+            "required": [
+                "pageIndex",
+                "pageLimit"
+            ],
+            "properties": {
+                "pageIndex": {
+                    "description": "当前页号",
+                    "type": "integer"
+                },
+                "pageLimit": {
+                    "description": "页大小",
                     "type": "integer"
                 }
             }
@@ -2990,6 +3225,27 @@
                 }
             }
         },
+        "model.ShopListAdminReq": {
+            "type": "object",
+            "required": [
+                "pageIndex",
+                "pageLimit"
+            ],
+            "properties": {
+                "name": {
+                    "description": "门店名称。搜索时使用",
+                    "type": "string"
+                },
+                "pageIndex": {
+                    "description": "当前页号",
+                    "type": "integer"
+                },
+                "pageLimit": {
+                    "description": "页大小",
+                    "type": "integer"
+                }
+            }
+        },
         "model.ShopListItem": {
             "type": "object",
             "properties": {
@@ -3017,9 +3273,13 @@
                     "description": "72伏电池出库数量",
                     "type": "integer"
                 },
-                "cityName": {
-                    "description": "城市名",
-                    "type": "string"
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
+                "districtId": {
+                    "description": "区县ID",
+                    "type": "integer"
                 },
                 "id": {
                     "type": "integer"
@@ -3036,22 +3296,12 @@
                     "description": "门店名称",
                     "type": "string"
                 },
+                "provinceId": {
+                    "description": "省份ID",
+                    "type": "integer"
+                },
                 "state": {
                     "description": "门店状态 0 休息中，1 营业中，2 外出中",
-                    "type": "integer"
-                }
-            }
-        },
-        "model.ShopListResp": {
-            "type": "object",
-            "properties": {
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.ShopListItem"
-                    }
-                },
-                "total": {
                     "type": "integer"
                 }
             }
