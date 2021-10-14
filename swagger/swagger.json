@@ -158,6 +158,39 @@
                     }
                 }
             },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "创建套餐",
+                "parameters": [
+                    {
+                        "description": "门店详情",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.PackageReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/package/{id}": {
             "put": {
                 "consumes": [
                     "application/json"
@@ -183,38 +216,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.PackageCreateReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "管理"
-                ],
-                "summary": "创建套餐",
-                "parameters": [
-                    {
-                        "description": "门店详情",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.PackageCreateReq"
+                            "$ref": "#/definitions/model.PackageReq"
                         }
                     }
                 ],
@@ -2912,47 +2914,6 @@
                 }
             }
         },
-        "model.PackageCreateReq": {
-            "type": "object",
-            "properties": {
-                "batteryType": {
-                    "description": "电池类型",
-                    "type": "integer"
-                },
-                "cityId": {
-                    "description": "城市ID",
-                    "type": "integer"
-                },
-                "days": {
-                    "description": "套餐时长天数",
-                    "type": "integer"
-                },
-                "desc": {
-                    "description": "介绍",
-                    "type": "string"
-                },
-                "earnest": {
-                    "description": "押金",
-                    "type": "number"
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
-                },
-                "price": {
-                    "description": "套餐价格",
-                    "type": "number"
-                },
-                "provinceId": {
-                    "description": "省份ID",
-                    "type": "integer"
-                },
-                "type": {
-                    "description": "套餐类型",
-                    "type": "integer"
-                }
-            }
-        },
         "model.PackageListItem": {
             "type": "object",
             "properties": {
@@ -2962,7 +2923,11 @@
                 },
                 "batteryType": {
                     "description": "电池类型",
-                    "type": "integer"
+                    "type": "integer",
+                    "enum": [
+                        60,
+                        72
+                    ]
                 },
                 "cityId": {
                     "description": "城市ID",
@@ -2997,6 +2962,59 @@
                 }
             }
         },
+        "model.PackageReq": {
+            "type": "object",
+            "properties": {
+                "batteryType": {
+                    "description": "电池类型",
+                    "type": "integer",
+                    "enum": [
+                        60,
+                        72
+                    ]
+                },
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
+                "days": {
+                    "description": "套餐时长天数",
+                    "type": "integer"
+                },
+                "desc": {
+                    "description": "介绍",
+                    "type": "string"
+                },
+                "disable": {
+                    "description": "0启用(默认) 1禁用",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "earnest": {
+                    "description": "押金",
+                    "type": "number"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "套餐价格",
+                    "type": "number"
+                },
+                "provinceId": {
+                    "description": "省份ID",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "套餐类型",
+                    "type": "integer"
+                }
+            }
+        },
         "model.PackagesRiderListRepItem": {
             "type": "object",
             "properties": {
@@ -3006,7 +3024,11 @@
                 },
                 "batteryType": {
                     "description": "60 / 72 电池类型",
-                    "type": "integer"
+                    "type": "integer",
+                    "enum": [
+                        60,
+                        72
+                    ]
                 },
                 "days": {
                     "description": "套餐时长天数",

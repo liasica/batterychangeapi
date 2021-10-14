@@ -1,6 +1,7 @@
 package admin
 
 import (
+    "battery/app/dao"
     "battery/app/model"
     "battery/app/service"
     "battery/library/response"
@@ -56,12 +57,12 @@ func (*packagesApi) List(r *ghttp.Request) {
 // @Summary 创建套餐
 // @Tags    管理
 // @Accept  json
-// @Param   entity body model.PackageCreateReq true "门店详情"
+// @Param   entity body model.PackageReq true "门店详情"
 // @Produce  json
 // @Router  /admin/package [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*packagesApi) Create(r *ghttp.Request) {
-    var req model.PackageCreateReq
+    var req model.PackageReq
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
@@ -88,10 +89,17 @@ func (*packagesApi) Create(r *ghttp.Request) {
 // @Tags    管理
 // @Accept  json
 // @Param   id path int true "套餐ID"
-// @Param   entity body model.PackageCreateReq true "门店详情"
+// @Param   entity body model.PackageReq true "门店详情"
 // @Produce  json
-// @Router  /admin/package [PUT]
+// @Router  /admin/package/{id} [PUT]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*packagesApi) Edit(r *ghttp.Request) {
-
+    var req model.PackageReq
+    if err := r.Parse(&req); err != nil {
+        response.Json(r, response.RespCodeArgs, err.Error())
+    }
+    amount, _ := decimal.NewFromFloat(req.Price).Add(decimal.NewFromFloat(req.Earnest)).Float64()
+    m := dao.Packages.Data(req).Data("Amount", amount)
+    _, _ = m.Where("id", r.GetInt("id")).Update()
+    response.JsonOkExit(r)
 }
