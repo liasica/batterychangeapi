@@ -6,7 +6,6 @@ import (
     "battery/app/service"
     "battery/library/response"
     "context"
-    "fmt"
     "github.com/gogf/gf/database/gdb"
     "github.com/gogf/gf/net/ghttp"
 )
@@ -32,103 +31,51 @@ func (*groupApi) Create(r *ghttp.Request) {
     if !service.GroupService.CheckName(r.Context(), 0, req.Name) {
         response.Json(r, response.RespCodeArgs, "名称已被使用")
     }
-    // 重复手机号验证
-    userMobilesMap := make(map[string]bool, len(req.UserList)+1)
-    userMobilesMap[req.ContactMobile] = true
-    userMobiles := make([]string, len(req.UserList)+1)
-    userMobiles = append(userMobiles, req.ContactMobile)
-    for _, user := range req.UserList {
-        if _, ok := userMobilesMap[user.Mobile]; ok {
-            response.Json(r, response.RespCodeArgs, fmt.Sprintf("手机号 %s 重复", user.Mobile))
-        }
-        userMobilesMap[user.Mobile] = true
-        userMobiles = append(userMobiles, user.Mobile)
-    }
-    // 用户状态验证
-    users := service.UserService.GetByMobiles(r.Context(), userMobiles)
-    usersIds := make([]uint64, 0)
-    for _, user := range users {
-        if user.GroupId > 0 {
-            response.Json(r, response.RespCodeArgs, fmt.Sprintf("手机号 %s 已经是其它团签成员，无法添加", user.Mobile))
-        }
-        if user.BatteryState != model.BatteryStateDefault && user.BatteryState != model.BatteryStateExit {
-            response.Json(r, response.RespCodeArgs, fmt.Sprintf("手机号 %s 正在使用的中电池，无法添加", user.Mobile))
-        }
-        userMobilesMap[user.Mobile] = false
-        usersIds = append(usersIds, user.Id)
-    }
-    if dao.Group.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-        groupId, err := service.GroupService.Create(ctx, model.Group{
+
+    if err := dao.Group.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+        group := model.Group{
             Name:          req.Name,
             ProvinceId:    req.ProvinceId,
             CityId:        req.CityId,
             ContactName:   req.ContactName,
             ContactMobile: req.ContactMobile,
-        })
-
+        }
+        groupId, err := service.GroupService.Create(ctx, group)
         if err != nil {
             return err
         }
-        userInsertData := make([]model.User, 0)
-        for _, user := range req.UserList {
-            if userMobilesMap[user.Mobile] {
-                userInsertData = append(userInsertData, model.User{
-                    GroupId:  groupId,
-                    RealName: user.Name,
-                    Mobile:   user.Mobile,
-                    Type:     model.UserTypeGroupRider,
-                })
-            }
+        group.Id = groupId
+
+        // 设置团签leader
+        boss := model.User{
+            GroupId:  groupId,
+            RealName: req.ContactName,
+            Mobile:   req.ContactMobile,
+            Type:     model.UserTypeGroupBoss,
         }
-        if newBossUser := userMobilesMap[req.ContactMobile]; newBossUser {
-            userInsertData = append(userInsertData, model.User{
-                GroupId:  groupId,
-                RealName: req.ContactName,
-                Mobile:   req.ContactMobile,
-                Type:     model.UserTypeGroupBoss,
-            })
-        } else {
-            if _err := service.UserService.SetUserTypeGroupBoss(ctx, req.ContactName, groupId); _err != nil {
-                return _err
-            }
+
+        if err = service.UserService.AddOrSetGroupUser(ctx, boss); err != nil {
+            return err
         }
-        if len(userInsertData) > 0 {
-            if _err := service.UserService.CreateGroupUsers(ctx, userInsertData); _err != nil {
-                return _err
-            }
+
+        if err = service.GroupUserService.AddUsers(ctx, group, req.UserList); err != nil {
+            return err
         }
-        if len(usersIds) > 0 {
-            if _err := service.UserService.SetUsersGroupId(ctx, usersIds, groupId); _err != nil {
-                return _err
-            }
-        }
-        groupUsers := service.UserService.GetByMobiles(ctx, userMobiles)
-        groupUserIds := make([]uint64, len(groupUsers))
-        for i, user := range groupUsers {
-            groupUserIds[i] = user.Id
-        }
-        if _err := service.GroupUserService.BatchCreate(ctx, groupUserIds, groupId); _err != nil {
-            return _err
-        }
-        if _err := service.GroupDailyStatService.GenerateWeek(ctx, groupId, 60); _err != nil {
-            return _err
-        }
-        if _err := service.GroupDailyStatService.GenerateWeek(ctx, groupId, 72); _err != nil {
-            return _err
-        }
-        return nil
-    }) != nil {
-        response.JsonErrExit(r)
+
+        _ = service.GroupDailyStatService.GenerateWeek(ctx, group.Id, 60)
+        _ = service.GroupDailyStatService.GenerateWeek(ctx, group.Id, 72)
+
+        return err
+    }); err != nil {
+        response.Json(r, response.RespCodeArgs, err.Error())
     }
     response.JsonOkExit(r)
 }
 
 func (*groupApi) Edit(r *ghttp.Request) {
-
 }
 
 func (*groupApi) Detail(r *ghttp.Request) {
-
 }
 
 // List

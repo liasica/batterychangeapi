@@ -11,16 +11,21 @@ package debug
 
 import (
     "battery/app/dao"
+    "battery/app/model"
+    "battery/app/service"
+    "battery/library/snowflake"
+    "encoding/base64"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
+    "log"
 )
 
-type _user struct {
+type userDebug struct {
 }
 
-var User = new(_user)
+var User = new(userDebug)
 
-func (*_user) Reset(r *ghttp.Request) {
+func (*userDebug) Reset(r *ghttp.Request) {
     p := r.GetQueryString("phone")
     columns := dao.User.Columns
     data := g.Map{
@@ -38,4 +43,16 @@ func (*_user) Reset(r *ghttp.Request) {
     }
 
     _, _ = dao.User.Data(data).Where("mobile = ?", p).Update()
+}
+
+func (*userDebug) GroupTest(r *ghttp.Request) {
+    mobile := "18501358302"
+    user := model.User{
+        GroupId:  2,
+        RealName: "ContactName",
+        Mobile:   mobile,
+        Type:     model.UserTypeGroupBoss,
+    }
+    log.Println(base64.StdEncoding.EncodeToString(snowflake.Service().Generate().Bytes()))
+    log.Println(service.UserService.AddOrSetGroupUser(r.Context(), user))
 }

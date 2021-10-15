@@ -57,6 +57,7 @@ func init() {
 
     s.Group("/debug", func(group *ghttp.RouterGroup) {
         group.GET("/user/reset", debug.User.Reset)
+        group.GET("/user/grouptest", debug.User.GroupTest)
     })
 
     // 支付回调
