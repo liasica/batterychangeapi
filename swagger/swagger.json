@@ -579,7 +579,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.imageBase64Req"
+                            "$ref": "#/definitions/model.ImageBase64Req"
                         }
                     }
                 ],
@@ -595,7 +595,44 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UploadImageRep"
+                                            "$ref": "#/definitions/model.UploadRep"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/upload/file": {
+            "post": {
+                "tags": [
+                    "公用"
+                ],
+                "summary": "文件上传",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "文件",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UploadRep"
                                         }
                                     }
                                 }
@@ -632,7 +669,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UploadImageRep"
+                                            "$ref": "#/definitions/model.UploadRep"
                                         }
                                     }
                                 }
@@ -2750,17 +2787,6 @@
         }
     },
     "definitions": {
-        "api.imageBase64Req": {
-            "type": "object",
-            "required": [
-                "base64Content"
-            ],
-            "properties": {
-                "base64Content": {
-                    "type": "string"
-                }
-            }
-        },
         "model.BizProfileRep": {
             "type": "object",
             "properties": {
@@ -3000,6 +3026,18 @@
                 },
                 "startDate": {
                     "description": "开始日期",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ImageBase64Req": {
+            "type": "object",
+            "required": [
+                "base64Content"
+            ],
+            "properties": {
+                "base64Content": {
+                    "description": "图片内容",
                     "type": "string"
                 }
             }
@@ -3978,11 +4016,11 @@
                 }
             }
         },
-        "model.UploadImageRep": {
+        "model.UploadRep": {
             "type": "object",
             "properties": {
                 "path": {
-                    "description": "图片路径",
+                    "description": "文件路径",
                     "type": "string"
                 }
             }

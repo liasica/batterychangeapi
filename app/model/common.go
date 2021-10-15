@@ -67,9 +67,14 @@ type IdReq struct {
     Id uint64 `validate:"required" v:"required|integer|min:0"` // ID
 }
 
-// UploadImageRep 图片上传返回信息
-type UploadImageRep struct {
-    Path string `json:"path"` // 图片路径
+// UploadRep 图片上传返回信息
+type UploadRep struct {
+    Path string `json:"path"` // 文件路径
+}
+
+// ImageBase64Req base64图片请求
+type ImageBase64Req struct {
+    Base64Content string `json:"base64Content" validate:"required" v:"required"` // 图片内容
 }
 
 type ArrayString []string

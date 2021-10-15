@@ -77,6 +77,7 @@ func init() {
     s.Group("/api", func(group *ghttp.RouterGroup) {
         group.POST("/upload/image", api.Upload.Image)
         group.POST("/upload/base64_image", api.Upload.Base64Image)
+        group.POST("/upload/file", api.Upload.File)
         group.POST("/sms", api.SmsApi.Send)
     })
 
