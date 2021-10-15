@@ -58,6 +58,7 @@ func init() {
     s.Group("/debug", func(group *ghttp.RouterGroup) {
         group.GET("/user/reset", debug.User.Reset)
         group.GET("/user/grouptest", debug.User.GroupTest)
+        group.GET("/group/weekstat", debug.Group.WeekStat)
     })
 
     // 支付回调
@@ -178,9 +179,9 @@ func init() {
         group.GET("/shop/:id", admin.ShopApi.Detail)
         group.PUT("/shop/:id", admin.ShopApi.Edit)
 
-        group.GET("/pack", admin.PackagesApi.List)
-        group.POST("/pack", admin.PackagesApi.Create)
-        group.PUT("/pack/:id", admin.PackagesApi.Edit)
+        group.GET("/package", admin.PackagesApi.List)
+        group.POST("/package", admin.PackagesApi.Create)
+        group.PUT("/package/:id", admin.PackagesApi.Edit)
 
         group.Group("/group", func(g *ghttp.RouterGroup) {
             g.GET("/", admin.GroupApi.List)
