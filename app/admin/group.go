@@ -9,7 +9,9 @@ import (
     "github.com/gogf/gf/database/gdb"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
+    "net/url"
     "os"
+    "path/filepath"
 )
 
 var GroupApi = groupApi{}
@@ -84,10 +86,10 @@ func (*groupApi) Create(r *ghttp.Request) {
 // @Summary 新增团签用户
 // @Tags    管理
 // @Accept  json
-// @Param   groupId path int true "团签ID"
+// @Param   id path int true "团签ID"
 // @Param   entity body model.GroupCreateUserReq true "用户详情"
 // @Produce  json
-// @Router  /admin/group/{groupId}/member [POST]
+// @Router  /admin/group/{id}/member [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*groupApi) AddMember(r *ghttp.Request) {
     var req model.GroupCreateUserReq
@@ -95,7 +97,7 @@ func (*groupApi) AddMember(r *ghttp.Request) {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
 
-    groupId := r.GetInt("groupId")
+    groupId := r.GetInt("id")
     var group model.Group
     if err := dao.Group.Ctx(r.Context()).Where(g.Map{dao.Group.Columns.Id: groupId}).Scan(&group); err != nil {
         response.Json(r, response.RespCodeSystemError, err.Error())
@@ -158,4 +160,30 @@ func (*groupApi) List(r *ghttp.Request) {
         }
     }
     response.JsonOkExit(r, result)
+}
+
+// Contract
+// @Summary 获取合同, 若成功获取则直接返回二进制文件, 此时前端直接处理成文件下载; 若失败, 则返回json失败数据
+// @Tags    管理
+// @Accept  json
+// @Param   id path int true "团签ID"
+// @Produce  octet-stream
+// @Produce  json
+// @Router  /admin/group/{id}/contract [GET]
+// @Success 200 {object} object "合同文件"
+// @Failure 400,404 {object} response.JsonResponse "错误结果"
+func (*groupApi) Contract(r *ghttp.Request) {
+    id := r.GetInt("id")
+
+    var group model.Group
+
+    if err := dao.Group.Ctx(r.GetCtx()).Where("id = ?", id).Scan(&group); err != nil {
+        response.Json(r, response.RespCodeArgs, "未找到团签")
+    }
+
+    if _, err := os.Stat(group.ContractFile); err != nil {
+        response.Json(r, response.RespCodeArgs, "合同文件不存在")
+    }
+
+    r.Response.ServeFileDownload(group.ContractFile, url.QueryEscape(group.Name+"团签合同"+filepath.Ext(group.ContractFile)))
 }

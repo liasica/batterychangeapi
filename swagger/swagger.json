@@ -135,7 +135,51 @@
                 }
             }
         },
-        "/admin/group/{groupId}/member": {
+        "/admin/group/{id}/contract": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream",
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "获取合同, 若成功获取则直接返回二进制文件, 此时前端直接处理成文件下载; 若失败, 则返回json失败数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团签ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "合同文件",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "错误结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "错误结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/group/{id}/member": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -151,7 +195,7 @@
                     {
                         "type": "integer",
                         "description": "团签ID",
-                        "name": "groupId",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     },
