@@ -57,19 +57,11 @@ func (s *userService) Create(ctx context.Context, mobile string, userType, group
 // AddGroupUsers 批量添加团签用户
 func (*userService) AddGroupUsers(ctx context.Context, users []model.User) error {
     c := dao.User.Columns
-    data := g.List{}
-    for _, user := range users {
-        salt := dao.User.GenerateSalt()
-        data = append(data, g.Map{
-            c.Type:     user.Type,
-            c.RealName: user.RealName,
-            c.Mobile:   user.Mobile,
-            c.GroupId:  user.GroupId,
-            c.Qr:       snowflake.Service().Generate().String(),
-            c.Salt:     salt,
-        })
+    for k, _ := range users {
+        users[k].Qr = snowflake.Service().Generate().String()
+        users[k].Salt = dao.User.GenerateSalt()
     }
-    _, err := dao.User.Ctx(ctx).Data(data).OnDuplicateEx(c.Salt, c.AccessToken, c.Qr).Save()
+    _, err := dao.User.Ctx(ctx).Data(users).OnDuplicateEx(c.Salt, c.AccessToken, c.Qr).Save()
     return err
 }
 
