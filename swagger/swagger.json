@@ -2837,6 +2837,10 @@
         "model.GroupCreateUserReq": {
             "type": "object",
             "properties": {
+                "idCardNo": {
+                    "description": "身份证",
+                    "type": "string"
+                },
                 "mobile": {
                     "description": "电话",
                     "type": "string"

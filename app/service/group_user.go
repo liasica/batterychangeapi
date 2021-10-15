@@ -35,6 +35,7 @@ func (*groupUserService) AddUsers(ctx context.Context, group model.Group, usersR
             RealName: user.Name,
             Mobile:   user.Mobile,
             Type:     model.UserTypeGroupRider,
+            IdCardNo: user.IdCardNo,
         })
     }
 
