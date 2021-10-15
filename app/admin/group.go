@@ -7,6 +7,7 @@ import (
     "battery/library/response"
     "context"
     "github.com/gogf/gf/database/gdb"
+    "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
 )
 
@@ -67,6 +68,33 @@ func (*groupApi) Create(r *ghttp.Request) {
 
         return err
     }); err != nil {
+        response.Json(r, response.RespCodeArgs, err.Error())
+    }
+    response.JsonOkExit(r)
+}
+
+// AddMember
+// @Summary 新增团签用户
+// @Tags    管理
+// @Accept  json
+// @Param   groupId path int true "团签ID"
+// @Param   entity body model.GroupCreateUserReq true "用户详情"
+// @Produce  json
+// @Router  /admin/group/{groupId}/member [POST]
+// @Success 200 {object} response.JsonResponse "返回结果"
+func (*groupApi) AddMember(r *ghttp.Request) {
+    var req model.GroupCreateUserReq
+    if err := r.Parse(&req); err != nil {
+        response.Json(r, response.RespCodeArgs, err.Error())
+    }
+
+    groupId := r.GetInt("groupId")
+    var group model.Group
+    if err := dao.Group.Ctx(r.Context()).Where(g.Map{dao.Group.Columns.Id: groupId}).Scan(&group); err != nil {
+        response.Json(r, response.RespCodeSystemError, err.Error())
+    }
+
+    if err := service.GroupUserService.AddUsers(r.Context(), group, []model.GroupCreateUserReq{req}); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
     response.JsonOkExit(r)

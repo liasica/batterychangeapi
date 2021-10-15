@@ -48,9 +48,9 @@ type GroupFormReq struct {
 
 // GroupCreateUserReq 团签用户表单
 type GroupCreateUserReq struct {
-    Name     string `v:"required|length=6,30" json:"name"`   // 姓名
-    Mobile   string `v:"required|phone-loose" json:"mobile"` // 电话
-    IdCardNo string `v:"required|bank-card" json:"idCardNo"` // 身份证
+    Name     string `v:"required|length:2,30" json:"name" validate:"required"`     // 姓名
+    Mobile   string `v:"required|phone-loose" json:"mobile" validate:"required"`   // 电话
+    IdCardNo string `v:"required|resident-id" json:"idCardNo" validate:"required"` // 身份证
 }
 
 // UserGroupStatRep 我的团队统计

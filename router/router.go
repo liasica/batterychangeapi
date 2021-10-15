@@ -182,10 +182,13 @@ func init() {
         group.POST("/pack", admin.PackagesApi.Create)
         group.PUT("/pack/:id", admin.PackagesApi.Edit)
 
-        group.GET("/group", admin.GroupApi.List)
-        group.POST("/group", admin.GroupApi.Create)
-        group.GET("/group/:id", admin.GroupApi.Detail)
-        group.PUT("/group/:id", admin.GroupApi.Edit)
+        group.Group("/group", func(g *ghttp.RouterGroup) {
+            g.GET("/", admin.GroupApi.List)
+            g.POST("/", admin.GroupApi.Create)
+            g.GET("/:id", admin.GroupApi.Detail)
+            g.PUT("/:id", admin.GroupApi.Edit)
+            g.POST("/:groupId/member", admin.GroupApi.AddMember)
+        })
     })
 
     s.SetIndexFolder(true)
