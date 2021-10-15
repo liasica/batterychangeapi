@@ -17,6 +17,10 @@ type groupUserService struct {
 // AddUsers 添加团签用户
 // 联系人（团队管理员是否可用）
 func (*groupUserService) AddUsers(ctx context.Context, group model.Group, usersReq []model.GroupCreateUserReq) error {
+    if len(usersReq) < 1 {
+        return nil
+    }
+
     var userMobiles []string
     var batchInsert []model.User
 

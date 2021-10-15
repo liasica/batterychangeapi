@@ -9,6 +9,7 @@ import (
     "github.com/gogf/gf/database/gdb"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
+    "os"
 )
 
 var GroupApi = groupApi{}
@@ -33,6 +34,11 @@ func (*groupApi) Create(r *ghttp.Request) {
         response.Json(r, response.RespCodeArgs, "名称已被使用")
     }
 
+    // 判断合同文件是否存在
+    if _, err := os.Stat(req.ContractFile); os.IsNotExist(err) {
+        response.Json(r, response.RespCodeArgs, "合同文件不存在")
+    }
+
     if err := dao.Group.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
         group := model.Group{
             Name:          req.Name,
@@ -40,6 +46,7 @@ func (*groupApi) Create(r *ghttp.Request) {
             CityId:        req.CityId,
             ContactName:   req.ContactName,
             ContactMobile: req.ContactMobile,
+            ContractFile:  req.ContractFile,
         }
         groupId, err := service.GroupService.Create(ctx, group)
         if err != nil {

@@ -43,7 +43,8 @@ type GroupFormReq struct {
     ContactMobile string               `v:"required" json:"contactMobile"`            // 联系人手机号
     ProvinceId    uint                 `v:"required|integer|min:1" json:"provinceId"` // 省份ID
     CityId        uint                 `v:"required|integer|min:1" json:"cityId"`     // 城市ID
-    UserList      []GroupCreateUserReq `v:"required" json:"userList"`                 // 用户列表
+    UserList      []GroupCreateUserReq `json:"userList"`                              // 用户列表
+    ContractFile  string               `v:"required" json:"contractFile"`             // 合同文件 (使用接口`/api/upload/file`上传)
 }
 
 // GroupCreateUserReq 团签用户表单

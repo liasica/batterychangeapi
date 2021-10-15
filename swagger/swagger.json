@@ -2937,6 +2937,10 @@
                     "description": "联系人",
                     "type": "string"
                 },
+                "contractFile": {
+                    "description": "合同文件 (使用接口`/api/upload/file`上传)",
+                    "type": "string"
+                },
                 "name": {
                     "description": "名称",
                     "type": "string"

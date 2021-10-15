@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+gf swagger
+git add .
+read -p "commit message: " -r MESSAGE
+git commit -m "$MESSAGE"
+git push

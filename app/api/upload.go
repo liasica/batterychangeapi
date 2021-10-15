@@ -137,7 +137,7 @@ func (*uploadApi) File(r *ghttp.Request) {
     }
 
     dst := filepath.Join(dir, e+ext)
-    _ = os.Rename(_path, dst)
+    _ = os.Rename(filepath.Join(dir, _path), dst)
     response.JsonOkExit(r, model.UploadRep{
         Path: dst,
     })
