@@ -17,16 +17,16 @@ type Group internal.Group
 // GroupListItem 团签详情
 type GroupListItem struct {
     Id               uint   `json:"id"`
-    Name             string `json:"name"`
-    ProvinceId       uint   `json:"provinceId"`
-    CityId           uint   `json:"cityId"`
-    UserCnt          uint   `json:"userCnt"`
-    DaysCnt60        uint   `json:"daysCnt60"`
-    DaysCnt72        uint   `json:"daysCnt72"`
-    ArrearsDaysCnt60 uint   `json:"arrearsDaysCnt60"`
-    ArrearsDaysCnt72 uint   `json:"arrearsDaysCnt72"`
-    ContactName      string `json:"contactName"`
-    ContactMobile    string `json:"contactMobile"`
+    Name             string `json:"name"`             // 名称
+    ProvinceId       uint   `json:"provinceId"`       // 省份ID
+    CityId           uint   `json:"cityId"`           // 城市ID
+    UserCnt          uint   `json:"userCnt"`          // 用户数量
+    DaysCnt60        uint   `json:"daysCnt60"`        // 60电池天数
+    DaysCnt72        uint   `json:"daysCnt72"`        // 72电池天数
+    ArrearsDaysCnt60 uint   `json:"arrearsDaysCnt60"` // 60电池欠款天数
+    ArrearsDaysCnt72 uint   `json:"arrearsDaysCnt72"` // 72电池欠款天数
+    ContactName      string `json:"contactName"`      // 联系人
+    ContactMobile    string `json:"contactMobile"`    // 联系电话
 }
 
 // GroupListReq 列表请求参数

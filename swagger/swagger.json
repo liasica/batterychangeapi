@@ -2932,36 +2932,46 @@
             "type": "object",
             "properties": {
                 "arrearsDaysCnt60": {
+                    "description": "60电池欠款天数",
                     "type": "integer"
                 },
                 "arrearsDaysCnt72": {
+                    "description": "72电池欠款天数",
                     "type": "integer"
                 },
                 "cityId": {
+                    "description": "城市ID",
                     "type": "integer"
                 },
                 "contactMobile": {
+                    "description": "联系电话",
                     "type": "string"
                 },
                 "contactName": {
+                    "description": "联系人",
                     "type": "string"
                 },
                 "daysCnt60": {
+                    "description": "60电池天数",
                     "type": "integer"
                 },
                 "daysCnt72": {
+                    "description": "72电池天数",
                     "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "name": {
+                    "description": "名称",
                     "type": "string"
                 },
                 "provinceId": {
+                    "description": "省份ID",
                     "type": "integer"
                 },
                 "userCnt": {
+                    "description": "用户数量",
                     "type": "integer"
                 }
             }
