@@ -51,6 +51,7 @@ func (s *groupDailyStatService) RiderBizExit(ctx context.Context, groupId uint, 
 	if err := dao.GroupDailyStat.Ctx(ctx).
 		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
 		Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
+		WhereGT(dao.GroupDailyStat.Columns.Total, 0).
 		LockUpdate().
 		Scan(&max); err != nil {
 		return err
