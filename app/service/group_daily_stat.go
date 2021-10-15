@@ -34,11 +34,12 @@ func (s *groupDailyStatService) RiderBizNew(ctx context.Context, groupId uint, b
 		return err
 	}
 	now := gtime.Now()
-	_, err := dao.GroupDailyStat.Ctx(ctx).Where(dao.GroupDailyStat.Columns.GroupId, groupId).
+	_, err := dao.GroupDailyStat.Ctx(ctx).
+		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
 		Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
 		WhereGTE(dao.GroupDailyStat.Columns.Date, s.Date(now)).
 		Update(g.Map{
-			dao.GroupDailyStat.Columns.Total:   max.Total + 1,
+			dao.GroupDailyStat.Columns.Total:   len(max.UserIds) + 1,
 			dao.GroupDailyStat.Columns.UserIds: append(max.UserIds, userId),
 		})
 	return err
@@ -50,11 +51,12 @@ func (s *groupDailyStatService) RiderBizExit(ctx context.Context, groupId uint, 
 	if err := dao.GroupDailyStat.Ctx(ctx).
 		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
 		Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
+		LockUpdate().
 		Scan(&max); err != nil {
 		return err
 	}
 	now := gtime.Now()
-	newUserIds := make([]uint64, 1)
+	newUserIds := make([]uint64, 0)
 	for _, id := range max.UserIds {
 		if id != userId {
 			newUserIds = append(newUserIds, id)
@@ -64,18 +66,20 @@ func (s *groupDailyStatService) RiderBizExit(ctx context.Context, groupId uint, 
 		Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
 		WhereGT(dao.GroupDailyStat.Columns.Date, s.Date(now)).
 		Update(g.Map{
-			dao.GroupDailyStat.Columns.Total:   max.Total - 1,
+			dao.GroupDailyStat.Columns.Total:   len(newUserIds),
 			dao.GroupDailyStat.Columns.UserIds: newUserIds,
 		})
 	return err
 }
 
 func (s *groupDailyStatService) GenerateWeek(ctx context.Context, groupId uint, batteryType uint) error {
-	var max struct {
+	max := struct {
 		GroupId uint
 		UserIds []uint64
 		Date    uint
 		Total   uint
+	}{
+		UserIds: make([]uint64, 0),
 	}
 	maxTime := gtime.NewFromTimeStamp(gtime.Now().Timestamp() - 86400)
 	if err := dao.GroupDailyStat.Ctx(ctx).
