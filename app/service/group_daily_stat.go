@@ -30,6 +30,7 @@ func (s *groupDailyStatService) RiderBizNew(ctx context.Context, groupId uint, b
 	if err := dao.GroupDailyStat.Ctx(ctx).
 		Where(dao.GroupDailyStat.Columns.GroupId, groupId).
 		Where(dao.GroupDailyStat.Columns.BatteryType, batteryType).
+		LockUpdate().
 		Scan(&max); err != nil {
 		return err
 	}
