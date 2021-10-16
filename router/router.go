@@ -187,9 +187,11 @@ func init() {
         group.Group("/group", func(g *ghttp.RouterGroup) {
             g.GET("/", admin.GroupApi.List)
             g.POST("/", admin.GroupApi.Create)
-            g.GET("/:id", admin.GroupApi.Detail)
-            g.PUT("/:id", admin.GroupApi.Edit)
+
             g.POST("/:id/member", admin.GroupApi.AddMember)
+            // g.GET("/:id/member", admin.GroupApi.ListMember)
+            // g.DELETE("/:id/member/:memberId", admin.GroupApi.DeleteMember)
+
             g.GET("/:id/contract", admin.GroupApi.Contract)
         })
     })

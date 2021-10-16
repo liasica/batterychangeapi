@@ -102,8 +102,12 @@ func (*packagesApi) Edit(r *ghttp.Request) {
         _, _ = dao.Packages.Where("id", r.GetInt("id")).Delete()
     } else {
         data := r.GetMap()
-        amount, _ := decimal.NewFromFloat(req.Price).Add(decimal.NewFromFloat(req.Earnest)).Float64()
-        data["amount"] = amount
+        _, a1 := data["amount"]
+        _, e1 := data["earnest"]
+        _, p1 := data["price"]
+        if a1 || e1 || p1 {
+            response.Json(r, response.RespCodeArgs, "套餐价格禁止修改")
+        }
         data["deletedAt"] = nil
         _, _ = dao.Packages.Data(data).Where("id", r.GetInt("id")).Unscoped().Update()
     }
