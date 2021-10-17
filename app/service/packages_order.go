@@ -5,14 +5,13 @@ import (
     "battery/app/model"
     "battery/app/model/packages_order"
     "battery/app/model/user"
-    "battery/library/request"
+    "battery/library/mq"
     "battery/library/snowflake"
     "context"
     "errors"
     "fmt"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/os/gtime"
-    "github.com/gogf/gf/util/gutil"
 )
 
 var PackagesOrderService = packagesOrderService{}
@@ -186,9 +185,7 @@ func (*packagesOrderService) ListAdmin(ctx context.Context, req *model.OrderList
     c := dao.PackagesOrder.Columns
     layout := "Y-m-d"
 
-    params := request.ParseStructToQuery(*req)
-    delete(params, "RealName")
-    delete(params, "Mobile")
+    params := mq.ParseStructToQuery(*req, "RealName", "Mobile")
     query = query.Where(params)
 
     if !req.StartDate.IsZero() {
@@ -208,12 +205,7 @@ func (*packagesOrderService) ListAdmin(ctx context.Context, req *model.OrderList
             WhereLike(fmt.Sprintf("%s.%s", user.Table, dao.User.Columns.RealName), "%"+req.RealName+"%")
     }
 
-    t := packages_order.Table
-    var fields []string
-    keys := gutil.Values(c)
-    for _, field := range keys {
-        fields = append(fields, fmt.Sprintf("%s.%v", t, field))
-    }
+    fields := mq.FieldsWithTable(packages_order.Table, c)
 
     var rows []model.OrderEntity
     _ = query.WithAll().

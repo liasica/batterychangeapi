@@ -11,9 +11,7 @@ package request
 
 import (
     "battery/library/response"
-    "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
-    "reflect"
 )
 
 func ParseRequest(r *ghttp.Request, pointer interface{}) error {
@@ -22,22 +20,4 @@ func ParseRequest(r *ghttp.Request, pointer interface{}) error {
         return err
     }
     return nil
-}
-
-// ParseStructToQuery 将interface转换为查询语句(=)
-func ParseStructToQuery(req interface{}) (params g.Map) {
-    t := reflect.TypeOf(req)
-    v := reflect.ValueOf(req)
-    params = make(g.Map)
-    for i := 0; i < t.NumField(); i++ {
-        key := t.Field(i).Name
-        val := v.Field(i)
-        if !val.IsZero() {
-            switch val.Kind() {
-            case reflect.String, reflect.Uint, reflect.Int, reflect.Float64:
-                params[key] = val.Interface()
-            }
-        }
-    }
-    return
 }
