@@ -274,7 +274,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.GroupListReq"
+                            "$ref": "#/definitions/model.GroupListAdminReq"
                         }
                     }
                 ],
@@ -3444,6 +3444,26 @@
                 }
             }
         },
+        "model.GroupListAdminReq": {
+            "type": "object",
+            "required": [
+                "pageIndex",
+                "pageLimit"
+            ],
+            "properties": {
+                "keywords": {
+                    "type": "string"
+                },
+                "pageIndex": {
+                    "description": "当前页号",
+                    "type": "integer"
+                },
+                "pageLimit": {
+                    "description": "页大小",
+                    "type": "integer"
+                }
+            }
+        },
         "model.GroupListItem": {
             "type": "object",
             "properties": {
@@ -3489,34 +3509,6 @@
                 "userCnt": {
                     "description": "用户数量",
                     "type": "integer"
-                }
-            }
-        },
-        "model.GroupListReq": {
-            "type": "object",
-            "required": [
-                "pageIndex",
-                "pageLimit"
-            ],
-            "properties": {
-                "endDate": {
-                    "description": "结束日期",
-                    "type": "string"
-                },
-                "keywords": {
-                    "type": "string"
-                },
-                "pageIndex": {
-                    "description": "当前页号",
-                    "type": "integer"
-                },
-                "pageLimit": {
-                    "description": "页大小",
-                    "type": "integer"
-                },
-                "startDate": {
-                    "description": "开始日期",
-                    "type": "string"
                 }
             }
         },
