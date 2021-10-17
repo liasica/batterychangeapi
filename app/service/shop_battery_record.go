@@ -91,16 +91,16 @@ func (*shopBatteryRecordService) ListAdmin(ctx context.Context, req *model.Batte
     query := dao.ShopBatteryRecord.Ctx(ctx).
         OrderDesc(c.CreatedAt)
     if req.Type > 0 {
-        query.Where(c.Type, req.Type)
+        query = query.Where(c.Type, req.Type)
     }
     if !req.StartTime.IsZero() {
-        query.WhereGTE(c.CreatedAt, req.StartTime)
+        query = query.WhereGTE(c.CreatedAt, req.StartTime)
     }
     if !req.EndTime.IsZero() {
-        query.WhereLT(c.CreatedAt, req.EndTime.Add(24*time.Hour))
+        query = query.WhereLT(c.CreatedAt, req.EndTime.Add(24*time.Hour))
     }
     if req.ShopId > 0 {
-        query.Where(c.ShopId, req.ShopId)
+        query = query.Where(c.ShopId, req.ShopId)
     }
     _ = query.Page(req.PageIndex, req.PageLimit).Scan(&items)
     total, _ = query.Count()

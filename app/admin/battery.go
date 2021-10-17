@@ -50,6 +50,7 @@ func (*batteryApi) TransferRecord(r *ghttp.Request) {
 func (*batteryApi) Exception(r *ghttp.Request) {
     var req = new(model.ExceptionListReq)
     _ = request.ParseRequest(r, req)
+    g.Dump(req)
     total, items := service.ExceptionService.PageList(r.Context(), req)
     response.ItemsWithTotal(r, total, items)
 }
