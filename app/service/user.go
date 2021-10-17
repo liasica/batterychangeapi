@@ -602,7 +602,7 @@ func (s *userService) GroupUserStartUse(ctx context.Context, userId uint64) erro
 }
 
 // ListUsers 骑手列表
-func (s *userService) ListUsers(ctx context.Context, req *model.UserListReq) (total int, items []model.User) {
+func (s *userService) ListUsers(ctx context.Context, req *model.UserListReq) (total int, items []model.UserVerifyListItem) {
     query := dao.User.Ctx(ctx)
     c := dao.User.Columns
     if req.RealName != "" {

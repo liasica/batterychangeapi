@@ -4793,6 +4793,10 @@
                         3
                     ]
                 },
+                "id": {
+                    "description": "骑手ID",
+                    "type": "integer"
+                },
                 "idCardImg1": {
                     "description": "身份证人像面",
                     "type": "string"

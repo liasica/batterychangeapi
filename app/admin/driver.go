@@ -14,6 +14,7 @@ import (
     "battery/app/service"
     "battery/library/request"
     "battery/library/response"
+    "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
 )
 
@@ -35,20 +36,8 @@ func (*driverApi) Verify(r *ghttp.Request) {
     _ = request.ParseRequest(r, req)
 
     total, items := service.UserService.ListUsers(r.Context(), req)
-    result := model.ItemsWithTotal{
-        Total: total,
-    }
-    for _, item := range items {
-        result.Items = append(result.Items, model.UserVerifyListItem{
-            RealName:   item.RealName,
-            Mobile:     item.Mobile,
-            Type:       item.Type,
-            AuthState:  item.AuthState,
-            IdCardNo:   item.IdCardNo,
-            IdCardImg1: item.IdCardImg1,
-            IdCardImg2: item.IdCardImg2,
-            IdCardImg3: item.IdCardImg3,
-        })
-    }
-    response.JsonOkExit(r, result)
+    response.JsonOkExit(r, g.Map{
+        "total": total,
+        "items": items,
+    })
 }

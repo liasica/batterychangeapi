@@ -140,6 +140,7 @@ type UserProfileRep struct {
 
 // UserVerifyListItem 骑手实名列表项
 type UserVerifyListItem struct {
+    Id         uint   `json:"id"`                        // 骑手ID
     RealName   string `json:"realName"`                  // 姓名
     Mobile     string `json:"mobile"`                    // 手机号
     Type       uint   `json:"type"`                      // 用户类别
