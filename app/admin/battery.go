@@ -10,10 +10,12 @@
 package admin
 
 import (
+    "battery/app/dao"
     "battery/app/model"
     "battery/app/service"
     "battery/library/request"
     "battery/library/response"
+    "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
 )
 
@@ -50,4 +52,18 @@ func (*batteryApi) Exception(r *ghttp.Request) {
     _ = request.ParseRequest(r, req)
     total, items := service.ExceptionService.PageList(r.Context(), req)
     response.ItemsWithTotal(r, total, items)
+}
+
+// ExceptionFix
+// @Summary 处理电池异常
+// @Tags    管理
+// @Accept  json
+// @Param   id path int true "记录ID"
+// @Produce json
+// @Router  /admin/battery/exception/{id} [PUT]
+// @Success 200 {object} response.JsonResponse  "返回结果"
+func (*batteryApi) ExceptionFix(r *ghttp.Request) {
+    id := r.GetInt("id")
+    _, _ = dao.Exception.Where("id = ?", id).Data(g.Map{"state": model.ExceptionStateProcessed}).Update()
+    response.JsonOkExit(r)
 }

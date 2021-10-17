@@ -204,6 +204,7 @@ func init() {
 
         group.Group("/battery", func(g *ghttp.RouterGroup) {
             g.GET("/exception", admin.BatteryApi.Exception)
+            g.PUT("/exception/{id}", admin.BatteryApi.ExceptionFix)
             g.GET("/report", admin.BatteryApi.TransferRecord)
         })
     })

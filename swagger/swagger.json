@@ -67,6 +67,37 @@
                 }
             }
         },
+        "/admin/battery/exception/{id}": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "处理电池异常",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "记录ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/battery/record": {
             "get": {
                 "consumes": [
