@@ -3,6 +3,8 @@ package service
 import (
     "battery/app/dao"
     "battery/app/model"
+    "battery/app/model/packages_order"
+    "battery/app/model/user"
     "battery/library/request"
     "battery/library/snowflake"
     "context"
@@ -10,7 +12,7 @@ import (
     "fmt"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/os/gtime"
-    "log"
+    "github.com/gogf/gf/util/gutil"
 )
 
 var PackagesOrderService = packagesOrderService{}
@@ -184,8 +186,10 @@ func (*packagesOrderService) ListAdmin(ctx context.Context, req *model.OrderList
     c := dao.PackagesOrder.Columns
     layout := "Y-m-d"
 
-    query = query.Where(request.ParseStructToQuery(*req))
-    log.Println(req.StartDate.Format(layout), req.StartDate)
+    params := request.ParseStructToQuery(*req)
+    delete(params, "RealName")
+    delete(params, "Mobile")
+    query = query.Where(params)
 
     if !req.StartDate.IsZero() {
         query = query.WhereGTE(c.CreatedAt, req.StartDate.Format(layout))
@@ -194,12 +198,28 @@ func (*packagesOrderService) ListAdmin(ctx context.Context, req *model.OrderList
         query = query.WhereLTE(c.CreatedAt, req.EndDate.Format(layout))
     }
 
-    total, _ = query.Count()
+    if req.Mobile != "" {
+        query = query.LeftJoin(user.Table, fmt.Sprintf("%s.%s=%s.%s", user.Table, dao.User.Columns.Id, packages_order.Table, c.UserId)).
+            Where(fmt.Sprintf("%s.%s = ?", user.Table, dao.User.Columns.Mobile), req.Mobile)
+    }
+
+    if req.RealName != "" {
+        query = query.LeftJoin(user.Table, fmt.Sprintf("%s.%s=%s.%s", user.Table, dao.User.Columns.Id, packages_order.Table, c.UserId)).
+            WhereLike(fmt.Sprintf("%s.%s", user.Table, dao.User.Columns.RealName), "%"+req.RealName+"%")
+    }
+
+    t := packages_order.Table
+    var fields []string
+    keys := gutil.Values(c)
+    for _, field := range keys {
+        fields = append(fields, fmt.Sprintf("%s.%v", t, field))
+    }
 
     var rows []model.OrderEntity
     _ = query.WithAll().
         Page(req.PageIndex, req.PageLimit).
         OrderDesc(c.CreatedAt).
+        Fields(fields).
         Scan(&rows)
 
     for _, row := range rows {
@@ -234,5 +254,6 @@ func (*packagesOrderService) ListAdmin(ctx context.Context, req *model.OrderList
         })
     }
 
+    total, _ = query.Count()
     return
 }

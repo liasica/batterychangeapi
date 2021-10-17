@@ -119,16 +119,16 @@ type BizNewCdeReq struct {
 // OrderListReq 订单列表请求项
 type OrderListReq struct {
     Page
-    No        string `json:"no"`        // 订单编号
-    ShopId    uint   `json:"shopId"`    // 门店ID
-    UserId    uint   `json:"userId"`    // 骑手ID
-    PackageId uint   `json:"packageId"` // 套餐ID
-    CityId    uint   `json:"cityId"`    // 城市ID
-    // RealName  string      `json:"realName"`               // 骑手姓名
-    // Mobile    string      `json:"mobile" v:"phone-loose"` // 手机号
-    Type      uint        `json:"type"`      // 订单类型: 1新签 2续签 3违约金
-    StartDate *gtime.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
-    EndDate   *gtime.Time `json:"endDate"`   // 结束日期 eg: 2021-10-19
+    No        string      `json:"no"`                     // 订单编号
+    ShopId    uint        `json:"shopId"`                 // 门店ID
+    UserId    uint        `json:"userId"`                 // 骑手ID
+    PackageId uint        `json:"packageId"`              // 套餐ID
+    CityId    uint        `json:"cityId"`                 // 城市ID
+    RealName  string      `json:"realName"`               // 骑手姓名
+    Mobile    string      `json:"mobile" v:"phone-loose"` // 手机号
+    Type      uint        `json:"type"`                   // 订单类型: 1新签 2续签 3违约金
+    StartDate *gtime.Time `json:"startDate"`              // 开始日期 eg: 2021-10-17
+    EndDate   *gtime.Time `json:"endDate"`                // 结束日期 eg: 2021-10-19
 }
 
 // OrderEntity 订单实体
