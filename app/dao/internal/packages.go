@@ -24,7 +24,7 @@ type packagesColumns struct {
 	Id          string //
 	DeletedAt   string //
 	CreatedAt   string //
-	UpdatedAt   string // k
+	UpdatedAt   string // 停用时间
 	Type        string // 套餐类型 1 个人 2 团体
 	BatteryType string // 60 / 72
 	Name        string // 名称
@@ -34,7 +34,7 @@ type packagesColumns struct {
 	Earnest     string // 保证金
 	ProvinceId  string // 省级行政编码
 	CityId      string // 市级行政编码
-	Desc        string // 介绍
+	Desc        string // 描述
 }
 
 func NewPackagesDao() *PackagesDao {

@@ -12,13 +12,13 @@ import (
 
 // Entity is the golang structure for table message.
 type Entity struct {
-	Id        uint64      `orm:"id,primary" json:"id"`         //
-	Type      uint        `orm:"type"       json:"type"`       //
-	UserId    uint64      `orm:"userId"     json:"user_id"`    // 0 标识推送所有用户
-	Title     string      `orm:"title"      json:"title"`      //
-	Summary   string      `orm:"summary"    json:"summary"`    //
-	Detail    string      `orm:"detail"     json:"detail"`     // 消息详情，用户端展示使用
-	CreatedAt *gtime.Time `orm:"createdAt"  json:"created_at"` //
+    Id        uint64      `orm:"id,primary" json:"id"`         //                           
+    Type      uint        `orm:"type"       json:"type"`       //                           
+    UserId    uint64      `orm:"userId"     json:"user_id"`    // 0 标识推送所有用户        
+    Title     string      `orm:"title"      json:"title"`      //                           
+    Summary   string      `orm:"summary"    json:"summary"`    //                           
+    Detail    string      `orm:"detail"     json:"detail"`     // 消息详情，用户端展示使用  
+    CreatedAt *gtime.Time `orm:"createdAt"  json:"created_at"` //                           
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

@@ -12,12 +12,12 @@ import (
 
 // Entity is the golang structure for table group_user.
 type Entity struct {
-	Id        uint        `orm:"id,primary" json:"id"`         //
-	GroupId   uint        `orm:"groupId"    json:"group_id"`   // 团队ID
-	UserId    uint64      `orm:"userId"     json:"user_id"`    // 用户ID
-	DeletedAt *gtime.Time `orm:"deletedAt"  json:"deleted_at"` // 注销时间
-	CreatedAt *gtime.Time `orm:"createdAt"  json:"created_at"` //
-	UpdatedAt *gtime.Time `orm:"updatedAt"  json:"updated_at"` //
+    Id        uint        `orm:"id,primary" json:"id"`         //           
+    GroupId   uint        `orm:"groupId"    json:"group_id"`   // 团队ID    
+    UserId    uint64      `orm:"userId"     json:"user_id"`    // 用户ID    
+    DeletedAt *gtime.Time `orm:"deletedAt"  json:"deleted_at"` // 注销时间  
+    CreatedAt *gtime.Time `orm:"createdAt"  json:"created_at"` //           
+    UpdatedAt *gtime.Time `orm:"updatedAt"  json:"updated_at"` //           
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

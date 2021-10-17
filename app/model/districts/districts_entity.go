@@ -11,14 +11,14 @@ import (
 
 // Entity is the golang structure for table districts.
 type Entity struct {
-	Id       uint    `orm:"id,primary" json:"id"`        //
-	ParentId uint    `orm:"parentId"   json:"parent_id"` //
-	AdCode   uint    `orm:"adCode"     json:"ad_code"`   //
-	CityCode string  `orm:"cityCode"   json:"city_code"` //
-	Name     string  `orm:"name"       json:"name"`      //
-	Level    string  `orm:"level"      json:"level"`     //
-	Lng      float64 `orm:"lng"        json:"lng"`       //
-	Lat      float64 `orm:"lat"        json:"lat"`       //
+    Id       uint    `orm:"id,primary" json:"id"`        //   
+    ParentId uint    `orm:"parentId"   json:"parent_id"` //   
+    AdCode   uint    `orm:"adCode"     json:"ad_code"`   //   
+    CityCode string  `orm:"cityCode"   json:"city_code"` //   
+    Name     string  `orm:"name"       json:"name"`      //   
+    Level    string  `orm:"level"      json:"level"`     //   
+    Lng      float64 `orm:"lng"        json:"lng"`       //   
+    Lat      float64 `orm:"lat"        json:"lat"`       //   
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

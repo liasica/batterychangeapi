@@ -13,7 +13,7 @@ type Packages struct {
 	Id          uint        `orm:"id,primary"  json:"id"`          //
 	DeletedAt   *gtime.Time `orm:"deletedAt"   json:"deletedAt"`   //
 	CreatedAt   *gtime.Time `orm:"createdAt"   json:"createdAt"`   //
-	UpdatedAt   *gtime.Time `orm:"updatedAt"   json:"updatedAt"`   // k
+	UpdatedAt   *gtime.Time `orm:"updatedAt"   json:"updatedAt"`   // 停用时间
 	Type        uint        `orm:"type"        json:"type"`        // 套餐类型 1 个人 2 团体
 	BatteryType uint        `orm:"batteryType" json:"batteryType"` // 60 / 72
 	Name        string      `orm:"name"        json:"name"`        // 名称
@@ -23,5 +23,5 @@ type Packages struct {
 	Earnest     float64     `orm:"earnest"     json:"earnest"`     // 保证金
 	ProvinceId  uint        `orm:"provinceId"  json:"provinceId"`  // 省级行政编码
 	CityId      uint        `orm:"cityId"      json:"cityId"`      // 市级行政编码
-	Desc        string      `orm:"desc"        json:"desc"`        // 介绍
+	Desc        string      `orm:"desc"        json:"desc"`        // 描述
 }

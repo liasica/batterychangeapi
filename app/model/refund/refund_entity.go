@@ -12,17 +12,17 @@ import (
 
 // Entity is the golang structure for table refund.
 type Entity struct {
-	Id               uint        `orm:"id,primary"              json:"id"`                 //
-	UserId           uint64      `orm:"userId"                  json:"user_id"`            //
-	No               string      `orm:"no,unique"               json:"no"`                 // 退款编号
-	RelationId       uint64      `orm:"relationId"              json:"relation_id"`        //
-	RelationType     uint        `orm:"relationType"            json:"relation_type"`      //
-	Reason           string      `orm:"reason"                  json:"reason"`             //
-	Amount           float64     `orm:"amount"                  json:"amount"`             // 退款金额
-	PlatformRefundNo string      `orm:"platformRefundNo,unique" json:"platform_refund_no"` // 第三方流水号
-	State            uint        `orm:"state"                   json:"state"`              //
-	CreatedAt        *gtime.Time `orm:"createdAt"               json:"created_at"`         //
-	UpdatedAt        *gtime.Time `orm:"updatedAt"               json:"updated_at"`         //
+    Id               uint        `orm:"id,primary"              json:"id"`                 //               
+    UserId           uint64      `orm:"userId"                  json:"user_id"`            //               
+    No               string      `orm:"no,unique"               json:"no"`                 // 退款编号      
+    RelationId       uint64      `orm:"relationId"              json:"relation_id"`        //               
+    RelationType     uint        `orm:"relationType"            json:"relation_type"`      //               
+    Reason           string      `orm:"reason"                  json:"reason"`             //               
+    Amount           float64     `orm:"amount"                  json:"amount"`             // 退款金额      
+    PlatformRefundNo string      `orm:"platformRefundNo,unique" json:"platform_refund_no"` // 第三方流水号  
+    State            uint        `orm:"state"                   json:"state"`              //               
+    CreatedAt        *gtime.Time `orm:"createdAt"               json:"created_at"`         //               
+    UpdatedAt        *gtime.Time `orm:"updatedAt"               json:"updated_at"`         //               
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

@@ -12,16 +12,16 @@ import (
 
 // Entity is the golang structure for table sign.
 type Entity struct {
-	Id              uint64      `orm:"id,primary"      json:"id"`                //
-	UserId          uint64      `orm:"userId"          json:"user_id"`           //
-	GroupId         uint        `orm:"groupId"         json:"group_id"`          //
-	PackagesOrderId uint64      `orm:"packagesOrderId" json:"packages_order_id"` //
-	BatteryType     uint        `orm:"batteryType"     json:"battery_type"`      // 电池型号
-	FlowId          string      `orm:"flowId,unique"   json:"flow_id"`           // 易签签约流程ID
-	FileId          string      `orm:"fileId,unique"   json:"file_id"`           // 易签签约文件ID
-	State           uint        `orm:"state"           json:"state"`             // 签约状态 0 未签约 1 已签约
-	CreatedAt       *gtime.Time `orm:"createdAt"       json:"created_at"`        //
-	UpdatedAt       *gtime.Time `orm:"updatedAt"       json:"updated_at"`        //
+    Id              uint64      `orm:"id,primary"      json:"id"`                //                             
+    UserId          uint64      `orm:"userId"          json:"user_id"`           //                             
+    GroupId         uint        `orm:"groupId"         json:"group_id"`          //                             
+    PackagesOrderId uint64      `orm:"packagesOrderId" json:"packages_order_id"` //                             
+    BatteryType     uint        `orm:"batteryType"     json:"battery_type"`      // 电池型号                    
+    FlowId          string      `orm:"flowId,unique"   json:"flow_id"`           // 易签签约流程ID              
+    FileId          string      `orm:"fileId,unique"   json:"file_id"`           // 易签签约文件ID              
+    State           uint        `orm:"state"           json:"state"`             // 签约状态 0 未签约 1 已签约  
+    CreatedAt       *gtime.Time `orm:"createdAt"       json:"created_at"`        //                             
+    UpdatedAt       *gtime.Time `orm:"updatedAt"       json:"updated_at"`        //                             
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

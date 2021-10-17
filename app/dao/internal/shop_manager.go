@@ -5,50 +5,50 @@
 package internal
 
 import (
-    "github.com/gogf/gf/database/gdb"
-    "github.com/gogf/gf/frame/g"
-    "github.com/gogf/gf/frame/gmvc"
+	"github.com/gogf/gf/database/gdb"
+	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/frame/gmvc"
 )
 
 // ShopManagerDao is the manager for logic model data accessing
 // and custom defined data operations functions management.
 type ShopManagerDao struct {
-    gmvc.M                     // M is the core and embedded struct that inherits all chaining operations from gdb.Model.
-    DB      gdb.DB             // DB is the raw underlying database management object.
-    Table   string             // Table is the table name of the DAO.
-    Columns shopManagerColumns // Columns contains all the columns of Table that for convenient usage.
+	gmvc.M                     // M is the core and embedded struct that inherits all chaining operations from gdb.Model.
+	DB      gdb.DB             // DB is the raw underlying database management object.
+	Table   string             // Table is the table name of the DAO.
+	Columns shopManagerColumns // Columns contains all the columns of Table that for convenient usage.
 }
 
 // ShopManagerColumns defines and stores column names for table shop_manager.
 type shopManagerColumns struct {
-    Id          string //
-    Name        string // 店长姓名
-    Mobile      string // 手机号码
-    ShopId      string // 门店ID
-    AccessToken string //
-    DeviceType  string // 0 未上报 1 安卓  2  iOS
-    DeviceToken string // 用户推送token
-    DeletedAt   string //
-    CreatedAt   string //
-    UpdatedAt   string //
+	Id          string //
+	Name        string // 店长姓名
+	Mobile      string // 手机号码
+	ShopId      string // 门店ID
+	AccessToken string //
+	DeviceType  string // 0 未上报 1 安卓  2  iOS
+	DeviceToken string // 用户推送token
+	DeletedAt   string //
+	CreatedAt   string //
+	UpdatedAt   string //
 }
 
 func NewShopManagerDao() *ShopManagerDao {
-    return &ShopManagerDao{
-        M:     g.DB("default").Model("shop_manager").Safe(),
-        DB:    g.DB("default"),
-        Table: "shop_manager",
-        Columns: shopManagerColumns{
-            Id:          "id",
-            Name:        "name",
-            Mobile:      "mobile",
-            ShopId:      "shopId",
-            AccessToken: "accessToken",
-            DeviceType:  "deviceType",
-            DeviceToken: "deviceToken",
-            DeletedAt:   "deletedAt",
-            CreatedAt:   "createdAt",
-            UpdatedAt:   "updatedAt",
-        },
-    }
+	return &ShopManagerDao{
+		M:     g.DB("default").Model("shop_manager").Safe(),
+		DB:    g.DB("default"),
+		Table: "shop_manager",
+		Columns: shopManagerColumns{
+			Id:          "id",
+			Name:        "name",
+			Mobile:      "mobile",
+			ShopId:      "shopId",
+			AccessToken: "accessToken",
+			DeviceType:  "deviceType",
+			DeviceToken: "deviceToken",
+			DeletedAt:   "deletedAt",
+			CreatedAt:   "createdAt",
+			UpdatedAt:   "updatedAt",
+		},
+	}
 }

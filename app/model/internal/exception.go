@@ -11,6 +11,7 @@ import (
 // Exception is the golang structure for table exception.
 type Exception struct {
 	Id          uint64      `orm:"id,primary"  json:"id"`          //
+	State       uint        `orm:"state"       json:"state"`       // 状态 0未解决 1已解决
 	Type        uint        `orm:"type"        json:"type"`        // 1 遗失  2 故障
 	BatteryType uint        `orm:"batteryType" json:"batteryType"` // 电池型号 60 / 72
 	RecoverType uint        `orm:"recoverType" json:"recoverType"` // 1 用户 2 店长

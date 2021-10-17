@@ -28,11 +28,11 @@ type userColumns struct {
 	Qr                           string // 骑手二维码数据
 	RealName                     string // 真实姓名
 	IdCardNo                     string // 身份证号码
-	IdCardImg1                   string // 正面图
-	IdCardImg2                   string // 反面图
-	IdCardImg3                   string // 人像图
+	IdCardImg1                   string // 身份证人像面
+	IdCardImg2                   string // 身份证国徽面
+	IdCardImg3                   string // 手持身份证
 	AuthState                    string // 实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过
-	BatteryState                 string // 个人用户换点状态：0 未开通，1 租借中，2 寄存中，3 已退租
+	BatteryState                 string // 个人用户换电状态：0 未开通，1 租借中，2 寄存中，3 已退租
 	BatteryType                  string // 套餐电池型号 60 、 72
 	PackagesId                   string // 套餐ID
 	PackagesOrderId              string // 办理套餐订单ID

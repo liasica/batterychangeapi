@@ -12,10 +12,10 @@ import (
 
 // Entity is the golang structure for table sms.
 type Entity struct {
-	Id        int64       `orm:"id,primary" json:"id"`         //
-	Mobile    string      `orm:"mobile"     json:"mobile"`     //
-	Code      string      `orm:"code"       json:"code"`       // 验证码
-	CreatedAt *gtime.Time `orm:"createdAt"  json:"created_at"` //
+    Id        int64       `orm:"id,primary" json:"id"`         //         
+    Mobile    string      `orm:"mobile"     json:"mobile"`     //         
+    Code      string      `orm:"code"       json:"code"`       // 验证码  
+    CreatedAt *gtime.Time `orm:"createdAt"  json:"created_at"` //         
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

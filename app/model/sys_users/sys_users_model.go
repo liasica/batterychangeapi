@@ -25,33 +25,33 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table sys_users.
 	Columns = struct {
-		Id           string //
-		Name         string //
-		Username     string //
-		Password     string //
-		Salt         string //
-		Avatar       string //
-		Roles        string //
-		Introduction string //
-		AccessToken  string //
-		State        string // 状态 1 可用，0 不可用
-		DeleteAt     string // 删除时间
-		CreateAt     string //
-		UpdateAt     string //
+		Id            string //                        
+        Name          string //                        
+        Username      string //                        
+        Password      string //                        
+        Salt          string //                        
+        Avatar        string //                        
+        Roles         string //                        
+        Introduction  string //                        
+        AccessToken   string //                        
+        State         string // 状态 1 可用，0 不可用  
+        DeleteAt      string // 删除时间               
+        CreateAt      string //                        
+        UpdateAt      string //
 	}{
-		Id:           "id",
-		Name:         "name",
-		Username:     "username",
-		Password:     "password",
-		Salt:         "salt",
-		Avatar:       "avatar",
-		Roles:        "roles",
-		Introduction: "introduction",
-		AccessToken:  "access_token",
-		State:        "state",
-		DeleteAt:     "delete_at",
-		CreateAt:     "create_at",
-		UpdateAt:     "update_at",
+		Id:           "id",            
+        Name:         "name",          
+        Username:     "username",      
+        Password:     "password",      
+        Salt:         "salt",          
+        Avatar:       "avatar",        
+        Roles:        "roles",         
+        Introduction: "introduction",  
+        AccessToken:  "access_token",  
+        State:        "state",         
+        DeleteAt:     "delete_at",     
+        CreateAt:     "create_at",     
+        UpdateAt:     "update_at",
 	}
 )
 
@@ -90,7 +90,7 @@ func (m *arModel) Slave() *arModel {
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) LeftJoin(table ...string) *arModel {
-	return &arModel{m.M.LeftJoin(table...)}
+	return &arModel{m.M.LeftJoin(table ...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -99,7 +99,7 @@ func (m *arModel) LeftJoin(table ...string) *arModel {
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) RightJoin(table ...string) *arModel {
-	return &arModel{m.M.RightJoin(table...)}
+	return &arModel{m.M.RightJoin(table ...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -108,7 +108,7 @@ func (m *arModel) RightJoin(table ...string) *arModel {
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
 func (m *arModel) InnerJoin(table ...string) *arModel {
-	return &arModel{m.M.InnerJoin(table...)}
+	return &arModel{m.M.InnerJoin(table ...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
