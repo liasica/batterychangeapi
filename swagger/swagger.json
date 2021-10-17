@@ -2998,6 +2998,10 @@
                     "description": "1 用户 2 店长",
                     "type": "integer"
                 },
+                "shopId": {
+                    "description": "店铺ID",
+                    "type": "integer"
+                },
                 "type": {
                     "description": "1 遗失  2 故障",
                     "type": "integer"
@@ -3746,6 +3750,10 @@
                 },
                 "districtId": {
                     "description": "区县ID",
+                    "type": "integer"
+                },
+                "exceptionCnt": {
+                    "description": "异常数量",
                     "type": "integer"
                 },
                 "id": {

@@ -22,10 +22,11 @@ type ExceptionDao struct {
 // ExceptionColumns defines and stores column names for table exception.
 type exceptionColumns struct {
 	Id          string //
+	ShopId      string // 门店
 	State       string // 状态 0未解决 1已解决
 	Type        string // 1 遗失  2 故障
 	BatteryType string // 电池型号 60 / 72
-	RecoverType string // 1 用户 2 店长
+	RecoverType string // 发现人 1 用户 2 店长
 	Detail      string // 详细说明
 	Img         string // 图片链接
 	Reason      string // 故障原因 0 其它 1 插头故障 2 无电压
@@ -40,6 +41,7 @@ func NewExceptionDao() *ExceptionDao {
 		Table: "exception",
 		Columns: exceptionColumns{
 			Id:          "id",
+			ShopId:      "shop_id",
 			State:       "state",
 			Type:        "type",
 			BatteryType: "batteryType",

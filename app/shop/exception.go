@@ -25,6 +25,9 @@ func (*exceptionApi) Report(r *ghttp.Request) {
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
+    manager := r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager)
+    // manager.ShopId
+    req.ShopId = manager.ShopId
     if service.ExceptionService.Create(r.Context(), req) == nil {
         response.JsonOkExit(r)
     }
