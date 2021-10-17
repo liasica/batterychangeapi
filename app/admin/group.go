@@ -86,7 +86,7 @@ func (*groupApi) Create(r *ghttp.Request) {
 // @Summary 团签列表
 // @Tags    管理
 // @Accept  json
-// @Param   entity body model.GroupListAdminReq true "请求参数"
+// @Param   entity body model.GroupListReq true "请求参数"
 // @Produce  json
 // @Router  /admin/group [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.GroupListItem}}  "返回结果"
@@ -180,4 +180,10 @@ func (*groupApi) AddMember(r *ghttp.Request) {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
     response.JsonOkExit(r)
+}
+
+func (*groupApi) ListMember(r *ghttp.Request) {
+}
+
+func (*groupApi) DeleteMember(r *ghttp.Request) {
 }
