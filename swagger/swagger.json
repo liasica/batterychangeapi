@@ -2988,20 +2988,20 @@
         "model.BatteryRecordListItem": {
             "type": "object",
             "properties": {
-                "At": {
-                    "description": "时间",
-                    "type": "string"
-                },
                 "batteryType": {
                     "description": "60 / 72",
                     "type": "integer"
                 },
                 "bizType": {
-                    "description": "0 平台调拨,  1 新签,  2 换电池 ,3 寄存, 4 恢复计费 , 5 退租",
+                    "description": "0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租",
                     "type": "integer"
                 },
-                "dayCnt": {
-                    "description": "当天总数",
+                "createdAt": {
+                    "description": "时间",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
                     "type": "integer"
                 },
                 "num": {
@@ -3013,7 +3013,7 @@
                     "type": "integer"
                 },
                 "userName": {
-                    "description": "用户名  平台调拨为空",
+                    "description": "操作员 平台调拨为空",
                     "type": "string"
                 }
             }
@@ -3771,7 +3771,7 @@
                     "type": "integer"
                 },
                 "bizType": {
-                    "description": "0 平台调拨,  1 新签,  2 换电池 ,3 寄存, 4 恢复计费 , 5 退租",
+                    "description": "0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租",
                     "type": "integer"
                 },
                 "dayCnt": {
@@ -3783,7 +3783,7 @@
                     "type": "integer"
                 },
                 "userName": {
-                    "description": "用户名  平台调拨为空",
+                    "description": "操作员 平台调拨为空",
                     "type": "string"
                 }
             }
