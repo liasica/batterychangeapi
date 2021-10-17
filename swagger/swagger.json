@@ -3209,6 +3209,10 @@
                         72
                     ]
                 },
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
                 "cityName": {
                     "description": "城市",
                     "type": "string"
@@ -3235,10 +3239,6 @@
                     "items": {
                         "type": "string"
                     }
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
                 },
                 "reason": {
                     "description": "故障原因: 0其它 1插头故障 2电压故障",

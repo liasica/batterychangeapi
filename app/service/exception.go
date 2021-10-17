@@ -30,11 +30,10 @@ func (*exceptionService) PageList(ctx context.Context, req *model.ExceptionListR
         query.WhereLTE(c.CreatedAt, req.EndTime.Format(layout))
     }
 
-    var rows []model.ExceptionListItem
     _ = query.
-        WithAll().
         Page(req.PageIndex, req.PageLimit).
-        Scan(&rows)
+        LeftJoin("(SELECT cityId, d.name AS cityName, s.id AS extraShopId, s.name AS shopName FROM shop s LEFT JOIN districts d on s.cityId = d.id) extra ON extra.extraShopId = exception.shopId").
+        Scan(&items)
 
     total, _ = query.Count()
     return
