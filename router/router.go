@@ -176,10 +176,10 @@ func init() {
         group.GET("/districts", admin.DistrictsApi.List)
 
         group.Group("/shop", func(g *ghttp.RouterGroup) {
-            group.GET("/", admin.ShopApi.List)
-            group.POST("/", admin.ShopApi.Create)
-            group.GET("/:id", admin.ShopApi.Detail)
-            group.PUT("/:id", admin.ShopApi.Edit)
+            g.GET("/", admin.ShopApi.List)
+            g.POST("/", admin.ShopApi.Create)
+            g.GET("/:id", admin.ShopApi.Detail)
+            g.PUT("/:id", admin.ShopApi.Edit)
         })
 
         group.GET("/package", admin.PackagesApi.List)

@@ -32,31 +32,7 @@ func (*shopApi) List(r *ghttp.Request) {
     var rep model.ItemsWithTotal
     total, items := service.ShopService.ListAdmin(r.Context(), req)
     rep.Total = total
-    if rep.Total > 0 {
-        cityIds := make([]uint, len(items))
-        for key, item := range items {
-            cityIds[key] = item.CityId
-        }
-        for _, item := range items {
-            rep.Items = append(rep.Items, model.ShopListItem{
-                Id:              item.Id,
-                Name:            item.Name,
-                State:           item.State,
-                Mobile:          item.Mobile,
-                ManagerName:     item.ManagerName,
-                CityId:          item.CityId,
-                ProvinceId:      item.ProvinceId,
-                DistrictId:      item.DistrictId,
-                BatteryInCnt60:  item.BatteryInCnt60,
-                BatteryInCnt72:  item.BatteryInCnt72,
-                BatteryOutCnt60: item.BatteryOutCnt60,
-                BatteryOutCnt72: item.BatteryOutCnt72,
-                BatteryCnt60:    item.BatteryCnt60,
-                BatteryCnt72:    item.BatteryCnt72,
-                ChargerCnt:      item.ChargerCnt,
-            })
-        }
-    }
+    rep.Items = []interface{}{items}
     response.JsonOkExit(r, rep)
 }
 

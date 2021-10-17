@@ -164,14 +164,15 @@ func (*shopService) Edit(ctx context.Context, shop model.Shop) error {
 }
 
 // ListAdmin 管理员获取门店列表
-func (s *shopService) ListAdmin(ctx context.Context, req model.ShopListAdminReq) (total int, items []model.Shop) {
+func (s *shopService) ListAdmin(ctx context.Context, req model.ShopListAdminReq) (total int, items []model.ShopListItem) {
     m := dao.Shop.Ctx(ctx).Page(req.PageIndex, req.PageLimit)
     if req.Name != "" {
         m = m.WhereLike(dao.Shop.Columns.Name, fmt.Sprintf("%%%s%%", req.Name))
     }
     total, _ = m.Count()
     if total > 0 {
-        _ = m.Scan(&items)
+        _ = m.LeftJoin(`(SELECT shopId, COUNT(1) AS exceptionCnt FROM exception WHERE exception.state = 0 GROUP BY exception.shopId) exceptions ON exceptions.shopId = shop.id`).
+            Scan(&items)
     }
     return
 }
