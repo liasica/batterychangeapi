@@ -3131,7 +3131,7 @@
             ],
             "properties": {
                 "endTime": {
-                    "description": "查询范围-结束时间",
+                    "description": "查询范围-结束时间 eg: 2021-10-17 15:06:09",
                     "type": "string"
                 },
                 "pageIndex": {
@@ -3147,7 +3147,7 @@
                     "type": "integer"
                 },
                 "startTime": {
-                    "description": "查询范围-开始时间",
+                    "description": "查询范围-开始时间 eg: 2021-10-17 15:06:09",
                     "type": "string"
                 },
                 "type": {
@@ -3309,7 +3309,7 @@
             ],
             "properties": {
                 "endTime": {
-                    "description": "结束时间",
+                    "description": "结束时间 eg: 2021-10-17 15:06:09",
                     "type": "string"
                 },
                 "pageIndex": {
@@ -3325,7 +3325,7 @@
                     "type": "integer"
                 },
                 "startTime": {
-                    "description": "开始时间",
+                    "description": "开始时间 eg: 2021-10-17 15:06:09",
                     "type": "string"
                 }
             }

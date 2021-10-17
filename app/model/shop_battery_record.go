@@ -21,8 +21,8 @@ type ShopBatteryRecordStatRep struct {
 type ShopBatteryRecordListReq struct {
     Page
     Type      uint        `json:"type"`      // "1 入库 2 出库"
-    StartTime *gtime.Time `json:"startTime"` // 查询范围-开始时间
-    EndTime   *gtime.Time `json:"endTime"`   // 查询范围-结束时间
+    StartTime *gtime.Time `json:"startTime"` // 查询范围-开始时间 eg: 2021-10-17 15:06:09
+    EndTime   *gtime.Time `json:"endTime"`   // 查询范围-结束时间 eg: 2021-10-17 15:06:09
 }
 
 // ShopBatteryRecordListRep 店长电池管理明细

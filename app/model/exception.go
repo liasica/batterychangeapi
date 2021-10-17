@@ -46,8 +46,8 @@ type ExceptionReportReq struct {
 type ExceptionListReq struct {
     Page
     ShopId    uint      `json:"shopId"`    // 店铺ID
-    StartTime time.Time `json:"startTime"` // 开始时间
-    EndTime   time.Time `json:"endTime"`   // 结束时间
+    StartTime time.Time `json:"startTime"` // 开始时间 eg: 2021-10-17 15:06:09
+    EndTime   time.Time `json:"endTime"`   // 结束时间 eg: 2021-10-17 15:06:09
 }
 
 // ExceptionListItem 异常列表项
