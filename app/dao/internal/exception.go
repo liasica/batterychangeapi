@@ -41,7 +41,7 @@ func NewExceptionDao() *ExceptionDao {
 		Table: "exception",
 		Columns: exceptionColumns{
 			Id:          "id",
-			ShopId:      "shop_id",
+			ShopId:      "shopId",
 			State:       "state",
 			Type:        "type",
 			BatteryType: "batteryType",

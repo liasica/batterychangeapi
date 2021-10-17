@@ -38,7 +38,7 @@ var (
         UpdatedAt    string //
 	}{
 		Id:          "id",           
-        ShopId:      "shop_id",      
+        ShopId:      "shopId",       
         State:       "state",        
         Type:        "type",         
         BatteryType: "batteryType",  

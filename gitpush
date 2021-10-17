@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
+MESSAGE="$1"
+
 gf swagger
 git add .
-read -p "commit message: " -r MESSAGE
+while [ -z "$MESSAGE" ]; do
+    read -p "commit message: " -r MESSAGE
+done
 git commit -m "$MESSAGE"
 git push

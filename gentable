@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+TABLE="$1"
+
+while [ -z "$TABLE" ]; do
+    read -p "请输入要生成的表: " -r TABLE
+done
+
+gf gen dao -l "mysql:root:jingjing@tcp(127.0.0.1:3306)/shiguangju" -t "$TABLE"
+gf gen model -l "mysql:root:jingjing@tcp(127.0.0.1:3306)/shiguangju" -t "$TABLE"

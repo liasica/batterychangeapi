@@ -13,7 +13,7 @@ import (
 // Entity is the golang structure for table exception.
 type Entity struct {
     Id          uint64      `orm:"id,primary"  json:"id"`           //                                      
-    ShopId      uint        `orm:"shop_id"     json:"shop_id"`      // 门店                                 
+    ShopId      uint        `orm:"shopId"      json:"shop_id"`      // 门店                                 
     State       uint        `orm:"state"       json:"state"`        // 状态 0未解决 1已解决                 
     Type        uint        `orm:"type"        json:"type"`         // 1 遗失  2 故障                       
     BatteryType uint        `orm:"batteryType" json:"battery_type"` // 电池型号 60 / 72                     
