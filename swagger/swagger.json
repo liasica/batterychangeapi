@@ -2993,7 +2993,7 @@
                     "type": "integer"
                 },
                 "bizType": {
-                    "description": "0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租",
+                    "description": "操作0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租",
                     "type": "integer"
                 },
                 "createdAt": {
