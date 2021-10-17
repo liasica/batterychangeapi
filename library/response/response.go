@@ -3,6 +3,7 @@ package response
 import (
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
+    "reflect"
 )
 
 const (
@@ -74,7 +75,8 @@ func JsonErrExit(r *ghttp.Request, args ...int) {
 }
 
 func ItemsWithTotal(r *ghttp.Request, total int, items interface{}) {
-    if items == nil {
+    v := reflect.ValueOf(items)
+    if v.IsNil() || v.IsZero() {
         items = []interface{}{}
     }
     JsonOkExit(r, g.Map{

@@ -7,6 +7,66 @@
     },
     "host": "apiv2.shiguangjv.com",
     "paths": {
+        "/admin/battery/exception": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "电池异常记录",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ExceptionListReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/model.ItemsWithTotal"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "items": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/model.ExceptionListItem"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/battery/record": {
             "get": {
                 "consumes": [
@@ -3138,24 +3198,137 @@
                 }
             }
         },
+        "model.ExceptionListItem": {
+            "type": "object",
+            "properties": {
+                "batteryType": {
+                    "description": "产品类型: 60/72",
+                    "type": "integer",
+                    "enum": [
+                        60,
+                        72
+                    ]
+                },
+                "cityName": {
+                    "description": "城市",
+                    "type": "string"
+                },
+                "detail": {
+                    "description": "详细说明",
+                    "type": "string"
+                },
+                "discoverer": {
+                    "description": "发现人: 1店长 2骑手",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "img": {
+                    "description": "图片",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "reason": {
+                    "description": "故障原因: 0其它 1插头故障 2电压故障",
+                    "type": "integer"
+                },
+                "shopId": {
+                    "description": "门店ID",
+                    "type": "integer"
+                },
+                "shopName": {
+                    "description": "门店名称",
+                    "type": "string"
+                },
+                "state": {
+                    "description": "状态: 0待处理 1已处理",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "type": {
+                    "description": "异常类别: 1遗失 2故障",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                }
+            }
+        },
+        "model.ExceptionListReq": {
+            "type": "object",
+            "required": [
+                "pageIndex",
+                "pageLimit"
+            ],
+            "properties": {
+                "endTime": {
+                    "description": "结束时间",
+                    "type": "string"
+                },
+                "pageIndex": {
+                    "description": "当前页号",
+                    "type": "integer"
+                },
+                "pageLimit": {
+                    "description": "页大小",
+                    "type": "integer"
+                },
+                "shopId": {
+                    "description": "店铺ID",
+                    "type": "integer"
+                },
+                "startTime": {
+                    "description": "开始时间",
+                    "type": "string"
+                }
+            }
+        },
         "model.ExceptionReportReq": {
             "type": "object",
             "required": [
                 "batteryType",
                 "detail",
+                "discoverer",
                 "img",
                 "reason",
-                "recoverType",
                 "type"
             ],
             "properties": {
                 "batteryType": {
-                    "description": "电池型号 60 / 72",
-                    "type": "integer"
+                    "description": "电池型号: 60 / 72",
+                    "type": "integer",
+                    "enum": [
+                        60,
+                        72
+                    ]
                 },
                 "detail": {
                     "description": "详细说明",
                     "type": "string"
+                },
+                "discoverer": {
+                    "description": "发现人: 1店长 2骑手",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
                 },
                 "img": {
                     "description": "图片链接数组",
@@ -3168,17 +3341,17 @@
                     "description": "故障原因 0 其它 1 插头故障 2 无电压",
                     "type": "integer"
                 },
-                "recoverType": {
-                    "description": "1 用户 2 店长",
-                    "type": "integer"
-                },
                 "shopId": {
                     "description": "店铺ID",
                     "type": "integer"
                 },
                 "type": {
-                    "description": "1 遗失  2 故障",
-                    "type": "integer"
+                    "description": "异常类别: 1遗失 2故障",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
                 }
             }
         },

@@ -36,3 +36,18 @@ func (*batteryApi) TransferRecord(r *ghttp.Request) {
     total, items := service.ShopBatteryRecordService.ListAdmin(r.Context(), req)
     response.ItemsWithTotal(r, total, items)
 }
+
+// Exception
+// @Summary 电池异常记录
+// @Tags    管理
+// @Accept  json
+// @Param   entity body model.ExceptionListReq true "请求参数"
+// @Produce json
+// @Router  /admin/battery/exception [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.ExceptionListItem}}  "返回结果"
+func (*batteryApi) Exception(r *ghttp.Request) {
+    var req = new(model.ExceptionListReq)
+    _ = request.ParseRequest(r, req)
+    total, items := service.ExceptionService.PageList(r.Context(), req)
+    response.ItemsWithTotal(r, total, items)
+}
