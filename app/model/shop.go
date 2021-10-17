@@ -66,6 +66,7 @@ type ShopListItem struct {
     BatteryOutCnt72 uint   `json:"batteryOutCnt72"` // 72伏电池出库数量
     BatteryCnt60    int    `json:"batteryCnt60"`    // 60伏电池数量
     BatteryCnt72    int    `json:"batteryCnt72"`    // 72伏电池数量
+    ChargerCnt      int    `json:"chargerCnt"`      // 充电器数量
 }
 
 // ShopDetail 门店详情

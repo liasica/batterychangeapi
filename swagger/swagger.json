@@ -3736,6 +3736,10 @@
                     "description": "72伏电池出库数量",
                     "type": "integer"
                 },
+                "chargerCnt": {
+                    "description": "充电器数量",
+                    "type": "integer"
+                },
                 "cityId": {
                     "description": "城市ID",
                     "type": "integer"

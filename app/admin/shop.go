@@ -53,6 +53,7 @@ func (*shopApi) List(r *ghttp.Request) {
                 BatteryOutCnt72: item.BatteryOutCnt72,
                 BatteryCnt60:    item.BatteryCnt60,
                 BatteryCnt72:    item.BatteryCnt72,
+                ChargerCnt:      item.ChargerCnt,
             })
         }
     }
