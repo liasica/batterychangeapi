@@ -180,6 +180,7 @@ func init() {
             g.POST("/", admin.ShopApi.Create)
             g.GET("/:id", admin.ShopApi.Detail)
             g.PUT("/:id", admin.ShopApi.Edit)
+            g.GET("/idname", admin.ShopApi.ListIdName)
         })
 
         group.GET("/package", admin.PackagesApi.List)
@@ -199,6 +200,10 @@ func init() {
             // g.DELETE("/:id/member/:memberId", admin.GroupApi.DeleteMember)
 
             g.GET("/:id/contract", admin.GroupApi.Contract)
+        })
+
+        group.Group("battery", func(g *ghttp.RouterGroup) {
+            g.GET("/record", admin.BatteryApi.TransferRecord)
         })
     })
 

@@ -100,3 +100,9 @@ type ModifyShopReq struct {
     Lng         float64 `json:"lng" v:"required"`
     Lat         float64 `json:"lat" v:"required"`
 }
+
+// ShopIdNameList ID Name 列表
+type ShopIdNameList struct {
+    Id   uint   `json:"id"`
+    Name string `json:"name"`
+}

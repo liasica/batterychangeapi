@@ -556,6 +556,40 @@
                 }
             }
         },
+        "/admin/shop/idname": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "门店选择列表(id, name)",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.ShopIdNameList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/shop/{id}": {
             "get": {
                 "consumes": [
@@ -3689,6 +3723,17 @@
                 "state": {
                     "description": "初始状态",
                     "type": "integer"
+                }
+            }
+        },
+        "model.ShopIdNameList": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },

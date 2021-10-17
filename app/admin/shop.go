@@ -186,3 +186,17 @@ func (*shopApi) Detail(r *ghttp.Request) {
         Lat:            shop.Lat,
     })
 }
+
+// ListIdName
+// @Summary 门店选择列表(id, name)
+// @Tags    管理
+// @Accept  json
+// @Produce json
+// @Router  /admin/shop/idname [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ShopIdNameList}  "返回结果"
+func (*shopApi) ListIdName(r *ghttp.Request) {
+    c := dao.Shop.Columns
+    var items []model.ShopIdNameList
+    _ = dao.Shop.Ctx(r.Context()).OrderAsc(c.CreatedAt).Fields(c.Id, c.Name).Scan(&items)
+    response.JsonOkExit(r, items)
+}
