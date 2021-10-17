@@ -606,13 +606,13 @@ func (s *userService) ListUsers(ctx context.Context, req *model.UserListReq) (to
     query := dao.User.Ctx(ctx)
     c := dao.User.Columns
     if req.RealName != "" {
-        query.WhereLike(c.RealName, req.RealName)
+        query = query.WhereLike(c.RealName, "%"+req.RealName+"%")
     }
     if req.Type > 0 {
-        query.Where(c.Type, req.Type)
+        query = query.Where(c.Type, req.Type)
     }
     if req.Mobile != "" {
-        query.Where(c.Mobile, req.Mobile)
+        query = query.Where(c.Mobile, req.Mobile)
     }
     total, _ = query.Count()
     _ = query.OrderDesc(c.CreatedAt).Page(req.PageIndex, req.PageLimit).Scan(&items)

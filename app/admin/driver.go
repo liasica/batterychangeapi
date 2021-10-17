@@ -14,7 +14,6 @@ import (
     "battery/app/service"
     "battery/library/request"
     "battery/library/response"
-    "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
 )
 
@@ -36,8 +35,5 @@ func (*driverApi) Verify(r *ghttp.Request) {
     _ = request.ParseRequest(r, req)
 
     total, items := service.UserService.ListUsers(r.Context(), req)
-    response.JsonOkExit(r, g.Map{
-        "total": total,
-        "items": items,
-    })
+    response.ItemsWithTotal(r, total, items)
 }

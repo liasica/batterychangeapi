@@ -49,8 +49,8 @@ func (*assetApi) BatteryList(r *ghttp.Request) {
     }
     recordList := service.ShopBatteryRecordService.ShopList(r.Context(),
         r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId, req.Type,
-        req.StartTime,
-        req.EndTime,
+        req.StartDate,
+        req.EndDate,
     )
     if len(recordList) == 0 {
         response.JsonOkExit(r, make([]model.ShopBatteryRecordListRep, 0))

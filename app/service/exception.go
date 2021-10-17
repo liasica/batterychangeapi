@@ -4,7 +4,6 @@ import (
     "battery/app/dao"
     "battery/app/model"
     "context"
-    "log"
 )
 
 var ExceptionService = exceptionService{}
@@ -24,12 +23,11 @@ func (*exceptionService) PageList(ctx context.Context, req *model.ExceptionListR
     if req.ShopId > 0 {
         query = query.Where(c.ShopId, req.ShopId)
     }
-    if !req.StartTime.IsZero() {
-        log.Println(req.StartTime.IsZero(), req.StartTime.Format(layout))
-        query = query.WhereGTE(c.CreatedAt, req.StartTime.Format(layout))
+    if !req.StartDate.IsZero() {
+        query = query.WhereGTE(c.CreatedAt, req.StartDate.Format(layout))
     }
-    if !req.EndTime.IsZero() {
-        query = query.WhereLTE(c.CreatedAt, req.EndTime.Format(layout))
+    if !req.EndDate.IsZero() {
+        query = query.WhereLTE(c.CreatedAt, req.EndDate.Format(layout))
     }
 
     _ = query.

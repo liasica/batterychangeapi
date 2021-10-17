@@ -45,9 +45,9 @@ type ExceptionReportReq struct {
 // ExceptionListReq 电池异常记录请求
 type ExceptionListReq struct {
     Page
-    ShopId    uint      `json:"shopId"`    // 店铺ID
-    StartTime time.Time `json:"startTime"` // 开始日期 eg: 2021-10-17
-    EndTime   time.Time `json:"endTime"`   // 结束日期 eg: 2021-10-17
+    ShopId    uint       `json:"shopId"`    // 店铺ID
+    StartDate *time.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
+    EndDate   *time.Time `json:"endDate"`   // 结束日期 eg: 2021-10-17
 }
 
 // ExceptionListItem 异常列表项

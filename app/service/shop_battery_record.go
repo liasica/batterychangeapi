@@ -2,7 +2,6 @@ package service
 
 import (
     "context"
-    "github.com/gogf/gf/os/gtime"
     "time"
 
     "battery/app/dao"
@@ -55,16 +54,17 @@ func (*shopBatteryRecordService) Platform(ctx context.Context, recordType, shopI
 }
 
 // ShopList 门店获取电池记录
-func (*shopBatteryRecordService) ShopList(ctx context.Context, shopId uint, recordType uint, st *gtime.Time, et *gtime.Time) (list []model.ShopBatteryRecord) {
+func (*shopBatteryRecordService) ShopList(ctx context.Context, shopId uint, recordType uint, st *time.Time, et *time.Time) (list []model.ShopBatteryRecord) {
+    layout := "2006-01-02"
     m := dao.ShopBatteryRecord.Ctx(ctx).
         Where(dao.ShopBatteryRecord.Columns.ShopId, shopId).
         Where(dao.ShopBatteryRecord.Columns.Type, recordType).
         OrderDesc(dao.ShopBatteryRecord.Columns.Id)
     if !st.IsZero() {
-        m = m.WhereGTE(dao.ShopBatteryRecord.Columns.CreatedAt, st)
+        m = m.WhereGTE(dao.ShopBatteryRecord.Columns.CreatedAt, st.Format(layout))
     }
     if !et.IsZero() {
-        m = m.WhereLT(dao.ShopBatteryRecord.Columns.CreatedAt, et.Add(24*time.Hour))
+        m = m.WhereLTE(dao.ShopBatteryRecord.Columns.CreatedAt, et.Format(layout))
     }
     _ = m.Scan(&list)
     return
@@ -87,17 +87,18 @@ func (*shopBatteryRecordService) ShopDaysTotal(ctx context.Context, days []int, 
 
 // ListAdmin 所有门店电池记录
 func (*shopBatteryRecordService) ListAdmin(ctx context.Context, req *model.BatteryRecordListReq) (total int, items []model.BatteryRecordListItem) {
+    layout := "2006-01-02"
     c := dao.ShopBatteryRecord.Columns
     query := dao.ShopBatteryRecord.Ctx(ctx).
         OrderDesc(c.CreatedAt)
     if req.Type > 0 {
         query = query.Where(c.Type, req.Type)
     }
-    if !req.StartTime.IsZero() {
-        query = query.WhereGTE(c.CreatedAt, req.StartTime)
+    if !req.StartDate.IsZero() {
+        query = query.WhereGTE(c.CreatedAt, req.StartDate.Format(layout))
     }
-    if !req.EndTime.IsZero() {
-        query = query.WhereLT(c.CreatedAt, req.EndTime.Add(24*time.Hour))
+    if !req.EndDate.IsZero() {
+        query = query.WhereLTE(c.CreatedAt, req.EndDate.Format(layout))
     }
     if req.ShopId > 0 {
         query = query.Where(c.ShopId, req.ShopId)

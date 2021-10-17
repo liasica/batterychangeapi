@@ -25,7 +25,7 @@ type batteryApi struct {
 var BatteryApi = new(batteryApi)
 
 // TransferRecord
-// @Summary 电池出入库记录
+// @Summary 电池调拨记录
 // @Tags    管理
 // @Accept  json
 // @Param   entity body model.BatteryRecordListReq true "请求参数"
