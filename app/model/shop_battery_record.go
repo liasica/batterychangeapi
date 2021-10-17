@@ -21,9 +21,9 @@ type ShopBatteryRecordStatRep struct {
 // ShopBatteryRecordListReq 店长电池管理明细请求
 type ShopBatteryRecordListReq struct {
     Page
-    Type      uint       `json:"type"`      // "1 入库 2 出库"
-    StartDate *time.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
-    EndDate   *time.Time `json:"endDate"`   // 结束日期 eg: 2021-10-17
+    Type      uint      `json:"type"`      // "1 入库 2 出库"
+    StartDate time.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
+    EndDate   time.Time `json:"endDate"`   // 结束日期 eg: 2021-10-17
 }
 
 // ShopBatteryRecordListRep 店长电池管理明细
@@ -32,7 +32,7 @@ type ShopBatteryRecordListRep struct {
     UserName    string      `json:"userName"`                    // 操作员 平台调拨为空
     Num         uint        `json:"num"`                         // 数量
     BatteryType uint        `json:"batteryType"`                 // 60 / 72
-    At          *gtime.Time `json:"At"`                          // 时间
+    At          *gtime.Time `json:"at"`                          // 时间
     DayCnt      uint        `json:"dayCnt"`                      // 当天总数
 }
 

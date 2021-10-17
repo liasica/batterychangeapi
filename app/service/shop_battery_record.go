@@ -54,7 +54,7 @@ func (*shopBatteryRecordService) Platform(ctx context.Context, recordType, shopI
 }
 
 // ShopList 门店获取电池记录
-func (*shopBatteryRecordService) ShopList(ctx context.Context, shopId uint, recordType uint, st *time.Time, et *time.Time) (list []model.ShopBatteryRecord) {
+func (*shopBatteryRecordService) ShopList(ctx context.Context, shopId uint, recordType uint, st time.Time, et time.Time) (list []model.ShopBatteryRecord) {
     layout := "2006-01-02"
     m := dao.ShopBatteryRecord.Ctx(ctx).
         Where(dao.ShopBatteryRecord.Columns.ShopId, shopId).

@@ -205,6 +205,10 @@ func init() {
             g.PUT("/exception/{id}", admin.BatteryApi.ExceptionFix)
             g.GET("/record", admin.BatteryApi.TransferRecord)
         })
+
+        group.Group("/order", func(g *ghttp.RouterGroup) {
+            g.GET("/", admin.OrderApi.List)
+        })
     })
 
     s.SetIndexFolder(true)

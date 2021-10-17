@@ -3978,7 +3978,7 @@
         "model.ShopBatteryRecordListRep": {
             "type": "object",
             "properties": {
-                "At": {
+                "at": {
                     "description": "时间",
                     "type": "string"
                 },
