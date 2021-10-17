@@ -1,9 +1,9 @@
 package model
 
 import (
-    "github.com/gogf/gf/os/gtime"
-
     "battery/app/model/internal"
+    "github.com/gogf/gf/os/gtime"
+    "github.com/gogf/gf/util/gmeta"
 )
 
 type PackagesOrder internal.PackagesOrder
@@ -116,8 +116,63 @@ type BizNewCdeReq struct {
     Code string `validate:"required" v:"required" json:"code"` // code二维码
 }
 
+// OrderListReq 订单列表请求项
 type OrderListReq struct {
     Page
-    ShopId uint `json:"shopId"` // 门店ID
-    UserId uint `json:"userId"` // 骑手ID
+    No        string `json:"no"`        // 订单编号
+    ShopId    uint   `json:"shopId"`    // 门店ID
+    UserId    uint   `json:"userId"`    // 骑手ID
+    PackageId uint   `json:"packageId"` // 套餐ID
+    CityId    uint   `json:"cityId"`    // 城市ID
+    // RealName  string      `json:"realName"`               // 骑手姓名
+    // Mobile    string      `json:"mobile" v:"phone-loose"` // 手机号
+    Type      uint        `json:"type"`      // 订单类型: 1新签 2续签 3违约金
+    StartDate *gtime.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
+    EndDate   *gtime.Time `json:"endDate"`   // 结束日期 eg: 2021-10-19
+}
+
+// OrderEntity 订单实体
+type OrderEntity struct {
+    gmeta.Meta `orm:"table:packages_order"`
+
+    Id         uint        `json:"id"`
+    No         uint        `json:"no"`
+    ShopId     uint        `json:"shopId"`
+    UserId     uint        `json:"userId"`
+    PackageId  uint        `json:"packageId"`
+    CityId     uint        `json:"cityId"`
+    Type       uint        `json:"type" enums:"1,2,3"`    // 订单类型: 1新签 2续签 3违约金
+    Amount     float64     `json:"amount"`                // 支付金额
+    Earnest    float64     `json:"earnest"`               // 押金
+    PayType    uint        `json:"payType" enums:"0,1,2"` // 支付方式: 0未知 1支付宝 2微信
+    PayState   uint        `json:"payState" enums:"1,2"`  // 支付状态: 1未支付 2已支付
+    PayAt      *gtime.Time `json:"payAt"`                 // 支付时间
+    FirstUseAt *gtime.Time `json:"firstUseAt"`            // 开始时间
+    CreatedAt  *gtime.Time
+
+    User          *User      `orm:"with:id=userId"`
+    City          *Districts `orm:"with:id=cityId"`
+    Shop          *Shop      `orm:"with:id=shopId"`
+    PackageDetail *Packages  `orm:"with:id=packageId"`
+}
+
+// OrderListItem 订单列表返回
+type OrderListItem struct {
+    Id          uint        `json:"id"`
+    No          uint        `json:"no"`                              // 订单编号
+    ShopId      uint        `json:"shopId"`                          // 门店ID
+    UserId      uint        `json:"userId"`                          // 骑手ID
+    RealName    string      `json:"realName"`                        // 骑手姓名
+    Mobile      string      `json:"mobile" v:"required|phone-loose"` // 手机号
+    Type        uint        `json:"type" enums:"1,2,3"`              // 订单类型: 1新签 2续签 3违约金
+    PackageName string      `json:"packageName"`                     // 套餐名称
+    ShopName    string      `json:"shopName"`                        // 门店名
+    CityName    string      `json:"cityName"`                        // 城市
+    Amount      float64     `json:"amount"`                          // 支付金额
+    Earnest     float64     `json:"earnest"`                         // 押金
+    PayType     uint        `json:"payType" enums:"0,1,2"`           // 支付方式: 0未知 1支付宝 2微信
+    PayState    uint        `json:"payState" enums:"1,2"`            // 支付状态: 1未支付 2已支付
+    PayAt       *gtime.Time `json:"payAt"`                           // 支付时间
+    FirstUseAt  *gtime.Time `json:"firstUseAt"`                      // 开始时间
+    CreatedAt   *gtime.Time `json:"createdAt"`                       // 订单时间
 }

@@ -13,6 +13,8 @@ import (
 // Entity is the golang structure for table packages_order.
 type Entity struct {
     Id            uint64      `orm:"id,primary"    json:"id"`              //                                   
+    ParentId      uint64      `orm:"parentId"      json:"parent_id"`       // 关联订单ID(续签或违约)            
+    CityId        uint        `orm:"cityId"        json:"city_id"`         // 城市ID                            
     ShopId        uint        `orm:"shopId"        json:"shop_id"`         //                                   
     UserId        uint64      `orm:"userId"        json:"user_id"`         // 用户ID                            
     No            string      `orm:"no,unique"     json:"no"`              // 订单编号                          

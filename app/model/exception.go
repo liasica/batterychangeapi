@@ -2,7 +2,7 @@ package model
 
 import (
     "battery/app/model/internal"
-    "time"
+    "github.com/gogf/gf/os/gtime"
 )
 
 const (
@@ -45,9 +45,9 @@ type ExceptionReportReq struct {
 // ExceptionListReq 电池异常记录请求
 type ExceptionListReq struct {
     Page
-    ShopId    uint      `json:"shopId"`    // 店铺ID
-    StartDate time.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
-    EndDate   time.Time `json:"endDate"`   // 结束日期 eg: 2021-10-17
+    ShopId    uint        `json:"shopId"`    // 店铺ID
+    StartDate *gtime.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
+    EndDate   *gtime.Time `json:"endDate"`   // 结束日期 eg: 2021-10-17
 }
 
 // ExceptionListItem 异常列表项
@@ -64,4 +64,5 @@ type ExceptionListItem struct {
     Discoverer  uint        `json:"discoverer" enums:"1,2"`    // 发现人: 1店长 2骑手
     Detail      string      `json:"detail"`                    // 详细说明
     Img         ArrayString `json:"img"`                       // 图片
+    CreatedAt   *gtime.Time `json:"createdAt"`                 // 提交时间
 }

@@ -18,7 +18,7 @@ func (*exceptionService) Create(ctx context.Context, req model.ExceptionReportRe
 
 func (*exceptionService) PageList(ctx context.Context, req *model.ExceptionListReq) (total int, items []model.ExceptionListItem) {
     c := dao.Exception.Columns
-    layout := "2006-01-02"
+    layout := "Y-m-d"
     query := dao.Exception.Ctx(ctx)
     if req.ShopId > 0 {
         query = query.Where(c.ShopId, req.ShopId)

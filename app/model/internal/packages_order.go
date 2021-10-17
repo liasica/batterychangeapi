@@ -11,6 +11,8 @@ import (
 // PackagesOrder is the golang structure for table packages_order.
 type PackagesOrder struct {
 	Id            uint64      `orm:"id,primary"    json:"id"`            //
+	ParentId      uint64      `orm:"parentId"      json:"parentId"`      // 关联订单ID(续签或违约)
+	CityId        uint        `orm:"cityId"        json:"cityId"`        // 城市ID
 	ShopId        uint        `orm:"shopId"        json:"shopId"`        //
 	UserId        uint64      `orm:"userId"        json:"userId"`        // 用户ID
 	No            string      `orm:"no,unique"     json:"no"`            // 订单编号

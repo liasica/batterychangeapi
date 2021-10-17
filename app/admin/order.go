@@ -10,6 +10,10 @@
 package admin
 
 import (
+    "battery/app/model"
+    "battery/app/service"
+    "battery/library/request"
+    "battery/library/response"
     "github.com/gogf/gf/net/ghttp"
 )
 
@@ -18,5 +22,18 @@ type orderApi struct {
 
 var OrderApi = new(orderApi)
 
+// List
+// @Summary 订单列表
+// @Tags    管理
+// @Accept  json
+// @Produce json
+// @Param   entity body model.OrderListReq true "门店列表请求"
+// @Router  /admin/order [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.OrderListItem}}  "返回结果"
 func (*orderApi) List(r *ghttp.Request) {
+    req := new(model.OrderListReq)
+    _ = request.ParseRequest(r, req)
+
+    total, items := service.PackagesOrderService.ListAdmin(r.Context(), req)
+    response.ItemsWithTotal(r, total, items)
 }

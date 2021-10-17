@@ -1,15 +1,16 @@
 package service
 
 import (
+    "battery/app/dao"
+    "battery/app/model"
+    "battery/library/request"
+    "battery/library/snowflake"
     "context"
     "errors"
     "fmt"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/os/gtime"
-
-    "battery/app/dao"
-    "battery/app/model"
-    "battery/library/snowflake"
+    "log"
 )
 
 var PackagesOrderService = packagesOrderService{}
@@ -39,14 +40,16 @@ func (s *packagesOrderService) DetailByNo(ctx context.Context, no string) (rep m
 // New 新购订单
 func (s *packagesOrderService) New(ctx context.Context, userId uint64, packages model.Packages) (order model.PackagesOrder, err error) {
     no := s.GenerateOrderNo()
+    c := dao.PackagesOrder.Columns
     id, insertErr := dao.PackagesOrder.Ctx(ctx).InsertAndGetId(g.Map{
-        dao.PackagesOrder.Columns.PackageId: packages.Id,
-        dao.PackagesOrder.Columns.Amount:    packages.Amount,
-        dao.PackagesOrder.Columns.Earnest:   packages.Earnest,
-        dao.PackagesOrder.Columns.PayType:   0,
-        dao.PackagesOrder.Columns.No:        no,
-        dao.PackagesOrder.Columns.UserId:    userId,
-        dao.PackagesOrder.Columns.Type:      model.PackageTypeNew,
+        c.PackageId: packages.Id,
+        c.Amount:    packages.Amount,
+        c.Earnest:   packages.Earnest,
+        c.PayType:   0,
+        c.No:        no,
+        c.UserId:    userId,
+        c.Type:      model.PackageTypeNew,
+        c.CityId:    packages.CityId,
     })
     if insertErr == nil {
         err = dao.PackagesOrder.Ctx(ctx).WherePri(id).Scan(&order)
@@ -57,15 +60,18 @@ func (s *packagesOrderService) New(ctx context.Context, userId uint64, packages 
 // Renewal 续购订单
 func (s *packagesOrderService) Renewal(ctx context.Context, payType uint, firstOrder model.PackagesOrder) (order model.PackagesOrder, err error) {
     no := s.GenerateOrderNo()
+    c := dao.PackagesOrder.Columns
     id, insertErr := dao.PackagesOrder.Ctx(ctx).InsertAndGetId(g.Map{
-        dao.PackagesOrder.Columns.PackageId: firstOrder.PackageId,
-        dao.PackagesOrder.Columns.Amount:    firstOrder.Amount - firstOrder.Earnest,
-        dao.PackagesOrder.Columns.Earnest:   0,
-        dao.PackagesOrder.Columns.PayType:   payType,
-        dao.PackagesOrder.Columns.No:        no,
-        dao.PackagesOrder.Columns.UserId:    firstOrder.UserId,
-        dao.PackagesOrder.Columns.ShopId:    firstOrder.ShopId,
-        dao.PackagesOrder.Columns.Type:      model.PackageTypeRenewal,
+        c.PackageId: firstOrder.PackageId,
+        c.Amount:    firstOrder.Amount - firstOrder.Earnest,
+        c.Earnest:   0,
+        c.PayType:   payType,
+        c.No:        no,
+        c.UserId:    firstOrder.UserId,
+        c.ShopId:    firstOrder.ShopId,
+        c.Type:      model.PackageTypeRenewal,
+        c.CityId:    firstOrder.CityId,
+        c.ParentId:  firstOrder.Id,
     })
     if insertErr == nil {
         err = dao.PackagesOrder.WherePri(id).Scan(&order)
@@ -76,15 +82,18 @@ func (s *packagesOrderService) Renewal(ctx context.Context, payType uint, firstO
 // Penalty 订单违约金
 func (s *packagesOrderService) Penalty(ctx context.Context, payType uint, amount float64, firstOrder model.PackagesOrder) (order model.PackagesOrder, err error) {
     no := s.GenerateOrderNo()
+    c := dao.PackagesOrder.Columns
     id, insertErr := dao.PackagesOrder.Ctx(ctx).InsertAndGetId(g.Map{
-        dao.PackagesOrder.Columns.PackageId: firstOrder.PackageId,
-        dao.PackagesOrder.Columns.Amount:    amount,
-        dao.PackagesOrder.Columns.Earnest:   0,
-        dao.PackagesOrder.Columns.PayType:   payType,
-        dao.PackagesOrder.Columns.No:        no,
-        dao.PackagesOrder.Columns.UserId:    firstOrder.UserId,
-        dao.PackagesOrder.Columns.ShopId:    firstOrder.ShopId,
-        dao.PackagesOrder.Columns.Type:      model.PackageTypePenalty,
+        c.PackageId: firstOrder.PackageId,
+        c.Amount:    amount,
+        c.Earnest:   0,
+        c.PayType:   payType,
+        c.No:        no,
+        c.UserId:    firstOrder.UserId,
+        c.ShopId:    firstOrder.ShopId,
+        c.Type:      model.PackageTypePenalty,
+        c.CityId:    firstOrder.CityId,
+        c.ParentId:  firstOrder.Id,
     })
     if insertErr == nil {
         err = dao.PackagesOrder.WherePri(id).Scan(&order)
@@ -94,11 +103,12 @@ func (s *packagesOrderService) Penalty(ctx context.Context, payType uint, amount
 
 // PaySuccess 订单支付成功处理
 func (s *packagesOrderService) PaySuccess(ctx context.Context, payAt *gtime.Time, no, PayPlatformNo string, payType uint) error {
+    c := dao.PackagesOrder.Columns
     _, err := dao.PackagesOrder.Ctx(ctx).Where(dao.PackagesOrder.Columns.No, no).Update(g.Map{
-        dao.PackagesOrder.Columns.PayState:      model.PayStateSuccess,
-        dao.PackagesOrder.Columns.PayPlatformNo: PayPlatformNo,
-        dao.PackagesOrder.Columns.PayAt:         payAt,
-        dao.PackagesOrder.Columns.PayType:       payType,
+        c.PayState:      model.PayStateSuccess,
+        c.PayPlatformNo: PayPlatformNo,
+        c.PayAt:         payAt,
+        c.PayType:       payType,
     })
     return err
 }
@@ -166,5 +176,63 @@ func (s *packagesOrderService) ShopMonthList(ctx context.Context, shopId uint, f
     }
 
     _ = m.Scan(&res)
+    return
+}
+
+func (*packagesOrderService) ListAdmin(ctx context.Context, req *model.OrderListReq) (total int, items []model.OrderListItem) {
+    query := dao.PackagesOrder.Ctx(ctx)
+    c := dao.PackagesOrder.Columns
+    layout := "Y-m-d"
+
+    query = query.Where(request.ParseStructToQuery(*req))
+    log.Println(req.StartDate.Format(layout), req.StartDate)
+
+    if !req.StartDate.IsZero() {
+        query = query.WhereGTE(c.CreatedAt, req.StartDate.Format(layout))
+    }
+    if !req.EndDate.IsZero() {
+        query = query.WhereLTE(c.CreatedAt, req.EndDate.Format(layout))
+    }
+
+    total, _ = query.Count()
+
+    var rows []model.OrderEntity
+    _ = query.WithAll().
+        Page(req.PageIndex, req.PageLimit).
+        OrderDesc(c.CreatedAt).
+        Scan(&rows)
+
+    for _, row := range rows {
+        var sn, pn string
+
+        if row.Shop != nil {
+            sn = row.Shop.Name
+        }
+
+        if row.PackageDetail != nil {
+            pn = row.PackageDetail.Name
+        }
+
+        items = append(items, model.OrderListItem{
+            Id:          row.Id,
+            No:          row.No,
+            ShopId:      row.ShopId,
+            UserId:      row.UserId,
+            RealName:    row.User.RealName,
+            Mobile:      row.User.Mobile,
+            Type:        row.Type,
+            ShopName:    sn,
+            PackageName: pn,
+            CityName:    row.City.Name,
+            Amount:      row.Amount,
+            Earnest:     row.Earnest,
+            PayType:     row.PayType,
+            PayState:    row.PayState,
+            PayAt:       row.PayAt,
+            FirstUseAt:  row.FirstUseAt,
+            CreatedAt:   row.CreatedAt,
+        })
+    }
+
     return
 }

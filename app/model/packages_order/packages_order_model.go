@@ -26,6 +26,8 @@ var (
 	// Columns defines and stores column names for table packages_order.
 	Columns = struct {
 		Id             string //                                   
+        ParentId       string // 关联订单ID(续签或违约)            
+        CityId         string // 城市ID                            
         ShopId         string //                                   
         UserId         string // 用户ID                            
         No             string // 订单编号                          
@@ -43,6 +45,8 @@ var (
         UpdatedAt      string //
 	}{
 		Id:            "id",             
+        ParentId:      "parentId",       
+        CityId:        "cityId",         
         ShopId:        "shopId",         
         UserId:        "userId",         
         No:            "no",             

@@ -485,6 +485,66 @@
                 }
             }
         },
+        "/admin/order": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "订单列表",
+                "parameters": [
+                    {
+                        "description": "门店列表请求",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.OrderListReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/model.ItemsWithTotal"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "items": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/model.OrderListItem"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/package": {
             "get": {
                 "consumes": [
@@ -3248,6 +3308,10 @@
                     "description": "城市",
                     "type": "string"
                 },
+                "createdAt": {
+                    "description": "提交时间",
+                    "type": "string"
+                },
                 "detail": {
                     "description": "详细说明",
                     "type": "string"
@@ -3700,6 +3764,141 @@
                 "name": {
                     "description": "名称",
                     "type": "string"
+                }
+            }
+        },
+        "model.OrderListItem": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "支付金额",
+                    "type": "number"
+                },
+                "cityName": {
+                    "description": "城市",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "description": "订单时间",
+                    "type": "string"
+                },
+                "earnest": {
+                    "description": "押金",
+                    "type": "number"
+                },
+                "firstUseAt": {
+                    "description": "开始时间",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "no": {
+                    "description": "订单编号",
+                    "type": "integer"
+                },
+                "packageName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "payAt": {
+                    "description": "支付时间",
+                    "type": "string"
+                },
+                "payState": {
+                    "description": "支付状态: 1未支付 2已支付",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                },
+                "payType": {
+                    "description": "支付方式: 0未知 1支付宝 2微信",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2
+                    ]
+                },
+                "realName": {
+                    "description": "骑手姓名",
+                    "type": "string"
+                },
+                "shopId": {
+                    "description": "门店ID",
+                    "type": "integer"
+                },
+                "shopName": {
+                    "description": "门店名",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "订单类型: 1新签 2续签 3违约金",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "userId": {
+                    "description": "骑手ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.OrderListReq": {
+            "type": "object",
+            "required": [
+                "pageIndex",
+                "pageLimit"
+            ],
+            "properties": {
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
+                "endDate": {
+                    "description": "结束日期 eg: 2021-10-19",
+                    "type": "string"
+                },
+                "no": {
+                    "description": "订单编号",
+                    "type": "string"
+                },
+                "packageId": {
+                    "description": "套餐ID",
+                    "type": "integer"
+                },
+                "pageIndex": {
+                    "description": "当前页号",
+                    "type": "integer"
+                },
+                "pageLimit": {
+                    "description": "页大小",
+                    "type": "integer"
+                },
+                "shopId": {
+                    "description": "门店ID",
+                    "type": "integer"
+                },
+                "startDate": {
+                    "description": "开始日期 eg: 2021-10-17",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "RealName  string      `json:\"realName\"`               // 骑手姓名\nMobile    string      `json:\"mobile\" v:\"phone-loose\"` // 手机号",
+                    "type": "integer"
+                },
+                "userId": {
+                    "description": "骑手ID",
+                    "type": "integer"
                 }
             }
         },

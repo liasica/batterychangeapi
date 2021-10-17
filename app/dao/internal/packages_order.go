@@ -22,6 +22,8 @@ type PackagesOrderDao struct {
 // PackagesOrderColumns defines and stores column names for table packages_order.
 type packagesOrderColumns struct {
 	Id            string //
+	ParentId      string // 关联订单ID(续签或违约)
+	CityId        string // 城市ID
 	ShopId        string //
 	UserId        string // 用户ID
 	No            string // 订单编号
@@ -46,6 +48,8 @@ func NewPackagesOrderDao() *PackagesOrderDao {
 		Table: "packages_order",
 		Columns: packagesOrderColumns{
 			Id:            "id",
+			ParentId:      "parentId",
+			CityId:        "cityId",
 			ShopId:        "shopId",
 			UserId:        "userId",
 			No:            "no",

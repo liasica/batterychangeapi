@@ -1,10 +1,8 @@
 package model
 
 import (
-    "github.com/gogf/gf/os/gtime"
-    "time"
-
     "battery/app/model/internal"
+    "github.com/gogf/gf/os/gtime"
 )
 
 type ShopBatteryRecord internal.ShopBatteryRecord
@@ -21,9 +19,9 @@ type ShopBatteryRecordStatRep struct {
 // ShopBatteryRecordListReq 店长电池管理明细请求
 type ShopBatteryRecordListReq struct {
     Page
-    Type      uint      `json:"type"`      // "1 入库 2 出库"
-    StartDate time.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
-    EndDate   time.Time `json:"endDate"`   // 结束日期 eg: 2021-10-17
+    Type      uint        `json:"type"`      // "1 入库 2 出库"
+    StartDate *gtime.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
+    EndDate   *gtime.Time `json:"endDate"`   // 结束日期 eg: 2021-10-17
 }
 
 // ShopBatteryRecordListRep 店长电池管理明细

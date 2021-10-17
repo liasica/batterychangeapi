@@ -1,11 +1,10 @@
 package service
 
 import (
-    "context"
-    "time"
-
     "battery/app/dao"
     "battery/app/model"
+    "context"
+    "github.com/gogf/gf/os/gtime"
 )
 
 var ShopBatteryRecordService = shopBatteryRecordService{}
@@ -54,8 +53,8 @@ func (*shopBatteryRecordService) Platform(ctx context.Context, recordType, shopI
 }
 
 // ShopList 门店获取电池记录
-func (*shopBatteryRecordService) ShopList(ctx context.Context, shopId uint, recordType uint, st time.Time, et time.Time) (list []model.ShopBatteryRecord) {
-    layout := "2006-01-02"
+func (*shopBatteryRecordService) ShopList(ctx context.Context, shopId uint, recordType uint, st *gtime.Time, et *gtime.Time) (list []model.ShopBatteryRecord) {
+    layout := "Y-m-d"
     m := dao.ShopBatteryRecord.Ctx(ctx).
         Where(dao.ShopBatteryRecord.Columns.ShopId, shopId).
         Where(dao.ShopBatteryRecord.Columns.Type, recordType).
@@ -87,7 +86,7 @@ func (*shopBatteryRecordService) ShopDaysTotal(ctx context.Context, days []int, 
 
 // ListAdmin 所有门店电池记录
 func (*shopBatteryRecordService) ListAdmin(ctx context.Context, req *model.BatteryRecordListReq) (total int, items []model.BatteryRecordListItem) {
-    layout := "2006-01-02"
+    layout := "Y-m-d"
     c := dao.ShopBatteryRecord.Columns
     query := dao.ShopBatteryRecord.Ctx(ctx).
         OrderDesc(c.CreatedAt)
