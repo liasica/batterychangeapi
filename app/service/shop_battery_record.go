@@ -84,3 +84,23 @@ func (*shopBatteryRecordService) ShopDaysTotal(ctx context.Context, days []int, 
 
     return
 }
+
+// ListAdmin 所有门店电池记录
+// func (*shopBatteryRecordService) ListAdmin(ctx context.Context, req model.BatteryRecordListReq) []model.BatteryRecordListItem {
+//     c := dao.ShopBatteryRecord.Columns
+//     query := dao.ShopBatteryRecord.Ctx(ctx).
+//         OrderDesc(c.CreatedAt)
+//     if req.Type > 0 {
+//         query.Where(c.Type, req.Type)
+//     }
+//     if !st.IsZero() {
+//         query.WhereGTE(c.CreatedAt, st)
+//     }
+//     if !et.IsZero() {
+//         query.WhereLT(c.CreatedAt, et.Add(24*time.Hour))
+//     }
+//     if shopId > 0 {
+//         query.Where(c.ShopId, shopId)
+//     }
+//     _ = query.Scan(list)
+// }

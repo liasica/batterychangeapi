@@ -19,4 +19,16 @@ type batteryApi struct {
 var BatteryApi = new(batteryApi)
 
 func (*batteryApi) TransferRecord(r *ghttp.Request) {
+    // var req = new(model.BatteryRecordListReq)
+    // _ = request.ParseRequest(r, req)
+    // var recordList []model.BatteryRecordListItem
+    // service.ShopBatteryRecordService.ShopList(
+    //     r.Context(),
+    //     0,
+    //     req.Type,
+    //     req.StartTime,
+    //     req.EndTime,
+    //     &recordList,
+    // )
+    // response.JsonOkExit(r, g.Map{})
 }

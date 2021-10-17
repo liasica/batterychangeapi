@@ -37,6 +37,12 @@ type ShopBatteryRecordListRep struct {
 
 // BatteryRecordListReq 电池日志请求
 type BatteryRecordListReq struct {
-    ShopBatteryRecordListRep
+    ShopBatteryRecordListReq
     ShopId uint `json:"shopId"` // 门店ID
+}
+
+// BatteryRecordListItem 电池日志项
+type BatteryRecordListItem struct {
+    ShopId uint `json:"shopId"` // 门店ID
+    ShopBatteryRecordListRep
 }

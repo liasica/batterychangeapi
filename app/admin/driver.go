@@ -29,7 +29,7 @@ type driverApi struct {
 // @Param   entity body model.UserListReq true "请求参数"
 // @Produce  json
 // @Router  /admin/driver/verify [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.PackageListItem}}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.UserVerifyListItem}}  "返回结果"
 func (*driverApi) Verify(r *ghttp.Request) {
     req := new(model.UserListReq)
     _ = request.ParseRequest(r, req)

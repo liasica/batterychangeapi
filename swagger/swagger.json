@@ -89,7 +89,7 @@
                                                         "items": {
                                                             "type": "array",
                                                             "items": {
-                                                                "$ref": "#/definitions/model.PackageListItem"
+                                                                "$ref": "#/definitions/model.UserVerifyListItem"
                                                             }
                                                         }
                                                     }
@@ -4777,6 +4777,49 @@
                 "sms": {
                     "description": "短信验证码",
                     "type": "string"
+                }
+            }
+        },
+        "model.UserVerifyListItem": {
+            "type": "object",
+            "properties": {
+                "authState": {
+                    "description": "认证状态 0未提交 1待审核 2审核通过 3审核失败",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "idCardImg1": {
+                    "description": "身份证人像面",
+                    "type": "string"
+                },
+                "idCardImg2": {
+                    "description": "身份证国徽面",
+                    "type": "string"
+                },
+                "idCardImg3": {
+                    "description": "手持身份证",
+                    "type": "string"
+                },
+                "idCardNo": {
+                    "description": "身份证",
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "realName": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "用户类别",
+                    "type": "integer"
                 }
             }
         },
