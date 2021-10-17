@@ -27,12 +27,12 @@ type ShopBatteryRecordListReq struct {
 
 // ShopBatteryRecordListRep 店长电池管理明细
 type ShopBatteryRecordListRep struct {
-    BizType     uint        `json:"bizType" enum:"0, 1, 2, 3, 4, 5"` // 0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租
-    UserName    string      `json:"userName"`                        // 操作员 平台调拨为空
-    Num         uint        `json:"num"`                             // 数量
-    BatteryType uint        `json:"batteryType"`                     // 60 / 72
-    At          *gtime.Time `json:"At"`                              // 时间
-    DayCnt      uint        `json:"dayCnt"`                          // 当天总数
+    BizType     uint        `json:"bizType" enums:"0, 1, 2, 3, 4, 5"` // 0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租
+    UserName    string      `json:"userName"`                         // 操作员 平台调拨为空
+    Num         uint        `json:"num"`                              // 数量
+    BatteryType uint        `json:"batteryType"`                      // 60 / 72
+    At          *gtime.Time `json:"At"`                               // 时间
+    DayCnt      uint        `json:"dayCnt"`                           // 当天总数
 }
 
 // BatteryRecordListReq 电池日志请求
