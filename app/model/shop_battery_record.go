@@ -20,9 +20,9 @@ type ShopBatteryRecordStatRep struct {
 // ShopBatteryRecordListReq 店长电池管理明细请求
 type ShopBatteryRecordListReq struct {
     Page
-    Type      uint        `json:"type" v:"required|in:1,2"` // "1 入库 2 出库"
-    StartTime *gtime.Time `json:"startTime"`
-    EndTime   *gtime.Time `json:"endTime"`
+    Type      uint        `json:"type"`      // "1 入库 2 出库"
+    StartTime *gtime.Time `json:"startTime"` // 查询范围-开始时间
+    EndTime   *gtime.Time `json:"endTime"`   // 查询范围-结束时间
 }
 
 // ShopBatteryRecordListRep 店长电池管理明细
@@ -39,6 +39,7 @@ type ShopBatteryRecordListRep struct {
 type BatteryRecordListReq struct {
     ShopBatteryRecordListReq
     ShopId uint `json:"shopId"` // 门店ID
+    Page
 }
 
 // BatteryRecordListItem 电池日志项

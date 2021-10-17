@@ -7,6 +7,66 @@
     },
     "host": "apiv2.shiguangjv.com",
     "paths": {
+        "/admin/battery/record": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "电池出入库记录",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.BatteryRecordListReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/model.ItemsWithTotal"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "items": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/model.BatteryRecordListItem"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/districts": {
             "get": {
                 "consumes": [
@@ -2925,6 +2985,74 @@
         }
     },
     "definitions": {
+        "model.BatteryRecordListItem": {
+            "type": "object",
+            "properties": {
+                "At": {
+                    "description": "时间",
+                    "type": "string"
+                },
+                "batteryType": {
+                    "description": "60 / 72",
+                    "type": "integer"
+                },
+                "bizType": {
+                    "description": "0 平台调拨,  1 新签,  2 换电池 ,3 寄存, 4 恢复计费 , 5 退租",
+                    "type": "integer"
+                },
+                "dayCnt": {
+                    "description": "当天总数",
+                    "type": "integer"
+                },
+                "num": {
+                    "description": "数量",
+                    "type": "integer"
+                },
+                "shopId": {
+                    "description": "门店ID",
+                    "type": "integer"
+                },
+                "userName": {
+                    "description": "用户名  平台调拨为空",
+                    "type": "string"
+                }
+            }
+        },
+        "model.BatteryRecordListReq": {
+            "type": "object",
+            "required": [
+                "pageIndex",
+                "pageIndex",
+                "pageLimit",
+                "pageLimit"
+            ],
+            "properties": {
+                "endTime": {
+                    "description": "查询范围-结束时间",
+                    "type": "string"
+                },
+                "pageIndex": {
+                    "description": "当前页号",
+                    "type": "integer"
+                },
+                "pageLimit": {
+                    "description": "页大小",
+                    "type": "integer"
+                },
+                "shopId": {
+                    "description": "门店ID",
+                    "type": "integer"
+                },
+                "startTime": {
+                    "description": "查询范围-开始时间",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "\"1 入库 2 出库\"",
+                    "type": "integer"
+                }
+            }
+        },
         "model.BizProfileRep": {
             "type": "object",
             "properties": {

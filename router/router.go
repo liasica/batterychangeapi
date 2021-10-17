@@ -202,7 +202,7 @@ func init() {
             g.GET("/:id/contract", admin.GroupApi.Contract)
         })
 
-        group.Group("battery", func(g *ghttp.RouterGroup) {
+        group.Group("/battery", func(g *ghttp.RouterGroup) {
             g.GET("/record", admin.BatteryApi.TransferRecord)
         })
     })

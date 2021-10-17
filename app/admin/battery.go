@@ -10,6 +10,10 @@
 package admin
 
 import (
+    "battery/app/model"
+    "battery/app/service"
+    "battery/library/request"
+    "battery/library/response"
     "github.com/gogf/gf/net/ghttp"
 )
 
@@ -18,17 +22,17 @@ type batteryApi struct {
 
 var BatteryApi = new(batteryApi)
 
+// TransferRecord
+// @Summary 电池出入库记录
+// @Tags    管理
+// @Accept  json
+// @Param   entity body model.BatteryRecordListReq true "请求参数"
+// @Produce json
+// @Router  /admin/battery/record [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.BatteryRecordListItem}}  "返回结果"
 func (*batteryApi) TransferRecord(r *ghttp.Request) {
-    // var req = new(model.BatteryRecordListReq)
-    // _ = request.ParseRequest(r, req)
-    // var recordList []model.BatteryRecordListItem
-    // service.ShopBatteryRecordService.ShopList(
-    //     r.Context(),
-    //     0,
-    //     req.Type,
-    //     req.StartTime,
-    //     req.EndTime,
-    //     &recordList,
-    // )
-    // response.JsonOkExit(r, g.Map{})
+    var req = new(model.BatteryRecordListReq)
+    _ = request.ParseRequest(r, req)
+    total, items := service.ShopBatteryRecordService.ListAdmin(r.Context(), req)
+    response.ItemsWithTotal(r, total, items)
 }
