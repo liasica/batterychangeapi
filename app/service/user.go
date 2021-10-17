@@ -600,3 +600,21 @@ func (s *userService) GroupUserStartUse(ctx context.Context, userId uint64) erro
     }
     return err
 }
+
+// ListUsers 骑手列表
+func (s *userService) ListUsers(ctx context.Context, req *model.UserListReq) (total int, items []model.User) {
+    query := dao.User.Ctx(ctx)
+    c := dao.User.Columns
+    if req.RealName != "" {
+        query.WhereLike(c.RealName, req.RealName)
+    }
+    if req.Type > 0 {
+        query.Where(c.Type, req.Type)
+    }
+    if req.Mobile != "" {
+        query.Where(c.Mobile, req.Mobile)
+    }
+    total, _ = query.Count()
+    _ = query.OrderDesc(c.CreatedAt).Page(req.PageIndex, req.PageLimit).Scan(&items)
+    return
+}

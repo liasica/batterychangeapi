@@ -34,6 +34,15 @@ const (
 
 type User internal.User
 
+// UserListReq 用户列表请求
+type UserListReq struct {
+    Page
+    RealName  string `json:"realName"`                  // 姓名
+    Mobile    string `json:"mobile"`                    // 手机号
+    Type      uint   `json:"type"`                      // 用户类别
+    AuthState uint   `json:"authState" enums:"0,1,2,3"` // 认证状态 0未提交 1待审核 2审核通过 3审核失败
+}
+
 // UserRegisterReq 用户注册请求数据
 type UserRegisterReq struct {
     Mobile string `validate:"required" v:"required|phone-loose"` // 手机号
@@ -127,4 +136,16 @@ type UserProfileRep struct {
     } `json:"groupUser,omitempty"` // 团签用户骑手信息， 其它类型用户忽略
 
     GroupBoss UserGroupStatRep `json:"groupBoss,omitempty"` // 团队BOSS信息， 其它类型用户忽略
+}
+
+// UserVerifyListItem 骑手实名列表项
+type UserVerifyListItem struct {
+    RealName   string `json:"realName"`                  // 姓名
+    Mobile     string `json:"mobile"`                    // 手机号
+    Type       uint   `json:"type"`                      // 用户类别
+    AuthState  uint   `json:"authState" enums:"0,1,2,3"` // 认证状态 0未提交 1待审核 2审核通过 3审核失败
+    IdCardNo   string `json:"idCardNo"`                  // 身份证
+    IdCardImg1 string `json:"idCardImg1"`                // 身份证人像面
+    IdCardImg2 string `json:"idCardImg2"`                // 身份证国徽面
+    IdCardImg3 string `json:"idCardImg3"`                // 手持身份证
 }

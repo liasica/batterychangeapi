@@ -184,6 +184,10 @@ func init() {
         group.POST("/package", admin.PackagesApi.Create)
         group.PUT("/package/:id", admin.PackagesApi.Edit)
 
+        group.Group("/driver", func(g *ghttp.RouterGroup) {
+            g.GET("/verify", admin.DriverApi.Verify)
+        })
+
         group.Group("/group", func(g *ghttp.RouterGroup) {
             g.GET("/", admin.GroupApi.List)
             g.POST("/", admin.GroupApi.Create)

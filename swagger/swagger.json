@@ -44,6 +44,66 @@
                 }
             }
         },
+        "/admin/driver/verify": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "认证列表",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserListReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/model.ItemsWithTotal"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "items": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/model.PackageListItem"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/group": {
             "get": {
                 "consumes": [
@@ -4442,6 +4502,45 @@
                 },
                 "userCnt": {
                     "description": "团队人数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserListReq": {
+            "type": "object",
+            "required": [
+                "pageIndex",
+                "pageLimit"
+            ],
+            "properties": {
+                "authState": {
+                    "description": "认证状态 0未提交 1待审核 2审核通过 3审核失败",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "pageIndex": {
+                    "description": "当前页号",
+                    "type": "integer"
+                },
+                "pageLimit": {
+                    "description": "页大小",
+                    "type": "integer"
+                },
+                "realName": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "用户类别",
                     "type": "integer"
                 }
             }
