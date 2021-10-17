@@ -2989,15 +2989,27 @@
             "type": "object",
             "properties": {
                 "batteryType": {
-                    "description": "60 / 72",
-                    "type": "integer"
+                    "description": "电池型号: 60 / 72",
+                    "type": "integer",
+                    "enum": [
+                        60,
+                        72
+                    ]
                 },
                 "bizType": {
-                    "description": "操作0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租",
-                    "type": "integer"
+                    "description": "操作类别: 0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                    ]
                 },
                 "createdAt": {
-                    "description": "时间",
+                    "description": "操作时间",
                     "type": "string"
                 },
                 "id": {
@@ -3013,7 +3025,7 @@
                     "type": "integer"
                 },
                 "userName": {
-                    "description": "操作员 平台调拨为空",
+                    "description": "操作员: 平台调拨为0",
                     "type": "string"
                 }
             }
@@ -3772,7 +3784,15 @@
                 },
                 "bizType": {
                     "description": "0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租",
-                    "type": "integer"
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                    ]
                 },
                 "dayCnt": {
                     "description": "当天总数",
