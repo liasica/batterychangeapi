@@ -7,6 +7,7 @@ import (
     "battery/library/response"
     "context"
     "github.com/gogf/gf/database/gdb"
+    "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
 )
 
@@ -29,11 +30,11 @@ func (*shopApi) List(r *ghttp.Request) {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
 
-    var rep model.ItemsWithTotal
     total, items := service.ShopService.ListAdmin(r.Context(), req)
-    rep.Total = total
-    rep.Items = []interface{}{items}
-    response.JsonOkExit(r, rep)
+    response.JsonOkExit(r, g.Map{
+        "total": total,
+        "items": items,
+    })
 }
 
 // Create
