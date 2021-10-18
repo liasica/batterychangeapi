@@ -31,7 +31,7 @@ func (s *comboService) ListUser(ctx context.Context, req model.ComboListUserReq)
 }
 
 // ListAdmin 管理套餐列表
-func (s *comboService) ListAdmin(ctx context.Context, req model.Page) (total int, items []model.Combo) {
+func (s *comboService) ListAdmin(ctx context.Context, req model.Page) (total int, items []model.ComboListItem) {
     m := dao.Combo.Ctx(ctx).Page(req.PageIndex, req.PageLimit)
     total, _ = m.Count()
     if total > 0 {

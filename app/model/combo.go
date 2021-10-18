@@ -40,6 +40,7 @@ type ComboListItem struct {
     ProvinceId  uint    `json:"provinceId"`                // 省份ID
     CityId      uint    `json:"cityId"`                    // 城市ID
     DeleteAt    string  `json:"deleteAt"`                  // 套餐停用时间
+    Desc        string  `json:"desc"`                      // 套餐详情
 }
 
 // ComboReq 套餐请求

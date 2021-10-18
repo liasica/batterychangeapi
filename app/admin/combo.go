@@ -28,29 +28,7 @@ func (*comboApi) List(r *ghttp.Request) {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
     total, items := service.ComboService.ListAdmin(r.Context(), req)
-    rep := struct {
-        Total int                   `json:"total"`
-        Items []model.ComboListItem `json:"items"`
-    }{
-        Total: total,
-    }
-    if rep.Total > 0 {
-        rep.Items = make([]model.ComboListItem, len(items))
-        for key, combo := range items {
-            rep.Items[key] = model.ComboListItem{
-                Id:          combo.Id,
-                Name:        combo.Name,
-                Amount:      combo.Amount,
-                Price:       combo.Price,
-                Deposit:     combo.Deposit,
-                Days:        combo.Days,
-                BatteryType: combo.BatteryType,
-                CityId:      combo.CityId,
-                ProvinceId:  combo.ProvinceId,
-            }
-        }
-    }
-    response.JsonOkExit(r, rep)
+    response.ItemsWithTotal(r, total, items)
 }
 
 // Create
