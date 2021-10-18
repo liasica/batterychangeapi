@@ -158,7 +158,7 @@ type UserListReq struct {
     GroupId      uint        `json:"groupId" swaggerignore:"true"` // 团队ID
     RealName     string      `json:"realName"`                     // 姓名
     Mobile       string      `json:"mobile"`                       // 手机号
-    BatteryState uint        `json:"batteryState"`                 // 换电状态
+    BatteryState uint        `json:"batteryState"`                 // 换电状态 个签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租 5已逾期; 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租
     StartDate    *gtime.Time `json:"startDate"`                    // 开始日期 eg: 2021-10-17
     EndDate      *gtime.Time `json:"endDate"`                      // 结束日期 eg: 2021-10-17
 }

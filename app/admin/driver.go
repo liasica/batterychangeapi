@@ -58,7 +58,7 @@ func (*driverApi) Personal(r *ghttp.Request) {
 // @Summary 团签成员列表
 // @Tags    管理
 // @Accept  json
-// @Param   id int path true "团签ID"
+// @Param   id path int true "团签ID"
 // @Param   entity body model.UserListReq true "请求参数"
 // @Produce json
 // @Router  /admin/group/{id}/driver [GET]

@@ -397,7 +397,7 @@
                 "tags": [
                     "管理"
                 ],
-                "summary": "团签成员列表",
+                "summary": "个签用户列表",
                 "parameters": [
                     {
                         "description": "请求参数",
@@ -405,7 +405,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UserPersonalReq"
+                            "$ref": "#/definitions/model.UserListReq"
                         }
                     }
                 ],
@@ -431,7 +431,7 @@
                                                         "items": {
                                                             "type": "array",
                                                             "items": {
-                                                                "$ref": "#/definitions/model.UserPersonalItem"
+                                                                "$ref": "#/definitions/model.UserListItem"
                                                             }
                                                         }
                                                     }
@@ -636,6 +636,73 @@
                         "description": "错误结果",
                         "schema": {
                             "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/group/{id}/driver": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "团签成员列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团签ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserListReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/model.ItemsWithTotal"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "items": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/model.UserListItem"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -5284,46 +5351,7 @@
                 }
             }
         },
-        "model.UserLoginRep": {
-            "type": "object",
-            "required": [
-                "accessToken",
-                "authState",
-                "type"
-            ],
-            "properties": {
-                "accessToken": {
-                    "description": "请求 token",
-                    "type": "string"
-                },
-                "authState": {
-                    "description": "实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过",
-                    "type": "integer"
-                },
-                "type": {
-                    "description": "用户角色 1 个签骑手 2 团签骑手 3 团签BOSS",
-                    "type": "integer"
-                }
-            }
-        },
-        "model.UserLoginReq": {
-            "type": "object",
-            "required": [
-                "mobile",
-                "sms"
-            ],
-            "properties": {
-                "mobile": {
-                    "description": "手机号",
-                    "type": "string"
-                },
-                "sms": {
-                    "description": "短信验证码",
-                    "type": "string"
-                }
-            }
-        },
-        "model.UserPersonalItem": {
+        "model.UserListItem": {
             "type": "object",
             "properties": {
                 "batteryReturnAt": {
@@ -5404,7 +5432,7 @@
                 }
             }
         },
-        "model.UserPersonalReq": {
+        "model.UserListReq": {
             "type": "object",
             "required": [
                 "pageIndex",
@@ -5412,7 +5440,7 @@
             ],
             "properties": {
                 "batteryState": {
-                    "description": "换电状态",
+                    "description": "换电状态 个签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租 5已逾期; 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租",
                     "type": "integer"
                 },
                 "endDate": {
@@ -5437,6 +5465,45 @@
                 },
                 "startDate": {
                     "description": "开始日期 eg: 2021-10-17",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserLoginRep": {
+            "type": "object",
+            "required": [
+                "accessToken",
+                "authState",
+                "type"
+            ],
+            "properties": {
+                "accessToken": {
+                    "description": "请求 token",
+                    "type": "string"
+                },
+                "authState": {
+                    "description": "实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "用户角色 1 个签骑手 2 团签骑手 3 团签BOSS",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserLoginReq": {
+            "type": "object",
+            "required": [
+                "mobile",
+                "sms"
+            ],
+            "properties": {
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "sms": {
+                    "description": "短信验证码",
                     "type": "string"
                 }
             }
