@@ -1,6 +1,7 @@
 package service
 
 import (
+    "battery/library/mq"
     "context"
     "errors"
     "fmt"
@@ -601,8 +602,8 @@ func (s *userService) GroupUserStartUse(ctx context.Context, userId uint64) erro
     return err
 }
 
-// ListUsers 骑手列表
-func (s *userService) ListUsers(ctx context.Context, req *model.UserListReq) (total int, items []model.UserVerifyListItem) {
+// ListVerifyItems 认证列表
+func (s *userService) ListVerifyItems(ctx context.Context, req *model.UserVerifyReq) (total int, items []model.UserVerifyListItem) {
     query := dao.User.Ctx(ctx)
     c := dao.User.Columns
     if req.RealName != "" {
@@ -616,5 +617,41 @@ func (s *userService) ListUsers(ctx context.Context, req *model.UserListReq) (to
     }
     total, _ = query.Count()
     _ = query.OrderDesc(c.CreatedAt).Page(req.PageIndex, req.PageLimit).Scan(&items)
+    return
+}
+
+func (s *userService) ListPersonalItems(ctx context.Context, req *model.UserPersonalReq) (total int, items []model.UserPersonalItem) {
+    query := dao.User.Ctx(ctx)
+
+    c := dao.User.Columns
+    layout := "Y-m-d"
+    params := mq.ParseStructToQuery(*req)
+    query = query.Where(params)
+
+    if !req.StartDate.IsZero() {
+        query = query.WhereGTE(c.CreatedAt, req.StartDate.Format(layout))
+    }
+    if !req.EndDate.IsZero() {
+        query = query.WhereLTE(c.CreatedAt, req.EndDate.Format(layout))
+    }
+
+    // fields := mq.FieldsWithTable(user.Table, c)
+
+    _ = query.WithAll().
+        Page(req.PageIndex, req.PageLimit).
+        OrderDesc(c.CreatedAt).
+        // Fields(fields).
+        Scan(&items)
+
+    g.Dump(items)
+
+    for k, item := range items {
+        if item.PackageDetail != nil {
+            items[k].PackageName = item.PackageDetail.Name
+            items[k].PackageType = item.PackageDetail.Type
+        }
+    }
+
+    total, _ = query.Count()
     return
 }

@@ -274,7 +274,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UserListReq"
+                            "$ref": "#/definitions/model.UserVerifyReq"
                         }
                     }
                 ],
@@ -5284,45 +5284,6 @@
                 }
             }
         },
-        "model.UserListReq": {
-            "type": "object",
-            "required": [
-                "pageIndex",
-                "pageLimit"
-            ],
-            "properties": {
-                "authState": {
-                    "description": "认证状态 0未提交 1待审核 2审核通过 3审核失败",
-                    "type": "integer",
-                    "enum": [
-                        0,
-                        1,
-                        2,
-                        3
-                    ]
-                },
-                "mobile": {
-                    "description": "手机号",
-                    "type": "string"
-                },
-                "pageIndex": {
-                    "description": "当前页号",
-                    "type": "integer"
-                },
-                "pageLimit": {
-                    "description": "页大小",
-                    "type": "integer"
-                },
-                "realName": {
-                    "description": "姓名",
-                    "type": "string"
-                },
-                "type": {
-                    "description": "用户类别",
-                    "type": "integer"
-                }
-            }
-        },
         "model.UserLoginRep": {
             "type": "object",
             "required": [
@@ -5537,6 +5498,45 @@
                 "mobile": {
                     "description": "手机号",
                     "type": "string"
+                },
+                "realName": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "用户类别",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserVerifyReq": {
+            "type": "object",
+            "required": [
+                "pageIndex",
+                "pageLimit"
+            ],
+            "properties": {
+                "authState": {
+                    "description": "认证状态 0未提交 1待审核 2审核通过 3审核失败",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "pageIndex": {
+                    "description": "当前页号",
+                    "type": "integer"
+                },
+                "pageLimit": {
+                    "description": "页大小",
+                    "type": "integer"
                 },
                 "realName": {
                     "description": "姓名",

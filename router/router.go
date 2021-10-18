@@ -189,6 +189,7 @@ func init() {
 
         group.Group("/driver", func(g *ghttp.RouterGroup) {
             g.GET("/verify", admin.DriverApi.Verify)
+            g.GET("/personal", admin.DriverApi.Personal)
         })
 
         group.Group("/group", func(g *ghttp.RouterGroup) {

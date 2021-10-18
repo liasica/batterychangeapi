@@ -34,8 +34,8 @@ const (
 
 type User internal.User
 
-// UserListReq 用户列表请求
-type UserListReq struct {
+// UserVerifyReq 用户认证列表请求
+type UserVerifyReq struct {
     Page
     RealName  string `json:"realName"`                  // 姓名
     Mobile    string `json:"mobile"`                    // 手机号
@@ -149,4 +149,37 @@ type UserVerifyListItem struct {
     IdCardImg1 string `json:"idCardImg1"`                // 身份证人像面
     IdCardImg2 string `json:"idCardImg2"`                // 身份证国徽面
     IdCardImg3 string `json:"idCardImg3"`                // 手持身份证
+}
+
+// UserPersonalReq 个签列表请求
+type UserPersonalReq struct {
+    Page
+    RealName     string      `json:"realName"`     // 姓名
+    Mobile       string      `json:"mobile"`       // 手机号
+    BatteryState uint        `json:"batteryState"` // 换电状态
+    StartDate    *gtime.Time `json:"startDate"`    // 开始日期 eg: 2021-10-17
+    EndDate      *gtime.Time `json:"endDate"`      // 结束日期 eg: 2021-10-17
+}
+
+// UserPersonalItem 个签列表项
+type UserPersonalItem struct {
+    RealName        string      `json:"realName"`        // 姓名
+    Mobile          string      `json:"mobile"`          // 手机号
+    BatteryState    uint        `json:"batteryState"`    // 换电状态
+    BatteryType     uint        `json:"batteryType"`     // 套餐电池型号 60/72
+    PackagesId      uint        `json:"packagesId"`      // 套餐ID
+    PackagesOrderId uint64      `json:"packagesOrderId"` // 办理套餐订单ID
+    BatteryReturnAt *gtime.Time `json:"batteryReturnAt"` // 个人用户应归还电池时间， 小于当前时间即逾期
+    BatterySaveAt   *gtime.Time `json:"batterySaveAt"`   // 个签用户电池寄存时间
+    StartDate       *gtime.Time `json:"startDate"`       // 开始日期 eg: 2021-10-17
+    EndDate         *gtime.Time `json:"endDate"`         // 结束日期 eg: 2021-10-17
+    CreatedAt       *gtime.Time `json:"createdAt"`       // 注册时间
+
+    PackageName string `json:"packageName"` // 当前套餐名称
+    PackageType uint   `json:"packageType"` // 当前套餐类型
+    ChangeTimes uint   `json:"changeTimes"` // 累积换电次数
+    DateLast    uint   `json:"dateLast"`    // 剩余天数 (套餐日期 - 首次启用日期 - 寄存天数)
+
+    PackageDetail *Packages  `orm:"with:id=packageId"`
+    BizItems      []*UserBiz `orm:"with:userId=id"`
 }
