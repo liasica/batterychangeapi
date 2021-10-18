@@ -29,7 +29,7 @@ func (*groupService) Detail(ctx context.Context, groupId uint) (group model.Grou
 }
 
 func (*groupService) GetByIds(ctx context.Context, groupIds []uint) (groupList []model.Group) {
-    _ = dao.Group.Ctx(ctx).WhereIn(dao.Packages.Columns.Id, groupIds).Scan(&groupList)
+    _ = dao.Group.Ctx(ctx).WhereIn(dao.Combo.Columns.Id, groupIds).Scan(&groupList)
     return groupList
 }
 

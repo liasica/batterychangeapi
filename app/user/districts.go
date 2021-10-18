@@ -39,7 +39,7 @@ func (*districtsApi) CurrentCity(r *ghttp.Request) {
 // @Router  /rapi/open_city [GET]
 // @Success 200 {object} response.JsonResponse{data=[]model.OpenCityListRepItem}  "返回结果"
 func (*districtsApi) OpenCityList(r *ghttp.Request) {
-    cityIds := service.PackagesService.GetCityIds(r.Context())
+    cityIds := service.ComboService.GetCityIds(r.Context())
     if len(cityIds) > 0 {
         rep := make([]model.OpenCityListRepItem, len(cityIds))
         districtsList := service.DistrictsService.GetByIds(r.Context(), cityIds)

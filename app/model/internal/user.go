@@ -23,8 +23,8 @@ type User struct {
 	AuthState                    uint        `orm:"authState"                    json:"authState"`                    // 实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过
 	BatteryState                 uint        `orm:"batteryState"                 json:"batteryState"`                 // 个人用户换电状态：0 未开通，1 租借中，2 寄存中，3 已退租
 	BatteryType                  uint        `orm:"batteryType"                  json:"batteryType"`                  // 套餐电池型号 60 、 72
-	PackagesId                   uint        `orm:"packagesId"                   json:"packagesId"`                   // 套餐ID
-	PackagesOrderId              uint64      `orm:"packagesOrderId"              json:"packagesOrderId"`              // 办理套餐订单ID
+	ComboId                      uint        `orm:"comboId"                      json:"comboId"`                      // 套餐ID
+	ComboOrderId                 uint64      `orm:"comboOrderId"                 json:"comboOrderId"`                 // 办理套餐订单ID
 	BatteryReturnAt              *gtime.Time `orm:"batteryReturnAt"              json:"batteryReturnAt"`              // 个人用户应归还电池时间， 小于当前时间即逾期
 	BatterySaveAt                *gtime.Time `orm:"batterySaveAt"                json:"batterySaveAt"`                // 个签用户电池寄存时间
 	AccessToken                  string      `orm:"accessToken,unique"           json:"accessToken"`                  //

@@ -32,7 +32,7 @@ var (
         BizId        string // 业务ID 为 0 即为平台调拨  
         Num          string //                           
         Day          string //                           
-        UserName     string //                           
+        UserName     string // 操作员 平台调拨为空       
         BatteryType  string // 电池型号 60 / 72          
         CreatedAt    string //
 	}{

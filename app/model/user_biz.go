@@ -51,7 +51,7 @@ type UserBizRecordStatRep struct {
 
 // UserBizSignReq 个签骑手新签套餐请求数据
 type UserBizSignReq struct {
-    PackagesId uint `validate:"required" json:"packagesId" v:"required|integer"` // 套餐ID
+    ComboId uint `validate:"required" json:"comboId" v:"required|integer"` // 套餐ID
 }
 
 // UserBizNewReq 个签骑手签约之后获取支付信息
@@ -67,8 +67,8 @@ type UserBizNewRep struct {
 
 }
 
-// UserBizNewPackageOrderStateRep 个签骑手获取支付状态响应数据
-type UserBizNewPackageOrderStateRep struct {
+// UserBizNewComboOrderStateRep 个签骑手获取支付状态响应数据
+type UserBizNewComboOrderStateRep struct {
     PayState uint `json:"payState"` // 1 待支付 2 已支付
 }
 
@@ -96,11 +96,11 @@ type UserBizPenaltyRep struct {
 
 // UserBizPenaltyProfileRep 个签骑手获取违约金额响应数据
 type UserBizPenaltyProfileRep struct {
-    Amount      float64     `validate:"required" json:"amount"`      // 金额
-    PackageName string      `validate:"required" json:"packageName"` // 套餐名称
-    Days        int64       `validate:"required" json:"days"`        // 逾期天数
-    StartAt     *gtime.Time `validate:"required" json:"startAt"`     // 开始时间
-    EndAt       *gtime.Time `validate:"required" json:"endAt"`       // 结束时间
+    Amount    float64     `validate:"required" json:"amount"`    // 金额
+    ComboName string      `validate:"required" json:"comboName"` // 套餐名称
+    Days      int64       `validate:"required" json:"days"`      // 逾期天数
+    StartAt   *gtime.Time `validate:"required" json:"startAt"`   // 开始时间
+    EndAt     *gtime.Time `validate:"required" json:"endAt"`     // 结束时间
 }
 
 // UserBizGroupNewReq 团签骑手新领电池
@@ -119,12 +119,12 @@ type UserBizShopRecordReq struct {
 
 // UserBizShopRecordRep 店长获取业务记录响应
 type UserBizShopRecordRep struct {
-    UserName     string      `json:"userName"`               // 用户姓名
-    PackagesName string      `json:"packagesName,omitempty"` // 套餐名称
-    GroupName    string      `json:"groupName,omitempty"`    // 团体名称， 名称为空即为 个签用户
-    UserMobile   string      `json:"userMobile"`             // 手机号
-    BizType      uint        `json:"bizType"`                // 业务类型  2 换电 3 寄存(仅个签可用)，5 退租
-    At           *gtime.Time `json:"at"`                     // 时间
+    UserName   string      `json:"userName"`            // 用户姓名
+    ComboName  string      `json:"comboName,omitempty"` // 套餐名称
+    GroupName  string      `json:"groupName,omitempty"` // 团体名称， 名称为空即为 个签用户
+    UserMobile string      `json:"userMobile"`          // 手机号
+    BizType    uint        `json:"bizType"`             // 业务类型  2 换电 3 寄存(仅个签可用)，5 退租
+    At         *gtime.Time `json:"at"`                  // 时间
 }
 
 // UserBizShopRecordMonthTotalReq 店长获取业务记录按月统计请求
@@ -148,24 +148,24 @@ type BizEntity struct {
     UserId      uint64      `orm:"userId"       json:"userId"`      // 用户ID
     GoroupId    uint        `orm:"goroupId"     json:"goroupId"`    // 团体ID
     Type        uint        `orm:"type"         json:"type"`        // 业务类型: 1新签 2换电 3寄存 4退租
-    PackagesId  uint        `orm:"packagesId"   json:"packagesId"`  // 套餐ID
+    ComboId     uint        `orm:"comboId"   json:"comboId"`        // 套餐ID
     BatteryType uint        `orm:"batteryType"  json:"batteryType"` // 电池型号 60 / 72
     CreatedAt   *gtime.Time `orm:"createdAt"    json:"createdAt"`   // 业务办理时间
 
     // GoroupUserId uint        `orm:"goroupUserId" json:"goroupUserId"` // 团签用户ID
 
-    Mobile      string `json:"mobile"`      // 手机号
-    RealName    string `json:"realName"`    // 姓名
-    CityName    string `json:"cityName"`    // 城市
-    ShopName    string `json:"shopName"`    // 门店名称
-    GroupName   string `json:"groupName"`   // 团签名称
-    PackageName string `json:"packageName"` // 套餐名称
+    Mobile    string `json:"mobile"`    // 手机号
+    RealName  string `json:"realName"`  // 姓名
+    CityName  string `json:"cityName"`  // 城市
+    ShopName  string `json:"shopName"`  // 门店名称
+    GroupName string `json:"groupName"` // 团签名称
+    ComboName string `json:"comboName"` // 套餐名称
 
-    User          *User      `json:"-" orm:"with:id=userId"`
-    City          *Districts `json:"-" orm:"with:id=cityId"`
-    Shop          *Shop      `json:"-" orm:"with:id=shopId"`
-    PackageDetail *Packages  `json:"-" orm:"with:id=packageId"`
-    Group         *Group     `json:"-" orm:"with:id=groupId"`
+    User        *User      `json:"-" orm:"with:id=userId"`
+    City        *Districts `json:"-" orm:"with:id=cityId"`
+    Shop        *Shop      `json:"-" orm:"with:id=shopId"`
+    ComboDetail *Combo     `json:"-" orm:"with:id=comboId"`
+    Group       *Group     `json:"-" orm:"with:id=groupId"`
 }
 
 // BizListReq 业务记录请求

@@ -29,12 +29,12 @@ func (*userDebug) Reset(r *ghttp.Request) {
     p := r.GetQueryString("phone")
     columns := dao.User.Columns
     data := g.Map{
-        columns.GroupId:         0,
-        columns.Type:            1,
-        columns.BatteryState:    0,
-        columns.BatteryType:     0,
-        columns.PackagesOrderId: 0,
-        columns.PackagesId:      0,
+        columns.GroupId:      0,
+        columns.Type:         1,
+        columns.BatteryState: 0,
+        columns.BatteryType:  0,
+        columns.ComboOrderId: 0,
+        columns.ComboId:      0,
     }
     auth := r.GetQueryBool("resetauth")
 

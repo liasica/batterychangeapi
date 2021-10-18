@@ -34,6 +34,6 @@ func (*orderApi) List(r *ghttp.Request) {
     req := new(model.OrderListReq)
     _ = request.ParseRequest(r, req)
 
-    total, items := service.PackagesOrderService.ListAdmin(r.Context(), req)
+    total, items := service.ComboOrderService.ListAdmin(r.Context(), req)
     response.ItemsWithTotal(r, total, items)
 }

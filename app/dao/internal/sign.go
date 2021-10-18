@@ -21,16 +21,16 @@ type SignDao struct {
 
 // SignColumns defines and stores column names for table sign.
 type signColumns struct {
-	Id              string //
-	UserId          string //
-	GroupId         string //
-	PackagesOrderId string //
-	BatteryType     string // 电池型号
-	FlowId          string // 易签签约流程ID
-	FileId          string // 易签签约文件ID
-	State           string // 签约状态 0 未签约 1 已签约
-	CreatedAt       string //
-	UpdatedAt       string //
+	Id           string //
+	UserId       string //
+	GroupId      string //
+	ComboOrderId string //
+	BatteryType  string // 电池型号
+	FlowId       string // 易签签约流程ID
+	FileId       string // 易签签约文件ID
+	State        string // 签约状态 0 未签约 1 已签约
+	CreatedAt    string //
+	UpdatedAt    string //
 }
 
 func NewSignDao() *SignDao {
@@ -39,16 +39,16 @@ func NewSignDao() *SignDao {
 		DB:    g.DB("default"),
 		Table: "sign",
 		Columns: signColumns{
-			Id:              "id",
-			UserId:          "userId",
-			GroupId:         "groupId",
-			PackagesOrderId: "packagesOrderId",
-			BatteryType:     "batteryType",
-			FlowId:          "flowId",
-			FileId:          "fileId",
-			State:           "state",
-			CreatedAt:       "createdAt",
-			UpdatedAt:       "updatedAt",
+			Id:           "id",
+			UserId:       "userId",
+			GroupId:      "groupId",
+			ComboOrderId: "comboOrderId",
+			BatteryType:  "batteryType",
+			FlowId:       "flowId",
+			FileId:       "fileId",
+			State:        "state",
+			CreatedAt:    "createdAt",
+			UpdatedAt:    "updatedAt",
 		},
 	}
 }

@@ -27,8 +27,8 @@ type userBizColumns struct {
 	UserId       string //
 	GoroupId     string // 团体ID
 	GoroupUserId string //
-	Type         string // 业务类型:  1 新签， 2 换电，3 寄存，4 退租
-	PackagesId   string // 套餐ID
+	Type         string // 业务类型: 1新签 2换电 3寄存 4退租
+	ComboId      string // 套餐ID
 	BatteryType  string // 电池型号 60 / 72
 	CreatedAt    string // 扫码时间
 	UpdatedAt    string //
@@ -47,7 +47,7 @@ func NewUserBizDao() *UserBizDao {
 			GoroupId:     "goroupId",
 			GoroupUserId: "goroupUserId",
 			Type:         "type",
-			PackagesId:   "packagesId",
+			ComboId:      "comboId",
 			BatteryType:  "batteryType",
 			CreatedAt:    "createdAt",
 			UpdatedAt:    "updatedAt",

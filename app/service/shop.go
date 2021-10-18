@@ -87,7 +87,7 @@ func (s *shopService) BatteryRenewal(ctx context.Context, req model.BizProfileRe
         UserId: req.Id,
         // GoroupId:   req.GroupId,
         Type: model.UserBizBatteryRenewal,
-        // PackagesId: req.PackagesId,
+        // ComboId: req.ComboId,
     })
     return err
 }

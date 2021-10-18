@@ -10,17 +10,17 @@ import (
 	"github.com/gogf/gf/frame/gmvc"
 )
 
-// PackagesDao is the manager for logic model data accessing
+// ComboDao is the manager for logic model data accessing
 // and custom defined data operations functions management.
-type PackagesDao struct {
-	gmvc.M                  // M is the core and embedded struct that inherits all chaining operations from gdb.Model.
-	DB      gdb.DB          // DB is the raw underlying database management object.
-	Table   string          // Table is the table name of the DAO.
-	Columns packagesColumns // Columns contains all the columns of Table that for convenient usage.
+type ComboDao struct {
+	gmvc.M               // M is the core and embedded struct that inherits all chaining operations from gdb.Model.
+	DB      gdb.DB       // DB is the raw underlying database management object.
+	Table   string       // Table is the table name of the DAO.
+	Columns comboColumns // Columns contains all the columns of Table that for convenient usage.
 }
 
-// PackagesColumns defines and stores column names for table packages.
-type packagesColumns struct {
+// ComboColumns defines and stores column names for table combo.
+type comboColumns struct {
 	Id          string //
 	DeletedAt   string //
 	CreatedAt   string //
@@ -29,20 +29,20 @@ type packagesColumns struct {
 	BatteryType string // 60 / 72
 	Name        string // 名称
 	Days        string // 套餐时长天数
-	Amount      string // 套餐价格(包含保证金额)
+	Amount      string // 套餐价格(包含押金)
 	Price       string //
-	Earnest     string // 保证金
+	Deposit     string // 押金
 	ProvinceId  string // 省级行政编码
 	CityId      string // 市级行政编码
 	Desc        string // 描述
 }
 
-func NewPackagesDao() *PackagesDao {
-	return &PackagesDao{
-		M:     g.DB("default").Model("packages").Safe(),
+func NewComboDao() *ComboDao {
+	return &ComboDao{
+		M:     g.DB("default").Model("combo").Safe(),
 		DB:    g.DB("default"),
-		Table: "packages",
-		Columns: packagesColumns{
+		Table: "combo",
+		Columns: comboColumns{
 			Id:          "id",
 			DeletedAt:   "deletedAt",
 			CreatedAt:   "createdAt",
@@ -53,7 +53,7 @@ func NewPackagesDao() *PackagesDao {
 			Days:        "days",
 			Amount:      "amount",
 			Price:       "price",
-			Earnest:     "earnest",
+			Deposit:     "deposit",
 			ProvinceId:  "provinceId",
 			CityId:      "cityId",
 			Desc:        "desc",

@@ -29,8 +29,8 @@ type ContextRider struct {
     Id                           uint64
     Mobile                       string
     GroupId                      uint
-    PackagesId                   uint
-    PackagesOrderId              uint64
+    ComboId                      uint
+    ComboOrderId                 uint64
     BatteryType                  uint
     BatteryState                 uint
     AuthState                    uint

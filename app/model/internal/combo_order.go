@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/os/gtime"
 )
 
-// PackagesOrder is the golang structure for table packages_order.
-type PackagesOrder struct {
+// ComboOrder is the golang structure for table combo_order.
+type ComboOrder struct {
 	Id            uint64      `orm:"id,primary"    json:"id"`            //
 	ParentId      uint64      `orm:"parentId"      json:"parentId"`      // 关联订单ID(续签或违约)
 	CityId        uint        `orm:"cityId"        json:"cityId"`        // 城市ID
@@ -17,9 +17,9 @@ type PackagesOrder struct {
 	UserId        uint64      `orm:"userId"        json:"userId"`        // 用户ID
 	No            string      `orm:"no,unique"     json:"no"`            // 订单编号
 	Type          uint        `orm:"type"          json:"type"`          // 1 新签， 2 续费, 3 违约金
-	PackageId     uint        `orm:"packageId"     json:"packageId"`     // 套餐ID
+	ComboId       uint        `orm:"comboId"       json:"comboId"`       // 套餐ID
 	Amount        float64     `orm:"amount"        json:"amount"`        // 总金额，包含押金
-	Earnest       float64     `orm:"earnest"       json:"earnest"`       // 保证金
+	Deposit       float64     `orm:"deposit"       json:"deposit"`       // 押金
 	PayType       uint        `orm:"payType"       json:"payType"`       // 1 支付宝 2 微信
 	PayPlatformNo string      `orm:"payPlatformNo" json:"payPlatformNo"` // 支付平台单号
 	PayAt         *gtime.Time `orm:"payAt"         json:"payAt"`         // 支付时间

@@ -33,7 +33,7 @@ func (*orderApi) Total(r *ghttp.Request) {
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
-    res := service.PackagesOrderService.ShopMonthTotal(r.Context(), req.Month, r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId, req.Type)
+    res := service.ComboOrderService.ShopMonthTotal(r.Context(), req.Month, r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId, req.Type)
     response.JsonOkExit(r, res)
 }
 
@@ -54,13 +54,13 @@ func (*orderApi) List(r *ghttp.Request) {
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
-    orderList := service.PackagesOrderService.ShopMonthList(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId, req)
+    orderList := service.ComboOrderService.ShopMonthList(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId, req)
     if len(orderList) > 0 {
         userIds := make([]uint64, 0)
-        packagesIds := make([]uint, 0)
+        comboIds := make([]uint, 0)
         for _, order := range orderList {
             userIds = append(userIds, order.UserId)
-            packagesIds = append(packagesIds, order.PackageId)
+            comboIds = append(comboIds, order.ComboId)
         }
         userList := service.UserService.GetByIds(r.Context(), userIds)
         userIdList := make(map[uint64]model.User, len(userList))
@@ -68,21 +68,21 @@ func (*orderApi) List(r *ghttp.Request) {
             userIdList[user.Id] = user
         }
         res := make([]model.ShopOrderListItem, len(orderList))
-        packagesList := service.PackagesService.GetByIds(r.Context(), packagesIds)
-        packagesIdList := make(map[uint]model.Packages, len(packagesList))
-        for _, packages := range packagesList {
-            packagesIdList[packages.Id] = packages
+        comboList := service.ComboService.GetByIds(r.Context(), comboIds)
+        comboIdList := make(map[uint]model.Combo, len(comboList))
+        for _, combo := range comboList {
+            comboIdList[combo.Id] = combo
         }
         for key, order := range orderList {
             res[key] = model.ShopOrderListItem{
-                Id:          order.Id,
-                OrderNo:     order.No,
-                Amount:      order.Amount,
-                Type:        order.Type,
-                UserName:    userIdList[order.UserId].RealName,
-                UserMobile:  userIdList[order.UserId].Mobile,
-                PayAt:       order.PayAt,
-                PackageName: packagesIdList[order.PackageId].Name,
+                Id:         order.Id,
+                OrderNo:    order.No,
+                Amount:     order.Amount,
+                Type:       order.Type,
+                UserName:   userIdList[order.UserId].RealName,
+                UserMobile: userIdList[order.UserId].Mobile,
+                PayAt:      order.PayAt,
+                ComboName:  comboIdList[order.ComboId].Name,
             }
         }
         response.JsonOkExit(r, res)
@@ -97,29 +97,29 @@ func (*orderApi) List(r *ghttp.Request) {
 // @Produce  json
 // @Param 	code path integer  true "订单记录获取订单详情"
 // @Router  /sapi/order/:id [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ShopManagerPackagesOrderListDetailRep} "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ShopManagerComboOrderListDetailRep} "返回结果"
 func (*orderApi) ListDetail(r *ghttp.Request) {
     var req model.IdReq
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
-    order, _ := service.PackagesOrderService.Detail(r.Context(), req.Id)
+    order, _ := service.ComboOrderService.Detail(r.Context(), req.Id)
     if order.ShopId != r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId {
         response.Json(r, response.RespCodeArgs, "无权查看")
     }
 
     user := service.UserService.Detail(r.Context(), order.UserId)
 
-    packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
-    response.JsonOkExit(r, model.ShopManagerPackagesOrderListDetailRep{
-        UserMobile:   user.Mobile,
-        UserName:     user.RealName,
-        PackagesName: packages.Name,
+    combo, _ := service.ComboService.Detail(r.Context(), order.ComboId)
+    response.JsonOkExit(r, model.ShopManagerComboOrderListDetailRep{
+        UserMobile: user.Mobile,
+        UserName:   user.RealName,
+        ComboName:  combo.Name,
 
-        BatteryType: packages.BatteryType,
+        BatteryType: combo.BatteryType,
         OrderNo:     order.No,
         Amount:      order.Amount,
-        Earnest:     order.Earnest,
+        Deposit:     order.Deposit,
         PayType:     order.PayType,
         PayAt:       order.PayAt,
     })
@@ -132,7 +132,7 @@ func (*orderApi) ListDetail(r *ghttp.Request) {
 // @Produce  json
 // @Param 	code path string  true "订单二维码扫码获取的code"
 // @Router  /sapi/order_scan/:code [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ShopManagerPackagesOrderScanDetailRep} "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ShopManagerComboOrderScanDetailRep} "返回结果"
 func (*orderApi) ScanDetail(r *ghttp.Request) {
     var req model.BizNewCdeReq
     if err := r.Parse(&req); err != nil {
@@ -151,7 +151,7 @@ func (*orderApi) ScanDetail(r *ghttp.Request) {
             response.Json(r, response.RespCodeArgs, "骑手未选择电池类型")
         }
         group := service.GroupService.Detail(r.Context(), user.GroupId)
-        rep := model.ShopManagerPackagesOrderScanDetailRep{
+        rep := model.ShopManagerComboOrderScanDetailRep{
             UserName:    user.RealName,
             UserMobile:  user.Mobile,
             UserType:    user.Type,
@@ -164,25 +164,25 @@ func (*orderApi) ScanDetail(r *ghttp.Request) {
         }
         response.JsonOkExit(r, rep)
     } else {
-        order, err := service.PackagesOrderService.DetailByNo(r.Context(), req.Code)
+        order, err := service.ComboOrderService.DetailByNo(r.Context(), req.Code)
         if err != nil {
             response.Json(r, response.RespCodeArgs, "二维码错误")
         }
         user := service.UserService.Detail(r.Context(), order.UserId)
-        packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
-        rep := model.ShopManagerPackagesOrderScanDetailRep{
-            UserType:       user.Type,
-            UserName:       user.RealName,
-            UserMobile:     user.Mobile,
-            PackagesName:   packages.Name,
-            PackagesAmount: packages.Price,
-            BatteryType:    packages.BatteryType,
-            Amount:         order.Amount,
-            Earnest:        order.Earnest,
-            PayType:        order.PayType,
-            OrderNo:        order.No,
-            PayAt:          order.PayAt,
-            ClaimState:     1,
+        combo, _ := service.ComboService.Detail(r.Context(), order.ComboId)
+        rep := model.ShopManagerComboOrderScanDetailRep{
+            UserType:    user.Type,
+            UserName:    user.RealName,
+            UserMobile:  user.Mobile,
+            ComboName:   combo.Name,
+            ComboAmount: combo.Price,
+            BatteryType: combo.BatteryType,
+            Amount:      order.Amount,
+            Deposit:     order.Deposit,
+            PayType:     order.PayType,
+            OrderNo:     order.No,
+            PayAt:       order.PayAt,
+            ClaimState:  1,
         }
         if order.ShopId > 0 {
             rep.ClaimState = 2
@@ -196,11 +196,11 @@ func (*orderApi) ScanDetail(r *ghttp.Request) {
 // @Tags    店长-订单
 // @Accept  json
 // @Produce  json
-// @Param   entity  body model.ShopManagerPackagesOrderClaimReq true "请求数据"
+// @Param   entity  body model.ShopManagerComboOrderClaimReq true "请求数据"
 // @Router  /sapi/order_claim [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*orderApi) Claim(r *ghttp.Request) {
-    var req model.ShopManagerPackagesOrderClaimReq
+    var req model.ShopManagerComboOrderClaimReq
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
@@ -219,7 +219,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
         }
         groupUser := service.GroupUserService.GetBuyUserId(r.Context(), user.Id)
         shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
-        if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+        if err := dao.ComboOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
             // 领取记录
             bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
                 CityId:       shop.CityId,
@@ -228,7 +228,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
                 GoroupId:     user.GroupId,
                 GoroupUserId: groupUser.Id,
                 Type:         model.UserBizNew,
-                PackagesId:   0,
+                ComboId:      0,
                 BatteryType:  user.BatteryType,
             })
             if err != nil {
@@ -263,21 +263,21 @@ func (*orderApi) Claim(r *ghttp.Request) {
             response.JsonErrExit(r)
         }
     } else {
-        order, err := service.PackagesOrderService.DetailByNo(r.Context(), req.Code)
+        order, err := service.ComboOrderService.DetailByNo(r.Context(), req.Code)
         if err != nil {
             response.JsonErrExit(r)
         }
         if order.ShopId > 0 {
             response.Json(r, response.RespCodeArgs, "订单已被认领，不能重复认领")
         }
-        packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
+        combo, _ := service.ComboService.Detail(r.Context(), order.ComboId)
         shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
-        if packages.CityId != shop.CityId {
+        if combo.CityId != shop.CityId {
             response.Json(r, response.RespCodeArgs, "订单和门店不在同一城市，不能认领")
         }
-        if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+        if err := dao.ComboOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
             // 订单状态
-            if err := service.PackagesOrderService.ShopClaim(ctx, order.No, shop.Id); err != nil {
+            if err := service.ComboOrderService.ShopClaim(ctx, order.No, shop.Id); err != nil {
                 return err
             }
             // 领取记录
@@ -288,18 +288,18 @@ func (*orderApi) Claim(r *ghttp.Request) {
                 GoroupId:     0,
                 GoroupUserId: 0,
                 Type:         model.UserBizNew,
-                PackagesId:   packages.Id,
-                BatteryType:  packages.BatteryType,
+                ComboId:      combo.Id,
+                BatteryType:  combo.BatteryType,
             })
             if err != nil {
                 return err
             }
             // 用户状态
-            if err := service.UserService.PackagesStartUse(ctx, order); err != nil {
+            if err := service.UserService.ComboStartUse(ctx, order); err != nil {
                 return err
             }
             // 电池出库
-            if err := service.ShopService.BatteryOut(ctx, shop.Id, packages.BatteryType, 1); err != nil {
+            if err := service.ShopService.BatteryOut(ctx, shop.Id, combo.BatteryType, 1); err != nil {
                 return err
             }
             user := service.UserService.Detail(ctx, order.UserId)
@@ -309,7 +309,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
                 shop.Id,
                 bizId,
                 user.RealName,
-                packages.BatteryType); err != nil {
+                combo.BatteryType); err != nil {
                 return err
             }
             return nil

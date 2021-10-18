@@ -17,7 +17,7 @@ type ShopBatteryRecord struct {
 	BizId       uint64      `orm:"bizId"       json:"bizId"`       // 业务ID 为 0 即为平台调拨
 	Num         uint        `orm:"num"         json:"num"`         //
 	Day         int         `orm:"day"         json:"day"`         //
-	UserName    string      `orm:"userName"    json:"userName"`    //
+	UserName    string      `orm:"userName"    json:"userName"`    // 操作员 平台调拨为空
 	BatteryType uint        `orm:"batteryType" json:"batteryType"` // 电池型号 60 / 72
 	CreatedAt   *gtime.Time `orm:"createdAt"   json:"createdAt"`   //
 }

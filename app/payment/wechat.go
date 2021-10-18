@@ -14,8 +14,8 @@ var WechatApi = wechatApi{}
 type wechatApi struct {
 }
 
-// PackageOrderNewSuccessCallback 新购套餐支付成功回调
-func (api *wechatApi) PackageOrderNewSuccessCallback(r *ghttp.Request) {
+// ComboOrderNewSuccessCallback 新购套餐支付成功回调
+func (api *wechatApi) ComboOrderNewSuccessCallback(r *ghttp.Request) {
 	var content wechatPaySuccessNotifyContent
 	if _, err := wechat.Service().ParseNotify(r.Context(), r.Request, &content); err != nil {
 		g.Log().Error(err.Error())
@@ -24,7 +24,7 @@ func (api *wechatApi) PackageOrderNewSuccessCallback(r *ghttp.Request) {
 	}
 
 	if content.TradeState == "SUCCESS" {
-		if err := packageOrderNewSuccess(r.Context(), content.SuccessTime, content.OutTradeNo, content.TransactionId, model.PayTypeWechat); err != nil {
+		if err := comboOrderNewSuccess(r.Context(), content.SuccessTime, content.OutTradeNo, content.TransactionId, model.PayTypeWechat); err != nil {
 			g.Log().Error(err.Error())
 			r.Response.Status = http.StatusInternalServerError
 			r.Exit()
@@ -38,8 +38,8 @@ func (api *wechatApi) PackageOrderNewSuccessCallback(r *ghttp.Request) {
 	r.Exit()
 }
 
-// PackageOrderRenewalSuccessCallback 续购套餐支付成功回调
-func (api *wechatApi) PackageOrderRenewalSuccessCallback(r *ghttp.Request) {
+// ComboOrderRenewalSuccessCallback 续购套餐支付成功回调
+func (api *wechatApi) ComboOrderRenewalSuccessCallback(r *ghttp.Request) {
 	var content wechatPaySuccessNotifyContent
 	if _, err := wechat.Service().ParseNotify(r.Context(), r.Request, &content); err != nil {
 		g.Log().Error(err.Error())
@@ -47,7 +47,7 @@ func (api *wechatApi) PackageOrderRenewalSuccessCallback(r *ghttp.Request) {
 		r.Exit()
 	}
 	if content.TradeState == "SUCCESS" {
-		if err := packageOrderRenewalSuccess(r.Context(), content.SuccessTime, content.OutTradeNo, content.TransactionId, model.PayTypeWechat); err != nil {
+		if err := comboOrderRenewalSuccess(r.Context(), content.SuccessTime, content.OutTradeNo, content.TransactionId, model.PayTypeWechat); err != nil {
 			g.Log().Error(err.Error())
 			r.Response.Status = http.StatusInternalServerError
 			r.Exit()
@@ -61,15 +61,15 @@ func (api *wechatApi) PackageOrderRenewalSuccessCallback(r *ghttp.Request) {
 	r.Exit()
 }
 
-// PackageOrderPenaltySuccessCallback 续购套餐支付成功回调
-func (api *wechatApi) PackageOrderPenaltySuccessCallback(r *ghttp.Request) {
+// ComboOrderPenaltySuccessCallback 续购套餐支付成功回调
+func (api *wechatApi) ComboOrderPenaltySuccessCallback(r *ghttp.Request) {
 	var content wechatPaySuccessNotifyContent
 	if _, err := wechat.Service().ParseNotify(r.Context(), r.Request, &content); err != nil {
 		r.Response.Status = http.StatusBadRequest
 		r.Exit()
 	}
 	if content.TradeState == "SUCCESS" {
-		if err := packageOrderPenaltySuccess(r.Context(), content.SuccessTime, content.OutTradeNo, content.TransactionId, model.PayTypeWechat); err != nil {
+		if err := comboOrderPenaltySuccess(r.Context(), content.SuccessTime, content.OutTradeNo, content.TransactionId, model.PayTypeWechat); err != nil {
 			r.Response.Status = http.StatusInternalServerError
 			r.Exit()
 		}
@@ -90,8 +90,8 @@ type wechatPaySuccessResponse struct {
 type wechatPaySuccessNotifyContent struct {
 	TransactionId string `json:"transaction_id"`
 	Amount        struct {
-		PayerTotal    int    `json:"payer_total"` //支付金额
-		Total         int    `json:"total"`       //订单金额
+		PayerTotal    int    `json:"payer_total"` // 支付金额
+		Total         int    `json:"total"`       // 订单金额
 		Currency      string `json:"currency"`
 		PayerCurrency string `json:"payer_currency"`
 	} `json:"amount"`

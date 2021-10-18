@@ -10,17 +10,17 @@ import (
 	"github.com/gogf/gf/frame/gmvc"
 )
 
-// PackagesOrderDao is the manager for logic model data accessing
+// ComboOrderDao is the manager for logic model data accessing
 // and custom defined data operations functions management.
-type PackagesOrderDao struct {
-	gmvc.M                       // M is the core and embedded struct that inherits all chaining operations from gdb.Model.
-	DB      gdb.DB               // DB is the raw underlying database management object.
-	Table   string               // Table is the table name of the DAO.
-	Columns packagesOrderColumns // Columns contains all the columns of Table that for convenient usage.
+type ComboOrderDao struct {
+	gmvc.M                    // M is the core and embedded struct that inherits all chaining operations from gdb.Model.
+	DB      gdb.DB            // DB is the raw underlying database management object.
+	Table   string            // Table is the table name of the DAO.
+	Columns comboOrderColumns // Columns contains all the columns of Table that for convenient usage.
 }
 
-// PackagesOrderColumns defines and stores column names for table packages_order.
-type packagesOrderColumns struct {
+// ComboOrderColumns defines and stores column names for table combo_order.
+type comboOrderColumns struct {
 	Id            string //
 	ParentId      string // 关联订单ID(续签或违约)
 	CityId        string // 城市ID
@@ -28,9 +28,9 @@ type packagesOrderColumns struct {
 	UserId        string // 用户ID
 	No            string // 订单编号
 	Type          string // 1 新签， 2 续费, 3 违约金
-	PackageId     string // 套餐ID
+	ComboId       string // 套餐ID
 	Amount        string // 总金额，包含押金
-	Earnest       string // 保证金
+	Deposit       string // 押金
 	PayType       string // 1 支付宝 2 微信
 	PayPlatformNo string // 支付平台单号
 	PayAt         string // 支付时间
@@ -41,12 +41,12 @@ type packagesOrderColumns struct {
 	UpdatedAt     string //
 }
 
-func NewPackagesOrderDao() *PackagesOrderDao {
-	return &PackagesOrderDao{
-		M:     g.DB("default").Model("packages_order").Safe(),
+func NewComboOrderDao() *ComboOrderDao {
+	return &ComboOrderDao{
+		M:     g.DB("default").Model("combo_order").Safe(),
 		DB:    g.DB("default"),
-		Table: "packages_order",
-		Columns: packagesOrderColumns{
+		Table: "combo_order",
+		Columns: comboOrderColumns{
 			Id:            "id",
 			ParentId:      "parentId",
 			CityId:        "cityId",
@@ -54,9 +54,9 @@ func NewPackagesOrderDao() *PackagesOrderDao {
 			UserId:        "userId",
 			No:            "no",
 			Type:          "type",
-			PackageId:     "packageId",
+			ComboId:       "comboId",
 			Amount:        "amount",
-			Earnest:       "earnest",
+			Deposit:       "deposit",
 			PayType:       "payType",
 			PayPlatformNo: "payPlatformNo",
 			PayAt:         "payAt",

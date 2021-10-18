@@ -114,7 +114,7 @@ func (*bizApi) BatteryRenewal(r *ghttp.Request) {
             UserId:      user.Id,
             GoroupId:    user.GroupId,
             Type:        model.UserBizBatteryRenewal,
-            PackagesId:  user.PackagesId,
+            ComboId:     user.ComboId,
             BatteryType: user.BatteryType,
             CreatedAt:   at,
             UpdatedAt:   at,
@@ -161,18 +161,18 @@ func (*bizApi) New(r *ghttp.Request) {
         response.Json(r, response.RespCodeArgs, "没有完成签约的合同")
         return
     }
-    var order model.PackagesOrder
-    order, err = service.PackagesOrderService.Detail(r.Context(), s.PackagesOrderId)
+    var order model.ComboOrder
+    order, err = service.ComboOrderService.Detail(r.Context(), s.ComboOrderId)
     if err == nil {
-        packages, _ := service.PackagesService.Detail(r.Context(), order.PackageId)
+        combo, _ := service.ComboService.Detail(r.Context(), order.ComboId)
         switch req.PayType {
         case model.PayTypeWechat:
             var res *app.PrepayWithRequestPaymentResponse
             if res, err = wechat.Service().App(r.Context(), model.Prepay{
-                Description: packages.Name,
+                Description: combo.Name,
                 No:          order.No,
                 Amount:      order.Amount,
-                NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_new/wechat",
+                NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/combo_new/wechat",
             }); err == nil {
                 b, _ := json.Marshal(res)
                 response.JsonOkExit(r, model.UserBizNewRep{
@@ -185,10 +185,10 @@ func (*bizApi) New(r *ghttp.Request) {
         case model.PayTypeAliPay:
             var res string
             if res, err = alipay.Service().App(r.Context(), model.Prepay{
-                Description: packages.Name,
+                Description: combo.Name,
                 No:          order.No,
                 Amount:      order.Amount,
-                NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_new/alipay",
+                NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/combo_new/alipay",
             }); err == nil {
                 response.JsonOkExit(r, model.UserBizNewRep{
                     OrderId:      order.Id,
@@ -207,24 +207,24 @@ func (*bizApi) New(r *ghttp.Request) {
     panic(err)
 }
 
-// NewPackagerOrderState
+// NewComborOrderState
 // @Summary 骑手-个签骑手签约支付之后获取订单支付状态
 // @Accept  json
 // @Produce  json
 // @Tags    骑手-业务办理
 // @Param 	orderId path integer true "订单ID"
 // @Router  /rapi/biz_new/:orderId/payState [GET]
-// @Success 200 {object} response.JsonResponse{data=model.UserBizNewPackageOrderStateRep}"返回结果"
-func (*bizApi) NewPackagerOrderState(r *ghttp.Request) {
+// @Success 200 {object} response.JsonResponse{data=model.UserBizNewComboOrderStateRep}"返回结果"
+func (*bizApi) NewComborOrderState(r *ghttp.Request) {
     orderId := r.GetUint64("orderId", 0)
     if orderId == 0 {
         response.Json(r, response.RespCodeArgs, "参数错误")
     }
-    order, err := service.PackagesOrderService.Detail(r.Context(), orderId)
+    order, err := service.ComboOrderService.Detail(r.Context(), orderId)
     if err != nil {
         response.Json(r, response.RespCodeNotFound, "不存在的订单")
     }
-    response.JsonOkExit(r, model.UserBizNewPackageOrderStateRep{
+    response.JsonOkExit(r, model.UserBizNewComboOrderStateRep{
         PayState: order.PayState,
     })
 }
@@ -252,7 +252,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
     if u.GroupId > 0 {
         response.Json(r, response.RespCodeArgs, "团签用户，无需办理购买")
     }
-    packages, err := service.PackagesService.Detail(r.Context(), req.PackagesId)
+    combo, err := service.ComboService.Detail(r.Context(), req.ComboId)
     if err != nil {
         response.Json(r, response.RespCodeArgs, "套餐不存")
     }
@@ -339,19 +339,19 @@ func (*bizApi) Sign(r *ghttp.Request) {
         response.JsonErrExit(r, response.RespCodeSystemError)
     }
 
-    if err := dao.PackagesOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-        order, err := service.PackagesOrderService.New(ctx, u.Id, packages)
+    if err := dao.ComboOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
+        order, err := service.ComboOrderService.New(ctx, u.Id, combo)
         if err != nil {
             return err
         }
         if _, _err := service.SignService.Create(ctx, model.Sign{
-            UserId:          user.Id,
-            GroupId:         0,
-            PackagesOrderId: order.Id,
-            BatteryType:     packages.BatteryType,
-            State:           0,
-            FileId:          res.Data.FileId,
-            FlowId:          resFlow.Data.FlowId,
+            UserId:       user.Id,
+            GroupId:      0,
+            ComboOrderId: order.Id,
+            BatteryType:  combo.BatteryType,
+            State:        0,
+            FileId:       res.Data.FileId,
+            FlowId:       resFlow.Data.FlowId,
         }); _err != nil {
             return _err
         }
@@ -390,15 +390,15 @@ func (*bizApi) Renewal(r *ghttp.Request) {
     if user.BatteryState != model.BatteryStateUse && user.BatteryState != model.BatteryStateSave {
         response.Json(r, response.RespCodeArgs, "没有使用的中套餐，不能办理续约")
     }
-    packages, _ := service.PackagesService.Detail(r.Context(), user.PackagesId)
-    firstOrder, _ := service.PackagesOrderService.Detail(r.Context(), user.PackagesOrderId)
-    order, err := service.PackagesOrderService.Renewal(r.Context(), req.PaymentType, firstOrder)
+    combo, _ := service.ComboService.Detail(r.Context(), user.ComboId)
+    firstOrder, _ := service.ComboOrderService.Detail(r.Context(), user.ComboOrderId)
+    order, err := service.ComboOrderService.Renewal(r.Context(), req.PaymentType, firstOrder)
     if err == nil && req.PaymentType == model.PayTypeWechat {
         if res, err := wechat.Service().App(r.Context(), model.Prepay{
-            Description: packages.Name,
+            Description: combo.Name,
             No:          order.No,
             Amount:      order.Amount,
-            NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_renewal/wechat",
+            NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/combo_renewal/wechat",
         }); err == nil {
             b, _ := json.Marshal(res)
             response.JsonOkExit(r, model.UserBizNewRep{
@@ -410,10 +410,10 @@ func (*bizApi) Renewal(r *ghttp.Request) {
 
     if err == nil && req.PaymentType == model.PayTypeAliPay {
         if res, err := alipay.Service().App(r.Context(), model.Prepay{
-            Description: packages.Name,
+            Description: combo.Name,
             No:          order.No,
             Amount:      order.Amount,
-            NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_renewal/alipay",
+            NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/combo_renewal/alipay",
         }); err == nil {
             response.JsonOkExit(r, model.UserBizNewRep{
                 OrderId:      order.Id,
@@ -441,19 +441,19 @@ func (*bizApi) PenaltyProfile(r *ghttp.Request) {
         response.Json(r, response.RespCodeArgs, "当前套餐正常使用")
     }
     days := carbon.Parse(user.BatteryReturnAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
-    amount, err := service.PackagesService.PenaltyAmount(r.Context(), user.PackagesId, uint(days))
+    amount, err := service.ComboService.PenaltyAmount(r.Context(), user.ComboId, uint(days))
     amount = 0.01 // TODO 删除 测试使用
     if amount <= 0 || err != nil {
         response.JsonErrExit(r, response.RespCodeSystemError)
     }
-    firstOrder, _ := service.PackagesOrderService.Detail(r.Context(), user.PackagesOrderId)
-    packages, _ := service.PackagesService.Detail(r.Context(), user.PackagesId)
+    firstOrder, _ := service.ComboOrderService.Detail(r.Context(), user.ComboOrderId)
+    combo, _ := service.ComboService.Detail(r.Context(), user.ComboId)
     response.JsonOkExit(r, model.UserBizPenaltyProfileRep{
-        Amount:      amount,
-        Days:        days,
-        PackageName: packages.Name,
-        StartAt:     firstOrder.FirstUseAt,
-        EndAt:       user.BatteryReturnAt,
+        Amount:    amount,
+        Days:      days,
+        ComboName: combo.Name,
+        StartAt:   firstOrder.FirstUseAt,
+        EndAt:     user.BatteryReturnAt,
     })
 }
 
@@ -478,21 +478,21 @@ func (*bizApi) Penalty(r *ghttp.Request) {
         response.Json(r, response.RespCodeArgs, "当前套餐正常使用")
     }
     days := carbon.Parse(user.BatteryReturnAt.String()).DiffInDays(carbon.Parse(gtime.Now().String()))
-    amount, err := service.PackagesService.PenaltyAmount(r.Context(), user.PackagesId, uint(days))
+    amount, err := service.ComboService.PenaltyAmount(r.Context(), user.ComboId, uint(days))
     amount = 0.01 // TODO 删除 测试使用
     if amount <= 0 || err != nil {
         response.JsonErrExit(r, response.RespCodeSystemError)
     }
-    firstOrder, _ := service.PackagesOrderService.Detail(r.Context(), user.PackagesOrderId)
-    packages, _ := service.PackagesService.Detail(r.Context(), user.PackagesId)
-    order, err := service.PackagesOrderService.Penalty(r.Context(), req.PaymentType, amount, firstOrder)
+    firstOrder, _ := service.ComboOrderService.Detail(r.Context(), user.ComboOrderId)
+    combo, _ := service.ComboService.Detail(r.Context(), user.ComboId)
+    order, err := service.ComboOrderService.Penalty(r.Context(), req.PaymentType, amount, firstOrder)
 
     if err == nil && req.PaymentType == model.PayTypeWechat {
         if res, err := wechat.Service().App(r.Context(), model.Prepay{
-            Description: packages.Name,
+            Description: combo.Name,
             No:          order.No,
             Amount:      order.Amount,
-            NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_penalty/wechat",
+            NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/combo_penalty/wechat",
         }); err == nil {
             b, _ := json.Marshal(res)
             response.JsonOkExit(r, model.UserBizNewRep{
@@ -504,10 +504,10 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 
     if err == nil && req.PaymentType == model.PayTypeAliPay {
         if res, err := alipay.Service().App(r.Context(), model.Prepay{
-            Description: packages.Name,
+            Description: combo.Name,
             No:          order.No,
             Amount:      order.Amount,
-            NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/package_penalty/alipay",
+            NotifyUrl:   g.Cfg().GetString("api.host") + "/payment_callback/combo_penalty/alipay",
         }); err == nil {
             response.JsonOkExit(r, model.UserBizNewRep{
                 OrderId:      order.Id,
@@ -625,13 +625,13 @@ func (*bizApi) GroupNew(r *ghttp.Request) {
         response.JsonErrExit(r, response.RespCodeSystemError)
     }
     if _, _err := service.SignService.Create(r.Context(), model.Sign{
-        UserId:          user.Id,
-        GroupId:         user.GroupId,
-        PackagesOrderId: 0,
-        BatteryType:     req.BatteryType,
-        State:           0,
-        FileId:          res.Data.FileId,
-        FlowId:          resFlow.Data.FlowId,
+        UserId:       user.Id,
+        GroupId:      user.GroupId,
+        ComboOrderId: 0,
+        BatteryType:  req.BatteryType,
+        State:        0,
+        FileId:       res.Data.FileId,
+        FlowId:       resFlow.Data.FlowId,
     }); _err != nil {
         response.JsonErrExit(r, response.RespCodeSystemError)
     }

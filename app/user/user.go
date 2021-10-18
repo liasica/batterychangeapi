@@ -110,15 +110,15 @@ func (*userApi) PushToken(r *ghttp.Request) {
     response.JsonOkExit(r)
 }
 
-// Packages
+// Combo
 // @Summary 骑手-获取骑手当前套餐详情
 // @Tags    骑手
 // @Accept  json
 // @Produce  json
-// @Router  /rapi/package  [GET]
-// @Success 200 {object} response.JsonResponse{data=model.UserCurrentPackageOrder}  "返回结果"
-func (*userApi) Packages(r *ghttp.Request) {
-    rep, err := service.UserService.MyPackage(r.Context())
+// @Router  /rapi/combo  [GET]
+// @Success 200 {object} response.JsonResponse{data=model.UserCurrentComboOrder}  "返回结果"
+func (*userApi) Combo(r *ghttp.Request) {
+    rep, err := service.UserService.MyCombo(r.Context())
     if err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
@@ -127,22 +127,22 @@ func (*userApi) Packages(r *ghttp.Request) {
     response.JsonOkExit(r, rep)
 }
 
-// PackagesOrderQr
+// ComboOrderQr
 // @Summary 骑手-获取骑手当前套餐二维码
 // @Tags    骑手
 // @Accept  json
 // @Produce  json
-// @Router  /rapi/package_order/qr  [GET]
+// @Router  /rapi/combo_order/qr  [GET]
 // @Success 200 {object} response.JsonResponse "返回结果, data字段为二维码图片数据，需要本地生成二维码"
-func (*userApi) PackagesOrderQr(r *ghttp.Request) {
+func (*userApi) ComboOrderQr(r *ghttp.Request) {
     u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
     if u.GroupId > 0 {
         response.JsonOkExit(r, fmt.Sprintf("%d-%s-%d", u.GroupId, u.Qr, u.BatteryType))
     } else {
-        if u.PackagesOrderId == 0 {
+        if u.ComboOrderId == 0 {
             response.Json(r, response.RespCodeArgs, "还未购买套餐")
         }
-        order, err := service.PackagesOrderService.Detail(r.Context(), u.PackagesOrderId)
+        order, err := service.ComboOrderService.Detail(r.Context(), u.ComboOrderId)
         if err != nil {
             response.Json(r, response.RespCodeArgs, "为找到订单")
         }
@@ -179,7 +179,7 @@ type UserSignFileRep []*UserSignFileRepItem
 // @Success 200 {object} response.JsonResponse{data=[]user.UserSignFileRep}  "返回结果"
 func (*userApi) SignFile(r *ghttp.Request) {
     u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
-    s, err := service.SignService.UserLatestDoneDetail(r.Context(), u.Id, u.PackagesOrderId, u.GroupId)
+    s, err := service.SignService.UserLatestDoneDetail(r.Context(), u.Id, u.ComboOrderId, u.GroupId)
     if err != nil {
         response.JsonErrExit(r, response.RespCodeNotFound)
     }

@@ -5,25 +5,25 @@
 package dao
 
 import (
-	"battery/app/dao/internal"
+    "battery/app/dao/internal"
 )
 
-// packagesDao is the manager for logic model data accessing
+// comboDao is the manager for logic model data accessing
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
-type packagesDao struct {
-	*internal.PackagesDao
+type comboDao struct {
+    *internal.ComboDao
 }
 
 var (
-	// Packages is globally public accessible object for table packages operations.
-	Packages packagesDao
+    // Combo is globally public accessible object for table combo operations.
+    Combo comboDao
 )
 
 func init() {
-	Packages = packagesDao{
-		internal.NewPackagesDao(),
-	}
+    Combo = comboDao{
+        internal.NewComboDao(),
+    }
 }
 
 // Fill with you ideas below.

@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/os/gtime"
 )
 
-// Packages is the golang structure for table packages.
-type Packages struct {
+// Combo is the golang structure for table combo.
+type Combo struct {
 	Id          uint        `orm:"id,primary"  json:"id"`          //
 	DeletedAt   *gtime.Time `orm:"deletedAt"   json:"deletedAt"`   //
 	CreatedAt   *gtime.Time `orm:"createdAt"   json:"createdAt"`   //
@@ -18,9 +18,9 @@ type Packages struct {
 	BatteryType uint        `orm:"batteryType" json:"batteryType"` // 60 / 72
 	Name        string      `orm:"name"        json:"name"`        // 名称
 	Days        uint        `orm:"days"        json:"days"`        // 套餐时长天数
-	Amount      float64     `orm:"amount"      json:"amount"`      // 套餐价格(包含保证金额)
+	Amount      float64     `orm:"amount"      json:"amount"`      // 套餐价格(包含押金)
 	Price       float64     `orm:"price"       json:"price"`       //
-	Earnest     float64     `orm:"earnest"     json:"earnest"`     // 保证金
+	Deposit     float64     `orm:"deposit"     json:"deposit"`     // 押金
 	ProvinceId  uint        `orm:"provinceId"  json:"provinceId"`  // 省级行政编码
 	CityId      uint        `orm:"cityId"      json:"cityId"`      // 市级行政编码
 	Desc        string      `orm:"desc"        json:"desc"`        // 描述

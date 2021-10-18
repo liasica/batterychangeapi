@@ -268,9 +268,9 @@ func (s *userService) Profile(ctx context.Context) (rep model.UserProfileRep) {
     rep.Qr = u.Qr
     rep.AuthState = user.AuthState
     if user.Type == model.UserTypePersonal {
-        packages, _ := PackagesService.Detail(ctx, user.PackagesId)
-        rep.User.PackagesId = user.PackagesId
-        rep.User.PackagesName = packages.Name
+        combo, _ := ComboService.Detail(ctx, user.ComboId)
+        rep.User.ComboId = user.ComboId
+        rep.User.ComboName = combo.Name
         rep.User.BatteryState = user.BatteryState
         rep.User.BatteryReturnAt = user.BatteryReturnAt
         // 违约
@@ -312,24 +312,24 @@ func (*userService) PushToken(ctx context.Context, req model.PushTokenReq) error
     return err
 }
 
-// MyPackage 用户获取当前套餐信息
-func (*userService) MyPackage(ctx context.Context) (rep model.UserCurrentPackageOrder, err error) {
+// MyCombo 用户获取当前套餐信息
+func (*userService) MyCombo(ctx context.Context) (rep model.UserCurrentComboOrder, err error) {
     u := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
-    if u.PackagesId > 0 {
-        order, err := PackagesOrderService.Detail(ctx, u.PackagesOrderId)
+    if u.ComboId > 0 {
+        order, err := ComboOrderService.Detail(ctx, u.ComboOrderId)
         if err == nil {
             rep.Amount = order.Amount
-            rep.Earnest = order.Earnest
+            rep.Deposit = order.Deposit
             rep.OrderNo = order.No
             rep.PayAt = order.PayAt
             rep.PayType = order.PayType
             rep.StartUseAt = order.FirstUseAt
         }
-        packages, err := PackagesService.Detail(ctx, u.PackagesId)
+        combo, err := ComboService.Detail(ctx, u.ComboId)
         if err == nil {
-            rep.PackageName = packages.Name
-            rep.PackageAmount = packages.Price
-            city, _ := DistrictsService.Detail(ctx, packages.CityId)
+            rep.ComboName = combo.Name
+            rep.ComboAmount = combo.Price
+            city, _ := DistrictsService.Detail(ctx, combo.CityId)
             rep.CityName = city.Name
         }
         rep.ExpirationAt = u.BatteryReturnAt
@@ -356,9 +356,9 @@ func (s *userService) BizProfile(ctx context.Context, qr string) model.BizProfil
         group := GroupService.Detail(ctx, user.GroupId)
         rep.GroupName = group.Name
     } else {
-        if user.PackagesId > 0 {
-            if packages, err := PackagesService.Detail(ctx, user.PackagesId); err == nil {
-                rep.PackagesName = packages.Name
+        if user.ComboId > 0 {
+            if combo, err := ComboService.Detail(ctx, user.ComboId); err == nil {
+                rep.ComboName = combo.Name
             }
         }
         // 已逾期
@@ -445,25 +445,25 @@ func (s *userService) BizBatteryExit(ctx context.Context, user model.User) error
     return err
 }
 
-// BuyPackagesSuccess 用户成功新购套餐
-func (*userService) BuyPackagesSuccess(ctx context.Context, order model.PackagesOrder) error {
-    packages, err := PackagesService.Detail(ctx, order.PackageId)
+// BuyComboSuccess 用户成功新购套餐
+func (*userService) BuyComboSuccess(ctx context.Context, order model.ComboOrder) error {
+    combo, err := ComboService.Detail(ctx, order.ComboId)
     if err != nil {
         return err
     }
     _, err = dao.User.Ctx(ctx).WherePri(order.UserId).Update(g.Map{
-        dao.User.Columns.PackagesOrderId: order.Id,
-        dao.User.Columns.PackagesId:      order.PackageId,
-        dao.User.Columns.BatteryType:     packages.BatteryType,
+        dao.User.Columns.ComboOrderId:    order.Id,
+        dao.User.Columns.ComboId:         order.ComboId,
+        dao.User.Columns.BatteryType:     combo.BatteryType,
         dao.User.Columns.BatteryState:    model.BatteryStateNew,
         dao.User.Columns.BatteryReturnAt: nil,
     })
     return err
 }
 
-// RenewalPackagesSuccess 用户成功续购套餐
-func (*userService) RenewalPackagesSuccess(ctx context.Context, order model.PackagesOrder) error {
-    packages, err := PackagesService.Detail(ctx, order.PackageId)
+// RenewalComboSuccess 用户成功续购套餐
+func (*userService) RenewalComboSuccess(ctx context.Context, order model.ComboOrder) error {
+    combo, err := ComboService.Detail(ctx, order.ComboId)
     if err != nil {
         return err
     }
@@ -471,14 +471,14 @@ func (*userService) RenewalPackagesSuccess(ctx context.Context, order model.Pack
     err = dao.User.Ctx(ctx).WherePri(order.UserId).Scan(&user)
     if err == nil {
         _, err = dao.User.Ctx(ctx).WherePri(order.UserId).Update(g.Map{
-            dao.User.Columns.BatteryReturnAt: user.BatteryReturnAt.Add(time.Duration(packages.Days) * 24 * time.Hour),
+            dao.User.Columns.BatteryReturnAt: user.BatteryReturnAt.Add(time.Duration(combo.Days) * 24 * time.Hour),
         })
     }
     return err
 }
 
-// PenaltyPackagesSuccess 用户支付违约金
-func (*userService) PenaltyPackagesSuccess(ctx context.Context, order model.PackagesOrder) error {
+// PenaltyComboSuccess 用户支付违约金
+func (*userService) PenaltyComboSuccess(ctx context.Context, order model.ComboOrder) error {
     var user model.User
     err := dao.User.Ctx(ctx).WherePri(order.UserId).Scan(&user)
     if err == nil {
@@ -552,16 +552,16 @@ func (s *userService) DetailByQr(ctx context.Context, qr string) (res model.User
     return res
 }
 
-// PackagesStartUse 个签用户新购套餐首次领取
-func (s *userService) PackagesStartUse(ctx context.Context, order model.PackagesOrder) error {
-    packages, err := PackagesService.Detail(ctx, order.PackageId)
+// ComboStartUse 个签用户新购套餐首次领取
+func (s *userService) ComboStartUse(ctx context.Context, order model.ComboOrder) error {
+    combo, err := ComboService.Detail(ctx, order.ComboId)
     if err != nil {
         return err
     }
     user := s.Detail(ctx, order.UserId)
     // 使用时间按自然天计算
     now := gtime.Now()
-    y, m, d := now.Add(time.Duration(packages.Days-1) * 24 * time.Hour).Date()
+    y, m, d := now.Add(time.Duration(combo.Days-1) * 24 * time.Hour).Date()
     returnAt := gtime.NewFromStr(fmt.Sprintf("%d-%d-%d 23:59:59", y, m, d))
     res, err := dao.User.Ctx(ctx).WherePri(order.UserId).
         Where(dao.User.Columns.BatteryState, model.BatteryStateNew).
@@ -646,9 +646,9 @@ func (s *userService) ListPersonalItems(ctx context.Context, req *model.UserPers
     g.Dump(items)
 
     for k, item := range items {
-        if item.PackageDetail != nil {
-            items[k].PackageName = item.PackageDetail.Name
-            items[k].PackageType = item.PackageDetail.Type
+        if item.ComboDetail != nil {
+            items[k].ComboName = item.ComboDetail.Name
+            items[k].ComboType = item.ComboDetail.Type
         }
     }
 

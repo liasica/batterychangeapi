@@ -34,8 +34,8 @@ type userColumns struct {
 	AuthState                    string // 实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过
 	BatteryState                 string // 个人用户换电状态：0 未开通，1 租借中，2 寄存中，3 已退租
 	BatteryType                  string // 套餐电池型号 60 、 72
-	PackagesId                   string // 套餐ID
-	PackagesOrderId              string // 办理套餐订单ID
+	ComboId                      string // 套餐ID
+	ComboOrderId                 string // 办理套餐订单ID
 	BatteryReturnAt              string // 个人用户应归还电池时间， 小于当前时间即逾期
 	BatterySaveAt                string // 个签用户电池寄存时间
 	AccessToken                  string //
@@ -69,8 +69,8 @@ func NewUserDao() *UserDao {
 			AuthState:                    "authState",
 			BatteryState:                 "batteryState",
 			BatteryType:                  "batteryType",
-			PackagesId:                   "packagesId",
-			PackagesOrderId:              "packagesOrderId",
+			ComboId:                      "comboId",
+			ComboOrderId:                 "comboOrderId",
 			BatteryReturnAt:              "batteryReturnAt",
 			BatterySaveAt:                "batterySaveAt",
 			AccessToken:                  "accessToken",

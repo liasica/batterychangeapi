@@ -19,7 +19,7 @@ type Entity struct {
     BizId       uint64      `orm:"bizId"       json:"biz_id"`       // 业务ID 为 0 即为平台调拨  
     Num         uint        `orm:"num"         json:"num"`          //                           
     Day         int         `orm:"day"         json:"day"`          //                           
-    UserName    string      `orm:"userName"    json:"user_name"`    //                           
+    UserName    string      `orm:"userName"    json:"user_name"`    // 操作员 平台调拨为空       
     BatteryType uint        `orm:"batteryType" json:"battery_type"` // 电池型号 60 / 72          
     CreatedAt   *gtime.Time `orm:"createdAt"   json:"created_at"`   //                           
 }

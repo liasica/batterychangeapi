@@ -63,14 +63,14 @@ func init() {
 
     // 支付回调
     s.Group("/payment_callback", func(group *ghttp.RouterGroup) {
-        group.POST("/package_new/alipay", payment.AlipayApi.PackageOrderNewSuccessCallback)
-        group.POST("/package_new/wechat", payment.WechatApi.PackageOrderNewSuccessCallback)
+        group.POST("/combo_new/alipay", payment.AlipayApi.ComboOrderNewSuccessCallback)
+        group.POST("/combo_new/wechat", payment.WechatApi.ComboOrderNewSuccessCallback)
 
-        group.POST("/package_renewal/alipay", payment.AlipayApi.PackageOrderRenewalSuccessCallback)
-        group.POST("/package_renewal/wechat", payment.WechatApi.PackageOrderRenewalSuccessCallback)
+        group.POST("/combo_renewal/alipay", payment.AlipayApi.ComboOrderRenewalSuccessCallback)
+        group.POST("/combo_renewal/wechat", payment.WechatApi.ComboOrderRenewalSuccessCallback)
 
-        group.POST("/package_penalty/alipay", payment.AlipayApi.PackageOrderPenaltySuccessCallback)
-        group.POST("/package_penalty/wechat", payment.WechatApi.PackageOrderPenaltySuccessCallback)
+        group.POST("/combo_penalty/alipay", payment.AlipayApi.ComboOrderPenaltySuccessCallback)
+        group.POST("/combo_penalty/wechat", payment.WechatApi.ComboOrderPenaltySuccessCallback)
     })
 
     // 公用
@@ -97,8 +97,8 @@ func init() {
         group.POST("/auth", user.UserApi.Auth)
         group.GET("/auth", user.UserApi.AuthGet)
         group.PUT("/device", user.UserApi.PushToken)
-        group.GET("/package", user.UserApi.Packages)
-        group.GET("/package_order/qr", user.UserApi.PackagesOrderQr)
+        group.GET("/combo", user.UserApi.Combo)
+        group.GET("/combo_order/qr", user.UserApi.ComboOrderQr)
         group.GET("/home", user.UserApi.Profile)
 
         group.GET("/districts/current_city", user.DistrictsApi.CurrentCity)
@@ -106,14 +106,14 @@ func init() {
 
         group.POST("/biz_sign", user.BizApi.Sign)
         group.POST("/biz_new", user.BizApi.New)
-        group.GET("/biz_new/:orderId/payState", user.BizApi.NewPackagerOrderState)
+        group.GET("/biz_new/:orderId/payState", user.BizApi.NewComborOrderState)
         group.POST("/biz_renewal", user.BizApi.Renewal)
         group.POST("/biz_new_group", user.BizApi.GroupNew)
         group.GET("/biz_penalty", user.BizApi.PenaltyProfile)
         group.POST("/biz_penalty", user.BizApi.Penalty)
 
-        group.GET("/packages", user.PackagesApi.List)
-        group.GET("/packages/:id", user.PackagesApi.Detail)
+        group.GET("/combos", user.ComboApi.List)
+        group.GET("/combos/:id", user.ComboApi.Detail)
         group.GET("/shop", user.ShopApi.List)
 
         group.POST("/biz_battery_renewal", user.BizApi.BatteryRenewal)
@@ -183,9 +183,9 @@ func init() {
             g.GET("/idname", admin.ShopApi.ListIdName)
         })
 
-        group.GET("/package", admin.PackagesApi.List)
-        group.POST("/package", admin.PackagesApi.Create)
-        group.PUT("/package/:id", admin.PackagesApi.Edit)
+        group.GET("/combo", admin.ComboApi.List)
+        group.POST("/combo", admin.ComboApi.Create)
+        group.PUT("/combo/:id", admin.ComboApi.Edit)
 
         group.Group("/driver", func(g *ghttp.RouterGroup) {
             g.GET("/verify", admin.DriverApi.Verify)

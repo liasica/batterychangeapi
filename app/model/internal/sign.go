@@ -10,14 +10,14 @@ import (
 
 // Sign is the golang structure for table sign.
 type Sign struct {
-	Id              uint64      `orm:"id,primary"      json:"id"`              //
-	UserId          uint64      `orm:"userId"          json:"userId"`          //
-	GroupId         uint        `orm:"groupId"         json:"groupId"`         //
-	PackagesOrderId uint64      `orm:"packagesOrderId" json:"packagesOrderId"` //
-	BatteryType     uint        `orm:"batteryType"     json:"batteryType"`     // 电池型号
-	FlowId          string      `orm:"flowId,unique"   json:"flowId"`          // 易签签约流程ID
-	FileId          string      `orm:"fileId,unique"   json:"fileId"`          // 易签签约文件ID
-	State           uint        `orm:"state"           json:"state"`           // 签约状态 0 未签约 1 已签约
-	CreatedAt       *gtime.Time `orm:"createdAt"       json:"createdAt"`       //
-	UpdatedAt       *gtime.Time `orm:"updatedAt"       json:"updatedAt"`       //
+	Id           uint64      `orm:"id,primary"    json:"id"`           //
+	UserId       uint64      `orm:"userId"        json:"userId"`       //
+	GroupId      uint        `orm:"groupId"       json:"groupId"`      //
+	ComboOrderId uint64      `orm:"comboOrderId"  json:"comboOrderId"` //
+	BatteryType  uint        `orm:"batteryType"   json:"batteryType"`  // 电池型号
+	FlowId       string      `orm:"flowId,unique" json:"flowId"`       // 易签签约流程ID
+	FileId       string      `orm:"fileId,unique" json:"fileId"`       // 易签签约文件ID
+	State        uint        `orm:"state"         json:"state"`        // 签约状态 0 未签约 1 已签约
+	CreatedAt    *gtime.Time `orm:"createdAt"     json:"createdAt"`    //
+	UpdatedAt    *gtime.Time `orm:"updatedAt"     json:"updatedAt"`    //
 }

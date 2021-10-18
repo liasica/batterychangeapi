@@ -8,21 +8,21 @@ import (
 	"battery/app/dao/internal"
 )
 
-// packagesOrderDao is the manager for logic model data accessing
+// comboOrderDao is the manager for logic model data accessing
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
-type packagesOrderDao struct {
-	*internal.PackagesOrderDao
+type comboOrderDao struct {
+	*internal.ComboOrderDao
 }
 
 var (
-	// PackagesOrder is globally public accessible object for table packages_order operations.
-	PackagesOrder packagesOrderDao
+	// ComboOrder is globally public accessible object for table combo_order operations.
+	ComboOrder comboOrderDao
 )
 
 func init() {
-	PackagesOrder = packagesOrderDao{
-		internal.NewPackagesOrderDao(),
+	ComboOrder = comboOrderDao{
+		internal.NewComboOrderDao(),
 	}
 }
 

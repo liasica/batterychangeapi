@@ -16,8 +16,8 @@ type UserBiz struct {
 	UserId       uint64      `orm:"userId"       json:"userId"`       //
 	GoroupId     uint        `orm:"goroupId"     json:"goroupId"`     // 团体ID
 	GoroupUserId uint        `orm:"goroupUserId" json:"goroupUserId"` //
-	Type         uint        `orm:"type"         json:"type"`         // 业务类型:  1 新签， 2 换电，3 寄存，4 退租
-	PackagesId   uint        `orm:"packagesId"   json:"packagesId"`   // 套餐ID
+	Type         uint        `orm:"type"         json:"type"`         // 业务类型: 1新签 2换电 3寄存 4退租
+	ComboId      uint        `orm:"comboId"      json:"comboId"`      // 套餐ID
 	BatteryType  uint        `orm:"batteryType"  json:"batteryType"`  // 电池型号 60 / 72
 	CreatedAt    *gtime.Time `orm:"createdAt"    json:"createdAt"`    // 扫码时间
 	UpdatedAt    *gtime.Time `orm:"updatedAt"    json:"updatedAt"`    //

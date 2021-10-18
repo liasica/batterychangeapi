@@ -1,14 +1,14 @@
 package model
 
 import (
-	"battery/app/model/internal"
+    "battery/app/model/internal"
 )
 
 type Refund internal.Refund
 
-const RefundRelationTypePackagesOrder = 1
+const RefundRelationTypeComboOrder = 1
 
 const (
-	RefundStateStart = 1
-	RefundStateDone  = 2
+    RefundStateStart = 1
+    RefundStateDone  = 2
 )

@@ -218,6 +218,137 @@
                 }
             }
         },
+        "/admin/combo": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "套餐列表",
+                "parameters": [
+                    {
+                        "description": "分页参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Page"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/model.ItemsWithTotal"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "items": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/model.ComboListItem"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "创建套餐",
+                "parameters": [
+                    {
+                        "description": "门店详情",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ComboReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/combo/{id}": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "编辑套餐",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "套餐ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "门店详情",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ComboReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/districts": {
             "get": {
                 "consumes": [
@@ -600,137 +731,6 @@
                                     }
                                 }
                             ]
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/package": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "管理"
-                ],
-                "summary": "套餐列表",
-                "parameters": [
-                    {
-                        "description": "分页参数",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.Page"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.JsonResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "allOf": [
-                                                {
-                                                    "$ref": "#/definitions/model.ItemsWithTotal"
-                                                },
-                                                {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "items": {
-                                                            "type": "array",
-                                                            "items": {
-                                                                "$ref": "#/definitions/model.PackageListItem"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "管理"
-                ],
-                "summary": "创建套餐",
-                "parameters": [
-                    {
-                        "description": "门店详情",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.PackageReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/package/{id}": {
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "管理"
-                ],
-                "summary": "编辑套餐",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "套餐ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "门店详情",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.PackageReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonResponse"
                         }
                     }
                 }
@@ -1322,7 +1322,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UserBizNewPackageOrderStateRep"
+                                            "$ref": "#/definitions/model.UserBizNewComboOrderStateRep"
                                         }
                                     }
                                 }
@@ -1626,6 +1626,131 @@
                                     }
                                 }
                             ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/combo": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-个签用户套餐列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前城市ID",
+                        "name": "cityId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/combo/:id": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-个签用户套餐详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "套餐ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.ComboRiderListRepItem"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/rapi/combo_order/qr": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "骑手"
+                ],
+                "summary": "骑手-获取骑手当前套餐二维码",
+                "responses": {
+                    "200": {
+                        "description": "返回结果, data字段为二维码图片数据，需要本地生成二维码",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
                         }
                     }
                 }
@@ -2029,165 +2154,6 @@
                                             "items": {
                                                 "$ref": "#/definitions/model.OpenCityListRepItem"
                                             }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/rapi/package": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "骑手"
-                ],
-                "summary": "骑手-获取骑手当前套餐详情",
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.JsonResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/model.UserCurrentPackageOrder"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/rapi/package_order/qr": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "骑手"
-                ],
-                "summary": "骑手-获取骑手当前套餐二维码",
-                "responses": {
-                    "200": {
-                        "description": "返回结果, data字段为二维码图片数据，需要本地生成二维码",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/rapi/packages": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "骑手"
-                ],
-                "summary": "骑手-个签用户套餐列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "当前页码",
-                        "name": "pageIndex",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数",
-                        "name": "pageLimit",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "当前城市ID",
-                        "name": "cityId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.JsonResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.PackagesRiderListRepItem"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/rapi/packages/:id": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "骑手"
-                ],
-                "summary": "骑手-个签用户套餐详情",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "套餐ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.JsonResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/model.PackagesRiderListRepItem"
                                         }
                                     }
                                 }
@@ -2844,7 +2810,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.ShopManagerPackagesOrderListDetailRep"
+                                            "$ref": "#/definitions/model.ShopManagerComboOrderListDetailRep"
                                         }
                                     }
                                 }
@@ -2873,7 +2839,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.ShopManagerPackagesOrderClaimReq"
+                            "$ref": "#/definitions/model.ShopManagerComboOrderClaimReq"
                         }
                     }
                 ],
@@ -2920,7 +2886,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.ShopManagerPackagesOrderScanDetailRep"
+                                            "$ref": "#/definitions/model.ShopManagerComboOrderScanDetailRep"
                                         }
                                     }
                                 }
@@ -3291,6 +3257,14 @@
                     "description": "城市",
                     "type": "string"
                 },
+                "comboId": {
+                    "description": "套餐ID",
+                    "type": "integer"
+                },
+                "comboName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
                 "createdAt": {
                     "description": "业务办理时间",
                     "type": "string"
@@ -3310,14 +3284,6 @@
                 "mobile": {
                     "description": "手机号",
                     "type": "string"
-                },
-                "packageName": {
-                    "description": "套餐名称",
-                    "type": "string"
-                },
-                "packagesId": {
-                    "description": "套餐ID",
-                    "type": "integer"
                 },
                 "realName": {
                     "description": "姓名",
@@ -3393,6 +3359,10 @@
                     "description": "电池类型 60 / 72",
                     "type": "integer"
                 },
+                "comboName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
                 "groupId": {
                     "description": "团体Id，个签用户为 0",
                     "type": "integer"
@@ -3411,13 +3381,150 @@
                 "mobile": {
                     "type": "string"
                 },
-                "packagesName": {
-                    "description": "套餐名称",
-                    "type": "string"
-                },
                 "realName": {
                     "description": "真实姓名",
                     "type": "string"
+                }
+            }
+        },
+        "model.ComboListItem": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "套餐总价（包含押金）",
+                    "type": "number"
+                },
+                "batteryType": {
+                    "description": "电池类型",
+                    "type": "integer",
+                    "enum": [
+                        60,
+                        72
+                    ]
+                },
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
+                "days": {
+                    "description": "套餐时长天数",
+                    "type": "integer"
+                },
+                "deleteAt": {
+                    "description": "套餐停用时间",
+                    "type": "string"
+                },
+                "deposit": {
+                    "description": "押金",
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "套餐名",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "套餐价格",
+                    "type": "number"
+                },
+                "provinceId": {
+                    "description": "省份ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ComboReq": {
+            "type": "object",
+            "properties": {
+                "batteryType": {
+                    "description": "电池类型",
+                    "type": "integer",
+                    "enum": [
+                        60,
+                        72
+                    ]
+                },
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
+                "days": {
+                    "description": "套餐时长天数",
+                    "type": "integer"
+                },
+                "deposit": {
+                    "description": "押金",
+                    "type": "number"
+                },
+                "desc": {
+                    "description": "介绍",
+                    "type": "string"
+                },
+                "disable": {
+                    "description": "是否禁用，当值为true的时候其他参数忽略 false启用(默认) true禁用",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "套餐价格",
+                    "type": "number"
+                },
+                "provinceId": {
+                    "description": "省份ID",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "套餐类型",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ComboRiderListRepItem": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "套餐价格(包含押金)",
+                    "type": "number"
+                },
+                "batteryType": {
+                    "description": "60 / 72 电池类型",
+                    "type": "integer",
+                    "enum": [
+                        60,
+                        72
+                    ]
+                },
+                "days": {
+                    "description": "套餐时长天数",
+                    "type": "integer"
+                },
+                "deposit": {
+                    "description": "押金",
+                    "type": "number"
+                },
+                "desc": {
+                    "description": "套餐介绍",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "usableCityName": {
+                    "description": "可用城市名称",
+                    "type": "string"
+                },
+                "usableShopCnt": {
+                    "description": "可用门店数量",
+                    "type": "integer"
                 }
             }
         },
@@ -3825,20 +3932,20 @@
                     "description": "可用城市 type 为 100 时返回",
                     "type": "string"
                 },
-                "earnest": {
-                    "description": "押金金额 type 为 100 时返回",
-                    "type": "number"
-                },
-                "earnestDesc": {
-                    "description": "押金说明 type 为 104 时返回",
+                "comboName": {
+                    "description": "套餐名称 type 为 100 时返回",
                     "type": "string"
                 },
-                "packageOrderNo": {
+                "comboOrderNo": {
                     "description": "订单编号 type 为 100，102 时返回",
                     "type": "string"
                 },
-                "packagesName": {
-                    "description": "套餐名称 type 为 100 时返回",
+                "deposit": {
+                    "description": "押金金额 type 为 100 时返回",
+                    "type": "number"
+                },
+                "depositDesc": {
+                    "description": "押金说明 type 为 104 时返回",
                     "type": "string"
                 },
                 "payAt": {
@@ -3940,11 +4047,15 @@
                     "description": "城市",
                     "type": "string"
                 },
+                "comboName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
                 "createdAt": {
                     "description": "订单时间",
                     "type": "string"
                 },
-                "earnest": {
+                "deposit": {
                     "description": "押金",
                     "type": "number"
                 },
@@ -3962,10 +4073,6 @@
                 "no": {
                     "description": "订单编号",
                     "type": "integer"
-                },
-                "packageName": {
-                    "description": "套餐名称",
-                    "type": "string"
                 },
                 "payAt": {
                     "description": "支付时间",
@@ -4026,6 +4133,10 @@
                     "description": "城市ID",
                     "type": "integer"
                 },
+                "comboId": {
+                    "description": "套餐ID",
+                    "type": "integer"
+                },
                 "endDate": {
                     "description": "结束日期 eg: 2021-10-19",
                     "type": "string"
@@ -4037,10 +4148,6 @@
                 "no": {
                     "description": "订单编号",
                     "type": "string"
-                },
-                "packageId": {
-                    "description": "套餐ID",
-                    "type": "integer"
                 },
                 "pageIndex": {
                     "description": "当前页号",
@@ -4068,147 +4175,6 @@
                 },
                 "userId": {
                     "description": "骑手ID",
-                    "type": "integer"
-                }
-            }
-        },
-        "model.PackageListItem": {
-            "type": "object",
-            "properties": {
-                "amount": {
-                    "description": "套餐总价（包含押金）",
-                    "type": "number"
-                },
-                "batteryType": {
-                    "description": "电池类型",
-                    "type": "integer",
-                    "enum": [
-                        60,
-                        72
-                    ]
-                },
-                "cityId": {
-                    "description": "城市ID",
-                    "type": "integer"
-                },
-                "days": {
-                    "description": "套餐时长天数",
-                    "type": "integer"
-                },
-                "deleteAt": {
-                    "description": "套餐停用时间",
-                    "type": "string"
-                },
-                "earnest": {
-                    "description": "押金",
-                    "type": "number"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "description": "套餐名",
-                    "type": "string"
-                },
-                "price": {
-                    "description": "套餐价格",
-                    "type": "number"
-                },
-                "provinceId": {
-                    "description": "省份ID",
-                    "type": "integer"
-                }
-            }
-        },
-        "model.PackageReq": {
-            "type": "object",
-            "properties": {
-                "batteryType": {
-                    "description": "电池类型",
-                    "type": "integer",
-                    "enum": [
-                        60,
-                        72
-                    ]
-                },
-                "cityId": {
-                    "description": "城市ID",
-                    "type": "integer"
-                },
-                "days": {
-                    "description": "套餐时长天数",
-                    "type": "integer"
-                },
-                "desc": {
-                    "description": "介绍",
-                    "type": "string"
-                },
-                "disable": {
-                    "description": "是否禁用，当值为true的时候其他参数忽略 false启用(默认) true禁用",
-                    "type": "boolean"
-                },
-                "earnest": {
-                    "description": "押金",
-                    "type": "number"
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
-                },
-                "price": {
-                    "description": "套餐价格",
-                    "type": "number"
-                },
-                "provinceId": {
-                    "description": "省份ID",
-                    "type": "integer"
-                },
-                "type": {
-                    "description": "套餐类型",
-                    "type": "integer"
-                }
-            }
-        },
-        "model.PackagesRiderListRepItem": {
-            "type": "object",
-            "properties": {
-                "amount": {
-                    "description": "套餐价格(包含押金)",
-                    "type": "number"
-                },
-                "batteryType": {
-                    "description": "60 / 72 电池类型",
-                    "type": "integer",
-                    "enum": [
-                        60,
-                        72
-                    ]
-                },
-                "days": {
-                    "description": "套餐时长天数",
-                    "type": "integer"
-                },
-                "desc": {
-                    "description": "套餐介绍",
-                    "type": "string"
-                },
-                "earnest": {
-                    "description": "押金",
-                    "type": "number"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
-                },
-                "usableCityName": {
-                    "description": "可用城市名称",
-                    "type": "string"
-                },
-                "usableShopCnt": {
-                    "description": "可用门店数量",
                     "type": "integer"
                 }
             }
@@ -4624,6 +4590,142 @@
                 }
             }
         },
+        "model.ShopManagerComboOrderClaimReq": {
+            "type": "object",
+            "required": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "description": "扫码获取",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ShopManagerComboOrderListDetailRep": {
+            "type": "object",
+            "required": [
+                "amount",
+                "batteryType",
+                "comboName",
+                "deposit",
+                "orderNo",
+                "payAt",
+                "payType",
+                "userMobile",
+                "userName"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "支付金额",
+                    "type": "number"
+                },
+                "batteryType": {
+                    "description": "电池型号 60 / 72",
+                    "type": "integer"
+                },
+                "comboName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "deposit": {
+                    "description": "押金金额",
+                    "type": "number"
+                },
+                "orderNo": {
+                    "description": "订单编号",
+                    "type": "string"
+                },
+                "payAt": {
+                    "description": "支付时间",
+                    "type": "string"
+                },
+                "payType": {
+                    "description": "支付方式 1 支付宝 2 微信",
+                    "type": "integer"
+                },
+                "userMobile": {
+                    "description": "客户手机号",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "客户名称",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ShopManagerComboOrderScanDetailRep": {
+            "type": "object",
+            "required": [
+                "amount",
+                "batteryType",
+                "claimState",
+                "comboAmount",
+                "comboName",
+                "deposit",
+                "groupName",
+                "orderNo",
+                "payAt",
+                "payType",
+                "userMobile",
+                "userName",
+                "userType"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "支付金额，个签用户返回",
+                    "type": "number"
+                },
+                "batteryType": {
+                    "description": "电池型号 60 / 72",
+                    "type": "integer"
+                },
+                "claimState": {
+                    "description": "1 未被认领， 2 已被认领",
+                    "type": "integer"
+                },
+                "comboAmount": {
+                    "description": "套餐价格，个签用户返回",
+                    "type": "number"
+                },
+                "comboName": {
+                    "description": "套餐名称，个签用户返回",
+                    "type": "string"
+                },
+                "deposit": {
+                    "description": "押金金额，个签用户返回",
+                    "type": "number"
+                },
+                "groupName": {
+                    "description": "团签公司名称，团签签用户返回",
+                    "type": "string"
+                },
+                "orderNo": {
+                    "description": "订单编号，个签用户返回",
+                    "type": "string"
+                },
+                "payAt": {
+                    "description": "支付时间，个签用户返回",
+                    "type": "string"
+                },
+                "payType": {
+                    "description": "支付方式 1 支付宝 2 微信，个签用户返回",
+                    "type": "integer"
+                },
+                "userMobile": {
+                    "description": "客户手机号",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "客户名称",
+                    "type": "string"
+                },
+                "userType": {
+                    "description": "1 个签 2 团签 3 团签BOOS",
+                    "type": "integer"
+                }
+            }
+        },
         "model.ShopManagerLoginRep": {
             "type": "object",
             "properties": {
@@ -4647,142 +4749,6 @@
                 "sms": {
                     "description": "短信验证码",
                     "type": "string"
-                }
-            }
-        },
-        "model.ShopManagerPackagesOrderClaimReq": {
-            "type": "object",
-            "required": [
-                "code"
-            ],
-            "properties": {
-                "code": {
-                    "description": "扫码获取",
-                    "type": "string"
-                }
-            }
-        },
-        "model.ShopManagerPackagesOrderListDetailRep": {
-            "type": "object",
-            "required": [
-                "amount",
-                "batteryType",
-                "earnest",
-                "orderNo",
-                "packagesName",
-                "payAt",
-                "payType",
-                "userMobile",
-                "userName"
-            ],
-            "properties": {
-                "amount": {
-                    "description": "支付金额",
-                    "type": "number"
-                },
-                "batteryType": {
-                    "description": "电池型号 60 / 72",
-                    "type": "integer"
-                },
-                "earnest": {
-                    "description": "押金金额",
-                    "type": "number"
-                },
-                "orderNo": {
-                    "description": "订单编号",
-                    "type": "string"
-                },
-                "packagesName": {
-                    "description": "套餐名称",
-                    "type": "string"
-                },
-                "payAt": {
-                    "description": "支付时间",
-                    "type": "string"
-                },
-                "payType": {
-                    "description": "支付方式 1 支付宝 2 微信",
-                    "type": "integer"
-                },
-                "userMobile": {
-                    "description": "客户手机号",
-                    "type": "string"
-                },
-                "userName": {
-                    "description": "客户名称",
-                    "type": "string"
-                }
-            }
-        },
-        "model.ShopManagerPackagesOrderScanDetailRep": {
-            "type": "object",
-            "required": [
-                "amount",
-                "batteryType",
-                "claimState",
-                "earnest",
-                "groupName",
-                "orderNo",
-                "packagesAmount",
-                "packagesName",
-                "payAt",
-                "payType",
-                "userMobile",
-                "userName",
-                "userType"
-            ],
-            "properties": {
-                "amount": {
-                    "description": "支付金额，个签用户返回",
-                    "type": "number"
-                },
-                "batteryType": {
-                    "description": "电池型号 60 / 72",
-                    "type": "integer"
-                },
-                "claimState": {
-                    "description": "1 未被认领， 2 已被认领",
-                    "type": "integer"
-                },
-                "earnest": {
-                    "description": "押金金额，个签用户返回",
-                    "type": "number"
-                },
-                "groupName": {
-                    "description": "团签公司名称，团签签用户返回",
-                    "type": "string"
-                },
-                "orderNo": {
-                    "description": "订单编号，个签用户返回",
-                    "type": "string"
-                },
-                "packagesAmount": {
-                    "description": "套餐价格，个签用户返回",
-                    "type": "number"
-                },
-                "packagesName": {
-                    "description": "套餐名称，个签用户返回",
-                    "type": "string"
-                },
-                "payAt": {
-                    "description": "支付时间，个签用户返回",
-                    "type": "string"
-                },
-                "payType": {
-                    "description": "支付方式 1 支付宝 2 微信，个签用户返回",
-                    "type": "integer"
-                },
-                "userMobile": {
-                    "description": "客户手机号",
-                    "type": "string"
-                },
-                "userName": {
-                    "description": "客户名称",
-                    "type": "string"
-                },
-                "userType": {
-                    "description": "1 个签 2 团签 3 团签BOOS",
-                    "type": "integer"
                 }
             }
         },
@@ -4810,16 +4776,16 @@
                     "description": "金额",
                     "type": "number"
                 },
+                "comboName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
                 "id": {
                     "description": "订单ID",
                     "type": "integer"
                 },
                 "orderNo": {
                     "description": "订单编号",
-                    "type": "string"
-                },
-                "packageName": {
-                    "description": "套餐名称",
                     "type": "string"
                 },
                 "payAt": {
@@ -4957,7 +4923,7 @@
                 }
             }
         },
-        "model.UserBizNewPackageOrderStateRep": {
+        "model.UserBizNewComboOrderStateRep": {
             "type": "object",
             "properties": {
                 "payState": {
@@ -5004,9 +4970,9 @@
             "type": "object",
             "required": [
                 "amount",
+                "comboName",
                 "days",
                 "endAt",
-                "packageName",
                 "startAt"
             ],
             "properties": {
@@ -5014,16 +4980,16 @@
                     "description": "金额",
                     "type": "number"
                 },
+                "comboName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
                 "days": {
                     "description": "逾期天数",
                     "type": "integer"
                 },
                 "endAt": {
                     "description": "结束时间",
-                    "type": "string"
-                },
-                "packageName": {
-                    "description": "套餐名称",
                     "type": "string"
                 },
                 "startAt": {
@@ -5166,12 +5132,12 @@
                     "description": "业务类型  2 换电 3 寄存(仅个签可用)，5 退租",
                     "type": "integer"
                 },
-                "groupName": {
-                    "description": "团体名称， 名称为空即为 个签用户",
+                "comboName": {
+                    "description": "套餐名称",
                     "type": "string"
                 },
-                "packagesName": {
-                    "description": "套餐名称",
+                "groupName": {
+                    "description": "团体名称， 名称为空即为 个签用户",
                     "type": "string"
                 },
                 "userMobile": {
@@ -5187,26 +5153,26 @@
         "model.UserBizSignReq": {
             "type": "object",
             "required": [
-                "packagesId"
+                "comboId"
             ],
             "properties": {
-                "packagesId": {
+                "comboId": {
                     "description": "套餐ID",
                     "type": "integer"
                 }
             }
         },
-        "model.UserCurrentPackageOrder": {
+        "model.UserCurrentComboOrder": {
             "type": "object",
             "required": [
                 "amount",
                 "batteryState",
                 "cityName",
-                "earnest",
+                "comboAmount",
+                "comboName",
+                "deposit",
                 "expirationAt",
                 "orderNo",
-                "packageAmount",
-                "packageName",
                 "payAt",
                 "payType",
                 "startUseAt"
@@ -5224,7 +5190,15 @@
                     "description": "可用城市",
                     "type": "string"
                 },
-                "earnest": {
+                "comboAmount": {
+                    "description": "套餐金额",
+                    "type": "number"
+                },
+                "comboName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "deposit": {
                     "description": "押金金额 0 为没有押金",
                     "type": "number"
                 },
@@ -5234,14 +5208,6 @@
                 },
                 "orderNo": {
                     "description": "订单编号",
-                    "type": "string"
-                },
-                "packageAmount": {
-                    "description": "套餐金额",
-                    "type": "number"
-                },
-                "packageName": {
-                    "description": "套餐名称",
                     "type": "string"
                 },
                 "payAt": {
@@ -5380,11 +5346,11 @@
                             "description": "个签骑手换电状态：0 未开通， 1 新签未领 ，2 租借中，3 寄存中，4 已退租， 5 已逾期",
                             "type": "integer"
                         },
-                        "packagesId": {
+                        "comboId": {
                             "description": "个签骑手所购套餐ID",
                             "type": "integer"
                         },
-                        "packagesName": {
+                        "comboName": {
                             "description": "个签骑手所购套餐名称",
                             "type": "string"
                         }

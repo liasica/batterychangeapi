@@ -158,8 +158,8 @@ func (*userBizService) ListAdmin(ctx context.Context, req *model.BizListReq) (to
             items[k].ShopName = row.Shop.Name
         }
 
-        if row.PackageDetail != nil {
-            items[k].PackageName = row.PackageDetail.Name
+        if row.ComboDetail != nil {
+            items[k].ComboName = row.ComboDetail.Name
         }
 
         if row.Group != nil {
