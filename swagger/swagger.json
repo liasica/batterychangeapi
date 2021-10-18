@@ -746,6 +746,44 @@
                 }
             }
         },
+        "/admin/group/{id}/member/{userId}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "删除团签成员",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团签ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "成员ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/group/{id}/member/{userId}/biz": {
             "get": {
                 "consumes": [

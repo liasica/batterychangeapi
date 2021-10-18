@@ -225,6 +225,22 @@ func (*groupApi) ListMemberBiz(r *ghttp.Request) {
     response.ItemsWithTotal(r, total, items)
 }
 
-// DeleteMember TODO: 删除成员规则
+// DeleteMember
+// @Summary 删除团签成员
+// @Tags    管理
+// @Accept  json
+// @Param   id path int true "团签ID"
+// @Param   userId path int true "成员ID"
+// @Produce json
+// @Router  /admin/group/{id}/member/{userId} [DELETE]
+// @Success 200 {object} response.JsonResponse "返回结果"
 func (*groupApi) DeleteMember(r *ghttp.Request) {
+    memberId := r.GetUint("userId")
+    groupId := r.GetUint("id")
+
+    if err := service.GroupUserService.Delete(r.Context(), groupId, memberId); err == nil {
+        response.JsonOkExit(r)
+    } else {
+        response.Json(r, response.RespCodeArgs, err.Error())
+    }
 }

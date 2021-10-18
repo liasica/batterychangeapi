@@ -3,9 +3,11 @@ package service
 import (
     "battery/app/dao"
     "battery/app/model"
+    "battery/app/model/group_user"
     "context"
     "errors"
     "fmt"
+    "github.com/gogf/gf/database/gdb"
     "github.com/gogf/gf/frame/g"
 )
 
@@ -110,4 +112,47 @@ func (*groupUserService) BatchCreate(ctx context.Context, userIds []uint64, grou
     }
     _, err := dao.GroupUser.Ctx(ctx).Data(data).Insert()
     return err
+}
+
+func (*groupUserService) Delete(ctx context.Context, groupId, memberId uint) (err error) {
+    c := dao.User.Columns
+    var u = new(model.User)
+    // 查找用户是否可以被删除
+    _ = dao.User.Ctx(ctx).
+        Where(c.GroupId, groupId).
+        Where(c.Id, memberId).
+        Scan(u)
+    if u == nil {
+        return errors.New("未找到该用户")
+    }
+
+    // 判断用户是否正在使用
+    switch u.BatteryState {
+    case model.BatteryStateUse, model.BatteryStateSave, model.BatteryStateOverdue:
+        return errors.New("用户正在使用中")
+    }
+
+    if err = dao.GroupUser.DB.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+        // 删除团签用户
+        gc := dao.GroupUser.Columns
+        _, err = tx.Delete(group_user.Table, g.Map{
+            gc.UserId:  memberId,
+            gc.GroupId: groupId,
+        })
+        if err != nil {
+            return err
+        }
+
+        // TODO: 被注销的账号是否转成个签账户还是直接删除
+        _, _ = tx.Delete(group_user.Table, g.Map{
+            c.Id:      u.Id,
+            c.GroupId: u.GroupId,
+        })
+
+        return nil
+    }); err != nil {
+        return err
+    }
+
+    return nil
 }
