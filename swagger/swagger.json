@@ -3654,6 +3654,14 @@
                 "provinceId": {
                     "description": "省份ID",
                     "type": "integer"
+                },
+                "type": {
+                    "description": "套餐类型: 1 个人 2 团体",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
                 }
             }
         },
@@ -3701,8 +3709,12 @@
                     "type": "integer"
                 },
                 "type": {
-                    "description": "套餐类型",
-                    "type": "integer"
+                    "description": "套餐类型: 1个人 2团体",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
                 }
             }
         },
