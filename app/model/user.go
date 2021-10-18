@@ -125,14 +125,14 @@ type UserProfileRep struct {
     AuthState uint   `validate:"required" json:"authState"` // 实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过
     Qr        string `json:"qr"`                            // 用户二维码数据，需要本地生成图片
     User      struct {
-        BatteryState    uint        `json:"batteryState"`    // 个签骑手换电状态：0 未开通， 1 新签未领 ，2 租借中，3 寄存中，4 已退租， 5 已逾期
+        BatteryState    uint        `json:"batteryState"`    // 个签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租 5已逾期
         ComboId         uint        `json:"comboId"`         // 个签骑手所购套餐ID
         ComboName       string      `json:"comboName"`       // 个签骑手所购套餐名称
         BatteryReturnAt *gtime.Time `json:"batteryReturnAt"` // 个签骑手套餐到期时间
     } `json:"user,omitempty"` // 个签用户套餐信息， 其它类型用户忽略
 
     GroupUser struct {
-        BatteryState uint `json:"batteryState"` // 团签骑手换电状态：0 未开通，1 新签未领, 2 租借中，3 寄存中，4 已退租
+        BatteryState uint `json:"batteryState"` // 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租
         BatteryType  uint `json:"batteryType"`  // 电池型号 60 / 72  未开通为 0
     } `json:"groupUser,omitempty"` // 团签用户骑手信息， 其它类型用户忽略
 
@@ -152,38 +152,43 @@ type UserVerifyListItem struct {
     IdCardImg3 string `json:"idCardImg3"`                // 手持身份证
 }
 
-// UserPersonalReq 个签列表请求
-type UserPersonalReq struct {
+// UserListReq 用户列表请求
+type UserListReq struct {
     Page
-    RealName     string      `json:"realName"`     // 姓名
-    Mobile       string      `json:"mobile"`       // 手机号
-    BatteryState uint        `json:"batteryState"` // 换电状态
-    StartDate    *gtime.Time `json:"startDate"`    // 开始日期 eg: 2021-10-17
-    EndDate      *gtime.Time `json:"endDate"`      // 结束日期 eg: 2021-10-17
+    GroupId      uint        `json:"groupId" swaggerignore:"true"` // 团队ID
+    RealName     string      `json:"realName"`                     // 姓名
+    Mobile       string      `json:"mobile"`                       // 手机号
+    BatteryState uint        `json:"batteryState"`                 // 换电状态
+    StartDate    *gtime.Time `json:"startDate"`                    // 开始日期 eg: 2021-10-17
+    EndDate      *gtime.Time `json:"endDate"`                      // 结束日期 eg: 2021-10-17
 }
 
-// UserPersonalItem 个签列表项
-type UserPersonalItem struct {
+// UserListItem 用户列表项
+type UserListItem struct {
     gmeta.Meta `json:"-" orm:"table:user" swaggerignore:"true"`
 
-    Id              uint        `json:"id"`              // ID
-    RealName        string      `json:"realName"`        // 姓名
-    Mobile          string      `json:"mobile"`          // 手机号
-    BatteryState    uint        `json:"batteryState"`    // 换电状态
-    BatteryType     uint        `json:"batteryType"`     // 套餐电池型号 60/72
-    ComboId         uint        `json:"comboId"`         // 套餐ID
-    ComboOrderId    uint64      `json:"comboOrderId"`    // 办理套餐订单ID
-    BatteryReturnAt *gtime.Time `json:"batteryReturnAt"` // 个人用户应归还电池时间， 小于当前时间即逾期
-    BatterySaveAt   *gtime.Time `json:"batterySaveAt"`   // 个签用户电池寄存时间
-    StartDate       *gtime.Time `json:"startDate"`       // 开始日期 eg: 2021-10-17
-    EndDate         *gtime.Time `json:"endDate"`         // 结束日期 eg: 2021-10-17
-    CreatedAt       *gtime.Time `json:"createdAt"`       // 注册时间
+    Id                    uint        `json:"id"`                    // ID
+    GroupId               uint        `json:"groupId"`               // 团队ID
+    RealName              string      `json:"realName"`              // 姓名
+    Mobile                string      `json:"mobile"`                // 手机号
+    BatteryState          uint        `json:"batteryState"`          // 状态 个签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租 5已逾期; 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租
+    BatteryType           uint        `json:"batteryType"`           // 套餐电池型号 60/72
+    ComboId               uint        `json:"comboId"`               // 套餐ID
+    ComboOrderId          uint64      `json:"comboOrderId"`          // 办理套餐订单ID
+    BatteryReturnAt       *gtime.Time `json:"batteryReturnAt"`       // 个人用户应归还电池时间， 小于当前时间即逾期
+    BatterySaveAt         *gtime.Time `json:"batterySaveAt"`         // 个签用户电池寄存时间
+    BizBatteryRenewalCnt  uint        `json:"bizBatteryRenewalCnt"`  // 积累换次数
+    BizBatteryRenewalDays uint        `json:"bizBatteryRenewalDays"` // 累计换电自然天数
+    StartDate             *gtime.Time `json:"startDate"`             // 开始日期 eg: 2021-10-17
+    EndDate               *gtime.Time `json:"endDate"`               // 结束日期 eg: 2021-10-17
+    CreatedAt             *gtime.Time `json:"createdAt"`             // 注册时间
 
-    ComboName   string `json:"comboName"`   // 当前套餐名称
-    ComboType   uint   `json:"comboType"`   // 当前套餐类型
-    ChangeTimes uint   `json:"changeTimes"` // 累积换电次数
-    Days        uint   `json:"days"`        // 剩余天数
+    GroupName string `json:"groupName"` // 团队名称
+    ComboName string `json:"comboName"` // 当前套餐名称
+    ComboType uint   `json:"comboType"` // 当前套餐类型
+    Days      uint   `json:"days"`      // 剩余天数
 
-    ComboDetail *Combo     `json:"-" orm:"with:id=comboId"`
-    BizItems    []*UserBiz `json:"-" orm:"with:userId=id, order:createdAt desc"`
+    ComboDetail *Combo `json:"-" orm:"with:id=comboId"`
+    Group       *Group `json:"-" orm:"with:id=groupId"`
+    // BizItems    []*UserBiz `json:"-" orm:"with:userId=id, order:createdAt desc"`
 }

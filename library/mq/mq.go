@@ -14,11 +14,15 @@ import (
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/util/gutil"
     "reflect"
+    "strings"
 )
 
 // ParseStructToQuery 将interface转换为查询语句(=)
 func ParseStructToQuery(req interface{}, without ...string) (params g.Map) {
-    ex := gutil.SliceToMap(without)
+    ex := make(map[string]struct{})
+    for _, s := range without {
+        ex[s] = struct{}{}
+    }
     t := reflect.TypeOf(req)
     v := reflect.ValueOf(req)
     params = make(g.Map)
@@ -29,7 +33,7 @@ func ParseStructToQuery(req interface{}, without ...string) (params g.Map) {
         if !val.IsZero() && !ok {
             switch val.Kind() {
             case reflect.String, reflect.Uint, reflect.Int, reflect.Float64:
-                params[key] = val.Interface()
+                params[strings.ToLower(key[:1])+key[1:]] = val.Interface()
             }
         }
     }

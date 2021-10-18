@@ -1,6 +1,7 @@
 package service
 
 import (
+    "battery/app/model/user"
     "battery/library/mq"
     "context"
     "errors"
@@ -620,13 +621,13 @@ func (s *userService) ListVerifyItems(ctx context.Context, req *model.UserVerify
     return
 }
 
-func (s *userService) ListPersonalItems(ctx context.Context, req *model.UserPersonalReq) (total int, items []model.UserPersonalItem) {
+func (s *userService) ListPersonalItems(ctx context.Context, req *model.UserListReq) (total int, items []model.UserListItem) {
     query := dao.User.Ctx(ctx)
 
     c := dao.User.Columns
     layout := "Y-m-d"
-    params := mq.ParseStructToQuery(*req)
-    query = query.Where(params)
+    params := mq.ParseStructToQuery(*req, "GroupId")
+    query = query.Where(params).Where(c.GroupId, req.GroupId)
 
     if !req.StartDate.IsZero() {
         query = query.WhereGTE(c.CreatedAt, req.StartDate.Format(layout))
@@ -635,18 +636,17 @@ func (s *userService) ListPersonalItems(ctx context.Context, req *model.UserPers
         query = query.WhereLTE(c.CreatedAt, req.EndDate.Format(layout))
     }
 
-    // fields := mq.FieldsWithTable(user.Table, c)
+    fields := mq.FieldsWithTable(user.Table, c)
 
     _ = query.WithAll().
         Page(req.PageIndex, req.PageLimit).
         OrderDesc(c.CreatedAt).
-        // Fields(fields).
+        Fields(fields).
         Scan(&items)
-
-    // g.Dump(items)
 
     now := gtime.Now()
     for k, item := range items {
+        // 计算剩余天数
         if !item.BatteryReturnAt.IsZero() && now.Before(item.BatteryReturnAt) {
             items[k].Days = uint(item.BatteryReturnAt.Sub(now).Hours() / 24)
         }
@@ -654,19 +654,20 @@ func (s *userService) ListPersonalItems(ctx context.Context, req *model.UserPers
         if item.ComboDetail != nil {
             items[k].ComboName = item.ComboDetail.Name
             items[k].ComboType = item.ComboDetail.Type
-
-            // if item.BatteryState < model.BatteryStateExit && item.BatteryState > model.BatteryStateDefault {
-            // }
         }
 
-        if len(item.BizItems) > 0 {
-            // item.BizItems.
-            for _, bizItem := range item.BizItems {
-                if bizItem.Type == model.UserBizBatteryRenewal {
-                    items[k].ChangeTimes++
-                }
-            }
+        if item.Group != nil {
+            items[k].GroupName = item.Group.Name
         }
+
+        // // 计算换电次数
+        // if len(item.BizItems) > 0 {
+        //     for _, bizItem := range item.BizItems {
+        //         if bizItem.Type == model.UserBizBatteryRenewal {
+        //             items[k].ChangeTimes++
+        //         }
+        //     }
+        // }
     }
 
     total, _ = query.Count()

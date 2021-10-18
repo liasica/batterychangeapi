@@ -39,16 +39,34 @@ func (*driverApi) Verify(r *ghttp.Request) {
 }
 
 // Personal
-// @Summary 个签列表
+// @Summary 个签用户列表
 // @Tags    管理
 // @Accept  json
-// @Param   entity body model.UserPersonalReq true "请求参数"
+// @Param   entity body model.UserListReq true "请求参数"
 // @Produce json
 // @Router  /admin/driver/personal [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.UserPersonalItem}}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.UserListItem}}  "返回结果"
 func (*driverApi) Personal(r *ghttp.Request) {
-    req := new(model.UserPersonalReq)
+    req := new(model.UserListReq)
     _ = request.ParseRequest(r, req)
+
+    total, items := service.UserService.ListPersonalItems(r.Context(), req)
+    response.ItemsWithTotal(r, total, items)
+}
+
+// Group
+// @Summary 团签成员列表
+// @Tags    管理
+// @Accept  json
+// @Param   id int path true "团签ID"
+// @Param   entity body model.UserListReq true "请求参数"
+// @Produce json
+// @Router  /admin/group/{id}/driver [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.UserListItem}}  "返回结果"
+func (*driverApi) Group(r *ghttp.Request) {
+    req := new(model.UserListReq)
+    _ = request.ParseRequest(r, req)
+    req.GroupId = r.GetUint("id")
 
     total, items := service.UserService.ListPersonalItems(r.Context(), req)
     response.ItemsWithTotal(r, total, items)

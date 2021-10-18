@@ -397,7 +397,7 @@
                 "tags": [
                     "管理"
                 ],
-                "summary": "个签列表",
+                "summary": "团签成员列表",
                 "parameters": [
                     {
                         "description": "请求参数",
@@ -1702,30 +1702,7 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-个签用户套餐列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "当前页码",
-                        "name": "pageIndex",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数",
-                        "name": "pageLimit",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "当前城市ID",
-                        "name": "cityId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
+                "summary": "骑手-获取骑手当前套餐详情",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -1738,10 +1715,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
-                                            }
+                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
                                         }
                                     }
                                 }
@@ -5361,15 +5335,19 @@
                     "type": "string"
                 },
                 "batteryState": {
-                    "description": "换电状态",
+                    "description": "状态 个签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租 5已逾期; 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租",
                     "type": "integer"
                 },
                 "batteryType": {
                     "description": "套餐电池型号 60/72",
                     "type": "integer"
                 },
-                "changeTimes": {
-                    "description": "累积换电次数",
+                "bizBatteryRenewalCnt": {
+                    "description": "积累换次数",
+                    "type": "integer"
+                },
+                "bizBatteryRenewalDays": {
+                    "description": "累计换电自然天数",
                     "type": "integer"
                 },
                 "comboId": {
@@ -5398,6 +5376,14 @@
                 },
                 "endDate": {
                     "description": "结束日期 eg: 2021-10-17",
+                    "type": "string"
+                },
+                "groupId": {
+                    "description": "团队ID",
+                    "type": "integer"
+                },
+                "groupName": {
+                    "description": "团队名称",
                     "type": "string"
                 },
                 "id": {
@@ -5475,7 +5461,7 @@
                     "type": "object",
                     "properties": {
                         "batteryState": {
-                            "description": "团签骑手换电状态：0 未开通，1 新签未领, 2 租借中，3 寄存中，4 已退租",
+                            "description": "团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租",
                             "type": "integer"
                         },
                         "batteryType": {
@@ -5509,7 +5495,7 @@
                             "type": "string"
                         },
                         "batteryState": {
-                            "description": "个签骑手换电状态：0 未开通， 1 新签未领 ，2 租借中，3 寄存中，4 已退租， 5 已逾期",
+                            "description": "个签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租 5已逾期",
                             "type": "integer"
                         },
                         "comboId": {
