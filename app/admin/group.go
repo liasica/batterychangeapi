@@ -201,5 +201,30 @@ func (*groupApi) ListMember(r *ghttp.Request) {
     response.ItemsWithTotal(r, total, items)
 }
 
+// ListMemberBiz
+// @Summary 团签成员换电记录
+// @Tags    管理
+// @Accept  json
+// @Param   id path int true "团签ID"
+// @Param   userId path int true "成员ID"
+// @Produce json
+// @Router  /admin/group/{id}/member/{userId}/biz [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.BizSimpleItem}}  "返回结果"
+func (*groupApi) ListMemberBiz(r *ghttp.Request) {
+    groupId := r.GetUint("id")
+    userId := r.GetUint("userId")
+
+    // 查找用户
+    c := dao.User.Columns
+    var member = new(model.User)
+    _ = dao.User.Ctx(r.Context()).Where(c.Id, userId).Where(c.GroupId, groupId).Scan(member)
+    if member == nil {
+        response.Json(r, response.RespCodeArgs, "未找到该用户")
+    }
+    total, items := service.UserBizService.ListSimaple(r.Context(), member)
+    response.ItemsWithTotal(r, total, items)
+}
+
+// DeleteMember TODO: 删除成员规则
 func (*groupApi) DeleteMember(r *ghttp.Request) {
 }

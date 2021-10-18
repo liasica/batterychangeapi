@@ -177,3 +177,17 @@ type BizListReq struct {
     StartDate *gtime.Time `json:"startDate"`              // 开始日期 eg: 2021-10-17
     EndDate   *gtime.Time `json:"endDate"`                // 结束日期 eg: 2021-10-19
 }
+
+type BizSimpleItem struct {
+    gmeta.Meta `json:"-" orm:"table:user_biz" swaggerignore:"true"`
+
+    Id          uint        `json:"id"`
+    ShopId      uint        `json:"shopId"`      // 门店ID
+    Type        uint        `json:"type"`        // 业务类型: 1新签 2换电 3寄存 4退租
+    BatteryType uint        `json:"batteryType"` // 电池型号: 60 / 72
+    CreatedAt   *gtime.Time `json:"createdAt"`   // 业务办理时间
+
+    ShopName string `json:"shopName"` // 门店名称
+
+    Shop *Shop `json:"-" orm:"with:id=shopId"`
+}

@@ -746,6 +746,71 @@
                 }
             }
         },
+        "/admin/group/{id}/member/{userId}/biz": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "团签成员换电记录",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团签ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "成员ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/model.ItemsWithTotal"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "items": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/model.BizSimpleItem"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/login": {
             "post": {
                 "consumes": [
@@ -1767,7 +1832,30 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-获取骑手当前套餐详情",
+                "summary": "骑手-个签用户套餐列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前城市ID",
+                        "name": "cityId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -1780,7 +1868,10 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
+                                            }
                                         }
                                     }
                                 }
@@ -3483,6 +3574,34 @@
                 "realName": {
                     "description": "真实姓名",
                     "type": "string"
+                }
+            }
+        },
+        "model.BizSimpleItem": {
+            "type": "object",
+            "properties": {
+                "batteryType": {
+                    "description": "电池型号: 60 / 72",
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "description": "业务办理时间",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "shopId": {
+                    "description": "门店ID",
+                    "type": "integer"
+                },
+                "shopName": {
+                    "description": "门店名称",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "业务类型: 1新签 2换电 3寄存 4退租",
+                    "type": "integer"
                 }
             }
         },

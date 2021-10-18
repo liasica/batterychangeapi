@@ -29,9 +29,9 @@ func (*userBizService) Create(ctx context.Context, req model.UserBiz) (uint64, e
 
 // ListUser 骑手获取换电记录
 func (*userBizService) ListUser(ctx context.Context, req model.Page) (rep []model.UserBiz) {
-    user := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
+    u := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
     _ = dao.UserBiz.Ctx(ctx).
-        Where(dao.UserBiz.Columns.UserId, user.Id).
+        Where(dao.UserBiz.Columns.UserId, u.Id).
         WhereIn(dao.UserBiz.Columns.Type, []int{model.UserBizNew, model.UserBizBatteryRenewal, model.UserBizBatteryUnSave}).
         OrderDesc(dao.UserBiz.Columns.Id).
         Page(req.PageIndex, req.PageLimit).
@@ -173,6 +173,27 @@ func (*userBizService) ListAdmin(ctx context.Context, req *model.BizListReq) (to
         if row.User != nil {
             items[k].RealName = row.User.RealName
             items[k].Mobile = row.User.Mobile
+        }
+    }
+
+    total, _ = query.Count()
+    return
+}
+
+func (*userBizService) ListSimaple(ctx context.Context, member *model.User) (total int, items []model.BizSimpleItem) {
+    c := dao.UserBiz.Columns
+    query := dao.UserBiz.Ctx(ctx).
+        WithAll().
+        Where(c.GoroupId, member.GroupId).
+        Where(c.UserId, member.Id).
+        // WhereGTE(c.CreatedAt, member.BizBatteryRenewalDaysStartAt.Format("Y-m-d")).
+        OrderDesc(c.CreatedAt)
+
+    _ = query.Scan(&items)
+
+    for k, item := range items {
+        if item.Shop != nil {
+            items[k].ShopName = item.Shop.Name
         }
     }
 

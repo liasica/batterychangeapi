@@ -197,6 +197,7 @@ func init() {
             g.POST("/", admin.GroupApi.Create)
             g.POST("/:id/member", admin.GroupApi.AddMember)
             g.GET("/:id/member", admin.GroupApi.ListMember)
+            g.GET("/:id/member/{userId}/biz", admin.GroupApi.ListMemberBiz)
             g.DELETE("/:id/member/:memberId", admin.GroupApi.DeleteMember)
             g.GET("/:id/contract", admin.GroupApi.Contract)
         })
