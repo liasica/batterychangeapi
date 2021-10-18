@@ -386,6 +386,66 @@
                 }
             }
         },
+        "/admin/driver/personal": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "个签列表",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserPersonalReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/model.ItemsWithTotal"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "items": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/model.UserPersonalItem"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/driver/verify": {
             "get": {
                 "consumes": [
@@ -5285,6 +5345,112 @@
                 },
                 "sms": {
                     "description": "短信验证码",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserPersonalItem": {
+            "type": "object",
+            "properties": {
+                "batteryReturnAt": {
+                    "description": "个人用户应归还电池时间， 小于当前时间即逾期",
+                    "type": "string"
+                },
+                "batterySaveAt": {
+                    "description": "个签用户电池寄存时间",
+                    "type": "string"
+                },
+                "batteryState": {
+                    "description": "换电状态",
+                    "type": "integer"
+                },
+                "batteryType": {
+                    "description": "套餐电池型号 60/72",
+                    "type": "integer"
+                },
+                "changeTimes": {
+                    "description": "累积换电次数",
+                    "type": "integer"
+                },
+                "comboId": {
+                    "description": "套餐ID",
+                    "type": "integer"
+                },
+                "comboName": {
+                    "description": "当前套餐名称",
+                    "type": "string"
+                },
+                "comboOrderId": {
+                    "description": "办理套餐订单ID",
+                    "type": "integer"
+                },
+                "comboType": {
+                    "description": "当前套餐类型",
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "description": "注册时间",
+                    "type": "string"
+                },
+                "days": {
+                    "description": "剩余天数",
+                    "type": "integer"
+                },
+                "endDate": {
+                    "description": "结束日期 eg: 2021-10-17",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "realName": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "startDate": {
+                    "description": "开始日期 eg: 2021-10-17",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserPersonalReq": {
+            "type": "object",
+            "required": [
+                "pageIndex",
+                "pageLimit"
+            ],
+            "properties": {
+                "batteryState": {
+                    "description": "换电状态",
+                    "type": "integer"
+                },
+                "endDate": {
+                    "description": "结束日期 eg: 2021-10-17",
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "pageIndex": {
+                    "description": "当前页号",
+                    "type": "integer"
+                },
+                "pageLimit": {
+                    "description": "页大小",
+                    "type": "integer"
+                },
+                "realName": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "startDate": {
+                    "description": "开始日期 eg: 2021-10-17",
                     "type": "string"
                 }
             }

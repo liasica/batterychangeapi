@@ -643,12 +643,29 @@ func (s *userService) ListPersonalItems(ctx context.Context, req *model.UserPers
         // Fields(fields).
         Scan(&items)
 
-    g.Dump(items)
+    // g.Dump(items)
 
+    now := gtime.Now()
     for k, item := range items {
+        if !item.BatteryReturnAt.IsZero() && now.Before(item.BatteryReturnAt) {
+            items[k].Days = uint(item.BatteryReturnAt.Sub(now).Hours() / 24)
+        }
+
         if item.ComboDetail != nil {
             items[k].ComboName = item.ComboDetail.Name
             items[k].ComboType = item.ComboDetail.Type
+
+            // if item.BatteryState < model.BatteryStateExit && item.BatteryState > model.BatteryStateDefault {
+            // }
+        }
+
+        if len(item.BizItems) > 0 {
+            // item.BizItems.
+            for _, bizItem := range item.BizItems {
+                if bizItem.Type == model.UserBizBatteryRenewal {
+                    items[k].ChangeTimes++
+                }
+            }
         }
     }
 

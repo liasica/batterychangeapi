@@ -38,9 +38,18 @@ func (*driverApi) Verify(r *ghttp.Request) {
     response.ItemsWithTotal(r, total, items)
 }
 
+// Personal
+// @Summary 个签列表
+// @Tags    管理
+// @Accept  json
+// @Param   entity body model.UserPersonalReq true "请求参数"
+// @Produce json
+// @Router  /admin/driver/personal [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.UserPersonalItem}}  "返回结果"
 func (*driverApi) Personal(r *ghttp.Request) {
     req := new(model.UserPersonalReq)
     _ = request.ParseRequest(r, req)
 
-    service.UserService.ListPersonalItems(r.Context(), req)
+    total, items := service.UserService.ListPersonalItems(r.Context(), req)
+    response.ItemsWithTotal(r, total, items)
 }

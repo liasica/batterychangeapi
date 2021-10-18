@@ -2,6 +2,7 @@ package model
 
 import (
     "github.com/gogf/gf/os/gtime"
+    "github.com/gogf/gf/util/gmeta"
 
     "battery/app/model/internal"
 )
@@ -163,6 +164,9 @@ type UserPersonalReq struct {
 
 // UserPersonalItem 个签列表项
 type UserPersonalItem struct {
+    gmeta.Meta `json:"-" orm:"table:user" swaggerignore:"true"`
+
+    Id              uint        `json:"id"`              // ID
     RealName        string      `json:"realName"`        // 姓名
     Mobile          string      `json:"mobile"`          // 手机号
     BatteryState    uint        `json:"batteryState"`    // 换电状态
@@ -178,8 +182,8 @@ type UserPersonalItem struct {
     ComboName   string `json:"comboName"`   // 当前套餐名称
     ComboType   uint   `json:"comboType"`   // 当前套餐类型
     ChangeTimes uint   `json:"changeTimes"` // 累积换电次数
-    DateLast    uint   `json:"dateLast"`    // 剩余天数 (套餐日期 - 首次启用日期 - 寄存天数)
+    Days        uint   `json:"days"`        // 剩余天数
 
-    ComboDetail *Combo     `orm:"with:id=comboId"`
-    BizItems    []*UserBiz `orm:"with:userId=id"`
+    ComboDetail *Combo     `json:"-" orm:"with:id=comboId"`
+    BizItems    []*UserBiz `json:"-" orm:"with:userId=id, order:createdAt desc"`
 }
