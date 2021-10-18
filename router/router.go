@@ -199,7 +199,6 @@ func init() {
             g.GET("/:id/member", admin.GroupApi.ListMember)
             g.DELETE("/:id/member/:memberId", admin.GroupApi.DeleteMember)
             g.GET("/:id/contract", admin.GroupApi.Contract)
-            g.GET("/:id/driver", admin.DriverApi.Group)
         })
 
         group.Group("/battery", func(g *ghttp.RouterGroup) {

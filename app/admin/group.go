@@ -4,6 +4,7 @@ import (
     "battery/app/dao"
     "battery/app/model"
     "battery/app/service"
+    "battery/library/request"
     "battery/library/response"
     "context"
     "github.com/gogf/gf/database/gdb"
@@ -182,7 +183,22 @@ func (*groupApi) AddMember(r *ghttp.Request) {
     response.JsonOkExit(r)
 }
 
+// ListMember
+// @Summary 团签成员列表
+// @Tags    管理
+// @Accept  json
+// @Param   id path int true "团签ID"
+// @Param   entity body model.UserListReq true "请求参数"
+// @Produce json
+// @Router  /admin/group/{id}/member [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.UserListItem}}  "返回结果"
 func (*groupApi) ListMember(r *ghttp.Request) {
+    req := new(model.UserListReq)
+    _ = request.ParseRequest(r, req)
+    req.GroupId = r.GetUint("id")
+
+    total, items := service.UserService.ListPersonalItems(r.Context(), req)
+    response.ItemsWithTotal(r, total, items)
 }
 
 func (*groupApi) DeleteMember(r *ghttp.Request) {
