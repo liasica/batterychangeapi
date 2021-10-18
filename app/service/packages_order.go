@@ -180,6 +180,7 @@ func (s *packagesOrderService) ShopMonthList(ctx context.Context, shopId uint, f
     return
 }
 
+// ListAdmin 订单列表查询
 func (*packagesOrderService) ListAdmin(ctx context.Context, req *model.OrderListReq) (total int, items []model.OrderListItem) {
     query := dao.PackagesOrder.Ctx(ctx)
     c := dao.PackagesOrder.Columns

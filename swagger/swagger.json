@@ -158,6 +158,66 @@
                 }
             }
         },
+        "/admin/biz": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "业务列表",
+                "parameters": [
+                    {
+                        "description": "门店列表请求",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.BizListReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/model.ItemsWithTotal"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "items": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/model.BizEntity"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/districts": {
             "get": {
                 "consumes": [
@@ -3212,6 +3272,108 @@
                 },
                 "type": {
                     "description": "\"1 入库 2 出库\"",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.BizEntity": {
+            "type": "object",
+            "properties": {
+                "batteryType": {
+                    "description": "电池型号 60 / 72",
+                    "type": "integer"
+                },
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
+                "cityName": {
+                    "description": "城市",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "description": "业务办理时间",
+                    "type": "string"
+                },
+                "goroupId": {
+                    "description": "团体ID",
+                    "type": "integer"
+                },
+                "groupName": {
+                    "description": "团签名称",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "packageName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "packagesId": {
+                    "description": "套餐ID",
+                    "type": "integer"
+                },
+                "realName": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "shopId": {
+                    "description": "门店ID",
+                    "type": "integer"
+                },
+                "shopName": {
+                    "description": "门店名称",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "业务类型: 1新签 2换电 3寄存 4退租",
+                    "type": "integer"
+                },
+                "userId": {
+                    "description": "用户ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.BizListReq": {
+            "type": "object",
+            "required": [
+                "pageIndex",
+                "pageLimit"
+            ],
+            "properties": {
+                "endDate": {
+                    "description": "结束日期 eg: 2021-10-19",
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "pageIndex": {
+                    "description": "当前页号",
+                    "type": "integer"
+                },
+                "pageLimit": {
+                    "description": "页大小",
+                    "type": "integer"
+                },
+                "realName": {
+                    "description": "骑手姓名",
+                    "type": "string"
+                },
+                "startDate": {
+                    "description": "开始日期 eg: 2021-10-17",
+                    "type": "string"
+                },
+                "userId": {
+                    "description": "骑手ID",
                     "type": "integer"
                 }
             }

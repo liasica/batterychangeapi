@@ -1,6 +1,9 @@
 package service
 
 import (
+    "battery/app/model/user"
+    "battery/app/model/user_biz"
+    "battery/library/mq"
     "context"
     "fmt"
     "github.com/gogf/gf/os/gtime"
@@ -50,9 +53,9 @@ func (*userBizService) ListShop(ctx context.Context, req model.UserBizShopRecord
     }
 
     if req.Keywords != "" {
-        users := []struct {
+        var users []struct {
             Id uint64
-        }{}
+        }
         _ = dao.User.Where(dao.User.Columns.Mobile, req.Keywords).
             WhereOrLike(dao.User.Columns.RealName, fmt.Sprintf("%%%s%%", req.Keywords)).
             Fields(dao.User.Columns.Id).Scan(&users)
@@ -112,5 +115,67 @@ func (*userBizService) ListShopMonthTotal(ctx context.Context, req model.UserBiz
         m = m.Where(dao.UserBiz.Columns.Type, req.BizType)
     }
     rep.Cnt, _ = m.Count()
+    return
+}
+
+// ListAdmin 业务列表查询
+func (*userBizService) ListAdmin(ctx context.Context, req *model.BizListReq) (total int, items []model.BizEntity) {
+    query := dao.UserBiz.Ctx(ctx)
+
+    c := dao.UserBiz.Columns
+    layout := "Y-m-d"
+
+    params := mq.ParseStructToQuery(*req, "RealName", "Mobile")
+    query = query.Where(params)
+
+    if !req.StartDate.IsZero() {
+        query = query.WhereGTE(c.CreatedAt, req.StartDate.Format(layout))
+    }
+    if !req.EndDate.IsZero() {
+        query = query.WhereLTE(c.CreatedAt, req.EndDate.Format(layout))
+    }
+
+    if req.Mobile != "" {
+        query = query.LeftJoin(user.Table, fmt.Sprintf("%s.%s=%s.%s", user.Table, dao.User.Columns.Id, user_biz.Table, c.UserId)).
+            Where(fmt.Sprintf("%s.%s = ?", user.Table, dao.User.Columns.Mobile), req.Mobile)
+    }
+
+    if req.RealName != "" {
+        query = query.LeftJoin(user.Table, fmt.Sprintf("%s.%s=%s.%s", user.Table, dao.User.Columns.Id, user_biz.Table, c.UserId)).
+            WhereLike(fmt.Sprintf("%s.%s", user.Table, dao.User.Columns.RealName), "%"+req.RealName+"%")
+    }
+
+    fields := mq.FieldsWithTable(user_biz.Table, c)
+
+    _ = query.WithAll().
+        Page(req.PageIndex, req.PageLimit).
+        OrderDesc(c.CreatedAt).
+        Fields(fields).
+        Scan(&items)
+
+    for k, row := range items {
+        if row.Shop != nil {
+            items[k].ShopName = row.Shop.Name
+        }
+
+        if row.PackageDetail != nil {
+            items[k].PackageName = row.PackageDetail.Name
+        }
+
+        if row.Group != nil {
+            items[k].GroupName = row.Group.Name
+        }
+
+        if row.City != nil {
+            items[k].CityName = row.City.Name
+        }
+
+        if row.User != nil {
+            items[k].RealName = row.User.RealName
+            items[k].Mobile = row.User.Mobile
+        }
+    }
+
+    total, _ = query.Count()
     return
 }

@@ -2,6 +2,7 @@ package model
 
 import (
     "github.com/gogf/gf/os/gtime"
+    "github.com/gogf/gf/util/gmeta"
 
     "battery/app/model/internal"
 )
@@ -136,4 +137,43 @@ type UserBizShopRecordMonthTotalReq struct {
 // UserBizShopRecordMonthTotalRep 店长获取业务记录按月统计响应
 type UserBizShopRecordMonthTotalRep struct {
     Cnt int `json:"cnt"` // 总条数
+}
+
+type BizEntity struct {
+    gmeta.Meta `json:"-" orm:"table:user_biz" swaggerignore:"true"`
+
+    Id          uint64      `orm:"id,primary"   json:"id"`          // ID
+    CityId      uint        `orm:"cityId"       json:"cityId"`      // 城市ID
+    ShopId      uint        `orm:"shopId"       json:"shopId"`      // 门店ID
+    UserId      uint64      `orm:"userId"       json:"userId"`      // 用户ID
+    GoroupId    uint        `orm:"goroupId"     json:"goroupId"`    // 团体ID
+    Type        uint        `orm:"type"         json:"type"`        // 业务类型: 1新签 2换电 3寄存 4退租
+    PackagesId  uint        `orm:"packagesId"   json:"packagesId"`  // 套餐ID
+    BatteryType uint        `orm:"batteryType"  json:"batteryType"` // 电池型号 60 / 72
+    CreatedAt   *gtime.Time `orm:"createdAt"    json:"createdAt"`   // 业务办理时间
+
+    // GoroupUserId uint        `orm:"goroupUserId" json:"goroupUserId"` // 团签用户ID
+
+    Mobile      string `json:"mobile"`      // 手机号
+    RealName    string `json:"realName"`    // 姓名
+    CityName    string `json:"cityName"`    // 城市
+    ShopName    string `json:"shopName"`    // 门店名称
+    GroupName   string `json:"groupName"`   // 团签名称
+    PackageName string `json:"packageName"` // 套餐名称
+
+    User          *User      `json:"-" orm:"with:id=userId"`
+    City          *Districts `json:"-" orm:"with:id=cityId"`
+    Shop          *Shop      `json:"-" orm:"with:id=shopId"`
+    PackageDetail *Packages  `json:"-" orm:"with:id=packageId"`
+    Group         *Group     `json:"-" orm:"with:id=groupId"`
+}
+
+// BizListReq 业务记录请求
+type BizListReq struct {
+    Page
+    UserId    uint        `json:"userId"`                 // 骑手ID
+    RealName  string      `json:"realName"`               // 骑手姓名
+    Mobile    string      `json:"mobile" v:"phone-loose"` // 手机号
+    StartDate *gtime.Time `json:"startDate"`              // 开始日期 eg: 2021-10-17
+    EndDate   *gtime.Time `json:"endDate"`                // 结束日期 eg: 2021-10-19
 }

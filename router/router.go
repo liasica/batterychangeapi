@@ -206,9 +206,9 @@ func init() {
             g.GET("/record", admin.BatteryApi.TransferRecord)
         })
 
-        group.Group("/order", func(g *ghttp.RouterGroup) {
-            g.GET("/", admin.OrderApi.List)
-        })
+        group.GET("/order", admin.OrderApi.List)
+
+        group.GET("/biz", admin.BizApi.List)
     })
 
     s.SetIndexFolder(true)
