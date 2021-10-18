@@ -13,7 +13,7 @@ type shopBatteryRecordService struct {
 }
 
 // User 骑手记录
-func (*shopBatteryRecordService) User(ctx context.Context, recordType, bizType, shopId uint, bizId uint64, userName string, batteryType uint) error {
+func (*shopBatteryRecordService) User(ctx context.Context, recordType, bizType, shopId uint, bizId uint64, userName string, batteryType string) error {
     _, err := dao.ShopBatteryRecord.Ctx(ctx).
         Fields(
             dao.ShopBatteryRecord.Columns.ShopId,
@@ -37,7 +37,7 @@ func (*shopBatteryRecordService) User(ctx context.Context, recordType, bizType, 
 }
 
 // Platform 平台调拨
-func (*shopBatteryRecordService) Platform(ctx context.Context, recordType, shopId, num, batteryType uint) error {
+func (*shopBatteryRecordService) Platform(ctx context.Context, recordType, shopId, num uint, batteryType string) error {
     _, err := dao.ShopBatteryRecord.Ctx(ctx).
         Fields(dao.ShopBatteryRecord.Columns.ShopId,
             dao.ShopBatteryRecord.Columns.Num,

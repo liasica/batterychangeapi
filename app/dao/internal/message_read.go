@@ -24,7 +24,7 @@ type messageReadColumns struct {
 	Id        string //
 	MessageId string //
 	UserId    string //
-	UserType  string // 1 骑手端 2  商家端
+	UserType  string // 1骑手端 2商家端
 	CreatedAt string //
 }
 

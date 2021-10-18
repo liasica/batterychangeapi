@@ -12,18 +12,18 @@ import (
 
 // Entity is the golang structure for table payment.
 type Entity struct {
-    Id           uint64      `orm:"id,primary"   json:"id"`            //                                          
-    PayAt        *gtime.Time `orm:"payAt"        json:"pay_at"`        // 支付时间                                 
-    RelationId   uint64      `orm:"relationId"   json:"relation_id"`   // 关联ID                                   
-    RelationType uint        `orm:"relationType" json:"relation_type"` // 关联类型:  1 购买套餐，2 续费，3 违约金  
-    State        uint        `orm:"state"        json:"state"`         // 0 待支付 1 已支付 2 已退款               
-    PayType      uint        `orm:"payType"      json:"pay_type"`      // 1 支付宝 2 微信                          
-    PayNo        string      `orm:"payNo"        json:"pay_no"`        // 第三方支付流水号                         
-    Amount       float64     `orm:"amount"       json:"amount"`        // 支付金额                                 
-    No           string      `orm:"no,unique"    json:"no"`            // 支付编号                                 
-    UserId       uint64      `orm:"userId"       json:"user_id"`       // 用户ID                                   
-    CreatedAt    *gtime.Time `orm:"createdAt"    json:"created_at"`    //                                          
-    UpdatedAt    *gtime.Time `orm:"updatedAt"    json:"updated_at"`    //                                          
+    Id           uint64      `orm:"id,primary"   json:"id"`            //                                    
+    PayAt        *gtime.Time `orm:"payAt"        json:"pay_at"`        // 支付时间                           
+    RelationId   uint64      `orm:"relationId"   json:"relation_id"`   // 关联ID                             
+    RelationType uint        `orm:"relationType" json:"relation_type"` // 关联类型: 1购买套餐 2续费 3违约金  
+    State        uint        `orm:"state"        json:"state"`         // 状态: 0待支付 1已支付 2已退款      
+    PayType      uint        `orm:"payType"      json:"pay_type"`      // 支付方式: 1支付宝 2微信            
+    PayNo        string      `orm:"payNo"        json:"pay_no"`        // 第三方支付流水号                   
+    Amount       float64     `orm:"amount"       json:"amount"`        // 支付金额                           
+    No           string      `orm:"no,unique"    json:"no"`            // 支付编号                           
+    UserId       uint64      `orm:"userId"       json:"user_id"`       // 用户ID                             
+    CreatedAt    *gtime.Time `orm:"createdAt"    json:"created_at"`    //                                    
+    UpdatedAt    *gtime.Time `orm:"updatedAt"    json:"updated_at"`    //                                    
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

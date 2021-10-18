@@ -11,14 +11,14 @@ import (
 // UserBiz is the golang structure for table user_biz.
 type UserBiz struct {
 	Id           uint64      `orm:"id,primary"   json:"id"`           //
-	CityId       uint        `orm:"cityId"       json:"cityId"`       //
-	ShopId       uint        `orm:"shopId"       json:"shopId"`       // 门店ID
-	UserId       uint64      `orm:"userId"       json:"userId"`       //
-	GoroupId     uint        `orm:"goroupId"     json:"goroupId"`     // 团体ID
-	GoroupUserId uint        `orm:"goroupUserId" json:"goroupUserId"` //
-	Type         uint        `orm:"type"         json:"type"`         // 业务类型: 1新签 2换电 3寄存 4退租
+	UserId       uint64      `orm:"userId"       json:"userId"`       // 用户ID
 	ComboId      uint        `orm:"comboId"      json:"comboId"`      // 套餐ID
-	BatteryType  uint        `orm:"batteryType"  json:"batteryType"`  // 电池型号 60 / 72
+	CityId       uint        `orm:"cityId"       json:"cityId"`       // 城市ID
+	ShopId       uint        `orm:"shopId"       json:"shopId"`       // 门店ID
+	GoroupId     uint        `orm:"goroupId"     json:"goroupId"`     // 团签ID
+	GoroupUserId uint        `orm:"goroupUserId" json:"goroupUserId"` // 团签用户ID
+	Type         uint        `orm:"type"         json:"type"`         // 业务类型: 1新签 2换电 3寄存 4退租
+	BatteryType  string      `orm:"batteryType"  json:"batteryType"`  // 电池型号
 	CreatedAt    *gtime.Time `orm:"createdAt"    json:"createdAt"`    // 扫码时间
 	UpdatedAt    *gtime.Time `orm:"updatedAt"    json:"updatedAt"`    //
 }

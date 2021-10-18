@@ -1832,30 +1832,7 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-个签用户套餐列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "当前页码",
-                        "name": "pageIndex",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数",
-                        "name": "pageLimit",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "当前城市ID",
-                        "name": "cityId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
+                "summary": "骑手-获取骑手当前套餐详情",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -1868,10 +1845,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
-                                            }
+                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
                                         }
                                     }
                                 }
@@ -3357,10 +3331,10 @@
             "properties": {
                 "batteryType": {
                     "description": "电池型号: 60 / 72",
-                    "type": "integer",
+                    "type": "string",
                     "enum": [
-                        60,
-                        72
+                        "60",
+                        "72"
                     ]
                 },
                 "bizType": {
@@ -3437,7 +3411,7 @@
             "properties": {
                 "batteryType": {
                     "description": "电池型号 60 / 72",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "cityId": {
                     "description": "城市ID",
@@ -3547,7 +3521,7 @@
                 },
                 "batteryType": {
                     "description": "电池类型 60 / 72",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "comboName": {
                     "description": "套餐名称",
@@ -3582,7 +3556,7 @@
             "properties": {
                 "batteryType": {
                     "description": "电池型号: 60 / 72",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "createdAt": {
                     "description": "业务办理时间",
@@ -3614,10 +3588,10 @@
                 },
                 "batteryType": {
                     "description": "电池类型",
-                    "type": "integer",
+                    "type": "string",
                     "enum": [
-                        60,
-                        72
+                        "60",
+                        "72"
                     ]
                 },
                 "cityId": {
@@ -3670,10 +3644,10 @@
             "properties": {
                 "batteryType": {
                     "description": "电池类型",
-                    "type": "integer",
+                    "type": "string",
                     "enum": [
-                        60,
-                        72
+                        "60",
+                        "72"
                     ]
                 },
                 "cityId": {
@@ -3727,10 +3701,10 @@
                 },
                 "batteryType": {
                     "description": "60 / 72 电池类型",
-                    "type": "integer",
+                    "type": "string",
                     "enum": [
-                        60,
-                        72
+                        "60",
+                        "72"
                     ]
                 },
                 "days": {
@@ -3797,10 +3771,10 @@
             "properties": {
                 "batteryType": {
                     "description": "产品类型: 60/72",
-                    "type": "integer",
+                    "type": "string",
                     "enum": [
-                        60,
-                        72
+                        "60",
+                        "72"
                     ]
                 },
                 "cityId": {
@@ -3910,10 +3884,10 @@
             "properties": {
                 "batteryType": {
                     "description": "电池型号: 60 / 72",
-                    "type": "integer",
+                    "type": "string",
                     "enum": [
-                        60,
-                        72
+                        "60",
+                        "72"
                     ]
                 },
                 "detail": {
@@ -4160,7 +4134,7 @@
                 },
                 "batteryType": {
                     "description": "可用电池 type 为 100 时返回",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "cityName": {
                     "description": "可用城市 type 为 100 时返回",
@@ -4513,6 +4487,7 @@
                     "type": "number"
                 },
                 "managerName": {
+                    "description": "管理员名字",
                     "type": "string"
                 },
                 "mobile": {
@@ -4536,7 +4511,7 @@
                     "type": "string"
                 },
                 "state": {
-                    "description": "门店状态 0 休息总，1 营业中，2 外出中",
+                    "description": "门店状态: 0休息中 1营业中 2外出中",
                     "type": "integer"
                 },
                 "updatedAt": {
@@ -4553,7 +4528,7 @@
                 },
                 "batteryType": {
                     "description": "60 / 72",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "bizType": {
                     "description": "0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租",
@@ -4856,7 +4831,7 @@
                 },
                 "batteryType": {
                     "description": "电池型号 60 / 72",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "comboName": {
                     "description": "套餐名称",
@@ -4912,7 +4887,7 @@
                 },
                 "batteryType": {
                     "description": "电池型号 60 / 72",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "claimState": {
                     "description": "1 未被认领， 2 已被认领",
@@ -5125,7 +5100,7 @@
                 },
                 "batteryType": {
                     "description": "电池型号",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "shopName": {
                     "description": "门店名称",
@@ -5153,7 +5128,7 @@
             "properties": {
                 "batteryType": {
                     "description": "电池类型 60 / 72",
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -5501,7 +5476,7 @@
                 },
                 "batteryType": {
                     "description": "套餐电池型号 60/72",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "bizBatteryRenewalCnt": {
                     "description": "积累换次数",
@@ -5666,7 +5641,7 @@
                         },
                         "batteryType": {
                             "description": "电池型号 60 / 72  未开通为 0",
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 },

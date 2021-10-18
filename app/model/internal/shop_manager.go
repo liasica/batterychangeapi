@@ -11,11 +11,11 @@ import (
 // ShopManager is the golang structure for table shop_manager.
 type ShopManager struct {
 	Id          uint64      `orm:"id,primary"         json:"id"`          //
-	Name        string      `orm:"name"               json:"name"`        // 店长姓名
-	Mobile      string      `orm:"mobile"             json:"mobile"`      // 手机号码
 	ShopId      uint        `orm:"shopId"             json:"shopId"`      // 门店ID
+	Name        string      `orm:"name"               json:"name"`        // 管理员
+	Mobile      string      `orm:"mobile"             json:"mobile"`      // 手机号码
 	AccessToken string      `orm:"accessToken,unique" json:"accessToken"` //
-	DeviceType  int         `orm:"deviceType"         json:"deviceType"`  // 0 未上报 1 安卓  2  iOS
+	DeviceType  int         `orm:"deviceType"         json:"deviceType"`  // 设备类型: 0未上报 1安卓 2iOS
 	DeviceToken string      `orm:"deviceToken,unique" json:"deviceToken"` // 用户推送token
 	DeletedAt   *gtime.Time `orm:"deletedAt"          json:"deletedAt"`   //
 	CreatedAt   *gtime.Time `orm:"createdAt"          json:"createdAt"`   //

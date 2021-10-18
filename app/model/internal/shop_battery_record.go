@@ -11,13 +11,13 @@ import (
 // ShopBatteryRecord is the golang structure for table shop_battery_record.
 type ShopBatteryRecord struct {
 	Id          uint64      `orm:"id,primary"  json:"id"`          //
-	ShopId      uint        `orm:"shopId"      json:"shopId"`      //
-	Type        uint        `orm:"type"        json:"type"`        // 1 入  2 出
-	BizType     uint        `orm:"bizType"     json:"bizType"`     //
-	BizId       uint64      `orm:"bizId"       json:"bizId"`       // 业务ID 为 0 即为平台调拨
-	Num         uint        `orm:"num"         json:"num"`         //
+	ShopId      uint        `orm:"shopId"      json:"shopId"`      // 门店ID
+	Type        uint        `orm:"type"        json:"type"`        // 类别: 1入 2出
+	BizType     uint        `orm:"bizType"     json:"bizType"`     // 业务类别: 详细见表user_biz中bizType解释
+	BizId       uint64      `orm:"bizId"       json:"bizId"`       // 业务ID: 0为平台调拨
+	Num         uint        `orm:"num"         json:"num"`         // 数量
 	Day         int         `orm:"day"         json:"day"`         //
-	UserName    string      `orm:"userName"    json:"userName"`    // 操作员 平台调拨为空
-	BatteryType uint        `orm:"batteryType" json:"batteryType"` // 电池型号 60 / 72
+	UserName    string      `orm:"userName"    json:"userName"`    // 操作员: 平台调拨为空
+	BatteryType string      `orm:"batteryType" json:"batteryType"` // 电池型号
 	CreatedAt   *gtime.Time `orm:"createdAt"   json:"createdAt"`   //
 }

@@ -25,23 +25,23 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table combo_order.
 	Columns = struct {
-		Id             string //                                   
-        ParentId       string // 关联订单ID(续签或违约)            
-        CityId         string // 城市ID                            
-        ShopId         string //                                   
-        UserId         string // 用户ID                            
-        No             string // 订单编号                          
-        Type           string // 1 新签， 2 续费, 3 违约金         
-        ComboId        string // 套餐ID                            
-        Amount         string // 总金额，包含押金                  
-        Deposit        string // 押金                              
-        PayType        string // 1 支付宝 2 微信                   
-        PayPlatformNo  string // 支付平台单号                      
-        PayAt          string // 支付时间                          
-        PayState       string // 支付状态 1 待支付 2 已支付        
-        FirstUseAt     string // 开始使用时间，即首次领取电池时间  
-        Month          string //                                   
-        CreatedAt      string //                                   
+		Id             string //                                    
+        ParentId       string // 关联订单ID(续签或违约)             
+        CityId         string // 城市ID                             
+        ShopId         string // 门店ID                             
+        UserId         string // 用户ID                             
+        ComboId        string // 套餐ID                             
+        No             string // 订单编号                           
+        Type           string // 订单类别: 1新签 2续费 3违约金      
+        Amount         string // 总金额(包含押金)                   
+        Deposit        string // 押金                               
+        PayType        string // 支付方式: 1支付宝 2微信            
+        PayPlatformNo  string // 支付平台单号                       
+        PayAt          string // 支付时间                           
+        PayState       string // 支付状态:0未支付  1待支付 2已支付  
+        FirstUseAt     string // 启用时间, 即首次领取电池时间       
+        Month          string //                                    
+        CreatedAt      string //                                    
         UpdatedAt      string //
 	}{
 		Id:            "id",             
@@ -49,9 +49,9 @@ var (
         CityId:        "cityId",         
         ShopId:        "shopId",         
         UserId:        "userId",         
+        ComboId:       "comboId",        
         No:            "no",             
         Type:          "type",           
-        ComboId:       "comboId",        
         Amount:        "amount",         
         Deposit:       "deposit",        
         PayType:       "payType",        

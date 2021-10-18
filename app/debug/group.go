@@ -10,6 +10,7 @@
 package debug
 
 import (
+    "battery/app/model"
     "battery/app/service"
     "github.com/gogf/gf/net/ghttp"
     "log"
@@ -21,5 +22,5 @@ type groupDebug struct {
 var Group = new(groupDebug)
 
 func (*groupDebug) WeekStat(r *ghttp.Request) {
-    log.Println(service.GroupDailyStatService.GenerateWeek(r.Context(), 1, 60))
+    log.Println(service.GroupDailyStatService.GenerateWeek(r.Context(), 1, model.BatteryType60))
 }

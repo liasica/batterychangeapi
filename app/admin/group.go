@@ -73,8 +73,8 @@ func (*groupApi) Create(r *ghttp.Request) {
             return err
         }
 
-        _ = service.GroupDailyStatService.GenerateWeek(ctx, group.Id, 60)
-        _ = service.GroupDailyStatService.GenerateWeek(ctx, group.Id, 72)
+        _ = service.GroupDailyStatService.GenerateWeek(ctx, group.Id, model.BatteryType60)
+        _ = service.GroupDailyStatService.GenerateWeek(ctx, group.Id, model.BatteryType72)
 
         return err
     }); err != nil {

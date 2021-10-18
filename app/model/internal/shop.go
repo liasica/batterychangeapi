@@ -11,8 +11,8 @@ import (
 // Shop is the golang structure for table shop.
 type Shop struct {
 	Id              uint        `orm:"id,primary"      json:"id"`              //
-	State           uint        `orm:"state"           json:"state"`           // 门店状态 0 休息总，1 营业中，2 外出中
-	ManagerName     string      `orm:"managerName"     json:"managerName"`     //
+	State           uint        `orm:"state"           json:"state"`           // 门店状态: 0休息中 1营业中 2外出中
+	ManagerName     string      `orm:"managerName"     json:"managerName"`     // 管理员名字
 	Name            string      `orm:"name,unique"     json:"name"`            // 门店名称
 	Mobile          string      `orm:"mobile,unique"   json:"mobile"`          // 手机号
 	ReturnAt        *gtime.Time `orm:"returnAt"        json:"returnAt"`        // 外出大致返回时间

@@ -25,10 +25,10 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table message_read.
 	Columns = struct {
-		Id         string //                     
-        MessageId  string //                     
-        UserId     string //                     
-        UserType   string // 1 骑手端 2  商家端  
+		Id         string //                  
+        MessageId  string //                  
+        UserId     string //                  
+        UserType   string // 1骑手端 2商家端  
         CreatedAt  string //
 	}{
 		Id:        "id",         

@@ -11,6 +11,11 @@ const (
     ContextShopManagerKey = "CurrentShopManager"
 )
 
+const (
+    BatteryType60 = "60"
+    BatteryType72 = "72"
+)
+
 // ContextAdmin 后台管理员上下文
 type ContextAdmin struct {
     Id       uint
@@ -31,7 +36,7 @@ type ContextRider struct {
     GroupId                      uint
     ComboId                      uint
     ComboOrderId                 uint64
-    BatteryType                  uint
+    BatteryType                  string
     BatteryState                 uint
     AuthState                    uint
     EsignAccountId               string

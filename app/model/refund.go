@@ -6,9 +6,11 @@ import (
 
 type Refund internal.Refund
 
-const RefundRelationTypeComboOrder = 1
+const (
+    RefundRelationTypeComboOrder = 1
+)
 
 const (
-    RefundStateStart = 1
-    RefundStateDone  = 2
+    RefundStatePending = iota
+    RefundStateDone
 )

@@ -82,10 +82,10 @@ func (*shopApi) Create(r *ghttp.Request) {
             return _err
         }
         // 电池入库记录
-        if _err := service.ShopBatteryRecordService.Platform(ctx, model.ShopBatteryRecordTypeIn, shopId, req.BatteryInCnt60, 60); _err != nil {
+        if _err := service.ShopBatteryRecordService.Platform(ctx, model.ShopBatteryRecordTypeIn, shopId, req.BatteryInCnt60, model.BatteryType60); _err != nil {
             return _err
         }
-        if _err := service.ShopBatteryRecordService.Platform(ctx, model.ShopBatteryRecordTypeIn, shopId, req.BatteryInCnt72, 72); _err != nil {
+        if _err := service.ShopBatteryRecordService.Platform(ctx, model.ShopBatteryRecordTypeIn, shopId, req.BatteryInCnt72, model.BatteryType72); _err != nil {
             return _err
         }
         return nil

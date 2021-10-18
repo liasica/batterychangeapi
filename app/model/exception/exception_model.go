@@ -27,9 +27,9 @@ var (
 	Columns = struct {
 		Id           string //                                      
         ShopId       string // 门店                                 
-        State        string // 状态 0未解决 1已解决                 
-        Type         string // 1 遗失  2 故障                       
-        BatteryType  string // 电池型号 60 / 72                     
+        State        string // 状态: 0未解决 1已解决                
+        Type         string // 异常类别: 1遗失 2故障                
+        BatteryType  string // 电池型号                             
         Discoverer   string // 发现人 1 用户 2 店长                 
         Detail       string // 详细说明                             
         Img          string // 图片链接                             

@@ -12,11 +12,11 @@ import (
 
 // Entity is the golang structure for table message_read.
 type Entity struct {
-    Id        uint64      `orm:"id,primary" json:"id"`         //                     
-    MessageId uint64      `orm:"messageId"  json:"message_id"` //                     
-    UserId    uint64      `orm:"userId"     json:"user_id"`    //                     
-    UserType  uint        `orm:"userType"   json:"user_type"`  // 1 骑手端 2  商家端  
-    CreatedAt *gtime.Time `orm:"createdAt"  json:"created_at"` //                     
+    Id        uint64      `orm:"id,primary" json:"id"`         //                  
+    MessageId uint64      `orm:"messageId"  json:"message_id"` //                  
+    UserId    uint64      `orm:"userId"     json:"user_id"`    //                  
+    UserType  uint        `orm:"userType"   json:"user_type"`  // 1骑手端 2商家端  
+    CreatedAt *gtime.Time `orm:"createdAt"  json:"created_at"` //                  
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

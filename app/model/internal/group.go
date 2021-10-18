@@ -12,11 +12,11 @@ import (
 type Group struct {
 	Id            uint        `orm:"id,primary"    json:"id"`            //
 	Name          string      `orm:"name"          json:"name"`          // 名称
-	ProvinceId    uint        `orm:"provinceId"    json:"provinceId"`    //
-	CityId        uint        `orm:"cityId"        json:"cityId"`        //
+	ProvinceId    uint        `orm:"provinceId"    json:"provinceId"`    // 省份ID
+	CityId        uint        `orm:"cityId"        json:"cityId"`        // 城市ID
 	ContractFile  string      `orm:"contractFile"  json:"contractFile"`  // 合同文件
-	ContactName   string      `orm:"contactName"   json:"contactName"`   //
-	ContactMobile string      `orm:"contactMobile" json:"contactMobile"` //
+	ContactName   string      `orm:"contactName"   json:"contactName"`   // 联系人
+	ContactMobile string      `orm:"contactMobile" json:"contactMobile"` // 联系电话
 	CreatedAt     *gtime.Time `orm:"createdAt"     json:"createdAt"`     //
 	UpdatedAt     *gtime.Time `orm:"updatedAt"     json:"updatedAt"`     //
 }

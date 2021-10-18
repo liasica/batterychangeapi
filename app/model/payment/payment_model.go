@@ -25,17 +25,17 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table payment.
 	Columns = struct {
-		Id            string //                                          
-        PayAt         string // 支付时间                                 
-        RelationId    string // 关联ID                                   
-        RelationType  string // 关联类型:  1 购买套餐，2 续费，3 违约金  
-        State         string // 0 待支付 1 已支付 2 已退款               
-        PayType       string // 1 支付宝 2 微信                          
-        PayNo         string // 第三方支付流水号                         
-        Amount        string // 支付金额                                 
-        No            string // 支付编号                                 
-        UserId        string // 用户ID                                   
-        CreatedAt     string //                                          
+		Id            string //                                    
+        PayAt         string // 支付时间                           
+        RelationId    string // 关联ID                             
+        RelationType  string // 关联类型: 1购买套餐 2续费 3违约金  
+        State         string // 状态: 0待支付 1已支付 2已退款      
+        PayType       string // 支付方式: 1支付宝 2微信            
+        PayNo         string // 第三方支付流水号                   
+        Amount        string // 支付金额                           
+        No            string // 支付编号                           
+        UserId        string // 用户ID                             
+        CreatedAt     string //                                    
         UpdatedAt     string //
 	}{
 		Id:           "id",            

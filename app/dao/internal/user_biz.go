@@ -22,14 +22,14 @@ type UserBizDao struct {
 // UserBizColumns defines and stores column names for table user_biz.
 type userBizColumns struct {
 	Id           string //
-	CityId       string //
-	ShopId       string // 门店ID
-	UserId       string //
-	GoroupId     string // 团体ID
-	GoroupUserId string //
-	Type         string // 业务类型: 1新签 2换电 3寄存 4退租
+	UserId       string // 用户ID
 	ComboId      string // 套餐ID
-	BatteryType  string // 电池型号 60 / 72
+	CityId       string // 城市ID
+	ShopId       string // 门店ID
+	GoroupId     string // 团签ID
+	GoroupUserId string // 团签用户ID
+	Type         string // 业务类型: 1新签 2换电 3寄存 4退租
+	BatteryType  string // 电池型号
 	CreatedAt    string // 扫码时间
 	UpdatedAt    string //
 }
@@ -41,13 +41,13 @@ func NewUserBizDao() *UserBizDao {
 		Table: "user_biz",
 		Columns: userBizColumns{
 			Id:           "id",
+			UserId:       "userId",
+			ComboId:      "comboId",
 			CityId:       "cityId",
 			ShopId:       "shopId",
-			UserId:       "userId",
 			GoroupId:     "goroupId",
 			GoroupUserId: "goroupUserId",
 			Type:         "type",
-			ComboId:      "comboId",
 			BatteryType:  "batteryType",
 			CreatedAt:    "createdAt",
 			UpdatedAt:    "updatedAt",

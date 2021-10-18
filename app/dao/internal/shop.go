@@ -22,8 +22,8 @@ type ShopDao struct {
 // ShopColumns defines and stores column names for table shop.
 type shopColumns struct {
 	Id              string //
-	State           string // 门店状态 0 休息总，1 营业中，2 外出中
-	ManagerName     string //
+	State           string // 门店状态: 0休息中 1营业中 2外出中
+	ManagerName     string // 管理员名字
 	Name            string // 门店名称
 	Mobile          string // 手机号
 	ReturnAt        string // 外出大致返回时间

@@ -12,13 +12,13 @@ import (
 type Refund struct {
 	Id               uint        `orm:"id,primary"              json:"id"`               //
 	UserId           uint64      `orm:"userId"                  json:"userId"`           //
+	State            uint        `orm:"state"                   json:"state"`            // 状态: 0处理中 1处理完成
 	No               string      `orm:"no,unique"               json:"no"`               // 退款编号
-	RelationId       uint64      `orm:"relationId"              json:"relationId"`       //
-	RelationType     uint        `orm:"relationType"            json:"relationType"`     //
-	Reason           string      `orm:"reason"                  json:"reason"`           //
+	RelationType     uint        `orm:"relationType"            json:"relationType"`     // 关联类型: 1套餐订单
+	RelationId       uint64      `orm:"relationId"              json:"relationId"`       // 关联ID
+	Reason           string      `orm:"reason"                  json:"reason"`           // 退款原因
 	Amount           float64     `orm:"amount"                  json:"amount"`           // 退款金额
 	PlatformRefundNo string      `orm:"platformRefundNo,unique" json:"platformRefundNo"` // 第三方流水号
-	State            uint        `orm:"state"                   json:"state"`            //
 	CreatedAt        *gtime.Time `orm:"createdAt"               json:"createdAt"`        //
 	UpdatedAt        *gtime.Time `orm:"updatedAt"               json:"updatedAt"`        //
 }

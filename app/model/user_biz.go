@@ -39,7 +39,7 @@ type UserBizBatteryRenewalReq struct {
 // UserBizBatteryRenewalRep 骑手扫码换电响应
 type UserBizBatteryRenewalRep struct {
     ShopName    string      `validate:"required" json:"shopName"`    // 门店名称
-    BatteryType uint        `validate:"required" json:"batteryType"` // 电池型号
+    BatteryType string      `validate:"required" json:"batteryType"` // 电池型号
     At          *gtime.Time `validate:"required" json:"at"`          // 时间
 }
 
@@ -105,7 +105,7 @@ type UserBizPenaltyProfileRep struct {
 
 // UserBizGroupNewReq 团签骑手新领电池
 type UserBizGroupNewReq struct {
-    BatteryType uint `validate:"required" json:"batteryType" v:"required|in:60,72"` // 电池类型 60 / 72
+    BatteryType string `validate:"required" json:"batteryType" v:"required|in:60,72"` // 电池类型 60 / 72
 }
 
 // UserBizShopRecordReq 店长获取业务记录请求
@@ -149,7 +149,7 @@ type BizEntity struct {
     GoroupId    uint        `orm:"goroupId"     json:"goroupId"`    // 团体ID
     Type        uint        `orm:"type"         json:"type"`        // 业务类型: 1新签 2换电 3寄存 4退租
     ComboId     uint        `orm:"comboId"   json:"comboId"`        // 套餐ID
-    BatteryType uint        `orm:"batteryType"  json:"batteryType"` // 电池型号 60 / 72
+    BatteryType string      `orm:"batteryType"  json:"batteryType"` // 电池型号 60 / 72
     CreatedAt   *gtime.Time `orm:"createdAt"    json:"createdAt"`   // 业务办理时间
 
     // GoroupUserId uint        `orm:"goroupUserId" json:"goroupUserId"` // 团签用户ID
@@ -184,7 +184,7 @@ type BizSimpleItem struct {
     Id          uint        `json:"id"`
     ShopId      uint        `json:"shopId"`      // 门店ID
     Type        uint        `json:"type"`        // 业务类型: 1新签 2换电 3寄存 4退租
-    BatteryType uint        `json:"batteryType"` // 电池型号: 60 / 72
+    BatteryType string      `json:"batteryType"` // 电池型号: 60 / 72
     CreatedAt   *gtime.Time `json:"createdAt"`   // 业务办理时间
 
     ShopName string `json:"shopName"` // 门店名称

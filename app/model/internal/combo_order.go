@@ -13,18 +13,18 @@ type ComboOrder struct {
 	Id            uint64      `orm:"id,primary"    json:"id"`            //
 	ParentId      uint64      `orm:"parentId"      json:"parentId"`      // 关联订单ID(续签或违约)
 	CityId        uint        `orm:"cityId"        json:"cityId"`        // 城市ID
-	ShopId        uint        `orm:"shopId"        json:"shopId"`        //
+	ShopId        uint        `orm:"shopId"        json:"shopId"`        // 门店ID
 	UserId        uint64      `orm:"userId"        json:"userId"`        // 用户ID
-	No            string      `orm:"no,unique"     json:"no"`            // 订单编号
-	Type          uint        `orm:"type"          json:"type"`          // 1 新签， 2 续费, 3 违约金
 	ComboId       uint        `orm:"comboId"       json:"comboId"`       // 套餐ID
-	Amount        float64     `orm:"amount"        json:"amount"`        // 总金额，包含押金
+	No            string      `orm:"no,unique"     json:"no"`            // 订单编号
+	Type          uint        `orm:"type"          json:"type"`          // 订单类别: 1新签 2续费 3违约金
+	Amount        float64     `orm:"amount"        json:"amount"`        // 总金额(包含押金)
 	Deposit       float64     `orm:"deposit"       json:"deposit"`       // 押金
-	PayType       uint        `orm:"payType"       json:"payType"`       // 1 支付宝 2 微信
+	PayType       uint        `orm:"payType"       json:"payType"`       // 支付方式: 1支付宝 2微信
 	PayPlatformNo string      `orm:"payPlatformNo" json:"payPlatformNo"` // 支付平台单号
 	PayAt         *gtime.Time `orm:"payAt"         json:"payAt"`         // 支付时间
-	PayState      uint        `orm:"payState"      json:"payState"`      // 支付状态 1 待支付 2 已支付
-	FirstUseAt    *gtime.Time `orm:"firstUseAt"    json:"firstUseAt"`    // 开始使用时间，即首次领取电池时间
+	PayState      uint        `orm:"payState"      json:"payState"`      // 支付状态:0未支付  1待支付 2已支付
+	FirstUseAt    *gtime.Time `orm:"firstUseAt"    json:"firstUseAt"`    // 启用时间, 即首次领取电池时间
 	Month         int         `orm:"month"         json:"month"`         //
 	CreatedAt     *gtime.Time `orm:"createdAt"     json:"createdAt"`     //
 	UpdatedAt     *gtime.Time `orm:"updatedAt"     json:"updatedAt"`     //

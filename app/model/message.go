@@ -30,7 +30,7 @@ type MessageDetail struct {
     Type         string      `json:"type,omitempty"`         // 订单类型 type 为 100，102 时返回
     ComboName    string      `json:"comboName,omitempty"`    // 套餐名称 type 为 100 时返回
     CityName     string      `json:"cityName,omitempty"`     // 可用城市 type 为 100 时返回
-    BatteryType  uint        `json:"batteryType,omitempty"`  // 可用电池 type 为 100 时返回
+    BatteryType  string      `json:"batteryType,omitempty"`  // 可用电池 type 为 100 时返回
     ComboOrderNo string      `json:"comboOrderNo,omitempty"` // 订单编号 type 为 100，102 时返回
     PayType      uint        `json:"payType,omitempty"`      // 支付方式 1 支付宝 2 微信  type 为 100，102 时返回
     PayAt        *gtime.Time `json:"payAt,omitempty"`        // 支付时间 type 为 100，102 时返回

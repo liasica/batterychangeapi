@@ -22,11 +22,11 @@ type GroupDailyStatDao struct {
 // GroupDailyStatColumns defines and stores column names for table group_daily_stat.
 type groupDailyStatColumns struct {
 	Id          string //
-	GroupId     string //
-	BatteryType string // 电池型号 60 / 72
-	IsArrears   string // 是否未付款 1 是 0 不是
+	GroupId     string // 团队ID
+	BatteryType string // 电池型号
+	IsArrears   string // 是否欠款: 1是 0不是
 	UserIds     string // 使用的用户ID
-	Date        string // 日期 如 20210705
+	Date        string // 日期: 20210705
 	Total       string // 使用人数
 	CreatedAt   string // 创建时间
 	UpdatedAt   string //

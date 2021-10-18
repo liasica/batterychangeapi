@@ -71,7 +71,7 @@ type ShopManagerComboOrderScanDetailRep struct {
     UserMobile  string  `validate:"required" json:"userMobile"`            // 客户手机号
     ComboName   string  `validate:"required" json:"comboName,omitempty"`   // 套餐名称，个签用户返回
     ComboAmount float64 `validate:"required" json:"comboAmount,omitempty"` // 套餐价格，个签用户返回
-    BatteryType uint    `validate:"required" json:"batteryType"`           // 电池型号 60 / 72
+    BatteryType string  `validate:"required" json:"batteryType"`           // 电池型号 60 / 72
 
     GroupName string `validate:"required" json:"groupName,omitempty"` // 团签公司名称，团签签用户返回
 
@@ -89,7 +89,7 @@ type ShopManagerComboOrderListDetailRep struct {
     UserName    string `validate:"required" json:"userName"`    // 客户名称
     UserMobile  string `validate:"required" json:"userMobile"`  // 客户手机号
     ComboName   string `validate:"required" json:"comboName"`   // 套餐名称
-    BatteryType uint   `validate:"required" json:"batteryType"` // 电池型号 60 / 72
+    BatteryType string `validate:"required" json:"batteryType"` // 电池型号 60 / 72
 
     OrderNo string      `validate:"required" json:"orderNo"` // 订单编号
     Amount  float64     `validate:"required" json:"amount"`  // 支付金额

@@ -14,9 +14,9 @@ import (
 type Entity struct {
     Id          uint64      `orm:"id,primary"  json:"id"`           //                                      
     ShopId      uint        `orm:"shopId"      json:"shop_id"`      // 门店                                 
-    State       uint        `orm:"state"       json:"state"`        // 状态 0未解决 1已解决                 
-    Type        uint        `orm:"type"        json:"type"`         // 1 遗失  2 故障                       
-    BatteryType uint        `orm:"batteryType" json:"battery_type"` // 电池型号 60 / 72                     
+    State       uint        `orm:"state"       json:"state"`        // 状态: 0未解决 1已解决                
+    Type        uint        `orm:"type"        json:"type"`         // 异常类别: 1遗失 2故障                
+    BatteryType string      `orm:"batteryType" json:"battery_type"` // 电池型号                             
     Discoverer  uint        `orm:"discoverer"  json:"discoverer"`   // 发现人 1 用户 2 店长                 
     Detail      string      `orm:"detail"      json:"detail"`       // 详细说明                             
     Img         string      `orm:"img"         json:"img"`          // 图片链接                             

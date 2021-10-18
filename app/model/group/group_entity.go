@@ -14,11 +14,11 @@ import (
 type Entity struct {
     Id            uint        `orm:"id,primary"    json:"id"`             //           
     Name          string      `orm:"name"          json:"name"`           // 名称      
-    ProvinceId    uint        `orm:"provinceId"    json:"province_id"`    //           
-    CityId        uint        `orm:"cityId"        json:"city_id"`        //           
+    ProvinceId    uint        `orm:"provinceId"    json:"province_id"`    // 省份ID    
+    CityId        uint        `orm:"cityId"        json:"city_id"`        // 城市ID    
     ContractFile  string      `orm:"contractFile"  json:"contract_file"`  // 合同文件  
-    ContactName   string      `orm:"contactName"   json:"contact_name"`   //           
-    ContactMobile string      `orm:"contactMobile" json:"contact_mobile"` //           
+    ContactName   string      `orm:"contactName"   json:"contact_name"`   // 联系人    
+    ContactMobile string      `orm:"contactMobile" json:"contact_mobile"` // 联系电话  
     CreatedAt     *gtime.Time `orm:"createdAt"     json:"created_at"`     //           
     UpdatedAt     *gtime.Time `orm:"updatedAt"     json:"updated_at"`     //           
 }

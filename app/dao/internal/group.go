@@ -23,11 +23,11 @@ type GroupDao struct {
 type groupColumns struct {
 	Id            string //
 	Name          string // 名称
-	ProvinceId    string //
-	CityId        string //
+	ProvinceId    string // 省份ID
+	CityId        string // 城市ID
 	ContractFile  string // 合同文件
-	ContactName   string //
-	ContactMobile string //
+	ContactName   string // 联系人
+	ContactMobile string // 联系电话
 	CreatedAt     string //
 	UpdatedAt     string //
 }

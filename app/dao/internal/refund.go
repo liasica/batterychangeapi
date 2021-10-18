@@ -23,13 +23,13 @@ type RefundDao struct {
 type refundColumns struct {
 	Id               string //
 	UserId           string //
+	State            string // 状态: 0处理中 1处理完成
 	No               string // 退款编号
-	RelationId       string //
-	RelationType     string //
-	Reason           string //
+	RelationType     string // 关联类型: 1套餐订单
+	RelationId       string // 关联ID
+	Reason           string // 退款原因
 	Amount           string // 退款金额
 	PlatformRefundNo string // 第三方流水号
-	State            string //
 	CreatedAt        string //
 	UpdatedAt        string //
 }
@@ -42,13 +42,13 @@ func NewRefundDao() *RefundDao {
 		Columns: refundColumns{
 			Id:               "id",
 			UserId:           "userId",
+			State:            "state",
 			No:               "no",
-			RelationId:       "relationId",
 			RelationType:     "relationType",
+			RelationId:       "relationId",
 			Reason:           "reason",
 			Amount:           "amount",
 			PlatformRefundNo: "platformRefundNo",
-			State:            "state",
 			CreatedAt:        "createdAt",
 			UpdatedAt:        "updatedAt",
 		},

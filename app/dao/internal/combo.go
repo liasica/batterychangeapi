@@ -22,19 +22,19 @@ type ComboDao struct {
 // ComboColumns defines and stores column names for table combo.
 type comboColumns struct {
 	Id          string //
-	DeletedAt   string //
-	CreatedAt   string //
-	UpdatedAt   string // 停用时间
-	Type        string // 套餐类型 1 个人 2 团体
-	BatteryType string // 60 / 72
+	Type        string // 套餐类型: 1个人 2团体
+	BatteryType string // 电池型号
 	Name        string // 名称
 	Days        string // 套餐时长天数
-	Amount      string // 套餐价格(包含押金)
-	Price       string //
+	Amount      string // 套餐总价(包含押金)
+	Price       string // 套餐价格
 	Deposit     string // 押金
 	ProvinceId  string // 省级行政编码
 	CityId      string // 市级行政编码
 	Desc        string // 描述
+	CreatedAt   string //
+	UpdatedAt   string //
+	DeletedAt   string // 停用时间
 }
 
 func NewComboDao() *ComboDao {
@@ -44,9 +44,6 @@ func NewComboDao() *ComboDao {
 		Table: "combo",
 		Columns: comboColumns{
 			Id:          "id",
-			DeletedAt:   "deletedAt",
-			CreatedAt:   "createdAt",
-			UpdatedAt:   "updatedAt",
 			Type:        "type",
 			BatteryType: "batteryType",
 			Name:        "name",
@@ -57,6 +54,9 @@ func NewComboDao() *ComboDao {
 			ProvinceId:  "provinceId",
 			CityId:      "cityId",
 			Desc:        "desc",
+			CreatedAt:   "createdAt",
+			UpdatedAt:   "updatedAt",
+			DeletedAt:   "deletedAt",
 		},
 	}
 }

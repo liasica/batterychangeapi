@@ -13,6 +13,6 @@ type MessageRead struct {
 	Id        uint64      `orm:"id,primary" json:"id"`        //
 	MessageId uint64      `orm:"messageId"  json:"messageId"` //
 	UserId    uint64      `orm:"userId"     json:"userId"`    //
-	UserType  uint        `orm:"userType"   json:"userType"`  // 1 骑手端 2  商家端
+	UserType  uint        `orm:"userType"   json:"userType"`  // 1骑手端 2商家端
 	CreatedAt *gtime.Time `orm:"createdAt"  json:"createdAt"` //
 }

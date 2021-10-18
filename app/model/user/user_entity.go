@@ -12,33 +12,33 @@ import (
 
 // Entity is the golang structure for table user.
 type Entity struct {
-    Id                           uint64      `orm:"id,primary"                   json:"id"`                                //                                                              
-    GroupId                      uint        `orm:"groupId"                      json:"group_id"`                          // 团签用户，团体ID;  个签用户为 0                              
-    Mobile                       string      `orm:"mobile,unique"                json:"mobile"`                            // 手机号码                                                     
-    Type                         uint        `orm:"type"                         json:"type"`                              // 用户类型 	1 个签骑手 2 团签骑手 3 团签BOSS                    
-    Qr                           string      `orm:"qr,unique"                    json:"qr"`                                // 骑手二维码数据                                               
-    RealName                     string      `orm:"realName"                     json:"real_name"`                         // 真实姓名                                                     
-    IdCardNo                     string      `orm:"idCardNo"                     json:"id_card_no"`                        // 身份证号码                                                   
-    IdCardImg1                   string      `orm:"idCardImg1"                   json:"id_card_img_1"`                     // 身份证人像面                                                 
-    IdCardImg2                   string      `orm:"idCardImg2"                   json:"id_card_img_2"`                     // 身份证国徽面                                                 
-    IdCardImg3                   string      `orm:"idCardImg3"                   json:"id_card_img_3"`                     // 手持身份证                                                   
-    AuthState                    uint        `orm:"authState"                    json:"auth_state"`                        // 实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过  
-    BatteryState                 uint        `orm:"batteryState"                 json:"battery_state"`                     // 个人用户换电状态：0 未开通，1 租借中，2 寄存中，3 已退租     
-    BatteryType                  uint        `orm:"batteryType"                  json:"battery_type"`                      // 套餐电池型号 60 、 72                                        
-    ComboId                      uint        `orm:"comboId"                      json:"combo_id"`                          // 套餐ID                                                       
-    ComboOrderId                 uint64      `orm:"comboOrderId"                 json:"combo_order_id"`                    // 办理套餐订单ID                                               
-    BatteryReturnAt              *gtime.Time `orm:"batteryReturnAt"              json:"battery_return_at"`                 // 个人用户应归还电池时间， 小于当前时间即逾期                  
-    BatterySaveAt                *gtime.Time `orm:"batterySaveAt"                json:"battery_save_at"`                   // 个签用户电池寄存时间                                         
-    AccessToken                  string      `orm:"accessToken,unique"           json:"access_token"`                      //                                                              
-    Salt                         string      `orm:"salt"                         json:"salt"`                              //                                                              
-    DeviceType                   int         `orm:"deviceType"                   json:"device_type"`                       // 1 安卓  2  iOS                                               
-    DeviceToken                  string      `orm:"deviceToken"                  json:"device_token"`                      // 用户推送token                                                
-    EsignAccountId               string      `orm:"esignAccountId"               json:"esign_account_id"`                  // 易签账户ID                                                   
-    BizBatteryRenewalCnt         uint        `orm:"bizBatteryRenewalCnt"         json:"biz_battery_renewal_cnt"`           // 积累换次数                                                   
-    BizBatteryRenewalDays        uint        `orm:"bizBatteryRenewalDays"        json:"biz_battery_renewal_days"`          // 累计换电自然天数                                             
-    BizBatteryRenewalDaysStartAt *gtime.Time `orm:"bizBatteryRenewalDaysStartAt" json:"biz_battery_renewal_days_start_at"` // 需要统计使用天数的开始时间，为空则无需计算                   
-    CreatedAt                    *gtime.Time `orm:"createdAt"                    json:"created_at"`                        //                                                              
-    UpdatedAt                    *gtime.Time `orm:"updatedAt"                    json:"updated_at"`                        //                                                              
+    Id                           uint64      `orm:"id,primary"                   json:"id"`                                //                                                    
+    GroupId                      uint        `orm:"groupId"                      json:"group_id"`                          // 团签ID                                             
+    ComboId                      uint        `orm:"comboId"                      json:"combo_id"`                          // 套餐ID                                             
+    ComboOrderId                 uint64      `orm:"comboOrderId"                 json:"combo_order_id"`                    // 套餐订单ID                                         
+    Mobile                       string      `orm:"mobile,unique"                json:"mobile"`                            // 手机号码                                           
+    Type                         uint        `orm:"type"                         json:"type"`                              // 用户类型: 1个签骑手 2团签骑手 3团签BOSS            
+    Qr                           string      `orm:"qr,unique"                    json:"qr"`                                // 骑手二维码数据                                     
+    RealName                     string      `orm:"realName"                     json:"real_name"`                         // 真实姓名                                           
+    IdCardNo                     string      `orm:"idCardNo"                     json:"id_card_no"`                        // 身份证号码                                         
+    IdCardImg1                   string      `orm:"idCardImg1"                   json:"id_card_img_1"`                     // 身份证人像面                                       
+    IdCardImg2                   string      `orm:"idCardImg2"                   json:"id_card_img_2"`                     // 身份证国徽面                                       
+    IdCardImg3                   string      `orm:"idCardImg3"                   json:"id_card_img_3"`                     // 手持身份证                                         
+    AuthState                    uint        `orm:"authState"                    json:"auth_state"`                        // 实名认证状态: 0未提交 1待审核 2审核通过 3审核拒绝  
+    BatteryState                 uint        `orm:"batteryState"                 json:"battery_state"`                     // 个签换电状态: 0 未开通 1租借中 2寄存中 3已退租     
+    BatteryType                  string      `orm:"batteryType"                  json:"battery_type"`                      // 电池型号                                           
+    BatteryReturnAt              *gtime.Time `orm:"batteryReturnAt"              json:"battery_return_at"`                 // 个签应归还电池时间, 小于当前时间即逾期             
+    BatterySaveAt                *gtime.Time `orm:"batterySaveAt"                json:"battery_save_at"`                   // 个签用户电池寄存时间                               
+    DeviceType                   int         `orm:"deviceType"                   json:"device_type"`                       // 设备类型: 0未上报 1安卓 2iOS                       
+    DeviceToken                  string      `orm:"deviceToken"                  json:"device_token"`                      // 用户推送token                                      
+    EsignAccountId               string      `orm:"esignAccountId"               json:"esign_account_id"`                  // 易签账户ID                                         
+    BizBatteryRenewalCnt         uint        `orm:"bizBatteryRenewalCnt"         json:"biz_battery_renewal_cnt"`           // 积累换次数                                         
+    BizBatteryRenewalDays        uint        `orm:"bizBatteryRenewalDays"        json:"biz_battery_renewal_days"`          // 累计换电自然天数                                   
+    BizBatteryRenewalDaysStartAt *gtime.Time `orm:"bizBatteryRenewalDaysStartAt" json:"biz_battery_renewal_days_start_at"` // 需要统计使用天数的开始时间, 为空则无需计算         
+    Salt                         string      `orm:"salt"                         json:"salt"`                              //                                                    
+    AccessToken                  string      `orm:"accessToken,unique"           json:"access_token"`                      //                                                    
+    CreatedAt                    *gtime.Time `orm:"createdAt"                    json:"created_at"`                        //                                                    
+    UpdatedAt                    *gtime.Time `orm:"updatedAt"                    json:"updated_at"`                        //                                                    
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

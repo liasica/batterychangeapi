@@ -22,13 +22,13 @@ type SignDao struct {
 // SignColumns defines and stores column names for table sign.
 type signColumns struct {
 	Id           string //
-	UserId       string //
-	GroupId      string //
-	ComboOrderId string //
+	UserId       string // 用户ID
+	GroupId      string // 团队ID
+	ComboOrderId string // 套餐订单ID
 	BatteryType  string // 电池型号
 	FlowId       string // 易签签约流程ID
 	FileId       string // 易签签约文件ID
-	State        string // 签约状态 0 未签约 1 已签约
+	State        string // 签约状态: 0未签约 1已签约
 	CreatedAt    string //
 	UpdatedAt    string //
 }

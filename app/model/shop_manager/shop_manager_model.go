@@ -25,21 +25,21 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table shop_manager.
 	Columns = struct {
-		Id           string //                          
-        Name         string // 店长姓名                 
-        Mobile       string // 手机号码                 
-        ShopId       string // 门店ID                   
-        AccessToken  string //                          
-        DeviceType   string // 0 未上报 1 安卓  2  iOS  
-        DeviceToken  string // 用户推送token            
-        DeletedAt    string //                          
-        CreatedAt    string //                          
+		Id           string //                               
+        ShopId       string // 门店ID                        
+        Name         string // 管理员                        
+        Mobile       string // 手机号码                      
+        AccessToken  string //                               
+        DeviceType   string // 设备类型: 0未上报 1安卓 2iOS  
+        DeviceToken  string // 用户推送token                 
+        DeletedAt    string //                               
+        CreatedAt    string //                               
         UpdatedAt    string //
 	}{
 		Id:          "id",           
+        ShopId:      "shopId",       
         Name:        "name",         
         Mobile:      "mobile",       
-        ShopId:      "shopId",       
         AccessToken: "accessToken",  
         DeviceType:  "deviceType",   
         DeviceToken: "deviceToken",  

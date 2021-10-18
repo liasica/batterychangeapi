@@ -29,7 +29,7 @@ type ShopBatteryRecordListRep struct {
     BizType     uint        `json:"bizType" enums:"0,1,2,3,4,5"` // 0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租
     UserName    string      `json:"userName"`                    // 操作员 平台调拨为空
     Num         uint        `json:"num"`                         // 数量
-    BatteryType uint        `json:"batteryType"`                 // 60 / 72
+    BatteryType string      `json:"batteryType"`                 // 60 / 72
     At          *gtime.Time `json:"at"`                          // 时间
     DayCnt      uint        `json:"dayCnt"`                      // 当天总数
 }
@@ -48,6 +48,6 @@ type BatteryRecordListItem struct {
     BizType     uint        `json:"bizType" enums:"0,1,2,3,4,5"` // 操作类别: 0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租
     UserName    string      `json:"userName"`                    // 操作员: 平台调拨为0
     Num         uint        `json:"num"`                         // 数量
-    BatteryType uint        `json:"batteryType" enums:"60,72"`   // 电池型号: 60 / 72
+    BatteryType string      `json:"batteryType" enums:"60,72"`   // 电池型号: 60 / 72
     CreatedAt   *gtime.Time `json:"createdAt"`                   // 操作时间
 }

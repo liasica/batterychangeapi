@@ -25,15 +25,15 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table shop_battery_record.
 	Columns = struct {
-		Id           string //                           
-        ShopId       string //                           
-        Type         string // 1 入  2 出                
-        BizType      string //                           
-        BizId        string // 业务ID 为 0 即为平台调拨  
-        Num          string //                           
-        Day          string //                           
-        UserName     string // 操作员 平台调拨为空       
-        BatteryType  string // 电池型号 60 / 72          
+		Id           string //                                          
+        ShopId       string // 门店ID                                   
+        Type         string // 类别: 1入 2出                            
+        BizType      string // 业务类别: 详细见表user_biz中bizType解释  
+        BizId        string // 业务ID: 0为平台调拨                      
+        Num          string // 数量                                     
+        Day          string //                                          
+        UserName     string // 操作员: 平台调拨为空                     
+        BatteryType  string // 电池型号                                 
         CreatedAt    string //
 	}{
 		Id:          "id",           

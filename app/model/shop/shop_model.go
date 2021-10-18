@@ -25,29 +25,29 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table shop.
 	Columns = struct {
-		Id               string //                                        
-        State            string // 门店状态 0 休息总，1 营业中，2 外出中  
-        ManagerName      string //                                        
-        Name             string // 门店名称                               
-        Mobile           string // 手机号                                 
-        ReturnAt         string // 外出大致返回时间                       
-        BatteryOutCnt60  string // 60伏电池出库数量                       
-        BatteryInCnt60   string // 60伏电池入库数量                       
-        BatteryInCnt72   string // 72伏电池入库数量                       
-        BatteryOutCnt72  string // 72伏电池出库数量                       
-        ChargerInCnt     string // 充电器入库数量                         
-        ChargerOutCnt    string // 充电器出库数量                         
-        BatteryCnt72     string // 72伏电池数量                           
-        BatteryCnt60     string // 60伏电池数量                           
-        ChargerCnt       string // 充电器数量                             
-        Lng              string // 经度                                   
-        Lat              string // 纬度                                   
-        Qr               string // 二维码编号                             
-        ProvinceId       string // 省级行政编码                           
-        CityId           string // 市级行政编码                           
-        DistrictId       string // 区县行政编码                           
-        Address          string // 详细地址                               
-        CreatedAt        string //                                        
+		Id               string //                                    
+        State            string // 门店状态: 0休息中 1营业中 2外出中  
+        ManagerName      string // 管理员名字                         
+        Name             string // 门店名称                           
+        Mobile           string // 手机号                             
+        ReturnAt         string // 外出大致返回时间                   
+        BatteryOutCnt60  string // 60伏电池出库数量                   
+        BatteryInCnt60   string // 60伏电池入库数量                   
+        BatteryInCnt72   string // 72伏电池入库数量                   
+        BatteryOutCnt72  string // 72伏电池出库数量                   
+        ChargerInCnt     string // 充电器入库数量                     
+        ChargerOutCnt    string // 充电器出库数量                     
+        BatteryCnt72     string // 72伏电池数量                       
+        BatteryCnt60     string // 60伏电池数量                       
+        ChargerCnt       string // 充电器数量                         
+        Lng              string // 经度                               
+        Lat              string // 纬度                               
+        Qr               string // 二维码编号                         
+        ProvinceId       string // 省级行政编码                       
+        CityId           string // 市级行政编码                       
+        DistrictId       string // 区县行政编码                       
+        Address          string // 详细地址                           
+        CreatedAt        string //                                    
         UpdatedAt        string //
 	}{
 		Id:              "id",               

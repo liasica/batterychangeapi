@@ -25,27 +25,27 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table refund.
 	Columns = struct {
-		Id                string //               
-        UserId            string //               
-        No                string // 退款编号      
-        RelationId        string //               
-        RelationType      string //               
-        Reason            string //               
-        Amount            string // 退款金额      
-        PlatformRefundNo  string // 第三方流水号  
-        State             string //               
-        CreatedAt         string //               
+		Id                string //                          
+        UserId            string //                          
+        State             string // 状态: 0处理中 1处理完成  
+        No                string // 退款编号                 
+        RelationType      string // 关联类型: 1套餐订单      
+        RelationId        string // 关联ID                   
+        Reason            string // 退款原因                 
+        Amount            string // 退款金额                 
+        PlatformRefundNo  string // 第三方流水号             
+        CreatedAt         string //                          
         UpdatedAt         string //
 	}{
 		Id:               "id",                
         UserId:           "userId",            
+        State:            "state",             
         No:               "no",                
-        RelationId:       "relationId",        
         RelationType:     "relationType",      
+        RelationId:       "relationId",        
         Reason:           "reason",            
         Amount:           "amount",            
         PlatformRefundNo: "platformRefundNo",  
-        State:            "state",             
         CreatedAt:        "createdAt",         
         UpdatedAt:        "updatedAt",
 	}

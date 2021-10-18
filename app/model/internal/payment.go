@@ -13,9 +13,9 @@ type Payment struct {
 	Id           uint64      `orm:"id,primary"   json:"id"`           //
 	PayAt        *gtime.Time `orm:"payAt"        json:"payAt"`        // 支付时间
 	RelationId   uint64      `orm:"relationId"   json:"relationId"`   // 关联ID
-	RelationType uint        `orm:"relationType" json:"relationType"` // 关联类型:  1 购买套餐，2 续费，3 违约金
-	State        uint        `orm:"state"        json:"state"`        // 0 待支付 1 已支付 2 已退款
-	PayType      uint        `orm:"payType"      json:"payType"`      // 1 支付宝 2 微信
+	RelationType uint        `orm:"relationType" json:"relationType"` // 关联类型: 1购买套餐 2续费 3违约金
+	State        uint        `orm:"state"        json:"state"`        // 状态: 0待支付 1已支付 2已退款
+	PayType      uint        `orm:"payType"      json:"payType"`      // 支付方式: 1支付宝 2微信
 	PayNo        string      `orm:"payNo"        json:"payNo"`        // 第三方支付流水号
 	Amount       float64     `orm:"amount"       json:"amount"`       // 支付金额
 	No           string      `orm:"no,unique"    json:"no"`           // 支付编号

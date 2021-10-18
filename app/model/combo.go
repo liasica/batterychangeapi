@@ -20,7 +20,7 @@ type ComboRiderListRepItem struct {
     Id             uint    `json:"id"`                        //
     Name           string  `json:"name"`                      // 名称
     Days           uint    `json:"days"`                      // 套餐时长天数
-    BatteryType    uint    `json:"batteryType" enums:"60,72"` // 60 / 72 电池类型
+    BatteryType    string  `json:"batteryType" enums:"60,72"` // 60 / 72 电池类型
     Amount         float64 `json:"amount"`                    // 套餐价格(包含押金)
     Deposit        float64 `json:"deposit"`                   // 押金
     UsableCityName string  `json:"usableCityName"`            // 可用城市名称
@@ -35,7 +35,7 @@ type ComboListItem struct {
     Type        uint    `json:"type" enums:"1,2"`          // 套餐类型: 1 个人 2 团体
     Amount      float64 `json:"amount"`                    // 套餐总价（包含押金）
     Price       float64 `json:"price"`                     // 套餐价格
-    BatteryType uint    `json:"batteryType" enums:"60,72"` // 电池类型
+    BatteryType string  `json:"batteryType" enums:"60,72"` // 电池类型
     Days        uint    `json:"days"`                      // 套餐时长天数
     Deposit     float64 `json:"deposit"`                   // 押金
     ProvinceId  uint    `json:"provinceId"`                // 省份ID
@@ -46,7 +46,7 @@ type ComboListItem struct {
 
 // ComboReq 套餐请求
 type ComboReq struct {
-    BatteryType uint    `v:"required|in:60,72" json:"batteryType" enums:"60,72"`                           // 电池类型
+    BatteryType string  `v:"required|in:60,72" json:"batteryType" enums:"60,72"`                           // 电池类型
     Type        uint    `v:"required" json:"type" enums:"1,2"`                                             // 套餐类型: 1个人 2团体
     Name        string  `v:"required" json:"name"`                                                         // 名称
     Days        uint    `v:"required|integer|min:1" json:"days"`                                           // 套餐时长天数

@@ -56,12 +56,12 @@ func (s *shopService) State(ctx context.Context, id uint, state uint) error {
 }
 
 // BatteryIn 电池入店
-func (s *shopService) BatteryIn(ctx context.Context, shopId, batterType, num uint) error {
-    if batterType == 60 {
+func (s *shopService) BatteryIn(ctx context.Context, shopId uint, battery string, num uint) error {
+    if battery == model.BatteryType60 {
         _, err := dao.Shop.Ctx(ctx).WherePri(shopId).Increment(dao.Shop.Columns.BatteryInCnt60, float64(num))
         return err
     }
-    if batterType == 72 {
+    if battery == model.BatteryType72 {
         _, err := dao.Shop.Ctx(ctx).WherePri(shopId).Increment(dao.Shop.Columns.BatteryInCnt72, float64(num))
         return err
     }
@@ -69,12 +69,12 @@ func (s *shopService) BatteryIn(ctx context.Context, shopId, batterType, num uin
 }
 
 // BatteryOut 电池出店
-func (s *shopService) BatteryOut(ctx context.Context, shopId, batterType, num uint) error {
-    if batterType == 60 {
+func (s *shopService) BatteryOut(ctx context.Context, shopId uint, battery string, num uint) error {
+    if battery == model.BatteryType60 {
         _, err := dao.Shop.Ctx(ctx).WherePri(shopId).Increment(dao.Shop.Columns.BatteryOutCnt60, float64(num))
         return err
     }
-    if batterType == 72 {
+    if battery == model.BatteryType72 {
         _, err := dao.Shop.Ctx(ctx).WherePri(shopId).Increment(dao.Shop.Columns.BatteryOutCnt72, float64(num))
         return err
     }

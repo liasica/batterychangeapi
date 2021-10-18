@@ -105,7 +105,7 @@ type BizProfileRep struct {
     IdCardNo     string `json:"idCardNo"`            // 身份证号码
     AuthState    uint   `json:"authState"`           // 实名认证状态 0 未提交 ，1 待审核， 2 审核通过，3 审核未通过
     BatteryState uint   `json:"batteryState"`        // 换电状态：0 未开通，1 新购待领取 （团用户未领取），2 租借中，3 寄存中，4 已退租 5 已逾期
-    BatteryType  uint   `json:"batteryType"`         // 电池类型 60 / 72
+    BatteryType  string `json:"batteryType"`         // 电池类型 60 / 72
     ComboName    string `json:"comboName,omitempty"` // 套餐名称
     GroupId      uint   `json:"groupId"`             // 团体Id，个签用户为 0
     GroupName    string `json:"groupName,omitempty"` // 团体名称
@@ -132,8 +132,8 @@ type UserProfileRep struct {
     } `json:"user,omitempty"` // 个签用户套餐信息， 其它类型用户忽略
 
     GroupUser struct {
-        BatteryState uint `json:"batteryState"` // 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租
-        BatteryType  uint `json:"batteryType"`  // 电池型号 60 / 72  未开通为 0
+        BatteryState uint   `json:"batteryState"` // 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租
+        BatteryType  string `json:"batteryType"`  // 电池型号 60 / 72  未开通为 0
     } `json:"groupUser,omitempty"` // 团签用户骑手信息， 其它类型用户忽略
 
     GroupBoss UserGroupStatRep `json:"groupBoss,omitempty"` // 团队BOSS信息， 其它类型用户忽略
@@ -172,7 +172,7 @@ type UserListItem struct {
     RealName              string      `json:"realName"`              // 姓名
     Mobile                string      `json:"mobile"`                // 手机号
     BatteryState          uint        `json:"batteryState"`          // 状态 个签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租 5已逾期; 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租
-    BatteryType           uint        `json:"batteryType"`           // 套餐电池型号 60/72
+    BatteryType           string      `json:"batteryType"`           // 套餐电池型号 60/72
     ComboId               uint        `json:"comboId"`               // 套餐ID
     ComboOrderId          uint64      `json:"comboOrderId"`          // 办理套餐订单ID
     BatteryReturnAt       *gtime.Time `json:"batteryReturnAt"`       // 个人用户应归还电池时间， 小于当前时间即逾期

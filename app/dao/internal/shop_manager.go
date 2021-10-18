@@ -22,11 +22,11 @@ type ShopManagerDao struct {
 // ShopManagerColumns defines and stores column names for table shop_manager.
 type shopManagerColumns struct {
 	Id          string //
-	Name        string // 店长姓名
-	Mobile      string // 手机号码
 	ShopId      string // 门店ID
+	Name        string // 管理员
+	Mobile      string // 手机号码
 	AccessToken string //
-	DeviceType  string // 0 未上报 1 安卓  2  iOS
+	DeviceType  string // 设备类型: 0未上报 1安卓 2iOS
 	DeviceToken string // 用户推送token
 	DeletedAt   string //
 	CreatedAt   string //
@@ -40,9 +40,9 @@ func NewShopManagerDao() *ShopManagerDao {
 		Table: "shop_manager",
 		Columns: shopManagerColumns{
 			Id:          "id",
+			ShopId:      "shopId",
 			Name:        "name",
 			Mobile:      "mobile",
-			ShopId:      "shopId",
 			AccessToken: "accessToken",
 			DeviceType:  "deviceType",
 			DeviceToken: "deviceToken",
