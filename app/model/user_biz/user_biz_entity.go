@@ -12,17 +12,17 @@ import (
 
 // Entity is the golang structure for table user_biz.
 type Entity struct {
-    Id           uint64      `orm:"id,primary"   json:"id"`             //                                    
-    UserId       uint64      `orm:"userId"       json:"user_id"`        // 用户ID                             
-    ComboId      uint        `orm:"comboId"      json:"combo_id"`       // 套餐ID                             
-    CityId       uint        `orm:"cityId"       json:"city_id"`        // 城市ID                             
-    ShopId       uint        `orm:"shopId"       json:"shop_id"`        // 门店ID                             
-    GoroupId     uint        `orm:"goroupId"     json:"goroup_id"`      // 团签ID                             
-    GoroupUserId uint        `orm:"goroupUserId" json:"goroup_user_id"` // 团签用户ID                         
-    Type         uint        `orm:"type"         json:"type"`           // 业务类型: 1新签 2换电 3寄存 4退租  
-    BatteryType  string      `orm:"batteryType"  json:"battery_type"`   // 电池型号                           
-    CreatedAt    *gtime.Time `orm:"createdAt"    json:"created_at"`     // 扫码时间                           
-    UpdatedAt    *gtime.Time `orm:"updatedAt"    json:"updated_at"`     //                                    
+    Id           uint64      `orm:"id,primary"   json:"id"`             //                                              
+    UserId       uint64      `orm:"userId"       json:"user_id"`        // 用户ID                                       
+    ComboId      uint        `orm:"comboId"      json:"combo_id"`       // 套餐ID                                       
+    CityId       uint        `orm:"cityId"       json:"city_id"`        // 城市ID                                       
+    ShopId       uint        `orm:"shopId"       json:"shop_id"`        // 门店ID                                       
+    GoroupId     uint        `orm:"goroupId"     json:"goroup_id"`      // 团签ID                                       
+    GoroupUserId uint        `orm:"goroupUserId" json:"goroup_user_id"` // 团签用户ID                                   
+    Type         uint        `orm:"type"         json:"type"`           // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租  
+    BatteryType  string      `orm:"batteryType"  json:"battery_type"`   // 电池型号                                     
+    CreatedAt    *gtime.Time `orm:"createdAt"    json:"created_at"`     // 扫码时间                                     
+    UpdatedAt    *gtime.Time `orm:"updatedAt"    json:"updated_at"`     //                                              
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

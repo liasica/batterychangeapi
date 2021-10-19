@@ -114,7 +114,7 @@ type UserBizShopRecordReq struct {
     Keywords string `json:"keywords"`            // 搜索关键字
     Month    uint   `json:"batteryType"`         // 月份数字 如： 20210705
     UserType uint   `json:"userTpe" v:"in:1,2"`  // 用户类型 1 个签 2 团签
-    BizType  uint   `json:"bizTpe" v:"in:3,2,5"` // 业务类型 2 换电 3 寄存(仅个签可用)，5 退租
+    BizType  uint   `json:"bizTpe" v:"in:3,2,5"` // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租
 }
 
 // UserBizShopRecordRep 店长获取业务记录响应
@@ -123,15 +123,15 @@ type UserBizShopRecordRep struct {
     ComboName  string      `json:"comboName,omitempty"` // 套餐名称
     GroupName  string      `json:"groupName,omitempty"` // 团体名称， 名称为空即为 个签用户
     UserMobile string      `json:"userMobile"`          // 手机号
-    BizType    uint        `json:"bizType"`             // 业务类型  2 换电 3 寄存(仅个签可用)，5 退租
+    BizType    uint        `json:"bizType"`             // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租
     At         *gtime.Time `json:"at"`                  // 时间
 }
 
 // UserBizShopRecordMonthTotalReq 店长获取业务记录按月统计请求
 type UserBizShopRecordMonthTotalReq struct {
-    Month    uint `validate:"required" json:"batteryType" v:"required"` // "月份数字，如 202106"
-    UserType uint `json:"userTpe" v:"in:1,2"`                           // "用户类型 1 个签  2 团签"
-    BizType  uint `json:"bizTpe" v:"in:3,2,5"`                          // 业务类型 2 换电 3 寄存(仅个签可用)，5 退租
+    Month    uint `validate:"required" json:"batteryType" v:"required"` // 月份数字，如 202106
+    UserType uint `json:"userTpe" v:"in:1,2"`                           // 用户类型 1 个签  2 团签
+    BizType  uint `json:"bizTpe" v:"in:3,2,5"`                          // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租
 }
 
 // UserBizShopRecordMonthTotalRep 店长获取业务记录按月统计响应
@@ -147,7 +147,7 @@ type BizEntity struct {
     ShopId      uint        `orm:"shopId"       json:"shopId"`      // 门店ID
     UserId      uint64      `orm:"userId"       json:"userId"`      // 用户ID
     GoroupId    uint        `orm:"goroupId"     json:"goroupId"`    // 团体ID
-    Type        uint        `orm:"type"         json:"type"`        // 业务类型: 1新签 2换电 3寄存 4退租
+    Type        uint        `orm:"type"         json:"type"`        // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租
     ComboId     uint        `orm:"comboId"   json:"comboId"`        // 套餐ID
     BatteryType string      `orm:"batteryType"  json:"batteryType"` // 电池型号 60 / 72
     CreatedAt   *gtime.Time `orm:"createdAt"    json:"createdAt"`   // 业务办理时间
@@ -183,7 +183,7 @@ type BizSimpleItem struct {
 
     Id          uint        `json:"id"`
     ShopId      uint        `json:"shopId"`      // 门店ID
-    Type        uint        `json:"type"`        // 业务类型: 1新签 2换电 3寄存 4退租
+    Type        uint        `json:"type"`        // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租
     BatteryType string      `json:"batteryType"` // 电池型号: 60 / 72
     CreatedAt   *gtime.Time `json:"createdAt"`   // 业务办理时间
 

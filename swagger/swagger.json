@@ -1870,30 +1870,7 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-个签用户套餐列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "当前页码",
-                        "name": "pageIndex",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数",
-                        "name": "pageLimit",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "当前城市ID",
-                        "name": "cityId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
+                "summary": "骑手-获取骑手当前套餐详情",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -1906,10 +1883,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
-                                            }
+                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
                                         }
                                     }
                                 }
@@ -3526,7 +3500,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "description": "业务类型: 1新签 2换电 3寄存 4退租",
+                    "description": "业务类型: 1新签 2换电 3寄存 4恢复计费 5退租",
                     "type": "integer"
                 },
                 "userId": {
@@ -3638,7 +3612,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "description": "业务类型: 1新签 2换电 3寄存 4退租",
+                    "description": "业务类型: 1新签 2换电 3寄存 4恢复计费 5退租",
                     "type": "integer"
                 }
             }
@@ -5402,7 +5376,7 @@
                     "type": "string"
                 },
                 "bizType": {
-                    "description": "业务类型  2 换电 3 寄存(仅个签可用)，5 退租",
+                    "description": "业务类型: 1新签 2换电 3寄存 4恢复计费 5退租",
                     "type": "integer"
                 },
                 "comboName": {
