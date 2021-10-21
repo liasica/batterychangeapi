@@ -41,7 +41,7 @@ type SettlementEntity struct {
     StopDate     *gtime.Time `orm:"stopDate"     json:"stopDate"`     // 账单结算日期
     SplitAt      *gtime.Time `orm:"splitAt"      json:"splitAt"`      // 账单拆分日
 
-    Combo *Combo `json:"-" orm:"with:id=comboId"`
+    Combo *Combo `json:"-" orm:"with:id=comboId"` // 套餐包详情
 }
 
 // SettlementListItem 账单对账表

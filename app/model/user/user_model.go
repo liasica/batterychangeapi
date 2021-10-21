@@ -29,7 +29,6 @@ var (
         GroupId                       string // 团签ID                                             
         ComboId                       string // 套餐ID                                             
         ComboOrderId                  string // 套餐订单ID                                         
-        SettlementDetailId            string // 团签当前账单ID                                     
         Mobile                        string // 手机号码                                           
         Type                          string // 用户类型: 1个签骑手 2团签骑手 3团签BOSS            
         Qr                            string // 骑手二维码数据                                     
@@ -58,7 +57,6 @@ var (
         GroupId:                      "groupId",                       
         ComboId:                      "comboId",                       
         ComboOrderId:                 "comboOrderId",                  
-        SettlementDetailId:           "settlementDetailId",            
         Mobile:                       "mobile",                        
         Type:                         "type",                          
         Qr:                           "qr",                            

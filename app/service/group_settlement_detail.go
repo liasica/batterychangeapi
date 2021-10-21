@@ -153,7 +153,7 @@ func (s *groupSettlementDetailService) GetGroupBill(ctx context.Context, group *
     var from *gtime.Time
     now := gtime.Now()
     c := dao.GroupSettlementDetail.Columns
-    _ = dao.GroupSettlementDetail.Ctx(ctx).WithAll().
+    _ = dao.GroupSettlementDetail.Ctx(ctx).With(model.SettlementEntity{}.Combo).
         Where(g.Map{
             c.GroupId:   group.Id,
             c.Ignorance: 0,

@@ -44,7 +44,7 @@ func (s *groupSettlementService) CheckoutBill(ctx context.Context, req *model.Gr
     }
     // 获取所有结算单详情
     var ids []uint64
-    var details []model.GroupSettlementDetail
+    var details []model.SettlementEntity
     mapItems := map[uint64]*model.SettlementListItem{}
     for _, item := range bill.Items {
         ids = append(ids, item.DetailId)
@@ -88,10 +88,11 @@ func (s *groupSettlementService) CheckoutBill(ctx context.Context, req *model.Gr
                 newRecord.Id = 0
                 newRecord.StartDate = end.AddDate(0, 0, 1)
                 newRecord.ParentId = detail.Id
-                newRecord.CreatedAt = now
                 details = append(details, newRecord)
             }
-            // 是否正在使用
+            // TODO 是否正在使用??? 好像有逻辑不需要额外判定了 [团签结账的时候注意清空团签所有用户计费账单状态ID 并开启当前使用套餐新的计费账单]
+            if detail.CancelDate.IsZero() {
+            }
 
             details[k].SettlementId = uint64(id)
             details[k].SplitAt = now
