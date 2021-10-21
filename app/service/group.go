@@ -3,9 +3,12 @@ package service
 import (
     "battery/app/dao"
     "battery/app/model"
+    "battery/app/model/group"
+    "battery/library/mq"
     "context"
     "fmt"
     "github.com/gogf/gf/os/gtime"
+    "strings"
 )
 
 var GroupService = groupService{}
@@ -50,14 +53,32 @@ func (*groupService) Create(ctx context.Context, group model.Group) (uint, error
 }
 
 // ListAdmin 管理列表
-func (*groupService) ListAdmin(ctx context.Context, req model.GroupListAdminReq) (total int, items []model.Group) {
-    m := dao.Group.Ctx(ctx)
+func (*groupService) ListAdmin(ctx context.Context, req *model.GroupListAdminReq) (total int, items []model.GroupEntity) {
+    query := dao.Group.Ctx(ctx).WithAll()
     if req.Keywords != "" {
-        m = m.WhereLike(dao.Group.Columns.Name, fmt.Sprintf("%%%s%%", req.Keywords))
+        query = query.WhereLike(dao.Group.Columns.Name, fmt.Sprintf("%%%s%%", req.Keywords))
     }
-    total, _ = m.Count()
-    if total > 0 {
-        _ = m.Page(req.PageIndex, req.PageLimit).Scan(&items)
+
+    total, _ = query.Count()
+
+    // 查找成员数量
+    fileds := mq.FieldsWithTable(group.Table, dao.Group.Columns)
+    query = query.Fields(strings.Join(fileds, ",") + ",memberCnt").
+        LeftJoin("(SELECT COUNT(1) AS `memberCnt`, `gu`.`groupId` FROM `group_user` `gu` GROUP BY `gu`.`groupId`) `members` ON `members`.groupId = `group`.id")
+
+    _ = query.Page(req.PageIndex, req.PageLimit).Scan(&items)
+
+    for k, item := range items {
+        if item.City != nil {
+            items[k].CityName = item.City.Name
+        }
+        for _, detail := range item.SettlementDetails {
+            days := detail.GetDays()
+            items[k].Days += days
+            if detail.State != model.SettlementSettled {
+                items[k].BillDays += days
+            }
+        }
     }
     return
 }

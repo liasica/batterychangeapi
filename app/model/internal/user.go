@@ -14,6 +14,7 @@ type User struct {
 	GroupId                      uint        `orm:"groupId"                      json:"groupId"`                      // 团签ID
 	ComboId                      uint        `orm:"comboId"                      json:"comboId"`                      // 套餐ID
 	ComboOrderId                 uint64      `orm:"comboOrderId"                 json:"comboOrderId"`                 // 套餐订单ID
+	SettlementDetailId           uint64      `orm:"settlementDetailId"           json:"settlementDetailId"`           // 团签当前账单ID
 	Mobile                       string      `orm:"mobile,unique"                json:"mobile"`                       // 手机号码
 	Type                         uint        `orm:"type"                         json:"type"`                         // 用户类型: 1个签骑手 2团签骑手 3团签BOSS
 	Qr                           string      `orm:"qr,unique"                    json:"qr"`                           // 骑手二维码数据

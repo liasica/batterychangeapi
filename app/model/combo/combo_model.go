@@ -31,7 +31,7 @@ var (
         Name         string // 名称                   
         Days         string // 套餐时长天数           
         Amount       string // 套餐总价(包含押金)     
-        Price        string // 套餐价格               
+        Price        string // 计费价格               
         Deposit      string // 押金                   
         ProvinceId   string // 省级行政编码           
         CityId       string // 市级行政编码           

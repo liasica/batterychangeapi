@@ -7,6 +7,7 @@ package model
 import (
     "battery/app/model/internal"
     "github.com/gogf/gf/os/gtime"
+    "github.com/gogf/gf/util/gmeta"
 )
 
 // Group is the golang structure for table group.
@@ -70,4 +71,24 @@ type UserGroupListRep struct {
 type GroupListAdminReq struct {
     Page
     Keywords string `json:"keywords"`
+}
+
+// GroupEntity 团签详情实体
+type GroupEntity struct {
+    gmeta.Meta `orm:"table:group_settlement_detail" swaggerignore:"true"`
+
+    Id            uint   `json:"id"`
+    Name          string `json:"name"`          // 名称
+    ProvinceId    uint   `json:"provinceId"`    // 省份ID
+    CityId        uint   `json:"cityId"`        // 城市ID
+    ContactName   string `json:"contactName"`   // 联系人
+    ContactMobile string `json:"contactMobile"` // 联系电话
+
+    MemberCnt uint   `json:"memberCnt"` // 骑手数量
+    CityName  string `json:"cityName"`  // 城市名称
+    Days      uint   `json:"days"`      // 累积天数
+    BillDays  uint   `json:"billDays"`  // 未结天数
+
+    SettlementDetails []*SettlementEntity `json:"-" orm:"with:groupId=id, where:ignorance=0, order:startDate desc"`
+    City              *Districts          `json:"-" orm:"with:id=cityId"`
 }

@@ -551,7 +551,7 @@
                                                         "items": {
                                                             "type": "array",
                                                             "items": {
-                                                                "$ref": "#/definitions/model.GroupListItem"
+                                                                "$ref": "#/definitions/model.GroupEntity"
                                                             }
                                                         }
                                                     }
@@ -584,6 +584,39 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/model.GroupFormReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/group/bill/{hash}": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "结账",
+                "parameters": [
+                    {
+                        "description": "结算请求",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.GroupSettlementCheckoutReq"
                         }
                     }
                 ],
@@ -840,6 +873,56 @@
                                                     }
                                                 }
                                             ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/group/{id}/settlement/{expDate}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "获取团签账单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团签ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "截止日期",
+                        "name": "expDate",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.SettlementCache"
                                         }
                                     }
                                 }
@@ -1870,30 +1953,7 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-个签用户套餐列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "当前页码",
-                        "name": "pageIndex",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数",
-                        "name": "pageLimit",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "当前城市ID",
-                        "name": "cityId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
+                "summary": "骑手-获取骑手当前套餐详情",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -1906,10 +1966,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
-                                            }
+                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
                                         }
                                     }
                                 }
@@ -4013,6 +4070,50 @@
                 }
             }
         },
+        "model.GroupEntity": {
+            "type": "object",
+            "properties": {
+                "billDays": {
+                    "description": "未结天数",
+                    "type": "integer"
+                },
+                "cityId": {
+                    "description": "城市ID",
+                    "type": "integer"
+                },
+                "cityName": {
+                    "description": "城市名称",
+                    "type": "string"
+                },
+                "contactMobile": {
+                    "description": "联系电话",
+                    "type": "string"
+                },
+                "contactName": {
+                    "description": "联系人",
+                    "type": "string"
+                },
+                "days": {
+                    "description": "累积天数",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "memberCnt": {
+                    "description": "骑手数量",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "provinceId": {
+                    "description": "省份ID",
+                    "type": "integer"
+                }
+            }
+        },
         "model.GroupFormReq": {
             "type": "object",
             "properties": {
@@ -4049,54 +4150,6 @@
                 }
             }
         },
-        "model.GroupListItem": {
-            "type": "object",
-            "properties": {
-                "arrearsDaysCnt60": {
-                    "description": "60电池欠款天数",
-                    "type": "integer"
-                },
-                "arrearsDaysCnt72": {
-                    "description": "72电池欠款天数",
-                    "type": "integer"
-                },
-                "cityId": {
-                    "description": "城市ID",
-                    "type": "integer"
-                },
-                "contactMobile": {
-                    "description": "联系电话",
-                    "type": "string"
-                },
-                "contactName": {
-                    "description": "联系人",
-                    "type": "string"
-                },
-                "daysCnt60": {
-                    "description": "60电池天数",
-                    "type": "integer"
-                },
-                "daysCnt72": {
-                    "description": "72电池天数",
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
-                },
-                "provinceId": {
-                    "description": "省份ID",
-                    "type": "integer"
-                },
-                "userCnt": {
-                    "description": "用户数量",
-                    "type": "integer"
-                }
-            }
-        },
         "model.GroupListReq": {
             "type": "object",
             "required": [
@@ -4121,6 +4174,22 @@
                 },
                 "startDate": {
                     "description": "开始日期",
+                    "type": "string"
+                }
+            }
+        },
+        "model.GroupSettlementCheckoutReq": {
+            "type": "object",
+            "required": [
+                "hash"
+            ],
+            "properties": {
+                "hash": {
+                    "description": "结算单hash",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "结算单备注",
                     "type": "string"
                 }
             }
@@ -4482,6 +4551,75 @@
                 "deviceType": {
                     "description": "1 android  2 ios",
                     "type": "integer"
+                }
+            }
+        },
+        "model.SettlementCache": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "总金额",
+                    "type": "number"
+                },
+                "fromDate": {
+                    "description": "上次结算日",
+                    "type": "string"
+                },
+                "groupId": {
+                    "description": "团签ID",
+                    "type": "integer"
+                },
+                "hash": {
+                    "description": "结算单hash",
+                    "type": "string"
+                },
+                "items": {
+                    "description": "结算单详情",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.SettlementListItem"
+                    }
+                },
+                "toDate": {
+                    "description": "结算日",
+                    "type": "string"
+                }
+            }
+        },
+        "model.SettlementListItem": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "未结金额",
+                    "type": "number"
+                },
+                "batteryType": {
+                    "description": "电池型号",
+                    "type": "string"
+                },
+                "billDays": {
+                    "description": "未结天数",
+                    "type": "integer"
+                },
+                "comboName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "detailId": {
+                    "description": "当前结账单详细ID",
+                    "type": "integer"
+                },
+                "startDate": {
+                    "description": "该账单截止日",
+                    "type": "string"
+                },
+                "stopDate": {
+                    "description": "该账单截止日",
+                    "type": "string"
+                },
+                "unitPrice": {
+                    "description": "计费单价",
+                    "type": "number"
                 }
             }
         },

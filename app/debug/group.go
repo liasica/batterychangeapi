@@ -10,10 +10,10 @@
 package debug
 
 import (
-    "battery/app/model"
-    "battery/app/service"
+    "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
-    "log"
+    "github.com/gogf/gf/os/gtime"
+    "github.com/shopspring/decimal"
 )
 
 type groupDebug struct {
@@ -21,6 +21,8 @@ type groupDebug struct {
 
 var Group = new(groupDebug)
 
-func (*groupDebug) WeekStat(r *ghttp.Request) {
-    log.Println(service.GroupDailyStatService.GenerateWeek(r.Context(), 1, model.BatteryType60))
+func (*groupDebug) Settlement(r *ghttp.Request) {
+    g.Dump(gtime.Now().AddDate(0, 0, -1).Format("Y-m-d"))
+    g.Dump(gtime.Now().After(gtime.NewFromStr("2021-10-19").AddDate(0, 0, 1)))
+    g.Dump(decimal.NewFromFloat(23.56333).Mul(decimal.NewFromInt(int64(182))).Round(2).Float64())
 }

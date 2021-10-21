@@ -9,6 +9,7 @@ import (
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/os/gtime"
     "github.com/golang-module/carbon"
+    "math"
     "math/rand"
     "time"
 
@@ -648,7 +649,7 @@ func (s *userService) ListPersonalItems(ctx context.Context, req *model.UserList
     for k, item := range items {
         // 计算剩余天数
         if !item.BatteryReturnAt.IsZero() && now.Before(item.BatteryReturnAt) {
-            items[k].Days = uint(item.BatteryReturnAt.Sub(now).Hours() / 24)
+            items[k].Days = uint(math.Floor(item.BatteryReturnAt.Sub(now).Hours() / 24.0))
         }
 
         if item.ComboDetail != nil {

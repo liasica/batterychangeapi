@@ -10,7 +10,7 @@ import (
 
 // GroupUser is the golang structure for table group_user.
 type GroupUser struct {
-	Id        uint        `orm:"id,primary" json:"id"`        //
+	Id        uint64      `orm:"id,primary" json:"id"`        //
 	GroupId   uint        `orm:"groupId"    json:"groupId"`   // 团队ID
 	UserId    uint64      `orm:"userId"     json:"userId"`    // 用户ID
 	DeletedAt *gtime.Time `orm:"deletedAt"  json:"deletedAt"` // 注销时间

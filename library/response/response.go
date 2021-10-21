@@ -1,6 +1,7 @@
 package response
 
 import (
+    "fmt"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
     "reflect"
@@ -58,23 +59,31 @@ func JsonOkExit(r *ghttp.Request, data ...interface{}) {
 }
 
 // JsonErrExit 返回json错误并退出
-func JsonErrExit(r *ghttp.Request, args ...int) {
+func JsonErrExit(r *ghttp.Request, args ...interface{}) {
     rep := JsonResponse{
         Code:    RespCodeSystemError,
         Message: CodeMsg[RespCodeSystemError],
     }
     l := len(args)
     if l > 0 {
-        rep.Code = args[0]
-        if msg, ok := CodeMsg[args[0]]; ok {
-            rep.Message = msg
+        code := args[0]
+        switch code.(type) {
+        case int:
+            rep.Code = code.(int)
+            if msg, ok := CodeMsg[rep.Code]; ok {
+                rep.Message = msg
+            }
         }
     }
+    if l > 1 {
+        rep.Message = fmt.Sprintf("%v", args[1])
+    }
+
     _ = r.Response.WriteJson(rep)
     r.Exit()
 }
 
-func ItemsWithTotal(r *ghttp.Request, total int, items interface{}) {
+func ItemsWithTotal(r *ghttp.Request, total interface{}, items interface{}) {
     v := reflect.ValueOf(items)
     if v.IsNil() || v.IsZero() {
         items = []interface{}{}

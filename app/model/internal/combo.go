@@ -16,7 +16,7 @@ type Combo struct {
 	Name        string      `orm:"name"        json:"name"`        // 名称
 	Days        uint        `orm:"days"        json:"days"`        // 套餐时长天数
 	Amount      float64     `orm:"amount"      json:"amount"`      // 套餐总价(包含押金)
-	Price       float64     `orm:"price"       json:"price"`       // 套餐价格
+	Price       float64     `orm:"price"       json:"price"`       // 计费价格
 	Deposit     float64     `orm:"deposit"     json:"deposit"`     // 押金
 	ProvinceId  uint        `orm:"provinceId"  json:"provinceId"`  // 省级行政编码
 	CityId      uint        `orm:"cityId"      json:"cityId"`      // 市级行政编码

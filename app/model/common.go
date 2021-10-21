@@ -84,19 +84,19 @@ type ImageBase64Req struct {
 
 type ArrayString []string
 
-func (required *ArrayString) UnmarshalValue(value interface{}) error {
+func (arr *ArrayString) UnmarshalValue(value interface{}) error {
     if value != nil {
         switch value.(type) {
         case string:
             data := []byte(value.(string))
-            return json.Unmarshal(data, &required)
+            return json.Unmarshal(data, &arr)
         case []interface{}:
             data := value.([]interface{})
             fields := make([]string, len(data))
             for key, field := range data {
                 fields[key] = field.(string)
             }
-            *required = fields
+            *arr = fields
         }
     }
     return nil

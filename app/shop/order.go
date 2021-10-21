@@ -251,11 +251,11 @@ func (*orderApi) Claim(r *ghttp.Request) {
                 user.BatteryType); err != nil {
                 return err
             }
+            // 账单入账
+            return service.GroupSettlementDetailService.Earning(ctx, user)
+
             // 人数统计
-            if err := service.GroupDailyStatService.RiderBizNew(ctx, user.GroupId, user.BatteryType, user.Id); err != nil {
-                return err
-            }
-            return nil
+            // return service.GroupDailyStatService.RiderBizNew(ctx, user.GroupId, user.BatteryType, user.Id)
         }); err == nil {
             response.JsonOkExit(r)
         } else {

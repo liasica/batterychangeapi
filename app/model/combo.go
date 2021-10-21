@@ -2,6 +2,7 @@ package model
 
 import (
     "battery/app/model/internal"
+    "github.com/shopspring/decimal"
 )
 
 // Combo is the golang structure for table combo.
@@ -56,4 +57,10 @@ type ComboReq struct {
     CityId      uint    `v:"required|integer|min:1" json:"cityId"`                                         // 城市ID
     Desc        string  `v:"required" json:"desc"`                                                         // 介绍
     Disable     bool    `json:"disable,omitempty"`                                                         // 是否禁用，当值为true的时候其他参数忽略 false启用(默认) true禁用
+}
+
+// UnitPrice 获取日单价
+func (c *Combo) UnitPrice() float64 {
+    v, _ := decimal.NewFromFloat(c.Price).Div(decimal.NewFromInt(int64(c.Days))).Round(2).Float64()
+    return v
 }

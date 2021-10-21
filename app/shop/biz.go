@@ -58,7 +58,8 @@ func (*bizApi) Post(r *ghttp.Request) {
     user := service.UserService.Detail(r.Context(), profile.Id)
     var err error
     switch req.Type {
-    case model.UserBizBatteryRenewal: // 换电
+    // 换电
+    case model.UserBizBatteryRenewal:
         if user.BatteryState != model.BatteryStateUse {
             response.Json(r, response.RespCodeArgs, "没有正在租借中的电池，不能办理换电")
         }
@@ -80,7 +81,8 @@ func (*bizApi) Post(r *ghttp.Request) {
             return nil
         })
 
-    case model.UserBizBatterySave: // 寄存
+    // 寄存
+    case model.UserBizBatterySave:
         if user.BatteryState != model.BatteryStateUse {
             response.Json(r, response.RespCodeArgs, "用户不是租借中状态，不能办理寄存")
         }
@@ -122,7 +124,8 @@ func (*bizApi) Post(r *ghttp.Request) {
             return nil
         })
 
-    case model.UserBizBatteryUnSave: // 恢复计费
+    // 恢复计费
+    case model.UserBizBatteryUnSave:
         if user.BatteryState != model.BatteryStateSave {
             response.Json(r, response.RespCodeArgs, "用户不是寄存中状态，不能办理恢复计费")
         }
@@ -167,7 +170,8 @@ func (*bizApi) Post(r *ghttp.Request) {
             return nil
         })
 
-    case model.UserBizClose: // 退租
+    // 退租
+    case model.UserBizClose:
         if user.BatteryState != model.BatteryStateUse &&
             user.BatteryState != model.BatteryStateSave &&
             user.BatteryState != model.BatteryStateExpired {
@@ -214,7 +218,7 @@ func (*bizApi) Post(r *ghttp.Request) {
                 }
             }
             if user.GroupId > 0 {
-                if err := service.GroupDailyStatService.RiderBizExit(ctx, user.GroupId, user.BatteryType, user.Id); err != nil {
+                if err := service.GroupSettlementDetailService.Cancel(ctx, user); err != nil {
                     return err
                 }
             } else {

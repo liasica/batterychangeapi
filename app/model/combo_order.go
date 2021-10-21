@@ -133,7 +133,7 @@ type OrderListReq struct {
 
 // OrderEntity 订单实体
 type OrderEntity struct {
-    gmeta.Meta `orm:"table:combo_order"`
+    gmeta.Meta `orm:"table:combo_order" swaggerignore:"true"`
 
     Id         uint        `json:"id"`
     No         uint        `json:"no"`

@@ -28,7 +28,7 @@ type userBizColumns struct {
 	ShopId       string // 门店ID
 	GoroupId     string // 团签ID
 	GoroupUserId string // 团签用户ID
-	Type         string // 业务类型: 1新签 2换电 3寄存 4退租
+	Type         string // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租
 	BatteryType  string // 电池型号
 	CreatedAt    string // 扫码时间
 	UpdatedAt    string //

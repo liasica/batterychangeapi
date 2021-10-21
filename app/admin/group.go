@@ -10,6 +10,7 @@ import (
     "github.com/gogf/gf/database/gdb"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
+    "github.com/gogf/gf/os/gtime"
     "net/url"
     "os"
     "path/filepath"
@@ -73,8 +74,8 @@ func (*groupApi) Create(r *ghttp.Request) {
             return err
         }
 
-        _ = service.GroupDailyStatService.GenerateWeek(ctx, group.Id, model.BatteryType60)
-        _ = service.GroupDailyStatService.GenerateWeek(ctx, group.Id, model.BatteryType72)
+        // _ = service.GroupDailyStatService.GenerateWeek(ctx, group.Id, model.BatteryType60)
+        // _ = service.GroupDailyStatService.GenerateWeek(ctx, group.Id, model.BatteryType72)
 
         return err
     }); err != nil {
@@ -90,44 +91,12 @@ func (*groupApi) Create(r *ghttp.Request) {
 // @Param   entity body model.GroupListReq true "请求参数"
 // @Produce  json
 // @Router  /admin/group [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.GroupListItem}}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.GroupEntity}}  "返回结果"
 func (*groupApi) List(r *ghttp.Request) {
-    var req model.GroupListReq
-    if err := r.Parse(&req); err != nil {
-        response.Json(r, response.RespCodeArgs, err.Error())
-    }
-    total, items := service.GroupService.ListAdmin(r.Context(), model.GroupListAdminReq{
-        Page:     req.Page,
-        Keywords: req.Keywords,
-    })
-    var result model.ItemsWithTotal
-    if total > 0 {
-        groupIds := make([]uint, len(items))
-        for key, group := range items {
-            groupIds[key] = group.Id
-        }
-        groupUserCnt := service.UserService.GroupUserCnt(r.Context(), groupIds)
-        stat, err := service.GroupDailyStatService.StatDateRange(r.Context(), groupIds, req.StartDate, req.EndDate)
-        if err != nil {
-            response.JsonErrExit(r)
-        }
-        for _, group := range items {
-            result.Items = append(result.Items, model.GroupListItem{
-                Id:               group.Id,
-                Name:             group.Name,
-                CityId:           group.CityId,
-                ProvinceId:       group.ProvinceId,
-                ContactName:      group.ContactName,
-                ContactMobile:    group.ContactMobile,
-                UserCnt:          groupUserCnt[group.Id],
-                ArrearsDaysCnt60: stat[group.Id].ArrearsDaysCnt60,
-                DaysCnt60:        stat[group.Id].ArrearsDaysCnt60 + stat[group.Id].PaidDaysCnt60,
-                ArrearsDaysCnt72: stat[group.Id].ArrearsDaysCnt72,
-                DaysCnt72:        stat[group.Id].ArrearsDaysCnt60 + stat[group.Id].PaidDaysCnt72,
-            })
-        }
-    }
-    response.JsonOkExit(r, result)
+    req := new(model.GroupListAdminReq)
+    _ = request.ParseRequest(r, req)
+    total, items := service.GroupService.ListAdmin(r.Context(), req)
+    response.ItemsWithTotal(r, total, items)
 }
 
 // Contract
@@ -243,4 +212,53 @@ func (*groupApi) DeleteMember(r *ghttp.Request) {
     } else {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
+}
+
+// GetSettlement
+// @Summary 获取团签账单
+// @Tags    管理
+// @Accept  json
+// @Param   id path int true "团签ID"
+// @Param   expDate path string true "截止日期"
+// @Produce json
+// @Router  /admin/group/{id}/settlement/{expDate} [GET]
+// @Success 200 {object} response.JsonResponse{data=model.SettlementCache}  "返回结果"
+func (*groupApi) GetSettlement(r *ghttp.Request) {
+    id := r.GetInt("id")
+    d := r.GetString("expDate")
+    expDate := gtime.NewFromStr(d)
+    if expDate.IsZero() || !gtime.Now().After(expDate.AddDate(0, 0, 1)) {
+        response.Json(r, response.RespCodeArgs, "请携带正确的日期")
+    }
+
+    group := new(model.Group)
+    if err := dao.Group.Ctx(r.Context()).Where(dao.Group.Columns.Id, id).Scan(group); err != nil {
+        response.Json(r, response.RespCodeArgs, "未找到团签")
+    }
+
+    bill, err := service.GroupSettlementDetailService.GetGroupBill(r.Context(), group, expDate)
+    if err != nil {
+        g.Log("settlement").Errorf("结算单生成失败: %v", err)
+        response.JsonErrExit(r, response.RespCodeSystemError, err)
+    }
+    response.JsonOkExit(r, bill)
+}
+
+// PostSettlement
+// @Summary 结账
+// @Tags    管理
+// @Accept  json
+// @Param   entity body model.GroupSettlementCheckoutReq true "结算请求"
+// @Produce json
+// @Router  /admin/group/bill/{hash} [POST]
+// @Success 200 {object} response.JsonResponse  "返回结果"
+func (*groupApi) PostSettlement(r *ghttp.Request) {
+    var req = new(model.GroupSettlementCheckoutReq)
+    _ = request.ParseRequest(r, req)
+    // 查找结算单
+    err := service.GroupSettlementService.CheckoutBill(r.Context(), req)
+    if err != nil {
+        response.Json(r, response.RespCodeArgs, err.Error())
+    }
+    response.JsonOkExit(r)
 }
