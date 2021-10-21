@@ -242,7 +242,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
             if err := service.ShopService.BatteryOut(ctx, shop.Id, user.BatteryType, 1); err != nil {
                 return err
             }
-            if err := service.ShopBatteryRecordService.User(ctx,
+            if err := service.ShopBatteryRecordService.DriverBiz(ctx,
                 model.ShopBatteryRecordTypeOut,
                 model.UserBizNew,
                 shop.Id,
@@ -303,7 +303,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
                 return err
             }
             user := service.UserService.Detail(ctx, order.UserId)
-            if err := service.ShopBatteryRecordService.User(ctx,
+            if err := service.ShopBatteryRecordService.DriverBiz(ctx,
                 model.ShopBatteryRecordTypeOut,
                 model.UserBizNew,
                 shop.Id,

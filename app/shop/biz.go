@@ -112,13 +112,12 @@ func (*bizApi) Post(r *ghttp.Request) {
             if err := service.ShopService.BatteryIn(ctx, shop.Id, user.BatteryType, 1); err != nil {
                 return err
             }
-            if err := service.ShopBatteryRecordService.User(ctx,
+            if err := service.ShopBatteryRecordService.DriverBiz(ctx,
                 model.ShopBatteryRecordTypeIn,
                 model.UserBizBatterySave,
                 shop.Id,
                 bizId,
-                user.RealName,
-                user.BatteryType); err != nil {
+                user); err != nil {
                 return err
             }
             return nil
@@ -158,13 +157,12 @@ func (*bizApi) Post(r *ghttp.Request) {
             if err := service.ShopService.BatteryOut(ctx, shop.Id, user.BatteryType, 1); err != nil {
                 return err
             }
-            if err := service.ShopBatteryRecordService.User(ctx,
+            if err := service.ShopBatteryRecordService.DriverBiz(ctx,
                 model.ShopBatteryRecordTypeIn,
                 model.UserBizBatteryUnSave,
                 shop.Id,
                 bizId,
-                user.RealName,
-                user.BatteryType); err != nil {
+                user); err != nil {
                 return err
             }
             return nil
@@ -207,13 +205,12 @@ func (*bizApi) Post(r *ghttp.Request) {
                 if err := service.ShopService.BatteryIn(ctx, shop.Id, user.BatteryType, 1); err != nil {
                     return err
                 }
-                if err := service.ShopBatteryRecordService.User(ctx,
+                if err := service.ShopBatteryRecordService.DriverBiz(ctx,
                     model.ShopBatteryRecordTypeIn,
                     model.UserBizClose,
                     shop.Id,
                     bizId,
-                    user.RealName,
-                    user.BatteryType); err != nil {
+                    user); err != nil {
                     return err
                 }
             }

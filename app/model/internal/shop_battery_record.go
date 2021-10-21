@@ -12,12 +12,15 @@ import (
 type ShopBatteryRecord struct {
 	Id          uint64      `orm:"id,primary"  json:"id"`          //
 	ShopId      uint        `orm:"shopId"      json:"shopId"`      // 门店ID
+	BatteryType string      `orm:"batteryType" json:"batteryType"` // 电池型号
 	Type        uint        `orm:"type"        json:"type"`        // 类别: 1入 2出
 	BizType     uint        `orm:"bizType"     json:"bizType"`     // 业务类别: 详细见表user_biz中bizType解释
 	BizId       uint64      `orm:"bizId"       json:"bizId"`       // 业务ID: 0为平台调拨
 	Num         uint        `orm:"num"         json:"num"`         // 数量
 	Day         int         `orm:"day"         json:"day"`         //
-	UserName    string      `orm:"userName"    json:"userName"`    // 操作员: 平台调拨为空
-	BatteryType string      `orm:"batteryType" json:"batteryType"` // 电池型号
+	UserId      uint64      `orm:"userId"      json:"userId"`      // 骑手ID
+	UserName    string      `orm:"userName"    json:"userName"`    // 骑手名字
+	SysUserId   uint        `orm:"sysUserId"   json:"sysUserId"`   // 系统管理员ID
+	SysUserName string      `orm:"sysUserName" json:"sysUserName"` // 操作员名字
 	CreatedAt   *gtime.Time `orm:"createdAt"   json:"createdAt"`   //
 }

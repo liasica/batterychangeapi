@@ -12,17 +12,17 @@ import (
 
 // Entity is the golang structure for table group_settlement.
 type Entity struct {
-    Id        uint64      `orm:"id,primary" json:"id"`          //             
-    Hash      string      `orm:"hash"       json:"hash"`        // 结算单hash  
-    GroupId   uint        `orm:"groupId"    json:"group_id"`    // 团队ID      
-    Amount    float64     `orm:"amount"     json:"amount"`      // 总结算金额  
-    SysUserId uint        `orm:"sysUserId"  json:"sys_user_id"` // 结算人ID    
-    SysName   string      `orm:"sysName"    json:"sys_name"`    // 结算人姓名  
-    Date      *gtime.Time `orm:"date"       json:"date"`        // 结算日      
-    Remark    string      `orm:"remark"     json:"remark"`      // 备注        
-    Detail    string      `orm:"detail"     json:"detail"`      // 结算详情    
-    CreatedAt *gtime.Time `orm:"createdAt"  json:"created_at"`  //             
-    UpdatedAt *gtime.Time `orm:"updatedAt"  json:"updated_at"`  //             
+    Id          uint64      `orm:"id,primary"  json:"id"`            //             
+    Hash        string      `orm:"hash"        json:"hash"`          // 结算单hash  
+    GroupId     uint        `orm:"groupId"     json:"group_id"`      // 团队ID      
+    Amount      float64     `orm:"amount"      json:"amount"`        // 总结算金额  
+    SysUserId   uint        `orm:"sysUserId"   json:"sys_user_id"`   // 结算人ID    
+    SysUserName string      `orm:"sysUserName" json:"sys_user_name"` // 结算人姓名  
+    Date        *gtime.Time `orm:"date"        json:"date"`          // 结算日      
+    Remark      string      `orm:"remark"      json:"remark"`        // 备注        
+    Detail      string      `orm:"detail"      json:"detail"`        // 结算详情    
+    CreatedAt   *gtime.Time `orm:"createdAt"   json:"created_at"`    //             
+    UpdatedAt   *gtime.Time `orm:"updatedAt"   json:"updated_at"`    //             
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

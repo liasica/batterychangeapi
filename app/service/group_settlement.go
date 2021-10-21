@@ -64,14 +64,14 @@ func (s *groupSettlementService) CheckoutBill(ctx context.Context, req *model.Gr
         // 存储结算账单
         ds, _ := jsoniter.MarshalToString(bill.Items)
         gs := model.GroupSettlement{
-            Hash:      bill.Id.Hex(),
-            GroupId:   bill.GroupId,
-            Amount:    bill.Amount,
-            SysUserId: sysUser.Id,
-            SysName:   sysUser.Username,
-            Date:      gtime.NewFromStr(bill.ToDate),
-            Remark:    req.Remark,
-            Detail:    ds,
+            Hash:        bill.Id.Hex(),
+            GroupId:     bill.GroupId,
+            Amount:      bill.Amount,
+            SysUserId:   sysUser.Id,
+            SysUserName: sysUser.Username,
+            Date:        gtime.NewFromStr(bill.ToDate),
+            Remark:      req.Remark,
+            Detail:      ds,
         }
         r, err := tx.Save(group_settlement.Table, gs)
         if err != nil {

@@ -62,7 +62,7 @@ func (*assetApi) BatteryList(r *ghttp.Request) {
     }
     // 按天统计
     daysTotal := service.ShopBatteryRecordService.ShopDaysTotal(r.Context(), days, req.Type)
-    daysTotalCnt := map[int]uint{}
+    daysTotalCnt := make(map[int]uint)
     for _, day := range daysTotal {
         daysTotalCnt[day.Day] = day.Cnt
     }

@@ -27,24 +27,30 @@ var (
 	Columns = struct {
 		Id           string //                                          
         ShopId       string // 门店ID                                   
+        BatteryType  string // 电池型号                                 
         Type         string // 类别: 1入 2出                            
         BizType      string // 业务类别: 详细见表user_biz中bizType解释  
         BizId        string // 业务ID: 0为平台调拨                      
         Num          string // 数量                                     
         Day          string //                                          
-        UserName     string // 操作员: 平台调拨为空                     
-        BatteryType  string // 电池型号                                 
+        UserId       string // 骑手ID                                   
+        UserName     string // 骑手名字                                 
+        SysUserId    string // 系统管理员ID                             
+        SysUserName  string // 操作员名字                               
         CreatedAt    string //
 	}{
 		Id:          "id",           
         ShopId:      "shopId",       
+        BatteryType: "batteryType",  
         Type:        "type",         
         BizType:     "bizType",      
         BizId:       "bizId",        
         Num:         "num",          
         Day:         "day",          
+        UserId:      "userId",       
         UserName:    "userName",     
-        BatteryType: "batteryType",  
+        SysUserId:   "sysUserId",    
+        SysUserName: "sysUserName",  
         CreatedAt:   "createdAt",
 	}
 )
@@ -141,7 +147,7 @@ func (m *arModel) Filter() *arModel {
 // Where("uid", 1).Where("name", "john")
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
-// Where(User{ Id : 1, UserName : "john"})
+// Where(DriverBiz{ Id : 1, UserName : "john"})
 func (m *arModel) Where(where interface{}, args ...interface{}) *arModel {
 	return &arModel{m.M.Where(where, args...)}
 }

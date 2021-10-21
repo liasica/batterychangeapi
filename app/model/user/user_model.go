@@ -175,7 +175,7 @@ func (m *arModel) Filter() *arModel {
 // Where("uid", 1).Where("name", "john")
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
-// Where(User{ Id : 1, UserName : "john"})
+// Where(DriverBiz{ Id : 1, UserName : "john"})
 func (m *arModel) Where(where interface{}, args ...interface{}) *arModel {
 	return &arModel{m.M.Where(where, args...)}
 }

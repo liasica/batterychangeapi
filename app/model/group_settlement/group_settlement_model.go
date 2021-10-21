@@ -25,29 +25,29 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table group_settlement.
 	Columns = struct {
-		Id         string //             
-        Hash       string // 结算单hash  
-        GroupId    string // 团队ID      
-        Amount     string // 总结算金额  
-        SysUserId  string // 结算人ID    
-        SysName    string // 结算人姓名  
-        Date       string // 结算日      
-        Remark     string // 备注        
-        Detail     string // 结算详情    
-        CreatedAt  string //             
-        UpdatedAt  string //
+		Id           string //             
+        Hash         string // 结算单hash  
+        GroupId      string // 团队ID      
+        Amount       string // 总结算金额  
+        SysUserId    string // 结算人ID    
+        SysUserName  string // 结算人姓名  
+        Date         string // 结算日      
+        Remark       string // 备注        
+        Detail       string // 结算详情    
+        CreatedAt    string //             
+        UpdatedAt    string //
 	}{
-		Id:        "id",         
-        Hash:      "hash",       
-        GroupId:   "groupId",    
-        Amount:    "amount",     
-        SysUserId: "sysUserId",  
-        SysName:   "sysName",    
-        Date:      "date",       
-        Remark:    "remark",     
-        Detail:    "detail",     
-        CreatedAt: "createdAt",  
-        UpdatedAt: "updatedAt",
+		Id:          "id",           
+        Hash:        "hash",         
+        GroupId:     "groupId",      
+        Amount:      "amount",       
+        SysUserId:   "sysUserId",    
+        SysUserName: "sysUserName",  
+        Date:        "date",         
+        Remark:      "remark",       
+        Detail:      "detail",       
+        CreatedAt:   "createdAt",    
+        UpdatedAt:   "updatedAt",
 	}
 )
 
@@ -143,7 +143,7 @@ func (m *arModel) Filter() *arModel {
 // Where("uid", 1).Where("name", "john")
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
-// Where(User{ Id : 1, UserName : "john"})
+// Where(DriverBiz{ Id : 1, UserName : "john"})
 func (m *arModel) Where(where interface{}, args ...interface{}) *arModel {
 	return &arModel{m.M.Where(where, args...)}
 }

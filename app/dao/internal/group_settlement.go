@@ -21,17 +21,17 @@ type GroupSettlementDao struct {
 
 // GroupSettlementColumns defines and stores column names for table group_settlement.
 type groupSettlementColumns struct {
-	Id        string //
-	Hash      string // 结算单hash
-	GroupId   string // 团队ID
-	Amount    string // 总结算金额
-	SysUserId string // 结算人ID
-	SysName   string // 结算人姓名
-	Date      string // 结算日
-	Remark    string // 备注
-	Detail    string // 结算详情
-	CreatedAt string //
-	UpdatedAt string //
+	Id          string //
+	Hash        string // 结算单hash
+	GroupId     string // 团队ID
+	Amount      string // 总结算金额
+	SysUserId   string // 结算人ID
+	SysUserName string // 结算人姓名
+	Date        string // 结算日
+	Remark      string // 备注
+	Detail      string // 结算详情
+	CreatedAt   string //
+	UpdatedAt   string //
 }
 
 func NewGroupSettlementDao() *GroupSettlementDao {
@@ -40,17 +40,17 @@ func NewGroupSettlementDao() *GroupSettlementDao {
 		DB:    g.DB("default"),
 		Table: "group_settlement",
 		Columns: groupSettlementColumns{
-			Id:        "id",
-			Hash:      "hash",
-			GroupId:   "groupId",
-			Amount:    "amount",
-			SysUserId: "sysUserId",
-			SysName:   "sysName",
-			Date:      "date",
-			Remark:    "remark",
-			Detail:    "detail",
-			CreatedAt: "createdAt",
-			UpdatedAt: "updatedAt",
+			Id:          "id",
+			Hash:        "hash",
+			GroupId:     "groupId",
+			Amount:      "amount",
+			SysUserId:   "sysUserId",
+			SysUserName: "sysUserName",
+			Date:        "date",
+			Remark:      "remark",
+			Detail:      "detail",
+			CreatedAt:   "createdAt",
+			UpdatedAt:   "updatedAt",
 		},
 	}
 }

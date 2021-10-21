@@ -12,58 +12,70 @@ var ShopBatteryRecordService = shopBatteryRecordService{}
 type shopBatteryRecordService struct {
 }
 
-// User 骑手记录
-func (*shopBatteryRecordService) User(ctx context.Context, recordType, bizType, shopId uint, bizId uint64, userName string, batteryType string) error {
+// DriverBiz 骑手业务调拨记录
+func (*shopBatteryRecordService) DriverBiz(ctx context.Context, recordType, bizType, shopId uint, bizId uint64, user model.User) error {
+    c := dao.ShopBatteryRecord.Columns
     _, err := dao.ShopBatteryRecord.Ctx(ctx).
         Fields(
-            dao.ShopBatteryRecord.Columns.ShopId,
-            dao.ShopBatteryRecord.Columns.BizId,
-            dao.ShopBatteryRecord.Columns.BizType,
-            dao.ShopBatteryRecord.Columns.UserName,
-            dao.ShopBatteryRecord.Columns.BatteryType,
-            dao.ShopBatteryRecord.Columns.Num,
-            dao.ShopBatteryRecord.Columns.Type,
+            c.ShopId,
+            c.BizId,
+            c.BizType,
+            c.UserName,
+            c.BatteryType,
+            c.Num,
+            c.Type,
+            c.UserId,
         ).
         Insert(model.ShopBatteryRecord{
             ShopId:      shopId,
             BizId:       bizId,
             BizType:     bizType,
-            UserName:    userName,
-            BatteryType: batteryType,
+            UserName:    user.RealName,
+            BatteryType: user.BatteryType,
             Num:         1,
             Type:        recordType,
+            UserId:      user.Id,
         })
     return err
 }
 
 // Platform 平台调拨
 func (*shopBatteryRecordService) Platform(ctx context.Context, recordType, shopId, num uint, batteryType string) error {
+    c := dao.ShopBatteryRecord.Columns
+    sysUser := ctx.Value(model.ContextAdminKey).(*model.ContextAdmin)
     _, err := dao.ShopBatteryRecord.Ctx(ctx).
-        Fields(dao.ShopBatteryRecord.Columns.ShopId,
-            dao.ShopBatteryRecord.Columns.Num,
-            dao.ShopBatteryRecord.Columns.Type,
-            dao.ShopBatteryRecord.Columns.BatteryType,
-        ).Insert(model.ShopBatteryRecord{
-        ShopId:      shopId,
-        BatteryType: batteryType,
-        Num:         num,
-        Type:        recordType,
-    })
+        Fields(
+            c.ShopId,
+            c.Num,
+            c.Type,
+            c.BatteryType,
+            c.SysUserId,
+            c.SysUserName,
+        ).
+        Insert(model.ShopBatteryRecord{
+            ShopId:      shopId,
+            BatteryType: batteryType,
+            Num:         num,
+            Type:        recordType,
+            SysUserId:   sysUser.Id,
+            SysUserName: sysUser.Username,
+        })
     return err
 }
 
 // ShopList 门店获取电池记录
 func (*shopBatteryRecordService) ShopList(ctx context.Context, shopId uint, recordType uint, st *gtime.Time, et *gtime.Time) (list []model.ShopBatteryRecord) {
+    c := dao.ShopBatteryRecord.Columns
     layout := "Y-m-d"
     m := dao.ShopBatteryRecord.Ctx(ctx).
-        Where(dao.ShopBatteryRecord.Columns.ShopId, shopId).
-        Where(dao.ShopBatteryRecord.Columns.Type, recordType).
-        OrderDesc(dao.ShopBatteryRecord.Columns.Id)
+        Where(c.ShopId, shopId).
+        Where(c.Type, recordType).
+        OrderDesc(c.Id)
     if !st.IsZero() {
-        m = m.WhereGTE(dao.ShopBatteryRecord.Columns.CreatedAt, st.Format(layout))
+        m = m.WhereGTE(c.CreatedAt, st.Format(layout))
     }
     if !et.IsZero() {
-        m = m.WhereLTE(dao.ShopBatteryRecord.Columns.CreatedAt, et.Format(layout))
+        m = m.WhereLTE(c.CreatedAt, et.Format(layout))
     }
     _ = m.Scan(&list)
     return
@@ -74,11 +86,12 @@ func (*shopBatteryRecordService) ShopDaysTotal(ctx context.Context, days []int, 
     Day int
     Cnt uint
 }) {
+    c := dao.ShopBatteryRecord.Columns
     _ = dao.ShopBatteryRecord.Ctx(ctx).
-        Fields(dao.ShopBatteryRecord.Columns.Day, "count(*) cnt").
-        WhereIn(dao.ShopBatteryRecord.Columns.Day, days).
-        Where(dao.ShopBatteryRecord.Columns.Type, recordType).
-        Group(dao.ShopBatteryRecord.Columns.Day).
+        Fields(c.Day, "count(*) cnt").
+        WhereIn(c.Day, days).
+        Where(c.Type, recordType).
+        Group(c.Day).
         Scan(&list)
 
     return

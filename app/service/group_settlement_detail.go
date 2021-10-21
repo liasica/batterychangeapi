@@ -103,7 +103,7 @@ func (s *groupSettlementDetailService) Cancel(ctx context.Context, user model.Us
 }
 
 // Checkout 结算
-// func (s *groupSettlementDetailService) Checkout(ctx context.Context, user model.User) error {
+// func (s *groupSettlementDetailService) Checkout(ctx context.Context, user model.DriverBiz) error {
 //     now := gtime.Now()
 //     detail := new(model.GroupSettlementDetail)
 //     err := dao.GroupSettlementDetail.Ctx(ctx).Where("id = ?", user.SettlementDetailId).Scan(detail)

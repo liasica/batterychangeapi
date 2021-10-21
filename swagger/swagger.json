@@ -3548,7 +3548,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "description": "\"1 入库 2 出库\"",
+                    "description": "1入库 2出库",
                     "type": "integer"
                 }
             }
@@ -4779,7 +4779,7 @@
                     "type": "integer"
                 },
                 "userName": {
-                    "description": "操作员 平台调拨为空",
+                    "description": "骑手名字",
                     "type": "string"
                 }
             }

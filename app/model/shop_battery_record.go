@@ -7,8 +7,10 @@ import (
 
 type ShopBatteryRecord internal.ShopBatteryRecord
 
-const ShopBatteryRecordTypeIn = 1
-const ShopBatteryRecordTypeOut = 2
+const (
+    ShopBatteryRecordTypeIn  = 1 // 入库
+    ShopBatteryRecordTypeOut = 2 // 出库
+)
 
 // ShopBatteryRecordStatRep 店长资电池产管理统计
 type ShopBatteryRecordStatRep struct {
@@ -19,7 +21,7 @@ type ShopBatteryRecordStatRep struct {
 // ShopBatteryRecordListReq 店长电池管理明细请求
 type ShopBatteryRecordListReq struct {
     Page
-    Type      uint        `json:"type"`      // "1 入库 2 出库"
+    Type      uint        `json:"type"`      // 1入库 2出库
     StartDate *gtime.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
     EndDate   *gtime.Time `json:"endDate"`   // 结束日期 eg: 2021-10-17
 }
@@ -27,7 +29,7 @@ type ShopBatteryRecordListReq struct {
 // ShopBatteryRecordListRep 店长电池管理明细
 type ShopBatteryRecordListRep struct {
     BizType     uint        `json:"bizType" enums:"0,1,2,3,4,5"` // 0平台调拨, 1新签, 2换电池, 3寄存, 4恢复计费, 5退租
-    UserName    string      `json:"userName"`                    // 操作员 平台调拨为空
+    UserName    string      `json:"userName"`                    // 骑手名字
     Num         uint        `json:"num"`                         // 数量
     BatteryType string      `json:"batteryType"`                 // 60 / 72
     At          *gtime.Time `json:"at"`                          // 时间
