@@ -18,7 +18,7 @@ const ComboTypePenalty = 3
 const PayStateWait = 1    // 待支付
 const PayStateSuccess = 2 // 已支付
 
-// ShopOrderListReq 店长订单列表
+// ShopOrderListReq 门店订单列表
 type ShopOrderListReq struct {
     Page
     Keywords string `json:"keywords"` // 搜索关键字
@@ -26,7 +26,7 @@ type ShopOrderListReq struct {
     Month    uint   `json:"month"`    // 月份
 }
 
-// ShopOrderListItem 店长订单列表
+// ShopOrderListItem 门店订单列表
 type ShopOrderListItem struct {
     Id         uint64      `json:"id"`         // 订单ID
     ComboName  string      `json:"comboName"`  // 套餐名称
@@ -43,7 +43,7 @@ type ShopOrderTotalReq struct {
     Month uint `validate:"required" v:"required" json:"month"` // 月份
 }
 
-// ShopOrderTotalRep 店长订单列表
+// ShopOrderTotalRep 门店订单列表
 type ShopOrderTotalRep struct {
     Cnt    int64   `json:"cnt"`    // 总记录数
     Amount float64 `json:"amount"` // 总额
@@ -64,7 +64,7 @@ type UserCurrentComboOrder struct {
     BatteryState uint        `validate:"required" json:"batteryState"` // 个签骑手换电状态：0 未开通， 1 新签未领 ，2 租借中，3 寄存中，4 已退租， 5 已逾期
 }
 
-// ShopManagerComboOrderScanDetailRep 店长认领订单，获取订单信息响应数据
+// ShopManagerComboOrderScanDetailRep 门店认领订单，获取订单信息响应数据
 type ShopManagerComboOrderScanDetailRep struct {
     UserType    uint    `validate:"required" json:"userType"`              // 1 个签 2 团签 3 团签BOOS
     UserName    string  `validate:"required" json:"userName"`              // 客户名称
@@ -98,7 +98,7 @@ type ShopManagerComboOrderListDetailRep struct {
     PayAt   *gtime.Time `validate:"required" json:"payAt"`   // 支付时间
 }
 
-// ShopManagerComboOrderClaimReq 店长认领订单，请求数据
+// ShopManagerComboOrderClaimReq 门店认领订单，请求数据
 type ShopManagerComboOrderClaimReq struct {
     Code string `validate:"required" json:"code"` // 扫码获取
 }
@@ -111,7 +111,7 @@ type Prepay struct {
     NotifyUrl   string
 }
 
-// BizNewCdeReq 店长认领订单扫码获取订单请求数据
+// BizNewCdeReq 门店认领订单扫码获取订单请求数据
 type BizNewCdeReq struct {
     Code string `validate:"required" v:"required" json:"code"` // code二维码
 }

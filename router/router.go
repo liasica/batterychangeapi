@@ -79,6 +79,7 @@ func init() {
         group.POST("/upload/base64_image", api.Upload.Base64Image)
         group.POST("/upload/file", api.Upload.File)
         group.POST("/sms", api.SmsApi.Send)
+        group.GET("/battery", api.BatteryApi.Battery)
     })
 
     // 工具
@@ -157,8 +158,8 @@ func init() {
         group.GET("biz_record", shop.UserBizApi.RecordUser)
         group.GET("biz_record_total", shop.UserBizApi.RecordUserTotal)
 
-        group.GET("/asset/battery_stat", shop.AssetApi.BatteryStat)
-        group.GET("/asset/battery_list", shop.AssetApi.BatteryList)
+        group.GET("/battery", shop.BatteryApi.Overview)
+        group.GET("/battery/record", shop.BatteryApi.Record)
 
         group.POST("/exception", shop.ExceptionApi.Report)
     })

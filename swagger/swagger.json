@@ -597,7 +597,7 @@
                 }
             }
         },
-        "/admin/group/bill/{hash}": {
+        "/admin/group/bill": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -1953,30 +1953,7 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-个签用户套餐列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "当前页码",
-                        "name": "pageIndex",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数",
-                        "name": "pageLimit",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "当前城市ID",
-                        "name": "cityId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
+                "summary": "骑手-获取骑手当前套餐详情",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -1989,10 +1966,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
-                                            }
+                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
                                         }
                                     }
                                 }
@@ -2621,7 +2595,7 @@
                 }
             }
         },
-        "/sapi/asset/battery_list": {
+        "/sapi/battery": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -2630,81 +2604,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长-资产"
+                    "门店"
                 ],
-                "summary": "店长-资产-电池出入库列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "当前页码",
-                        "name": "pageIndex",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数",
-                        "name": "pageLimit",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "1 入库 2 出库",
-                        "name": "type",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "开始时间",
-                        "name": "startTime",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "endTime",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.JsonResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.ShopBatteryRecordListRep"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/sapi/asset/battery_stat": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "店长-资产"
-                ],
-                "summary": "店长-资产-电池统计",
+                "summary": "门店-电池数量概览",
                 "parameters": [
                     {
                         "type": "integer",
@@ -2743,6 +2645,78 @@
                 }
             }
         },
+        "/sapi/battery/record": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "门店"
+                ],
+                "summary": "门店-电池调拨记录",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "1入库 2出库",
+                        "name": "type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始时间",
+                        "name": "startTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "endTime",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.ShopBatteryRecordListWithDateGroup"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/sapi/biz_record": {
             "get": {
                 "consumes": [
@@ -2752,9 +2726,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长-业务"
+                    "门店-业务"
                 ],
-                "summary": "店长-业务-换电记录列表",
+                "summary": "门店-业务-换电记录列表",
                 "parameters": [
                     {
                         "type": "integer",
@@ -2825,9 +2799,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长-业务"
+                    "门店-业务"
                 ],
-                "summary": "店长-业务-记录统计",
+                "summary": "门店-业务-记录统计",
                 "parameters": [
                     {
                         "type": "integer",
@@ -2881,9 +2855,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长"
+                    "门店"
                 ],
-                "summary": "店长-上报推送token",
+                "summary": "门店-上报推送token",
                 "parameters": [
                     {
                         "description": "登录数据",
@@ -2914,9 +2888,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长"
+                    "门店"
                 ],
-                "summary": "店长-异常上报",
+                "summary": "门店-异常上报",
                 "parameters": [
                     {
                         "description": "请求数据",
@@ -2947,9 +2921,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长"
+                    "门店"
                 ],
-                "summary": "店长-登录",
+                "summary": "门店-登录",
                 "parameters": [
                     {
                         "description": "登录数据",
@@ -2992,9 +2966,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长"
+                    "门店"
                 ],
-                "summary": "店长-修改手机号码",
+                "summary": "门店-修改手机号码",
                 "parameters": [
                     {
                         "description": "登录数据",
@@ -3025,9 +2999,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长-订单"
+                    "门店-订单"
                 ],
-                "summary": "店长-订单列表",
+                "summary": "门店-订单列表",
                 "parameters": [
                     {
                         "type": "integer",
@@ -3097,9 +3071,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长-订单"
+                    "门店-订单"
                 ],
-                "summary": "店长-订单列表获取订单详情",
+                "summary": "门店-订单列表获取订单详情",
                 "parameters": [
                     {
                         "type": "integer",
@@ -3140,9 +3114,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长-订单"
+                    "门店-订单"
                 ],
-                "summary": "店长-认领订单",
+                "summary": "门店-认领订单",
                 "parameters": [
                     {
                         "description": "请求数据",
@@ -3173,9 +3147,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长-订单"
+                    "门店-订单"
                 ],
-                "summary": "店长-二维码获取订单详情",
+                "summary": "门店-二维码获取订单详情",
                 "parameters": [
                     {
                         "type": "string",
@@ -3216,9 +3190,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长-订单"
+                    "门店-订单"
                 ],
-                "summary": "店长-订单月份统计",
+                "summary": "门店-订单月份统计",
                 "parameters": [
                     {
                         "type": "integer",
@@ -3265,9 +3239,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长"
+                    "门店"
                 ],
-                "summary": "店长-获取店本店二维码",
+                "summary": "门店-获取店本店二维码",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -3287,9 +3261,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长"
+                    "门店"
                 ],
-                "summary": "店长-获取门店信息",
+                "summary": "门店-获取门店信息",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -3321,9 +3295,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长"
+                    "门店"
                 ],
-                "summary": "店长-修改门店状态",
+                "summary": "门店-修改门店状态",
                 "parameters": [
                     {
                         "description": "请求数据",
@@ -3354,9 +3328,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长-业务"
+                    "门店-业务"
                 ],
-                "summary": "店长-业务-业务办理提交",
+                "summary": "门店-业务-业务办理提交",
                 "parameters": [
                     {
                         "description": "请求数据",
@@ -3387,9 +3361,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "店长-业务"
+                    "门店-业务"
                 ],
-                "summary": "店长-业务-办理获取用户信息",
+                "summary": "门店-业务-办理获取用户信息",
                 "parameters": [
                     {
                         "type": "integer",
@@ -3941,7 +3915,7 @@
                     "type": "string"
                 },
                 "discoverer": {
-                    "description": "发现人: 1店长 2骑手",
+                    "description": "发现人: 1门店 2骑手",
                     "type": "integer",
                     "enum": [
                         1,
@@ -4042,7 +4016,7 @@
                     "type": "string"
                 },
                 "discoverer": {
-                    "description": "发现人: 1店长 2骑手",
+                    "description": "发现人: 1门店 2骑手",
                     "type": "integer",
                     "enum": [
                         1,
@@ -4343,9 +4317,6 @@
                     "type": "integer"
                 },
                 "districtId": {
-                    "type": "integer"
-                },
-                "id": {
                     "type": "integer"
                 },
                 "lat": {
@@ -4656,42 +4627,6 @@
                     "description": "详细地址",
                     "type": "string"
                 },
-                "batteryCnt60": {
-                    "description": "60伏电池数量",
-                    "type": "integer"
-                },
-                "batteryCnt72": {
-                    "description": "72伏电池数量",
-                    "type": "integer"
-                },
-                "batteryInCnt60": {
-                    "description": "60伏电池入库数量",
-                    "type": "integer"
-                },
-                "batteryInCnt72": {
-                    "description": "72伏电池入库数量",
-                    "type": "integer"
-                },
-                "batteryOutCnt60": {
-                    "description": "60伏电池出库数量",
-                    "type": "integer"
-                },
-                "batteryOutCnt72": {
-                    "description": "72伏电池出库数量",
-                    "type": "integer"
-                },
-                "chargerCnt": {
-                    "description": "充电器数量",
-                    "type": "integer"
-                },
-                "chargerInCnt": {
-                    "description": "充电器入库数量",
-                    "type": "integer"
-                },
-                "chargerOutCnt": {
-                    "description": "充电器出库数量",
-                    "type": "integer"
-                },
                 "cityId": {
                     "description": "市级行政编码",
                     "type": "integer"
@@ -4744,16 +4679,20 @@
                 },
                 "updatedAt": {
                     "type": "string"
+                },
+                "v60": {
+                    "description": "60伏电池数量",
+                    "type": "integer"
+                },
+                "v72": {
+                    "description": "70伏电池数量",
+                    "type": "integer"
                 }
             }
         },
-        "model.ShopBatteryRecordListRep": {
+        "model.ShopBatteryRecordListItem": {
             "type": "object",
             "properties": {
-                "at": {
-                    "description": "时间",
-                    "type": "string"
-                },
                 "batteryType": {
                     "description": "60 / 72",
                     "type": "string"
@@ -4770,9 +4709,9 @@
                         5
                     ]
                 },
-                "dayCnt": {
-                    "description": "当天总数",
-                    "type": "integer"
+                "date": {
+                    "description": "调拨日期",
+                    "type": "string"
                 },
                 "num": {
                     "description": "数量",
@@ -4781,6 +4720,30 @@
                 "userName": {
                     "description": "骑手名字",
                     "type": "string"
+                }
+            }
+        },
+        "model.ShopBatteryRecordListWithDateGroup": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "description": "日期",
+                    "type": "string"
+                },
+                "inTotal": {
+                    "description": "入库总数",
+                    "type": "integer"
+                },
+                "items": {
+                    "description": "详细",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ShopBatteryRecordListItem"
+                    }
+                },
+                "outTotal": {
+                    "description": "出库总数",
+                    "type": "integer"
                 }
             }
         },
@@ -4803,14 +4766,6 @@
                 "address": {
                     "description": "详细地址",
                     "type": "string"
-                },
-                "batteryInCnt60": {
-                    "description": "60伏电池入库数量",
-                    "type": "integer"
-                },
-                "batteryInCnt72": {
-                    "description": "72伏电池入库数量",
-                    "type": "integer"
                 },
                 "cityId": {
                     "description": "城市ID",
@@ -4846,6 +4801,14 @@
                 },
                 "state": {
                     "description": "初始状态",
+                    "type": "integer"
+                },
+                "v60": {
+                    "description": "60伏电池入库数量",
+                    "type": "integer"
+                },
+                "v72": {
+                    "description": "72伏电池入库数量",
                     "type": "integer"
                 }
             }

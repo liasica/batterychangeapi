@@ -25,10 +25,10 @@ type shopBatteryRecordColumns struct {
 	ShopId      string // 门店ID
 	BatteryType string // 电池型号
 	Type        string // 类别: 1入 2出
-	BizType     string // 业务类别: 详细见表user_biz中bizType解释
+	BizType     string // 业务类别: 0平台调拨, 其他详细见表user_biz中bizType解释
 	BizId       string // 业务ID: 0为平台调拨
 	Num         string // 数量
-	Day         string //
+	Date        string // 日期
 	UserId      string // 骑手ID
 	UserName    string // 骑手名字
 	SysUserId   string // 系统管理员ID
@@ -49,7 +49,7 @@ func NewShopBatteryRecordDao() *ShopBatteryRecordDao {
 			BizType:     "bizType",
 			BizId:       "bizId",
 			Num:         "num",
-			Day:         "day",
+			Date:        "date",
 			UserId:      "userId",
 			UserName:    "userName",
 			SysUserId:   "sysUserId",

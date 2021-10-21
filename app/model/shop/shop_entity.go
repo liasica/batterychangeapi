@@ -12,30 +12,23 @@ import (
 
 // Entity is the golang structure for table shop.
 type Entity struct {
-    Id              uint        `orm:"id,primary"      json:"id"`                 //                                    
-    State           uint        `orm:"state"           json:"state"`              // 门店状态: 0休息中 1营业中 2外出中  
-    ManagerName     string      `orm:"managerName"     json:"manager_name"`       // 管理员名字                         
-    Name            string      `orm:"name,unique"     json:"name"`               // 门店名称                           
-    Mobile          string      `orm:"mobile,unique"   json:"mobile"`             // 手机号                             
-    ReturnAt        *gtime.Time `orm:"returnAt"        json:"return_at"`          // 外出大致返回时间                   
-    BatteryOutCnt60 uint        `orm:"batteryOutCnt60" json:"battery_out_cnt_60"` // 60伏电池出库数量                   
-    BatteryInCnt60  uint        `orm:"batteryInCnt60"  json:"battery_in_cnt_60"`  // 60伏电池入库数量                   
-    BatteryInCnt72  uint        `orm:"batteryInCnt72"  json:"battery_in_cnt_72"`  // 72伏电池入库数量                   
-    BatteryOutCnt72 uint        `orm:"batteryOutCnt72" json:"battery_out_cnt_72"` // 72伏电池出库数量                   
-    ChargerInCnt    uint        `orm:"chargerInCnt"    json:"charger_in_cnt"`     // 充电器入库数量                     
-    ChargerOutCnt   uint        `orm:"chargerOutCnt"   json:"charger_out_cnt"`    // 充电器出库数量                     
-    BatteryCnt72    int         `orm:"batteryCnt72"    json:"battery_cnt_72"`     // 72伏电池数量                       
-    BatteryCnt60    int         `orm:"batteryCnt60"    json:"battery_cnt_60"`     // 60伏电池数量                       
-    ChargerCnt      int         `orm:"chargerCnt"      json:"charger_cnt"`        // 充电器数量                         
-    Lng             float64     `orm:"lng"             json:"lng"`                // 经度                               
-    Lat             float64     `orm:"lat"             json:"lat"`                // 纬度                               
-    Qr              string      `orm:"qr,unique"       json:"qr"`                 // 二维码编号                         
-    ProvinceId      uint        `orm:"provinceId"      json:"province_id"`        // 省级行政编码                       
-    CityId          uint        `orm:"cityId"          json:"city_id"`            // 市级行政编码                       
-    DistrictId      uint        `orm:"districtId"      json:"district_id"`        // 区县行政编码                       
-    Address         string      `orm:"address"         json:"address"`            // 详细地址                           
-    CreatedAt       *gtime.Time `orm:"createdAt"       json:"created_at"`         //                                    
-    UpdatedAt       *gtime.Time `orm:"updatedAt"       json:"updated_at"`         //                                    
+    Id          uint        `orm:"id,primary"    json:"id"`           //                                    
+    State       uint        `orm:"state"         json:"state"`        // 门店状态: 0休息中 1营业中 2外出中  
+    ManagerName string      `orm:"managerName"   json:"manager_name"` // 管理员名字                         
+    Name        string      `orm:"name,unique"   json:"name"`         // 门店名称                           
+    Mobile      string      `orm:"mobile,unique" json:"mobile"`       // 手机号                             
+    ReturnAt    *gtime.Time `orm:"returnAt"      json:"return_at"`    // 外出大致返回时间                   
+    Lng         float64     `orm:"lng"           json:"lng"`          // 经度                               
+    Lat         float64     `orm:"lat"           json:"lat"`          // 纬度                               
+    Qr          string      `orm:"qr,unique"     json:"qr"`           // 二维码编号                         
+    ProvinceId  uint        `orm:"provinceId"    json:"province_id"`  // 省级行政编码                       
+    CityId      uint        `orm:"cityId"        json:"city_id"`      // 市级行政编码                       
+    DistrictId  uint        `orm:"districtId"    json:"district_id"`  // 区县行政编码                       
+    Address     string      `orm:"address"       json:"address"`      // 详细地址                           
+    V60         int         `orm:"v60"           json:"v_60"`         // 60伏电池数量                       
+    V72         int         `orm:"v72"           json:"v_72"`         // 70伏电池数量                       
+    CreatedAt   *gtime.Time `orm:"createdAt"     json:"created_at"`   //                                    
+    UpdatedAt   *gtime.Time `orm:"updatedAt"     json:"updated_at"`   //                                    
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

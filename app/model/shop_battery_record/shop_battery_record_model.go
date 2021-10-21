@@ -25,18 +25,18 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table shop_battery_record.
 	Columns = struct {
-		Id           string //                                          
-        ShopId       string // 门店ID                                   
-        BatteryType  string // 电池型号                                 
-        Type         string // 类别: 1入 2出                            
-        BizType      string // 业务类别: 详细见表user_biz中bizType解释  
-        BizId        string // 业务ID: 0为平台调拨                      
-        Num          string // 数量                                     
-        Day          string //                                          
-        UserId       string // 骑手ID                                   
-        UserName     string // 骑手名字                                 
-        SysUserId    string // 系统管理员ID                             
-        SysUserName  string // 操作员名字                               
+		Id           string //                                                         
+        ShopId       string // 门店ID                                                  
+        BatteryType  string // 电池型号                                                
+        Type         string // 类别: 1入 2出                                           
+        BizType      string // 业务类别: 0平台调拨, 其他详细见表user_biz中bizType解释  
+        BizId        string // 业务ID: 0为平台调拨                                     
+        Num          string // 数量                                                    
+        Date         string // 日期                                                    
+        UserId       string // 骑手ID                                                  
+        UserName     string // 骑手名字                                                
+        SysUserId    string // 系统管理员ID                                            
+        SysUserName  string // 操作员名字                                              
         CreatedAt    string //
 	}{
 		Id:          "id",           
@@ -46,7 +46,7 @@ var (
         BizType:     "bizType",      
         BizId:       "bizId",        
         Num:         "num",          
-        Day:         "day",          
+        Date:        "date",         
         UserId:      "userId",       
         UserName:    "userName",     
         SysUserId:   "sysUserId",    
@@ -147,7 +147,7 @@ func (m *arModel) Filter() *arModel {
 // Where("uid", 1).Where("name", "john")
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
-// Where(DriverBiz{ Id : 1, UserName : "john"})
+// Where(User{ Id : 1, UserName : "john"})
 func (m *arModel) Where(where interface{}, args ...interface{}) *arModel {
 	return &arModel{m.M.Where(where, args...)}
 }

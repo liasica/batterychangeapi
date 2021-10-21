@@ -17,7 +17,7 @@ type userApi struct {
 // @Summary 登录
 // @Tags    管理
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity  body model.SysUserLoginReq true "登录数据"
 // @Router  /admin/login [POST]
 // @Success 200 {object} response.JsonResponse  "返回结果"
@@ -38,7 +38,7 @@ func (*userApi) Login(r *ghttp.Request) {
 // @Summary 退出
 // @Tags    管理
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Router  /admin/logout [PUT]
 // @Success 200 {object} response.JsonResponse  "返回结果"
 func (*userApi) Logout(r *ghttp.Request) {

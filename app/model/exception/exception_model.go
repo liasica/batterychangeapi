@@ -30,7 +30,7 @@ var (
         State        string // 状态: 0未解决 1已解决                
         Type         string // 异常类别: 1遗失 2故障                
         BatteryType  string // 电池型号                             
-        Discoverer   string // 发现人 1 用户 2 店长                 
+        Discoverer   string // 发现人 1 用户 2 门店                 
         Detail       string // 详细说明                             
         Img          string // 图片链接                             
         Reason       string // 故障原因 0 其它 1 插头故障 2 无电压  
@@ -143,7 +143,7 @@ func (m *arModel) Filter() *arModel {
 // Where("uid", 1).Where("name", "john")
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
-// Where(DriverBiz{ Id : 1, UserName : "john"})
+// Where(User{ Id : 1, UserName : "john"})
 func (m *arModel) Where(where interface{}, args ...interface{}) *arModel {
 	return &arModel{m.M.Where(where, args...)}
 }

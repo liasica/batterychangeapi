@@ -10,9 +10,9 @@ import (
 const (
     UserBizNew            = 1 // 新签
     UserBizBatteryRenewal = 2 // 换电池
-    UserBizBatterySave    = 3 // 寄存
-    UserBizBatteryUnSave  = 4 // 恢复计费
-    UserBizClose          = 5 // 退租
+    UserBizBatteryPause   = 3 // 寄存暂停
+    UserBizBatteryRecover = 4 // 恢复计费
+    UserBizCancel         = 5 // 退租
 )
 
 // UserBiz is the golang structure for table user_biz.
@@ -108,7 +108,7 @@ type UserBizGroupNewReq struct {
     BatteryType string `validate:"required" json:"batteryType" v:"required|in:60,72"` // 电池类型 60 / 72
 }
 
-// UserBizShopRecordReq 店长获取业务记录请求
+// UserBizShopRecordReq 门店获取业务记录请求
 type UserBizShopRecordReq struct {
     Page
     Keywords string `json:"keywords"`            // 搜索关键字
@@ -117,7 +117,7 @@ type UserBizShopRecordReq struct {
     BizType  uint   `json:"bizTpe" v:"in:3,2,5"` // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租
 }
 
-// UserBizShopRecordRep 店长获取业务记录响应
+// UserBizShopRecordRep 门店获取业务记录响应
 type UserBizShopRecordRep struct {
     UserName   string      `json:"userName"`            // 用户姓名
     ComboName  string      `json:"comboName,omitempty"` // 套餐名称
@@ -127,14 +127,14 @@ type UserBizShopRecordRep struct {
     At         *gtime.Time `json:"at"`                  // 时间
 }
 
-// UserBizShopRecordMonthTotalReq 店长获取业务记录按月统计请求
+// UserBizShopRecordMonthTotalReq 门店获取业务记录按月统计请求
 type UserBizShopRecordMonthTotalReq struct {
     Month    uint `validate:"required" json:"batteryType" v:"required"` // 月份数字，如 202106
     UserType uint `json:"userTpe" v:"in:1,2"`                           // 用户类型 1 个签  2 团签
     BizType  uint `json:"bizTpe" v:"in:3,2,5"`                          // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租
 }
 
-// UserBizShopRecordMonthTotalRep 店长获取业务记录按月统计响应
+// UserBizShopRecordMonthTotalRep 门店获取业务记录按月统计响应
 type UserBizShopRecordMonthTotalRep struct {
     Cnt int `json:"cnt"` // 总条数
 }

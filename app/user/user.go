@@ -20,7 +20,7 @@ type userApi struct {
 // @Summary 骑手-用户注册
 // @Tags    骑手
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity  body model.UserRegisterReq true "注册数据"
 // @Router  /rapi/register [POST]
 // @Success 200 {object} response.JsonResponse  "返回结果"
@@ -39,7 +39,7 @@ func (*userApi) Register(r *ghttp.Request) {
 // @Summary 骑手-用户登录
 // @Tags    骑手
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity  body model.UserLoginReq true "登录数据"
 // @Router  /rapi/login [POST]
 // @Success 200 {object} response.JsonResponse{data=model.UserLoginRep}  "返回结果"
@@ -59,7 +59,7 @@ func (*userApi) Login(r *ghttp.Request) {
 // @Summary 骑手-实名认证提交
 // @Tags    骑手
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity  body model.UserRealNameAuthReq true "认证数据"
 // @Router  /rapi/auth [POST]
 // @Success 200 {object} response.JsonResponse{data=model.UserRealNameAuthRep}  "返回结果"
@@ -82,7 +82,7 @@ func (*userApi) Auth(r *ghttp.Request) {
 // @Summary 骑手-获取实名认证状态 [每次切换页面都进行查询]
 // @Tags    骑手
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Router  /rapi/auth [GET]
 // @Success 200 {object} response.JsonResponse{data=int}  "返回结果"
 func (*userApi) AuthGet(r *ghttp.Request) {
@@ -94,7 +94,7 @@ func (*userApi) AuthGet(r *ghttp.Request) {
 // @Summary 骑手-上报推送token
 // @Tags    骑手-消息
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity  body model.PushTokenReq true "登录数据"
 // @Router  /rapi/device  [PUT]
 // @Success 200 {object} response.JsonResponse  "返回结果"
@@ -114,7 +114,7 @@ func (*userApi) PushToken(r *ghttp.Request) {
 // @Summary 骑手-获取骑手当前套餐详情
 // @Tags    骑手
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Router  /rapi/combo  [GET]
 // @Success 200 {object} response.JsonResponse{data=model.UserCurrentComboOrder}  "返回结果"
 func (*userApi) Combo(r *ghttp.Request) {
@@ -131,7 +131,7 @@ func (*userApi) Combo(r *ghttp.Request) {
 // @Summary 骑手-获取骑手当前套餐二维码
 // @Tags    骑手
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Router  /rapi/combo_order/qr  [GET]
 // @Success 200 {object} response.JsonResponse "返回结果, data字段为二维码图片数据，需要本地生成二维码"
 func (*userApi) ComboOrderQr(r *ghttp.Request) {
@@ -154,7 +154,7 @@ func (*userApi) ComboOrderQr(r *ghttp.Request) {
 // @Summary 骑手-首页
 // @Tags    骑手
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Router  /rapi/home  [GET]
 // @Success 200 {object} response.JsonResponse{data=model.UserProfileRep}  "返回结果"
 func (*userApi) Profile(r *ghttp.Request) {
@@ -167,7 +167,7 @@ func (*userApi) Profile(r *ghttp.Request) {
 // @Summary 骑手-签约文件地址
 // @Tags    骑手
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Router  /rapi/sign_file  [GET]
 // @Success 200 {object} response.JsonResponse{data=[]model.UserSignFileRep}  "返回结果"
 func (*userApi) SignFile(r *ghttp.Request) {

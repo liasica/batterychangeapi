@@ -20,10 +20,10 @@ type orderApi struct {
 }
 
 // Total 订单月份统计
-// @Summary 店长-订单月份统计
-// @Tags    店长-订单
+// @Summary 门店-订单月份统计
+// @Tags    门店-订单
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param 	month query integer  true "月份 如：202106"
 // @Param 	type query integer  false "订单类型 1 新签 2 续费"
 // @Router  /sapi/order_total [GET]
@@ -38,10 +38,10 @@ func (*orderApi) Total(r *ghttp.Request) {
 }
 
 // List 订单列表
-// @Summary 店长-订单列表
-// @Tags    店长-订单
+// @Summary 门店-订单列表
+// @Tags    门店-订单
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param 	pageIndex query integer  true "当前页码"
 // @Param 	pageLimit query integer  true "每页行数"
 // @Param 	month query integer  true "月份 如：202106"
@@ -91,10 +91,10 @@ func (*orderApi) List(r *ghttp.Request) {
 }
 
 // ListDetail
-// @Summary 店长-订单列表获取订单详情
-// @Tags    店长-订单
+// @Summary 门店-订单列表获取订单详情
+// @Tags    门店-订单
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param 	code path integer  true "订单记录获取订单详情"
 // @Router  /sapi/order/:id [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ShopManagerComboOrderListDetailRep} "返回结果"
@@ -126,10 +126,10 @@ func (*orderApi) ListDetail(r *ghttp.Request) {
 }
 
 // ScanDetail
-// @Summary 店长-二维码获取订单详情
-// @Tags    店长-订单
+// @Summary 门店-二维码获取订单详情
+// @Tags    门店-订单
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param 	code path string  true "订单二维码扫码获取的code"
 // @Router  /sapi/order_scan/:code [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ShopManagerComboOrderScanDetailRep} "返回结果"
@@ -192,10 +192,10 @@ func (*orderApi) ScanDetail(r *ghttp.Request) {
 }
 
 // Claim
-// @Summary 店长-认领订单
-// @Tags    店长-订单
+// @Summary 门店-认领订单
+// @Tags    门店-订单
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity  body model.ShopManagerComboOrderClaimReq true "请求数据"
 // @Router  /sapi/order_claim [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"
@@ -218,7 +218,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
             response.Json(r, response.RespCodeArgs, "没有选择电池类型, 或已领取")
         }
         groupUser := service.GroupUserService.GetBuyUserId(r.Context(), user.Id)
-        shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
+        shop, _ := service.ShopService.GetShop(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
         if err := dao.ComboOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
             // 领取记录
             bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
@@ -239,27 +239,29 @@ func (*orderApi) Claim(r *ghttp.Request) {
                 return err
             }
             // 电池出库
-            if err := service.ShopService.BatteryOut(ctx, shop.Id, user.BatteryType, 1); err != nil {
+            if err = service.ShopBatteryRecordService.Transfer(
+                ctx,
+                model.ShopBatteryRecord{
+                    ShopId:      shop.Id,
+                    BizId:       bizId,
+                    BizType:     model.UserBizNew,
+                    UserName:    user.RealName,
+                    BatteryType: user.BatteryType,
+                    Num:         1,
+                    Type:        model.ShopBatteryRecordTypeOut,
+                    UserId:      user.Id,
+                },
+                shop,
+            ); err != nil {
                 return err
             }
-            if err := service.ShopBatteryRecordService.DriverBiz(ctx,
-                model.ShopBatteryRecordTypeOut,
-                model.UserBizNew,
-                shop.Id,
-                bizId,
-                user.RealName,
-                user.BatteryType); err != nil {
-                return err
-            }
+
             // 账单入账
             return service.GroupSettlementDetailService.Earning(ctx, user)
-
-            // 人数统计
-            // return service.GroupDailyStatService.RiderBizNew(ctx, user.GroupId, user.BatteryType, user.Id)
         }); err == nil {
             response.JsonOkExit(r)
         } else {
-            g.Log().Error("店主订单认领错误：", err.Error())
+            g.Log().Error("门店订单认领错误：", err.Error())
             response.JsonErrExit(r)
         }
     } else {
@@ -271,7 +273,7 @@ func (*orderApi) Claim(r *ghttp.Request) {
             response.Json(r, response.RespCodeArgs, "订单已被认领，不能重复认领")
         }
         combo, _ := service.ComboService.Detail(r.Context(), order.ComboId)
-        shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
+        shop, _ := service.ShopService.GetShop(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
         if combo.CityId != shop.CityId {
             response.Json(r, response.RespCodeArgs, "订单和门店不在同一城市，不能认领")
         }
@@ -299,24 +301,25 @@ func (*orderApi) Claim(r *ghttp.Request) {
                 return err
             }
             // 电池出库
-            if err := service.ShopService.BatteryOut(ctx, shop.Id, combo.BatteryType, 1); err != nil {
-                return err
-            }
             user := service.UserService.Detail(ctx, order.UserId)
-            if err := service.ShopBatteryRecordService.DriverBiz(ctx,
-                model.ShopBatteryRecordTypeOut,
-                model.UserBizNew,
-                shop.Id,
-                bizId,
-                user.RealName,
-                combo.BatteryType); err != nil {
-                return err
-            }
-            return nil
+            return service.ShopBatteryRecordService.Transfer(
+                ctx,
+                model.ShopBatteryRecord{
+                    ShopId:      shop.Id,
+                    BizId:       bizId,
+                    BizType:     model.UserBizNew,
+                    UserName:    user.RealName,
+                    BatteryType: user.BatteryType,
+                    Num:         1,
+                    Type:        model.ShopBatteryRecordTypeOut,
+                    UserId:      user.Id,
+                },
+                shop,
+            )
         }); err == nil {
             response.JsonOkExit(r)
         } else {
-            g.Log().Error("店主订单认领错误：", err.Error())
+            g.Log().Error("门店订单认领错误：", err.Error())
             response.JsonErrExit(r)
         }
     }

@@ -29,7 +29,7 @@ type bizApi struct {
 // RecordStat 骑手换电记录统计
 // @Summary 骑手-换电记录统计
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Tags    骑手
 // @Router  /rapi/biz_record/stat [GET]
 // @Success 200 {object} response.JsonResponse{data=model.UserBizRecordStatRep}  "返回结果"
@@ -48,7 +48,7 @@ func (*bizApi) RecordStat(r *ghttp.Request) {
 // RecordList 骑手换电记录列表
 // @Summary 骑手-换电记录列表
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Tags    骑手
 // @Param 	pageIndex query integer  true "当前页码"
 // @Param 	pageLimit query integer  true "每页行数"
@@ -85,7 +85,7 @@ func (*bizApi) RecordList(r *ghttp.Request) {
 // BatteryRenewal 骑手扫码换电
 // @Summary 骑手-骑手扫码换电
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizBatteryRenewalReq true "请求数据"
 // @Router  /rapi/biz_battery_renewal [POST]
@@ -139,7 +139,7 @@ func (*bizApi) BatteryRenewal(r *ghttp.Request) {
 // New
 // @Summary 骑手-个签骑手签约之后获取支付信息
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizNewReq true "请求数据"
 // @Router  /rapi/biz_new [POST]
@@ -210,7 +210,7 @@ func (*bizApi) New(r *ghttp.Request) {
 // NewComborOrderState
 // @Summary 骑手-个签骑手签约支付之后获取订单支付状态
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Tags    骑手-业务办理
 // @Param 	orderId path integer true "订单ID"
 // @Router  /rapi/biz_new/:orderId/payState [GET]
@@ -232,7 +232,7 @@ func (*bizApi) NewComborOrderState(r *ghttp.Request) {
 // Sign 新签
 // @Summary 骑手-个签用户新签约套餐
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizSignReq true "请求数据"
 // @Router  /rapi/biz_sign [POST]
@@ -370,7 +370,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
 // Renewal 续约
 // @Summary 骑手-个签用户续购套餐
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizRenewalReq true "请求数据"
 // @Router  /rapi/biz_renewal [POST]
@@ -428,7 +428,7 @@ func (*bizApi) Renewal(r *ghttp.Request) {
 // PenaltyProfile 违约金
 // @Summary 骑手-个签用户逾期获取违约金详情
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Tags    骑手-业务办理
 // @Router  /rapi/biz_penalty [GET]
 // @Success 200 {object} response.JsonResponse{data=model.UserBizPenaltyProfileRep}  "返回结果"
@@ -460,7 +460,7 @@ func (*bizApi) PenaltyProfile(r *ghttp.Request) {
 // Penalty 违约金
 // @Summary 骑手-个签用户逾期缴纳违约金
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizPenaltyReq true "请求数据"
 // @Router  /rapi/biz_penalty [POST]
@@ -522,7 +522,7 @@ func (*bizApi) Penalty(r *ghttp.Request) {
 // GroupNew
 // @Summary 骑手-团签用户新签约
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Tags    骑手-业务办理
 // @Param   entity  body model.UserBizGroupNewReq true "请求数据"
 // @Router  /rapi/biz_new_group [POST]

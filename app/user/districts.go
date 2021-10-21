@@ -16,7 +16,7 @@ type districtsApi struct {
 // @Summary 骑手-定位当前城市
 // @Tags    骑手
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity  body model.DistrictsCurrentCityReq true "请求数据"
 // @Router  /rapi/districts/current_city [GET]
 // @Success 200 {object} response.JsonResponse{data=model.DistrictsCurrentCityRep}  "返回结果"
@@ -35,7 +35,7 @@ func (*districtsApi) CurrentCity(r *ghttp.Request) {
 // OpenCityList
 // @Summary 骑手-获取已经开放的城市
 // @Tags    骑手
-// @Produce  json
+// @Produce json
 // @Router  /rapi/open_city [GET]
 // @Success 200 {object} response.JsonResponse{data=[]model.OpenCityListRepItem}  "返回结果"
 func (*districtsApi) OpenCityList(r *ghttp.Request) {

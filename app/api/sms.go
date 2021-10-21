@@ -17,7 +17,7 @@ type smsApi struct {
 // @Summary 公用-发送短信
 // @Tags    公用
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity  body model.SmsSendReq true "注册数据"
 // @Router  /api/sms [POST]
 // @Success 200 {object} response.JsonResponse  "返回结果"

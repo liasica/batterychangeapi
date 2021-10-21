@@ -32,7 +32,7 @@ func (*userBizService) ListUser(ctx context.Context, req model.Page) (rep []mode
     u := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
     _ = dao.UserBiz.Ctx(ctx).
         Where(dao.UserBiz.Columns.UserId, u.Id).
-        WhereIn(dao.UserBiz.Columns.Type, []int{model.UserBizNew, model.UserBizBatteryRenewal, model.UserBizBatteryUnSave}).
+        WhereIn(dao.UserBiz.Columns.Type, []int{model.UserBizNew, model.UserBizBatteryRenewal, model.UserBizBatteryRecover}).
         OrderDesc(dao.UserBiz.Columns.Id).
         Page(req.PageIndex, req.PageLimit).
         Scan(&rep)
@@ -47,7 +47,7 @@ func (*userBizService) ListShop(ctx context.Context, req model.UserBizShopRecord
         OrderDesc(dao.UserBiz.Columns.Id).
         Page(req.PageIndex, req.PageLimit)
     if req.BizType == 0 {
-        m = m.WhereIn(dao.UserBiz.Columns.Type, []uint{model.UserBizBatteryRenewal, model.UserBizBatterySave, model.UserBizClose})
+        m = m.WhereIn(dao.UserBiz.Columns.Type, []uint{model.UserBizBatteryRenewal, model.UserBizBatteryPause, model.UserBizCancel})
     } else {
         m = m.Where(dao.UserBiz.Columns.Type, req.BizType)
     }
@@ -93,7 +93,7 @@ func (*userBizService) ListShopMonthTotal(ctx context.Context, req model.UserBiz
     manager := ctx.Value(model.ContextShopManagerKey).(*model.ContextShopManager)
     m := dao.UserBiz.Ctx(ctx).
         Where(dao.UserBiz.Columns.ShopId, manager.ShopId).
-        WhereIn(dao.UserBiz.Columns.Type, []uint{model.UserBizBatteryRenewal, model.UserBizBatterySave, model.UserBizClose}).
+        WhereIn(dao.UserBiz.Columns.Type, []uint{model.UserBizBatteryRenewal, model.UserBizBatteryPause, model.UserBizCancel}).
         OrderDesc(dao.UserBiz.Columns.Id)
     if req.UserType == 1 {
         m = m.Where(dao.UserBiz.Columns.GoroupId, 0)
@@ -110,7 +110,7 @@ func (*userBizService) ListShopMonthTotal(ctx context.Context, req model.UserBiz
         m = m.WhereLTE(dao.UserBiz.Columns.CreatedAt, et)
     }
     if req.BizType == 0 {
-        m = m.WhereIn(dao.UserBiz.Columns.Type, []uint{model.UserBizBatteryRenewal, model.UserBizBatterySave, model.UserBizClose})
+        m = m.WhereIn(dao.UserBiz.Columns.Type, []uint{model.UserBizBatteryRenewal, model.UserBizBatteryPause, model.UserBizCancel})
     } else {
         m = m.Where(dao.UserBiz.Columns.Type, req.BizType)
     }

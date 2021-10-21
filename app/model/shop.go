@@ -16,7 +16,7 @@ const (
 // Shop is the golang structure for table shop.
 type Shop internal.Shop
 
-// ShopManagerChangeStateReq 店长修改门店状态请求
+// ShopManagerChangeStateReq 门店修改门店状态请求
 type ShopManagerChangeStateReq struct {
     State uint `validate:"required" v:"required|in:1,2"` // 门店状态 1 营业中 2 休息中
 }
@@ -72,23 +72,22 @@ type ShopListItem struct {
 
 // ShopDetail 门店详情
 type ShopDetail struct {
-    Name           string  `json:"name"  v:"required"`                                 // 门店名称
-    State          uint    `json:"state" v:"required|in:1,2"`                          // 初始状态
-    ManagerName    string  `json:"managerName" v:"required"`                           // 管理员
-    Mobile         string  `json:"mobile" v:"required|phone-loose"`                    // 手机号
-    BatteryInCnt60 uint    `json:"batteryInCnt60" v:"required|integer|between:1,9999"` // 60伏电池入库数量
-    BatteryInCnt72 uint    `json:"batteryInCnt72" v:"required|integer|between:1,9999"` // 72伏电池入库数量
-    ProvinceId     uint    `json:"provinceId" v:"required|integer|min:1"`              // 省份ID
-    CityId         uint    `json:"cityId" v:"required|integer|min:1"`                  // 城市ID
-    DistrictId     uint    `json:"districtId" v:"required|integer|min:1"`              // 区县ID
-    Address        string  `json:"address" v:"required"`                               // 详细地址
-    Lng            float64 `json:"lng" v:"required"`                                   // 经度
-    Lat            float64 `json:"lat" v:"required"`                                   // 纬度
+    Name        string  `json:"name"  v:"required"`                      // 门店名称
+    State       uint    `json:"state" v:"required|in:1,2"`               // 初始状态
+    ManagerName string  `json:"managerName" v:"required"`                // 管理员
+    Mobile      string  `json:"mobile" v:"required|phone-loose"`         // 手机号
+    V60         int     `json:"v60" v:"required|integer|between:1,9999"` // 60伏电池入库数量
+    V72         int     `json:"v72" v:"required|integer|between:1,9999"` // 72伏电池入库数量
+    ProvinceId  uint    `json:"provinceId" v:"required|integer|min:1"`   // 省份ID
+    CityId      uint    `json:"cityId" v:"required|integer|min:1"`       // 城市ID
+    DistrictId  uint    `json:"districtId" v:"required|integer|min:1"`   // 区县ID
+    Address     string  `json:"address" v:"required"`                    // 详细地址
+    Lng         float64 `json:"lng" v:"required"`                        // 经度
+    Lat         float64 `json:"lat" v:"required"`                        // 纬度
 }
 
 // ModifyShopReq 编辑门店
 type ModifyShopReq struct {
-    Id          uint    `json:"id" v:"required|integer|min:1"`
     Name        string  `json:"name"  v:"required"`
     State       uint    `json:"state" v:"required|in:1,2"`
     ManagerName string  `json:"managerName" v:"required"`

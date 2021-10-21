@@ -1,14 +1,13 @@
 package shop
 
 import (
-    "context"
-    "github.com/gogf/gf/database/gdb"
-    "github.com/gogf/gf/net/ghttp"
-
     "battery/app/dao"
     "battery/app/model"
     "battery/app/service"
     "battery/library/response"
+    "context"
+    "github.com/gogf/gf/database/gdb"
+    "github.com/gogf/gf/net/ghttp"
 )
 
 var UserBizApi = bizApi{}
@@ -17,10 +16,10 @@ type bizApi struct {
 }
 
 // Profile
-// @Summary 店长-业务-办理获取用户信息
-// @Tags    店长-业务
+// @Summary 门店-业务-办理获取用户信息
+// @Tags    门店-业务
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param 	code path integer  true "用户二维码"
 // @Router  /sapi/user_biz_profile/:code [GET]
 // @Success 200 {object} response.JsonResponse{data=model.BizProfileRep}  "返回结果"
@@ -37,10 +36,10 @@ func (*bizApi) Profile(r *ghttp.Request) {
 }
 
 // Post
-// @Summary 店长-业务-业务办理提交
-// @Tags    店长-业务
+// @Summary 门店-业务-业务办理提交
+// @Tags    门店-业务
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity  body model.UserBizReq true "请求数据"
 // @Router  /sapi/user_biz [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"
@@ -54,7 +53,7 @@ func (*bizApi) Post(r *ghttp.Request) {
     if profile.BatteryState == model.BatteryStateOverdue {
         response.Json(r, response.RespCodeArgs, "用户已经逾期，请提醒用户先缴纳违约金")
     }
-    shop, _ := service.ShopService.Detail(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
+    shop, _ := service.ShopService.GetShop(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
     user := service.UserService.Detail(r.Context(), profile.Id)
     var err error
     switch req.Type {
@@ -82,7 +81,7 @@ func (*bizApi) Post(r *ghttp.Request) {
         })
 
     // 寄存
-    case model.UserBizBatterySave:
+    case model.UserBizBatteryPause:
         if user.BatteryState != model.BatteryStateUse {
             response.Json(r, response.RespCodeArgs, "用户不是租借中状态，不能办理寄存")
         }
@@ -101,7 +100,7 @@ func (*bizApi) Post(r *ghttp.Request) {
                 UserId:       user.Id,
                 GoroupId:     0,
                 GoroupUserId: 0,
-                Type:         model.UserBizBatterySave,
+                Type:         model.UserBizBatteryPause,
                 ComboId:      user.ComboId,
                 BatteryType:  user.BatteryType,
             })
@@ -109,22 +108,24 @@ func (*bizApi) Post(r *ghttp.Request) {
                 return err
             }
             // 电池入库
-            if err := service.ShopService.BatteryIn(ctx, shop.Id, user.BatteryType, 1); err != nil {
-                return err
-            }
-            if err := service.ShopBatteryRecordService.DriverBiz(ctx,
-                model.ShopBatteryRecordTypeIn,
-                model.UserBizBatterySave,
-                shop.Id,
-                bizId,
-                user); err != nil {
-                return err
-            }
-            return nil
+            return service.ShopBatteryRecordService.Transfer(
+                ctx,
+                model.ShopBatteryRecord{
+                    ShopId:      shop.Id,
+                    BizId:       bizId,
+                    BizType:     model.UserBizBatteryPause,
+                    UserName:    user.RealName,
+                    BatteryType: user.BatteryType,
+                    Num:         1,
+                    Type:        model.ShopBatteryRecordTypeIn,
+                    UserId:      user.Id,
+                },
+                shop,
+            )
         })
 
     // 恢复计费
-    case model.UserBizBatteryUnSave:
+    case model.UserBizBatteryRecover:
         if user.BatteryState != model.BatteryStateSave {
             response.Json(r, response.RespCodeArgs, "用户不是寄存中状态，不能办理恢复计费")
         }
@@ -141,35 +142,35 @@ func (*bizApi) Post(r *ghttp.Request) {
             }
             // 取电记录
             bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
-                CityId:       shop.CityId,
-                ShopId:       shop.Id,
-                UserId:       user.Id,
-                GoroupId:     0,
-                GoroupUserId: 0,
-                Type:         model.UserBizBatteryUnSave,
-                ComboId:      user.ComboId,
-                BatteryType:  user.BatteryType,
+                CityId:      shop.CityId,
+                ShopId:      shop.Id,
+                UserId:      user.Id,
+                Type:        model.UserBizBatteryRecover,
+                ComboId:     user.ComboId,
+                BatteryType: user.BatteryType,
             })
             if err != nil {
                 return err
             }
             // 电池出库
-            if err := service.ShopService.BatteryOut(ctx, shop.Id, user.BatteryType, 1); err != nil {
-                return err
-            }
-            if err := service.ShopBatteryRecordService.DriverBiz(ctx,
-                model.ShopBatteryRecordTypeIn,
-                model.UserBizBatteryUnSave,
-                shop.Id,
-                bizId,
-                user); err != nil {
-                return err
-            }
-            return nil
+            return service.ShopBatteryRecordService.Transfer(
+                ctx,
+                model.ShopBatteryRecord{
+                    ShopId:      shop.Id,
+                    BizId:       bizId,
+                    BizType:     model.UserBizBatteryRecover,
+                    UserName:    user.RealName,
+                    BatteryType: user.BatteryType,
+                    Num:         1,
+                    Type:        model.ShopBatteryRecordTypeOut,
+                    UserId:      user.Id,
+                },
+                shop,
+            )
         })
 
     // 退租
-    case model.UserBizClose:
+    case model.UserBizCancel:
         if user.BatteryState != model.BatteryStateUse &&
             user.BatteryState != model.BatteryStateSave &&
             user.BatteryState != model.BatteryStateExpired {
@@ -193,7 +194,7 @@ func (*bizApi) Post(r *ghttp.Request) {
                 UserId:       user.Id,
                 GoroupId:     user.GroupId,
                 GoroupUserId: groupUser.Id,
-                Type:         model.UserBizClose,
+                Type:         model.UserBizCancel,
                 ComboId:      user.ComboId,
                 BatteryType:  user.BatteryType,
             })
@@ -202,15 +203,20 @@ func (*bizApi) Post(r *ghttp.Request) {
             }
             if user.BatteryState == model.BatteryStateUse {
                 // 电池入库
-                if err := service.ShopService.BatteryIn(ctx, shop.Id, user.BatteryType, 1); err != nil {
-                    return err
-                }
-                if err := service.ShopBatteryRecordService.DriverBiz(ctx,
-                    model.ShopBatteryRecordTypeIn,
-                    model.UserBizClose,
-                    shop.Id,
-                    bizId,
-                    user); err != nil {
+                if err := service.ShopBatteryRecordService.Transfer(
+                    ctx,
+                    model.ShopBatteryRecord{
+                        ShopId:      shop.Id,
+                        BizId:       bizId,
+                        BizType:     model.UserBizCancel,
+                        UserName:    user.RealName,
+                        BatteryType: user.BatteryType,
+                        Num:         1,
+                        Type:        model.ShopBatteryRecordTypeIn,
+                        UserId:      user.Id,
+                    },
+                    shop,
+                ); err != nil {
                     return err
                 }
             }
@@ -241,10 +247,10 @@ func (*bizApi) Post(r *ghttp.Request) {
 }
 
 // RecordUser
-// @Summary 店长-业务-换电记录列表
-// @Tags    店长-业务
+// @Summary 门店-业务-换电记录列表
+// @Tags    门店-业务
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param 	pageIndex query integer  true "当前页码"
 // @Param 	pageLimit query integer  true "每页行数"
 // @Param 	month 	  query integer  true "月份数字，如 202106"
@@ -301,10 +307,10 @@ func (*bizApi) RecordUser(r *ghttp.Request) {
 }
 
 // RecordUserTotal
-// @Summary 店长-业务-记录统计
-// @Tags    店长-业务
+// @Summary 门店-业务-记录统计
+// @Tags    门店-业务
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param 	month 	query integer  true "月份数字，如 202106"
 // @Param 	userType  query integer  true  "业务类型 1 个签  2 团签"
 // @Param 	bizType   query integer  false "业务类型 2 换电 3 寄存(仅个签可用)，5 退租"

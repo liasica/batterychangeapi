@@ -16,7 +16,7 @@ type groupApi struct {
 // @Summary 骑手-团签团队统计
 // @Tags    骑手-团签BOSS
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Router  /rapi/group/stat  [GET]
 // @Success 200 {object} response.JsonResponse{data=model.UserGroupStatRep}  "返回结果"
 func (*groupApi) Stat(r *ghttp.Request) {

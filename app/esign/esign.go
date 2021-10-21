@@ -112,7 +112,7 @@ func (*callbackApi) Sign(r *ghttp.Request) {
 // @Summary 获取签约结果
 // @Tags    公用
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Router  /esign/state/:fileId [GET]
 // @Success 200 {object} response.JsonResponse{data=int}  "返回结果"
 func (*callbackApi) SignState(r *ghttp.Request) {

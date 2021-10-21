@@ -16,7 +16,7 @@ type comboApi struct {
 // @Summary 骑手-个签用户套餐列表
 // @Tags    骑手
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param 	pageIndex query integer  true "当前页码"
 // @Param 	pageLimit query integer  true "每页行数"
 // @Param 	cityId query integer  true "当前城市ID"
@@ -34,7 +34,7 @@ func (*comboApi) List(r *ghttp.Request) {
 // @Summary 骑手-个签用户套餐详情
 // @Tags    骑手
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param 	id path integer  true "套餐ID"
 // @Router  /rapi/combo/:id [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ComboRiderListRepItem}  "返回结果"

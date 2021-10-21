@@ -22,7 +22,7 @@ type ContextAdmin struct {
     Username string
 }
 
-// ContextShop 店长上下文
+// ContextShop 门店上下文
 type ContextShop struct {
     Id       uint
     Username string
@@ -48,7 +48,7 @@ type ContextRider struct {
     BizBatteryRenewalDaysStartAt *gtime.Time
 }
 
-// ContextShopManager 店长上下文
+// ContextShopManager 门店上下文
 type ContextShopManager struct {
     Id     uint64
     ShopId uint
@@ -80,6 +80,12 @@ type UploadRep struct {
 // ImageBase64Req base64图片请求
 type ImageBase64Req struct {
     Base64Content string `json:"base64Content" validate:"required" v:"required"` // 图片内容
+}
+
+// BatteryTypeItem 电池型号
+type BatteryTypeItem struct {
+    Type string `json:"type"`
+    Name string `json:"name"`
 }
 
 type ArrayString []string

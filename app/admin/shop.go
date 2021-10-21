@@ -4,6 +4,7 @@ import (
     "battery/app/dao"
     "battery/app/model"
     "battery/app/service"
+    "battery/library/request"
     "battery/library/response"
     "context"
     "github.com/gogf/gf/database/gdb"
@@ -20,7 +21,7 @@ type shopApi struct {
 // @Summary 门店列表
 // @Tags    管理
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity body model.ShopListAdminReq true "门店列表请求"
 // @Router  /admin/shop [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.ShopListItem}}  "返回结果"
@@ -42,7 +43,7 @@ func (*shopApi) List(r *ghttp.Request) {
 // @Tags    管理
 // @Accept  json
 // @Param   entity body model.ShopDetail true "门店详情"
-// @Produce  json
+// @Produce json
 // @Router  /admin/shop [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*shopApi) Create(r *ghttp.Request) {
@@ -57,38 +58,52 @@ func (*shopApi) Create(r *ghttp.Request) {
         response.Json(r, response.RespCodeArgs, "门店名称已被使用")
     }
     if dao.Shop.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-        shopId, err := service.ShopService.Create(ctx, model.Shop{
-            Name:           req.Name,
-            Mobile:         req.Mobile,
-            State:          req.State,
-            ProvinceId:     req.ProvinceId,
-            CityId:         req.CityId,
-            DistrictId:     req.DistrictId,
-            Address:        req.Address,
-            Lng:            req.Lng,
-            Lat:            req.Lat,
-            BatteryInCnt60: req.BatteryInCnt60,
-            BatteryInCnt72: req.BatteryInCnt72,
-            ManagerName:    req.ManagerName,
-        })
+        shop := &model.Shop{
+            Name:        req.Name,
+            Mobile:      req.Mobile,
+            State:       req.State,
+            ProvinceId:  req.ProvinceId,
+            CityId:      req.CityId,
+            DistrictId:  req.DistrictId,
+            Address:     req.Address,
+            Lng:         req.Lng,
+            Lat:         req.Lat,
+            ManagerName: req.ManagerName,
+        }
+        err := service.ShopService.Create(ctx, shop)
         if err != nil {
             return err
         }
         if _, _err := service.ShopManagerService.Create(ctx, model.ShopManager{
             Name:   req.ManagerName,
             Mobile: req.Mobile,
-            ShopId: shopId,
+            ShopId: shop.Id,
         }); _err != nil {
             return _err
         }
         // 电池入库记录
-        if _err := service.ShopBatteryRecordService.Platform(ctx, model.ShopBatteryRecordTypeIn, shopId, req.BatteryInCnt60, model.BatteryType60); _err != nil {
-            return _err
+        sysUser := ctx.Value(model.ContextAdminKey).(*model.ContextAdmin)
+        if err := service.ShopBatteryRecordService.Transfer(ctx, model.ShopBatteryRecord{
+            ShopId:      shop.Id,
+            Type:        model.ShopBatteryRecordTypeIn,
+            SysUserId:   sysUser.Id,
+            SysUserName: sysUser.Username,
+            BatteryType: model.BatteryType60,
+            Num:         req.V60,
+        }, shop); err != nil {
+            return err
         }
-        if _err := service.ShopBatteryRecordService.Platform(ctx, model.ShopBatteryRecordTypeIn, shopId, req.BatteryInCnt72, model.BatteryType72); _err != nil {
-            return _err
-        }
-        return nil
+
+        // 电池入库
+        return service.ShopBatteryRecordService.Transfer(ctx, model.ShopBatteryRecord{
+            ShopId:      shop.Id,
+            Type:        model.ShopBatteryRecordTypeIn,
+            SysUserId:   sysUser.Id,
+            SysUserName: sysUser.Username,
+            BatteryType: model.BatteryType72,
+            Num:         req.V72,
+        }, shop)
+
     }) != nil {
         response.JsonErrExit(r)
     }
@@ -101,53 +116,39 @@ func (*shopApi) Create(r *ghttp.Request) {
 // @Accept  json
 // @Param   id path int true "门店ID"
 // @Param   entity body model.ModifyShopReq true "门店详情"
-// @Produce  json
+// @Produce json
 // @Router  /admin/shop/{id} [PUT]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*shopApi) Edit(r *ghttp.Request) {
-    var req model.ModifyShopReq
-    if err := r.Parse(&req); err != nil {
-        response.Json(r, response.RespCodeArgs, err.Error())
-    }
-    if !service.ShopService.CheckMobile(r.Context(), req.Id, req.Mobile) {
+    req := new(model.ModifyShopReq)
+    _ = request.ParseRequest(r, req)
+    id := r.GetUint("id")
+    if !service.ShopService.CheckMobile(r.Context(), id, req.Mobile) {
         response.Json(r, response.RespCodeArgs, "手机号码已被使用")
     }
-    if !service.ShopService.CheckName(r.Context(), req.Id, req.Name) {
+    if !service.ShopService.CheckName(r.Context(), id, req.Name) {
         response.Json(r, response.RespCodeArgs, "门店名称已被使用")
     }
+    shop, err := service.ShopService.GetShop(r.Context(), id)
+    if err != nil {
+        response.Json(r, response.RespCodeArgs, "未找到门店")
+    }
+    // 查找店铺
     if dao.Shop.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-        shop, err := service.ShopService.Detail(ctx, req.Id)
-        if err != nil {
-            return err
-        }
         if shop.Mobile != req.Mobile {
-            if _, _err := service.ShopManagerService.Create(ctx, model.ShopManager{
+            if _, err := service.ShopManagerService.Create(ctx, model.ShopManager{
                 Name:   req.ManagerName,
                 Mobile: req.Mobile,
                 ShopId: shop.Id,
-            }); _err != nil {
-                return _err
+            }); err != nil {
+                return err
             }
-            if _err := service.ShopManagerService.Delete(ctx, shop.Mobile); _err != nil {
-                return _err
+            if err := service.ShopManagerService.Delete(ctx, shop.Mobile); err != nil {
+                return err
             }
         }
-        if _err := service.ShopService.Edit(ctx, model.Shop{
-            Id:          req.Id,
-            Name:        req.Name,
-            ManagerName: req.ManagerName,
-            Mobile:      req.Mobile,
-            ProvinceId:  req.ProvinceId,
-            CityId:      req.CityId,
-            DistrictId:  req.DistrictId,
-            Address:     req.Address,
-            Lng:         req.Lng,
-            Lat:         req.Lat,
-            State:       req.State,
-        }); _err != nil {
-            return _err
-        }
-        return nil
+        _, err = dao.Shop.Ctx(ctx).Data(req).Save()
+        return err
     }) != nil {
         response.JsonErrExit(r)
     }
@@ -159,7 +160,7 @@ func (*shopApi) Edit(r *ghttp.Request) {
 // @Tags    管理
 // @Accept  json
 // @Param   id path int true "门店ID"
-// @Produce  json
+// @Produce json
 // @Router  /admin/shop/{id} [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ShopDetail} "返回结果"
 func (*shopApi) Detail(r *ghttp.Request) {
@@ -167,24 +168,12 @@ func (*shopApi) Detail(r *ghttp.Request) {
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
     }
-    shop, err := service.ShopService.Detail(r.Context(), uint(req.Id))
-    if err != nil || shop.Id == 0 {
+    var shop *model.ShopDetail
+    err := dao.Shop.Ctx(r.Context()).Where(dao.Shop.Columns.Id, req.Id).Limit(1).Scan(&shop)
+    if err != nil {
         response.JsonErrExit(r, response.RespCodeNotFound)
     }
-    response.JsonOkExit(r, model.ShopDetail{
-        Name:           shop.Name,
-        State:          shop.State,
-        ManagerName:    shop.ManagerName,
-        Mobile:         shop.Mobile,
-        ProvinceId:     shop.ProvinceId,
-        BatteryInCnt60: uint(shop.BatteryCnt60),
-        BatteryInCnt72: uint(shop.BatteryCnt72),
-        CityId:         shop.CityId,
-        DistrictId:     shop.DistrictId,
-        Address:        shop.Address,
-        Lng:            shop.Lng,
-        Lat:            shop.Lat,
-    })
+    response.JsonOkExit(r, shop)
 }
 
 // ListIdName

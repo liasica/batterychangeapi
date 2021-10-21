@@ -97,7 +97,7 @@ type RealNameAuthVerifyReq struct {
     AuthState uint `v:"required|in:2,3"` // 审核结果 2 通过 3 失败
 }
 
-// BizProfileRep 用户业务办理店长扫码获取用户信息
+// BizProfileRep 用户业务办理门店扫码获取用户信息
 type BizProfileRep struct {
     Id           uint64 `json:"id"`
     Mobile       string `json:"mobile"`

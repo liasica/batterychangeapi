@@ -17,7 +17,7 @@ type messageApi struct {
 // @description type 为 100， 101， 102， 104 时需要跳转详情页面
 // @Tags    骑手-消息
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param 	pageIndex query integer  true "当前页码"
 // @Param 	pageLimit query integer  true "每页行数"
 // @Router  /rapi/message [GET]
@@ -39,7 +39,7 @@ type MessageReadReg struct {
 // @Summary 骑手-消息已读标记
 // @Tags    骑手-消息
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity  body MessageReadReg true "请求数据"
 // @Router  /rapi/message/read [PUT]
 // @Success 200 {object} response.JsonResponse{data=[]model.Message} "返回结果"
@@ -56,7 +56,7 @@ func (*messageApi) Read(r *ghttp.Request) {
 // @Summary 骑手-消息详情
 // @Tags    骑手-消息
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param 	id path integer  true "消息ID"
 // @Router  /rapi/message/:id [GET]
 // @Success 200 {object} response.JsonResponse{data=model.Message} "返回结果"

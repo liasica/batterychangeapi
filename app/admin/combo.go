@@ -19,7 +19,7 @@ type comboApi struct {
 // @Tags    管理
 // @Accept  json
 // @Param   entity body model.Page true "分页参数"
-// @Produce  json
+// @Produce json
 // @Router  /admin/combo [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.ComboListItem}}  "返回结果"
 func (*comboApi) List(r *ghttp.Request) {
@@ -36,7 +36,7 @@ func (*comboApi) List(r *ghttp.Request) {
 // @Tags    管理
 // @Accept  json
 // @Param   entity body model.ComboReq true "门店详情"
-// @Produce  json
+// @Produce json
 // @Router  /admin/combo [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*comboApi) Create(r *ghttp.Request) {
@@ -68,7 +68,7 @@ func (*comboApi) Create(r *ghttp.Request) {
 // @Accept  json
 // @Param   id path int true "套餐ID"
 // @Param   entity body model.ComboReq true "门店详情"
-// @Produce  json
+// @Produce json
 // @Router  /admin/combo/{id} [PUT]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*comboApi) Edit(r *ghttp.Request) {

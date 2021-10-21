@@ -6,18 +6,18 @@ import (
 
 type ShopManager internal.ShopManager
 
-// ShopManagerLoginReq 店长登录请求数据
+// ShopManagerLoginReq 门店登录请求数据
 type ShopManagerLoginReq struct {
     Mobile string `validate:"required" v:"required|phone-loose"` // 手机号
     Sms    string `validate:"required" v:"required|length:6,6"`  // 短信验证码
 }
 
-// ShopManagerLoginRep 店长登录返回数据
+// ShopManagerLoginRep 门店登录返回数据
 type ShopManagerLoginRep struct {
     AccessToken string `json:"accessToken"` // 请求 token
 }
 
-// ShopManagerShopStateReq 店长登录返回数据
+// ShopManagerShopStateReq 门店登录返回数据
 type ShopManagerShopStateReq struct {
     State string // 请求 token
 }

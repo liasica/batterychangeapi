@@ -26,7 +26,7 @@ type groupApi struct {
 // @Tags    管理
 // @Accept  json
 // @Param   entity body model.GroupFormReq true "团签详情"
-// @Produce  json
+// @Produce json
 // @Router  /admin/group [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*groupApi) Create(r *ghttp.Request) {
@@ -89,7 +89,7 @@ func (*groupApi) Create(r *ghttp.Request) {
 // @Tags    管理
 // @Accept  json
 // @Param   entity body model.GroupListReq true "请求参数"
-// @Produce  json
+// @Produce json
 // @Router  /admin/group [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.GroupEntity}}  "返回结果"
 func (*groupApi) List(r *ghttp.Request) {
@@ -105,7 +105,7 @@ func (*groupApi) List(r *ghttp.Request) {
 // @Accept  json
 // @Param   id path int true "团签ID"
 // @Produce  octet-stream
-// @Produce  json
+// @Produce json
 // @Router  /admin/group/{id}/contract [GET]
 // @Success 200 {object} object "合同文件"
 // @Failure 400,404 {object} response.JsonResponse "错误结果"
@@ -131,7 +131,7 @@ func (*groupApi) Contract(r *ghttp.Request) {
 // @Accept  json
 // @Param   id path int true "团签ID"
 // @Param   entity body model.GroupCreateUserReq true "用户详情"
-// @Produce  json
+// @Produce json
 // @Router  /admin/group/{id}/member [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*groupApi) AddMember(r *ghttp.Request) {
@@ -250,7 +250,7 @@ func (*groupApi) GetSettlement(r *ghttp.Request) {
 // @Accept  json
 // @Param   entity body model.GroupSettlementCheckoutReq true "结算请求"
 // @Produce json
-// @Router  /admin/group/bill/{hash} [POST]
+// @Router  /admin/group/bill [POST]
 // @Success 200 {object} response.JsonResponse  "返回结果"
 func (*groupApi) PostSettlement(r *ghttp.Request) {
     var req = new(model.GroupSettlementCheckoutReq)

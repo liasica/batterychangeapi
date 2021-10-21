@@ -25,7 +25,7 @@ func (*districtsApi) Child(r *ghttp.Request) {
 // @Summary 城市列表（三级联动）
 // @Tags    管理
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Router  /admin/districts [GET]
 // @Success 200 {object} response.JsonResponse{data=[]service.DistrictEl}  "返回结果"
 func (*districtsApi) List(r *ghttp.Request) {

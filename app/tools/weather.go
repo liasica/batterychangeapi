@@ -23,7 +23,7 @@ var Weather = new(weather)
 // @Summary 工具-获取天气
 // @Tags    公用
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   lng query string true "经度"
 // @Param   lat query string true "纬度"
 // @Router  /tools/weather [GET]

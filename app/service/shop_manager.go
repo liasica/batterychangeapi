@@ -13,7 +13,7 @@ var ShopManagerService = shopManagerService{}
 type shopManagerService struct {
 }
 
-// Login 店长登录
+// Login 门店登录
 func (s *shopManagerService) Login(ctx context.Context, req model.ShopManagerLoginReq) (rep model.ShopManagerLoginRep, err error) {
     var manager model.ShopManager
     if err = dao.ShopManager.Ctx(ctx).Where(dao.ShopManager.Columns.Mobile, req.Mobile).Scan(&manager); err != nil || manager.Id == 0 || manager.ShopId == 0 {
@@ -33,7 +33,7 @@ func (s *shopManagerService) Login(ctx context.Context, req model.ShopManagerLog
     return
 }
 
-// PushToken 店长修改推送token
+// PushToken 门店修改推送token
 func (*shopManagerService) PushToken(ctx context.Context, req model.PushTokenReq) error {
     manager := ctx.Value(model.ContextShopManagerKey).(*model.ContextShopManager)
     _, err := dao.User.WherePri(manager.Id).Update(g.Map{
@@ -43,7 +43,7 @@ func (*shopManagerService) PushToken(ctx context.Context, req model.PushTokenReq
     return err
 }
 
-// ResetMobile 店长修改手机号码
+// ResetMobile 门店修改手机号码
 func (*shopManagerService) ResetMobile(ctx context.Context, req model.ShopManagerResetMobileReq) error {
     manager := ctx.Value(model.ContextShopManagerKey).(*model.ContextShopManager)
     _, err := dao.User.WherePri(manager.Id).Update(g.Map{

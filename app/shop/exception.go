@@ -13,10 +13,10 @@ type exceptionApi struct {
 }
 
 // Report
-// @Summary 店长-异常上报
-// @Tags    店长
+// @Summary 门店-异常上报
+// @Tags    门店
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Param   entity  body model.ExceptionReportReq true "请求数据"
 // @Router  /sapi/exception [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"

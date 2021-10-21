@@ -17,7 +17,7 @@ type Entity struct {
     State       uint        `orm:"state"       json:"state"`        // 状态: 0未解决 1已解决                
     Type        uint        `orm:"type"        json:"type"`         // 异常类别: 1遗失 2故障                
     BatteryType string      `orm:"batteryType" json:"battery_type"` // 电池型号                             
-    Discoverer  uint        `orm:"discoverer"  json:"discoverer"`   // 发现人 1 用户 2 店长                 
+    Discoverer  uint        `orm:"discoverer"  json:"discoverer"`   // 发现人 1 用户 2 门店                 
     Detail      string      `orm:"detail"      json:"detail"`       // 详细说明                             
     Img         string      `orm:"img"         json:"img"`          // 图片链接                             
     Reason      int         `orm:"reason"      json:"reason"`       // 故障原因 0 其它 1 插头故障 2 无电压  

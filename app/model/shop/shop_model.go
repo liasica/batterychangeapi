@@ -25,55 +25,41 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table shop.
 	Columns = struct {
-		Id               string //                                    
-        State            string // 门店状态: 0休息中 1营业中 2外出中  
-        ManagerName      string // 管理员名字                         
-        Name             string // 门店名称                           
-        Mobile           string // 手机号                             
-        ReturnAt         string // 外出大致返回时间                   
-        BatteryOutCnt60  string // 60伏电池出库数量                   
-        BatteryInCnt60   string // 60伏电池入库数量                   
-        BatteryInCnt72   string // 72伏电池入库数量                   
-        BatteryOutCnt72  string // 72伏电池出库数量                   
-        ChargerInCnt     string // 充电器入库数量                     
-        ChargerOutCnt    string // 充电器出库数量                     
-        BatteryCnt72     string // 72伏电池数量                       
-        BatteryCnt60     string // 60伏电池数量                       
-        ChargerCnt       string // 充电器数量                         
-        Lng              string // 经度                               
-        Lat              string // 纬度                               
-        Qr               string // 二维码编号                         
-        ProvinceId       string // 省级行政编码                       
-        CityId           string // 市级行政编码                       
-        DistrictId       string // 区县行政编码                       
-        Address          string // 详细地址                           
-        CreatedAt        string //                                    
-        UpdatedAt        string //
+		Id           string //                                    
+        State        string // 门店状态: 0休息中 1营业中 2外出中  
+        ManagerName  string // 管理员名字                         
+        Name         string // 门店名称                           
+        Mobile       string // 手机号                             
+        ReturnAt     string // 外出大致返回时间                   
+        Lng          string // 经度                               
+        Lat          string // 纬度                               
+        Qr           string // 二维码编号                         
+        ProvinceId   string // 省级行政编码                       
+        CityId       string // 市级行政编码                       
+        DistrictId   string // 区县行政编码                       
+        Address      string // 详细地址                           
+        V60          string // 60伏电池数量                       
+        V72          string // 70伏电池数量                       
+        CreatedAt    string //                                    
+        UpdatedAt    string //
 	}{
-		Id:              "id",               
-        State:           "state",            
-        ManagerName:     "managerName",      
-        Name:            "name",             
-        Mobile:          "mobile",           
-        ReturnAt:        "returnAt",         
-        BatteryOutCnt60: "batteryOutCnt60",  
-        BatteryInCnt60:  "batteryInCnt60",   
-        BatteryInCnt72:  "batteryInCnt72",   
-        BatteryOutCnt72: "batteryOutCnt72",  
-        ChargerInCnt:    "chargerInCnt",     
-        ChargerOutCnt:   "chargerOutCnt",    
-        BatteryCnt72:    "batteryCnt72",     
-        BatteryCnt60:    "batteryCnt60",     
-        ChargerCnt:      "chargerCnt",       
-        Lng:             "lng",              
-        Lat:             "lat",              
-        Qr:              "qr",               
-        ProvinceId:      "provinceId",       
-        CityId:          "cityId",           
-        DistrictId:      "districtId",       
-        Address:         "address",          
-        CreatedAt:       "createdAt",        
-        UpdatedAt:       "updatedAt",
+		Id:          "id",           
+        State:       "state",        
+        ManagerName: "managerName",  
+        Name:        "name",         
+        Mobile:      "mobile",       
+        ReturnAt:    "returnAt",     
+        Lng:         "lng",          
+        Lat:         "lat",          
+        Qr:          "qr",           
+        ProvinceId:  "provinceId",   
+        CityId:      "cityId",       
+        DistrictId:  "districtId",   
+        Address:     "address",      
+        V60:         "v60",          
+        V72:         "v72",          
+        CreatedAt:   "createdAt",    
+        UpdatedAt:   "updatedAt",
 	}
 )
 
@@ -169,7 +155,7 @@ func (m *arModel) Filter() *arModel {
 // Where("uid", 1).Where("name", "john")
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
-// Where(DriverBiz{ Id : 1, UserName : "john"})
+// Where(User{ Id : 1, UserName : "john"})
 func (m *arModel) Where(where interface{}, args ...interface{}) *arModel {
 	return &arModel{m.M.Where(where, args...)}
 }

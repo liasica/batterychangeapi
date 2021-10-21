@@ -15,7 +15,7 @@ type shopApi struct {
 // List
 // @Summary 骑手-门店列表
 // @Tags    骑手
-// @Produce  json
+// @Produce json
 // @Param 	pageIndex query integer  true "当前页码"
 // @Param 	pageLimit query integer  true "每页行数"
 // @Param 	cityId query integer  true "当前城市ID"
