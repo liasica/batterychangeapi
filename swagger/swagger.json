@@ -608,7 +608,7 @@
                 "tags": [
                     "管理"
                 ],
-                "summary": "结账(hash从`/admin/group/{id}/bill/{expDate}`[获取团签账单]拿取)",
+                "summary": "结账(hash从[获取团签账单/admin/group/{id}/bill/{expDate}]拿取)",
                 "parameters": [
                     {
                         "description": "结算请求",

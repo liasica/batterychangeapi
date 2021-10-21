@@ -245,7 +245,7 @@ func (*groupApi) GetSettlement(r *ghttp.Request) {
 }
 
 // PostSettlement
-// @Summary 结账(hash从`/admin/group/{id}/bill/{expDate}`[获取团签账单]拿取)
+// @Summary 结账(hash从[获取团签账单/admin/group/{id}/bill/{expDate}]拿取)
 // @Tags    管理
 // @Accept  json
 // @Param   entity body model.GroupSettlementCheckoutReq true "结算请求"
