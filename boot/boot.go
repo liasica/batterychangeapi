@@ -18,7 +18,6 @@ func init() {
 
     o := sync.Once{}
     o.Do(func() {
-        _ = cron.GroupCron.Start()
         _ = cron.RefundCron.Start()
         service.MessageService.SendWorkFlowInit()
     })
