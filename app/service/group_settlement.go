@@ -88,6 +88,7 @@ func (s *groupSettlementService) CheckoutBill(ctx context.Context, req *model.Gr
                 newRecord.Id = 0
                 newRecord.StartDate = end.AddDate(0, 0, 1)
                 newRecord.ParentId = detail.Id
+                details[k].SplitAt = now
                 details = append(details, newRecord)
             }
             // TODO 是否正在使用??? 好像有逻辑不需要额外判定了 [团签结账的时候注意清空团签所有用户计费账单状态ID 并开启当前使用套餐新的计费账单]
@@ -95,7 +96,6 @@ func (s *groupSettlementService) CheckoutBill(ctx context.Context, req *model.Gr
             }
 
             details[k].SettlementId = uint64(id)
-            details[k].SplitAt = now
             details[k].State = model.SettlementSettled
             details[k].StopDate = end
         }
