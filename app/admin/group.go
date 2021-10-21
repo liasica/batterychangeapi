@@ -221,7 +221,7 @@ func (*groupApi) DeleteMember(r *ghttp.Request) {
 // @Param   id path int true "团签ID"
 // @Param   expDate path string true "截止日期"
 // @Produce json
-// @Router  /admin/group/{id}/settlement/{expDate} [GET]
+// @Router  /admin/group/{id}/bill/{expDate} [GET]
 // @Success 200 {object} response.JsonResponse{data=model.SettlementCache}  "返回结果"
 func (*groupApi) GetSettlement(r *ghttp.Request) {
     id := r.GetInt("id")
@@ -245,7 +245,7 @@ func (*groupApi) GetSettlement(r *ghttp.Request) {
 }
 
 // PostSettlement
-// @Summary 结账
+// @Summary 结账(hash从`/admin/group/{id}/bill/{expDate}`[获取团签账单]拿取)
 // @Tags    管理
 // @Accept  json
 // @Param   entity body model.GroupSettlementCheckoutReq true "结算请求"

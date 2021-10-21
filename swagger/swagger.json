@@ -608,7 +608,7 @@
                 "tags": [
                     "管理"
                 ],
-                "summary": "结账",
+                "summary": "结账(hash从`/admin/group/{id}/bill/{expDate}`[获取团签账单]拿取)",
                 "parameters": [
                     {
                         "description": "结算请求",
@@ -625,6 +625,56 @@
                         "description": "返回结果",
                         "schema": {
                             "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/group/{id}/bill/{expDate}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "获取团签账单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团签ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "截止日期",
+                        "name": "expDate",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.SettlementCache"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -873,56 +923,6 @@
                                                     }
                                                 }
                                             ]
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/group/{id}/settlement/{expDate}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "管理"
-                ],
-                "summary": "获取团签账单",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "团签ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "截止日期",
-                        "name": "expDate",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.JsonResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/model.SettlementCache"
                                         }
                                     }
                                 }

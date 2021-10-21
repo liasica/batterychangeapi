@@ -201,7 +201,7 @@ func init() {
             g.DELETE("/:id/member/:userId", admin.GroupApi.DeleteMember)
             g.GET("/:id/contract", admin.GroupApi.Contract)
             g.GET("/:id/bill/:expDate", admin.GroupApi.GetSettlement)
-            g.POST("/checkout", admin.GroupApi.PostSettlement)
+            g.POST("/bill", admin.GroupApi.PostSettlement)
         })
 
         group.Group("/battery", func(g *ghttp.RouterGroup) {
