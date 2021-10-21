@@ -14,18 +14,7 @@ type shopBatteryRecordService struct {
 
 // DriverBiz 骑手业务调拨记录
 func (*shopBatteryRecordService) DriverBiz(ctx context.Context, recordType, bizType, shopId uint, bizId uint64, user model.User) error {
-    c := dao.ShopBatteryRecord.Columns
     _, err := dao.ShopBatteryRecord.Ctx(ctx).
-        Fields(
-            c.ShopId,
-            c.BizId,
-            c.BizType,
-            c.UserName,
-            c.BatteryType,
-            c.Num,
-            c.Type,
-            c.UserId,
-        ).
         Insert(model.ShopBatteryRecord{
             ShopId:      shopId,
             BizId:       bizId,
@@ -41,17 +30,8 @@ func (*shopBatteryRecordService) DriverBiz(ctx context.Context, recordType, bizT
 
 // Platform 平台调拨
 func (*shopBatteryRecordService) Platform(ctx context.Context, recordType, shopId, num uint, batteryType string) error {
-    c := dao.ShopBatteryRecord.Columns
     sysUser := ctx.Value(model.ContextAdminKey).(*model.ContextAdmin)
     _, err := dao.ShopBatteryRecord.Ctx(ctx).
-        Fields(
-            c.ShopId,
-            c.Num,
-            c.Type,
-            c.BatteryType,
-            c.SysUserId,
-            c.SysUserName,
-        ).
         Insert(model.ShopBatteryRecord{
             ShopId:      shopId,
             BatteryType: batteryType,
