@@ -90,8 +90,8 @@ type GroupEntity struct {
     Days      uint   `json:"days"`      // 累积天数
     BillDays  uint   `json:"billDays"`  // 未结天数
 
-    SettlementDetails []*SettlementEntity `json:"-" orm:"with:groupId=id, where:ignorance=0, order:startDate desc"`
-    City              *Districts          `json:"-" orm:"with:id=cityId"`
+    SettlementDetails []*SettlementDetailEntity `json:"-" orm:"with:groupId=id, where:ignorance=0, order:startDate desc"`
+    City              *Districts                `json:"-" orm:"with:id=cityId"`
 }
 
 // GroupUsageDays 团队使用天数

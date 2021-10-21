@@ -44,7 +44,7 @@ func (s *groupSettlementService) CheckoutBill(ctx context.Context, req *model.Gr
     }
     // 获取所有结算单详情
     var ids []uint64
-    var details []model.SettlementEntity
+    var details []model.SettlementDetailEntity
     mapItems := map[uint64]*model.SettlementListItem{}
     for _, item := range bill.Items {
         ids = append(ids, item.DetailId)

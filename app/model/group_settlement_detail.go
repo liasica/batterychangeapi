@@ -22,7 +22,7 @@ const (
     SettlementSettled        // 已结算
 )
 
-type SettlementEntity struct {
+type SettlementDetailEntity struct {
     gmeta.Meta `orm:"table:group_settlement_detail" swaggerignore:"true"`
 
     Id           uint64      `orm:"id,primary"   json:"id"`           // ID
@@ -61,7 +61,7 @@ type SettlementListItem struct {
 
 // GetDays 获取截止到今天的天数
 // 若退租时间不为空则天数是 退租时间 - 开始时间
-func (s *SettlementEntity) GetDays() (days uint) {
+func (s *SettlementDetailEntity) GetDays() (days uint) {
     end := gtime.Now()
     if !s.CancelDate.IsZero() {
         end = s.CancelDate
@@ -78,7 +78,7 @@ func (s *SettlementEntity) GetDays() (days uint) {
 
 // GetExpDays 获取账单到截止日为止的天数
 // 返回数据: days天数, needSplit结账时是否需要拆分订单(根据expDate), end最终计算的截止日
-func (s *SettlementEntity) GetExpDays(now, expDate *gtime.Time) (days uint, needSplit bool, end *gtime.Time) {
+func (s *SettlementDetailEntity) GetExpDays(now, expDate *gtime.Time) (days uint, needSplit bool, end *gtime.Time) {
     needSplit = true
     end = expDate
     // 若开始日大于截止日直接返回0

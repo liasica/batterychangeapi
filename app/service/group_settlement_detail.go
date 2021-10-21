@@ -147,13 +147,13 @@ func (s *groupSettlementDetailService) GetGroupBill(ctx context.Context, group *
     }
 
     // 重新生成账单
-    var rows []*model.SettlementEntity
+    var rows []*model.SettlementDetailEntity
     var items []*model.SettlementListItem
     var total float64
     var from *gtime.Time
     now := gtime.Now()
     c := dao.GroupSettlementDetail.Columns
-    _ = dao.GroupSettlementDetail.Ctx(ctx).With(model.SettlementEntity{}.Combo).
+    _ = dao.GroupSettlementDetail.Ctx(ctx).With(model.SettlementDetailEntity{}.Combo).
         Where(g.Map{
             c.GroupId:   group.Id,
             c.Ignorance: 0,
@@ -216,15 +216,21 @@ func (s *groupSettlementDetailService) GetGroupBill(ctx context.Context, group *
     return
 }
 
+func (s *groupSettlementDetailService) ListDetails(ctx context.Context, groupId uint) (rows []*model.SettlementDetailEntity) {
+    c := dao.GroupSettlementDetail.Columns
+    _ = dao.GroupSettlementDetail.Ctx(ctx).
+        Where(c.GroupId, groupId).
+        Where(c.Ignorance, 0).
+        OrderDesc("startDate").
+        Scan(&rows)
+    return rows
+}
+
 // GetDays 获取团队天数
 // billDays 未结算天数
 // days 总天数
 func (s *groupSettlementDetailService) GetDays(ctx context.Context, groupId uint) (billDays uint, days uint) {
-    var rows []*model.SettlementEntity
-    _ = dao.GroupSettlementDetail.Ctx(ctx).
-        Where("groupId", groupId).
-        OrderDesc("startDate").
-        Scan(&rows)
+    rows := s.ListDetails(ctx, groupId)
     if len(rows) > 0 {
         for _, row := range rows {
             num := row.GetDays()
@@ -240,11 +246,7 @@ func (s *groupSettlementDetailService) GetDays(ctx context.Context, groupId uint
 // GetDaysGroupByUser 获取团队天数(用户分组)
 func (s *groupSettlementDetailService) GetDaysGroupByUser(ctx context.Context, groupId uint) (data map[uint64]model.GroupUsageDays) {
     data = make(map[uint64]model.GroupUsageDays)
-    var rows []*model.SettlementEntity
-    _ = dao.GroupSettlementDetail.Ctx(ctx).
-        Where("groupId", groupId).
-        OrderDesc("startDate").
-        Scan(&rows)
+    rows := s.ListDetails(ctx, groupId)
     if len(rows) > 0 {
         for _, row := range rows {
             uid := row.UserId
