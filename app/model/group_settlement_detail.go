@@ -26,8 +26,9 @@ type SettlementEntity struct {
     gmeta.Meta `orm:"table:group_settlement_detail" swaggerignore:"true"`
 
     Id           uint64      `orm:"id,primary"   json:"id"`           // ID
+    SettlementId uint64      `orm:"settlementId" json:"settlementId"` // 结算单ID
+    ParentId     uint64      `orm:"parentId"     json:"parentId"`     // 上次结算单ID(拆分自)
     State        uint        `orm:"state"        json:"state"`        // 当前状态: 0计费中 1已结算
-    SettlementId int64       `orm:"settlementId" json:"settlementId"` // 结算单ID
     UserId       uint64      `orm:"userId"       json:"userId"`       // 用户ID
     GroupId      uint        `orm:"groupId"      json:"groupId"`      // 团队ID
     ComboId      uint        `orm:"comboId"      json:"comboId"`      // 套餐ID
@@ -38,8 +39,7 @@ type SettlementEntity struct {
     StartDate    *gtime.Time `orm:"startDate"    json:"startDate"`    // 账单开始日期
     CancelDate   *gtime.Time `orm:"cancelDate"   json:"cancelDate"`   // 退租日期
     StopDate     *gtime.Time `orm:"stopDate"     json:"stopDate"`     // 账单结算日期
-    SplitId      uint64      `orm:"splitId"      json:"splitId"`      // 拆分自账单
-    SplitDate    *gtime.Time `orm:"splitDate"    json:"splitDate"`    // 拆分账单日期
+    SplitAt      *gtime.Time `orm:"splitAt"      json:"splitAt"`      // 账单拆分日
 
     Combo *Combo `json:"-" orm:"with:id=comboId"`
 }

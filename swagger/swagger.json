@@ -1953,7 +1953,30 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-获取骑手当前套餐详情",
+                "summary": "骑手-个签用户套餐列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前城市ID",
+                        "name": "cityId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -1966,7 +1989,10 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
+                                            }
                                         }
                                     }
                                 }
@@ -2583,7 +2609,7 @@
                                             "items": {
                                                 "type": "array",
                                                 "items": {
-                                                    "$ref": "#/definitions/user.UserSignFileRepItem"
+                                                    "$ref": "#/definitions/model.UserSignFileRepItem"
                                                 }
                                             }
                                         }
@@ -5638,12 +5664,16 @@
         "model.UserGroupListRep": {
             "type": "object",
             "properties": {
-                "days": {
-                    "description": "使用天数",
+                "billDays": {
+                    "description": "未结算天数",
                     "type": "integer"
                 },
-                "name": {
-                    "description": "名称",
+                "days": {
+                    "description": "总使用天数",
+                    "type": "integer"
+                },
+                "realName": {
+                    "description": "姓名",
                     "type": "string"
                 }
             }
@@ -5651,12 +5681,12 @@
         "model.UserGroupStatRep": {
             "type": "object",
             "properties": {
-                "days": {
-                    "description": "待付款累计天数",
+                "billDays": {
+                    "description": "未结算天数",
                     "type": "integer"
                 },
-                "userCnt": {
-                    "description": "团队人数",
+                "memberCnt": {
+                    "description": "团队成员人数",
                     "type": "integer"
                 }
             }
@@ -5957,6 +5987,19 @@
                 }
             }
         },
+        "model.UserSignFileRepItem": {
+            "type": "object",
+            "properties": {
+                "fileName": {
+                    "description": "文件名称",
+                    "type": "string"
+                },
+                "fileUrl": {
+                    "description": "文件地址",
+                    "type": "string"
+                }
+            }
+        },
         "model.UserVerifyListItem": {
             "type": "object",
             "properties": {
@@ -6157,19 +6200,6 @@
                     "items": {
                         "type": "integer"
                     }
-                }
-            }
-        },
-        "user.UserSignFileRepItem": {
-            "type": "object",
-            "properties": {
-                "fileName": {
-                    "description": "文件名称",
-                    "type": "string"
-                },
-                "fileUrl": {
-                    "description": "文件地址",
-                    "type": "string"
                 }
             }
         }

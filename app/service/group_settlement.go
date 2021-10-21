@@ -91,6 +91,8 @@ func (s *groupSettlementService) CheckoutBill(ctx context.Context, req *model.Gr
                 newRecord.CreatedAt = now
                 details = append(details, newRecord)
             }
+            // 是否正在使用
+
             details[k].SettlementId = uint64(id)
             details[k].SplitAt = now
             details[k].State = model.SettlementSettled

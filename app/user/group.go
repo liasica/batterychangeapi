@@ -21,14 +21,10 @@ type groupApi struct {
 // @Success 200 {object} response.JsonResponse{data=model.UserGroupStatRep}  "返回结果"
 func (*groupApi) Stat(r *ghttp.Request) {
     user := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
-    var days uint = 0
-    res, _ := service.GroupDailyStatService.ArrearsDays(r.Context(), user.GroupId)
-    for _, day := range res {
-        days = days + day.Cnt
-    }
+    billDays, _ := service.GroupSettlementDetailService.GetDays(r.Context(), user.GroupId)
     response.JsonOkExit(r, model.UserGroupStatRep{
-        UserCnt: service.GroupUserService.UserCnt(r.Context(), user.GroupId),
-        Days:    days,
+        MemberCnt: service.GroupUserService.UserCnt(r.Context(), user.GroupId),
+        BillDays:  billDays,
     })
 }
 
@@ -36,7 +32,7 @@ func (*groupApi) Stat(r *ghttp.Request) {
 // @Summary 骑手-团签团队详情
 // @Tags    骑手-团签BOSS
 // @Accept  json
-// @Produce  json
+// @Produce json
 // @Router  /rapi/group/list  [GET]
 // @Success 200 {object} response.JsonResponse{data=[]model.UserGroupListRep}  "返回结果"
 func (*groupApi) List(r *ghttp.Request) {
@@ -44,23 +40,20 @@ func (*groupApi) List(r *ghttp.Request) {
     userIds := service.GroupUserService.UserIds(r.Context(), user.GroupId)
     if len(userIds) > 0 {
         users := service.UserService.GetByIds(r.Context(), userIds)
-        list := make([]model.UserGroupListRep, len(users))
-        userArrearsDays := make(map[uint64]uint, len(userIds))
-        for _, userId := range userIds {
-            userArrearsDays[userId] = 0
-        }
-        arrearsList, _ := service.GroupDailyStatService.ArrearsList(r.Context(), user.GroupId)
-        for _, row := range arrearsList {
-            for _, userId := range row.UserIds {
-                if _, ok := userArrearsDays[userId]; ok {
-                    userArrearsDays[userId]++
-                }
-            }
-        }
+        var list []model.UserGroupListRep
+        m := service.GroupSettlementDetailService.GetDaysGroupByUser(r.Context(), user.GroupId)
         for key, u := range users {
+            uid := u.Id
+            data, ok := m[uid]
+            var billDays, days uint
+            if ok {
+                billDays = data.BillDays
+                days = data.Days
+            }
             list[key] = model.UserGroupListRep{
-                Name: u.RealName,
-                Days: userArrearsDays[u.Id],
+                RealName: u.RealName,
+                Days:     days,
+                BillDays: billDays,
             }
         }
         response.JsonOkExit(r, list)

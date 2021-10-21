@@ -163,20 +163,13 @@ func (*userApi) Profile(r *ghttp.Request) {
     response.JsonOkExit(r, profile)
 }
 
-type UserSignFileRepItem struct {
-    FileName string `json:"fileName"` // 文件名称
-    FileUrl  string `json:"fileUrl"`  // 文件地址
-}
-
-type UserSignFileRep []*UserSignFileRepItem
-
 // SignFile
 // @Summary 骑手-签约文件地址
 // @Tags    骑手
 // @Accept  json
 // @Produce  json
 // @Router  /rapi/sign_file  [GET]
-// @Success 200 {object} response.JsonResponse{data=[]user.UserSignFileRep}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=[]model.UserSignFileRep}  "返回结果"
 func (*userApi) SignFile(r *ghttp.Request) {
     u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
     s, err := service.SignService.UserLatestDoneDetail(r.Context(), u.Id, u.ComboOrderId, u.GroupId)
@@ -187,9 +180,9 @@ func (*userApi) SignFile(r *ghttp.Request) {
     if err != nil || res.Code != 0 {
         response.JsonErrExit(r, response.RespCodeSystemError)
     }
-    files := make([]*UserSignFileRepItem, len(res.Data.Docs))
+    files := make([]*model.UserSignFileRepItem, len(res.Data.Docs))
     for i, f := range res.Data.Docs {
-        files[i] = &UserSignFileRepItem{
+        files[i] = &model.UserSignFileRepItem{
             FileName: f.FileName,
             FileUrl:  f.FileUrl,
         }

@@ -192,3 +192,10 @@ type UserListItem struct {
     Group       *Group `json:"-" orm:"with:id=groupId"`
     // BizItems    []*UserBiz `json:"-" orm:"with:userId=id, order:createdAt desc"`
 }
+
+type UserSignFileRepItem struct {
+    FileName string `json:"fileName"` // 文件名称
+    FileUrl  string `json:"fileUrl"`  // 文件地址
+}
+
+type UserSignFileRep []*UserSignFileRepItem

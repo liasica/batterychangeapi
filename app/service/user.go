@@ -262,44 +262,39 @@ func (s *userService) RealNameAuthVerifyCallBack(ctx context.Context, eSignAccou
 // Profile 用户信息
 func (s *userService) Profile(ctx context.Context) (rep model.UserProfileRep) {
     u := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
-    var user model.User
-    _ = dao.User.WherePri(u.Id).Scan(&user)
-    rep.Name = user.RealName
-    rep.Mobile = user.Mobile
-    rep.Type = user.Type
+    var mu model.User
+    _ = dao.User.WherePri(u.Id).Scan(&mu)
+    rep.Name = mu.RealName
+    rep.Mobile = mu.Mobile
+    rep.Type = mu.Type
     rep.Qr = u.Qr
-    rep.AuthState = user.AuthState
-    if user.Type == model.UserTypePersonal {
-        combo, _ := ComboService.Detail(ctx, user.ComboId)
-        rep.User.ComboId = user.ComboId
+    rep.AuthState = mu.AuthState
+    if mu.Type == model.UserTypePersonal {
+        combo, _ := ComboService.Detail(ctx, mu.ComboId)
+        rep.User.ComboId = mu.ComboId
         rep.User.ComboName = combo.Name
-        rep.User.BatteryState = user.BatteryState
-        rep.User.BatteryReturnAt = user.BatteryReturnAt
+        rep.User.BatteryState = mu.BatteryState
+        rep.User.BatteryReturnAt = mu.BatteryReturnAt
         // 违约
-        if user.BatteryState == model.BatteryStateUse {
-            if user.BatteryReturnAt.Timestamp() < gtime.Now().Timestamp() {
+        if mu.BatteryState == model.BatteryStateUse {
+            if mu.BatteryReturnAt.Timestamp() < gtime.Now().Timestamp() {
                 rep.User.BatteryState = model.BatteryStateOverdue
             }
         }
         // 过期
-        if user.BatteryState == model.BatteryStateSave {
-            if user.BatteryReturnAt.Timestamp() < gtime.Now().Timestamp() {
+        if mu.BatteryState == model.BatteryStateSave {
+            if mu.BatteryReturnAt.Timestamp() < gtime.Now().Timestamp() {
                 rep.User.BatteryState = model.BatteryStateExpired
             }
         }
     }
-    if user.Type == model.UserTypeGroupRider {
-        rep.GroupUser.BatteryState = user.BatteryState
+    if mu.Type == model.UserTypeGroupRider {
+        rep.GroupUser.BatteryState = mu.BatteryState
         rep.GroupUser.BatteryType = u.BatteryType
     }
-    if user.Type == model.UserTypeGroupBoss {
-        var days uint = 0
-        res, _ := GroupDailyStatService.ArrearsDays(ctx, user.GroupId)
-        for _, day := range res {
-            days = days + day.Cnt
-        }
-        rep.GroupBoss.Days = days
-        rep.GroupBoss.UserCnt = GroupUserService.UserCnt(ctx, user.GroupId)
+    if mu.Type == model.UserTypeGroupBoss {
+        rep.GroupBoss.BillDays, _ = GroupSettlementDetailService.GetDays(ctx, mu.GroupId)
+        rep.GroupBoss.MemberCnt = GroupUserService.UserCnt(ctx, mu.GroupId)
     }
     return
 }

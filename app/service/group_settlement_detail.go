@@ -215,3 +215,53 @@ func (s *groupSettlementDetailService) GetGroupBill(ctx context.Context, group *
     }
     return
 }
+
+// GetDays 获取团队天数
+// billDays 未结算天数
+// days 总天数
+func (s *groupSettlementDetailService) GetDays(ctx context.Context, groupId uint) (billDays uint, days uint) {
+    var rows []*model.SettlementEntity
+    _ = dao.GroupSettlementDetail.Ctx(ctx).
+        Where("groupId", groupId).
+        OrderDesc("startDate").
+        Scan(&rows)
+    if len(rows) > 0 {
+        for _, row := range rows {
+            num := row.GetDays()
+            days += num
+            if row.State != model.SettlementSettled {
+                billDays += num
+            }
+        }
+    }
+    return
+}
+
+// GetDaysGroupByUser 获取团队天数(用户分组)
+func (s *groupSettlementDetailService) GetDaysGroupByUser(ctx context.Context, groupId uint) (data map[uint64]model.GroupUsageDays) {
+    data = make(map[uint64]model.GroupUsageDays)
+    var rows []*model.SettlementEntity
+    _ = dao.GroupSettlementDetail.Ctx(ctx).
+        Where("groupId", groupId).
+        OrderDesc("startDate").
+        Scan(&rows)
+    if len(rows) > 0 {
+        for _, row := range rows {
+            uid := row.UserId
+            detail, ok := data[uid]
+            if !ok {
+                detail = model.GroupUsageDays{
+                    Days:     0,
+                    BillDays: 0,
+                }
+            }
+            num := row.GetDays()
+            detail.Days += num
+            if row.State != model.SettlementSettled {
+                detail.BillDays += row.GetDays()
+            }
+            data[uid] = detail
+        }
+    }
+    return
+}

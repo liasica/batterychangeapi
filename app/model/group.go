@@ -57,14 +57,15 @@ type GroupCreateUserReq struct {
 
 // UserGroupStatRep 我的团队统计
 type UserGroupStatRep struct {
-    UserCnt uint `json:"userCnt"` // 团队人数
-    Days    uint `json:"days"`    // 待付款累计天数
+    MemberCnt uint `json:"memberCnt"` // 团队成员人数
+    BillDays  uint `json:"billDays"`  // 未结算天数
 }
 
 // UserGroupListRep 我的团队详情列表
 type UserGroupListRep struct {
-    Name string `json:"name"` // 名称
-    Days uint   `json:"days"` // 使用天数
+    RealName string `json:"realName"` // 姓名
+    Days     uint   `json:"days"`     // 总使用天数
+    BillDays uint   `json:"billDays"` // 未结算天数
 }
 
 // GroupListAdminReq 管理列表请求数据
@@ -91,4 +92,10 @@ type GroupEntity struct {
 
     SettlementDetails []*SettlementEntity `json:"-" orm:"with:groupId=id, where:ignorance=0, order:startDate desc"`
     City              *Districts          `json:"-" orm:"with:id=cityId"`
+}
+
+// GroupUsageDays 团队使用天数
+type GroupUsageDays struct {
+    Days     uint `json:"days"`     // 总使用天数
+    BillDays uint `json:"billDays"` // 未结算天数
 }
