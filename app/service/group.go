@@ -7,23 +7,12 @@ import (
     "battery/library/mq"
     "context"
     "fmt"
-    "github.com/gogf/gf/os/gtime"
     "strings"
 )
 
 var GroupService = groupService{}
 
 type groupService struct {
-}
-
-// StatDays 获取团体总使用天数
-func (*groupService) StatDays(ctx context.Context, groupId uint) uint {
-    now := gtime.Now()
-    days, _ := dao.GroupDailyStat.Ctx(ctx).
-        Where(dao.GroupDailyStat.Columns.GroupId, groupId).
-        WhereLTE(dao.GroupDailyStat.Columns.Date, fmt.Sprintf("%d%d%d", now.Year(), now.Month(), now.Day())).
-        Sum(dao.GroupDailyStat.Columns.Total)
-    return uint(days)
 }
 
 func (*groupService) Detail(ctx context.Context, groupId uint) (group model.Group) {

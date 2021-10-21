@@ -75,8 +75,6 @@ func (s *groupSettlementDetailService) Earning(ctx context.Context, user model.U
             Update(); err != nil {
             return err
         }
-
-        _, err = dao.User.Ctx(ctx).Data(g.Map{dao.User.Columns.SettlementDetailId: id}).Where(dao.User.Columns.Id, user.Id).Update()
         return err
     })
 }
@@ -84,8 +82,12 @@ func (s *groupSettlementDetailService) Earning(ctx context.Context, user model.U
 // Cancel 退租
 func (s *groupSettlementDetailService) Cancel(ctx context.Context, user model.User) error {
     now := gtime.Now()
+    c := dao.GroupSettlementDetail.Columns
     detail := new(model.GroupSettlementDetail)
-    err := dao.GroupSettlementDetail.Ctx(ctx).Where("id = ?", user.SettlementDetailId).Scan(detail)
+    err := dao.GroupSettlementDetail.Ctx(ctx).
+        Where(c.UserId+" = ?", user.Id).
+        OrderDesc(c.StartDate).
+        Scan(detail)
     if err != nil {
         return err
     }
@@ -96,37 +98,35 @@ func (s *groupSettlementDetailService) Cancel(ctx context.Context, user model.Us
         if err != nil {
             return err
         }
-
-        _, err = dao.User.Ctx(ctx).Data(g.Map{dao.User.Columns.SettlementDetailId: 0}).Where(dao.User.Columns.Id, user.Id).Update()
         return err
     })
 }
 
 // Checkout 结算
-func (s *groupSettlementDetailService) Checkout(ctx context.Context, user model.User) error {
-    now := gtime.Now()
-    detail := new(model.GroupSettlementDetail)
-    err := dao.GroupSettlementDetail.Ctx(ctx).Where("id = ?", user.SettlementDetailId).Scan(detail)
-    if err != nil {
-        return err
-    }
-
-    return dao.GroupSettlementDetail.DB.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-        detail.CancelDate = now
-        detail.State = model.SettlementSettled
-        _, err = dao.GroupSettlementDetail.Ctx(ctx).Data(detail).Save()
-        if err != nil {
-            return err
-        }
-
-        // 若用户是使用或逾期状态，则创建新的账单
-        switch user.BatteryState {
-        case model.BatteryStateUse, model.BatteryStateOverdue:
-            return s.Earning(ctx, user)
-        }
-        return nil
-    })
-}
+// func (s *groupSettlementDetailService) Checkout(ctx context.Context, user model.User) error {
+//     now := gtime.Now()
+//     detail := new(model.GroupSettlementDetail)
+//     err := dao.GroupSettlementDetail.Ctx(ctx).Where("id = ?", user.SettlementDetailId).Scan(detail)
+//     if err != nil {
+//         return err
+//     }
+//
+//     return dao.GroupSettlementDetail.DB.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+//         detail.CancelDate = now
+//         detail.State = model.SettlementSettled
+//         _, err = dao.GroupSettlementDetail.Ctx(ctx).Data(detail).Save()
+//         if err != nil {
+//             return err
+//         }
+//
+//         // 若用户是使用或逾期状态，则创建新的账单
+//         switch user.BatteryState {
+//         case model.BatteryStateUse, model.BatteryStateOverdue:
+//             return s.Earning(ctx, user)
+//         }
+//         return nil
+//     })
+// }
 
 // GetBillFromMongo 读取账单缓存
 func (s *groupSettlementDetailService) GetBillFromMongo(ctx context.Context, groupId uint, date string) (bill *model.SettlementCache) {
