@@ -39,6 +39,10 @@ func (*batteryApi) TransferRecord(r *ghttp.Request) {
     response.ItemsWithTotal(r, total, items)
 }
 
+func (*batteryApi) Transfer(r *ghttp.Request) {
+
+}
+
 // Exception
 // @Summary 电池异常记录
 // @Tags    管理

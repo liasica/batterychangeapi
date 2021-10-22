@@ -217,19 +217,17 @@ func (*orderApi) Claim(r *ghttp.Request) {
         if user.BatteryState != model.BatteryStateNew {
             response.Json(r, response.RespCodeArgs, "没有选择电池类型, 或已领取")
         }
-        groupUser := service.GroupUserService.GetBuyUserId(r.Context(), user.Id)
         shop, _ := service.ShopService.GetShop(r.Context(), r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId)
         if err := dao.ComboOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
             // 领取记录
             bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
-                CityId:       shop.CityId,
-                ShopId:       shop.Id,
-                UserId:       user.Id,
-                GoroupId:     user.GroupId,
-                GoroupUserId: groupUser.Id,
-                Type:         model.UserBizNew,
-                ComboId:      0,
-                BatteryType:  user.BatteryType,
+                CityId:      shop.CityId,
+                ShopId:      shop.Id,
+                UserId:      user.Id,
+                GroupId:     user.GroupId,
+                BizType:     model.UserBizNew,
+                ComboId:     user.ComboId,
+                BatteryType: user.BatteryType,
             })
             if err != nil {
                 return err
@@ -284,14 +282,12 @@ func (*orderApi) Claim(r *ghttp.Request) {
             }
             // 领取记录
             bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
-                CityId:       shop.CityId,
-                ShopId:       shop.Id,
-                UserId:       order.UserId,
-                GoroupId:     0,
-                GoroupUserId: 0,
-                Type:         model.UserBizNew,
-                ComboId:      combo.Id,
-                BatteryType:  combo.BatteryType,
+                CityId:      shop.CityId,
+                ShopId:      shop.Id,
+                UserId:      order.UserId,
+                BizType:     model.UserBizNew,
+                ComboId:     combo.Id,
+                BatteryType: combo.BatteryType,
             })
             if err != nil {
                 return err

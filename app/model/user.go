@@ -28,9 +28,9 @@ const (
 
 // 用户属性
 const (
-    UserTypePersonal   = 1 + iota // 个签用户
-    UserTypeGroupRider            // 团签骑手
-    UserTypeGroupBoss             // 团签BOSS
+    UserTypePersonal    = 1 + iota // 个签用户
+    UserTypeGroupMember            // 团签成员
+    UserTypeGroupBoss              // 团签BOSS
 )
 
 type User internal.User

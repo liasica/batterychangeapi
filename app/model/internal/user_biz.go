@@ -10,15 +10,14 @@ import (
 
 // UserBiz is the golang structure for table user_biz.
 type UserBiz struct {
-	Id           uint64      `orm:"id,primary"   json:"id"`           //
-	UserId       uint64      `orm:"userId"       json:"userId"`       // 用户ID
-	ComboId      uint        `orm:"comboId"      json:"comboId"`      // 套餐ID
-	CityId       uint        `orm:"cityId"       json:"cityId"`       // 城市ID
-	ShopId       uint        `orm:"shopId"       json:"shopId"`       // 门店ID
-	GoroupId     uint        `orm:"goroupId"     json:"goroupId"`     // 团签ID
-	GoroupUserId uint64      `orm:"goroupUserId" json:"goroupUserId"` // 团签用户ID
-	Type         uint        `orm:"type"         json:"type"`         // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租
-	BatteryType  string      `orm:"batteryType"  json:"batteryType"`  // 电池型号
-	CreatedAt    *gtime.Time `orm:"createdAt"    json:"createdAt"`    // 扫码时间
-	UpdatedAt    *gtime.Time `orm:"updatedAt"    json:"updatedAt"`    //
+	Id          uint64      `orm:"id,primary"  json:"id"`          //
+	UserId      uint64      `orm:"userId"      json:"userId"`      // 用户ID
+	ComboId     uint        `orm:"comboId"     json:"comboId"`     // 套餐ID
+	CityId      uint        `orm:"cityId"      json:"cityId"`      // 城市ID
+	ShopId      uint        `orm:"shopId"      json:"shopId"`      // 门店ID
+	GroupId     uint        `orm:"groupId"     json:"groupId"`     // 团签ID
+	BizType     uint        `orm:"bizType"     json:"bizType"`     // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租
+	BatteryType string      `orm:"batteryType" json:"batteryType"` // 电池型号
+	CreatedAt   *gtime.Time `orm:"createdAt"   json:"createdAt"`   // 扫码时间
+	UpdatedAt   *gtime.Time `orm:"updatedAt"   json:"updatedAt"`   //
 }

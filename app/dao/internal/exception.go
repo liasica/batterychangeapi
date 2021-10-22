@@ -5,52 +5,52 @@
 package internal
 
 import (
-    "github.com/gogf/gf/database/gdb"
-    "github.com/gogf/gf/frame/g"
-    "github.com/gogf/gf/frame/gmvc"
+	"github.com/gogf/gf/database/gdb"
+	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/frame/gmvc"
 )
 
 // ExceptionDao is the manager for logic model data accessing
 // and custom defined data operations functions management.
 type ExceptionDao struct {
-    gmvc.M                   // M is the core and embedded struct that inherits all chaining operations from gdb.Model.
-    DB      gdb.DB           // DB is the raw underlying database management object.
-    Table   string           // Table is the table name of the DAO.
-    Columns exceptionColumns // Columns contains all the columns of Table that for convenient usage.
+	gmvc.M                   // M is the core and embedded struct that inherits all chaining operations from gdb.Model.
+	DB      gdb.DB           // DB is the raw underlying database management object.
+	Table   string           // Table is the table name of the DAO.
+	Columns exceptionColumns // Columns contains all the columns of Table that for convenient usage.
 }
 
 // ExceptionColumns defines and stores column names for table exception.
 type exceptionColumns struct {
-    Id          string //
-    ShopId      string // 门店
-    State       string // 状态: 0未解决 1已解决
-    Type        string // 异常类别: 1遗失 2故障
-    BatteryType string // 电池型号
-    Discoverer  string // 发现人 1 用户 2 门店
-    Detail      string // 详细说明
-    Img         string // 图片链接
-    Reason      string // 故障原因 0 其它 1 插头故障 2 无电压
-    CreatedAt   string //
-    UpdatedAt   string //
+	Id          string //
+	ShopId      string // 门店
+	State       string // 状态: 0未解决 1已解决
+	Type        string // 异常类别: 1遗失 2故障
+	BatteryType string // 电池型号
+	Discoverer  string // 发现人 1 用户 2 店长
+	Detail      string // 详细说明
+	Img         string // 图片链接
+	Reason      string // 故障原因 0 其它 1 插头故障 2 无电压
+	CreatedAt   string //
+	UpdatedAt   string //
 }
 
 func NewExceptionDao() *ExceptionDao {
-    return &ExceptionDao{
-        M:     g.DB("default").Model("exception").Safe(),
-        DB:    g.DB("default"),
-        Table: "exception",
-        Columns: exceptionColumns{
-            Id:          "id",
-            ShopId:      "shopId",
-            State:       "state",
-            Type:        "type",
-            BatteryType: "batteryType",
-            Discoverer:  "discoverer",
-            Detail:      "detail",
-            Img:         "img",
-            Reason:      "reason",
-            CreatedAt:   "createdAt",
-            UpdatedAt:   "updatedAt",
-        },
-    }
+	return &ExceptionDao{
+		M:     g.DB("default").Model("exception").Safe(),
+		DB:    g.DB("default"),
+		Table: "exception",
+		Columns: exceptionColumns{
+			Id:          "id",
+			ShopId:      "shopId",
+			State:       "state",
+			Type:        "type",
+			BatteryType: "batteryType",
+			Discoverer:  "discoverer",
+			Detail:      "detail",
+			Img:         "img",
+			Reason:      "reason",
+			CreatedAt:   "createdAt",
+			UpdatedAt:   "updatedAt",
+		},
+	}
 }

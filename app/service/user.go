@@ -93,7 +93,7 @@ func (*userService) SetUsersGroupId(ctx context.Context, userIds []uint64, group
     res, err := dao.User.Ctx(ctx).
         WhereIn(dao.User.Columns.BatteryState, []int{model.BatteryStateDefault, model.BatteryStateExit}).
         WhereIn(dao.User.Columns.Id, userIds).Update(g.Map{
-        dao.User.Columns.Type:    model.UserTypeGroupRider,
+        dao.User.Columns.Type:    model.UserTypeGroupMember,
         dao.User.Columns.GroupId: groupId,
     })
     if err != nil {
@@ -288,7 +288,7 @@ func (s *userService) Profile(ctx context.Context) (rep model.UserProfileRep) {
             }
         }
     }
-    if mu.Type == model.UserTypeGroupRider {
+    if mu.Type == model.UserTypeGroupMember {
         rep.GroupUser.BatteryState = mu.BatteryState
         rep.GroupUser.BatteryType = u.BatteryType
     }
@@ -581,13 +581,14 @@ func (s *userService) ComboStartUse(ctx context.Context, order model.ComboOrder)
 
 // GroupUserStartUse 团签用户首次领取电池
 func (s *userService) GroupUserStartUse(ctx context.Context, userId uint64) error {
-    user := s.Detail(ctx, userId)
+    c := dao.User.Columns
+    u := s.Detail(ctx, userId)
     res, err := dao.User.Ctx(ctx).WherePri(userId).
-        Where(dao.User.Columns.BatteryState, model.BatteryStateNew).
+        Where(c.BatteryState, model.BatteryStateNew).
         Update(g.Map{
-            dao.User.Columns.BatteryState:                 model.BatteryStateUse,
-            dao.User.Columns.BizBatteryRenewalDaysStartAt: gtime.Now(),
-            dao.User.Columns.BizBatteryRenewalDays:        user.BizBatteryRenewalDays + 1,
+            c.BatteryState:                 model.BatteryStateUse,
+            c.BizBatteryRenewalDaysStartAt: gtime.Now(),
+            c.BizBatteryRenewalDays:        u.BizBatteryRenewalDays + 1,
         })
     if err == nil {
         if rows, err := res.RowsAffected(); rows > 0 && err == nil {

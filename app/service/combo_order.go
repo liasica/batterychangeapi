@@ -184,16 +184,17 @@ func (s *comboOrderService) ShopMonthList(ctx context.Context, shopId uint, filt
 func (*comboOrderService) ListAdmin(ctx context.Context, req *model.OrderListReq) (total int, items []model.OrderListItem) {
     query := dao.ComboOrder.Ctx(ctx)
     c := dao.ComboOrder.Columns
+    t := combo_order.Table
     layout := "Y-m-d"
 
     params := mq.ParseStructToQuery(*req, "RealName", "Mobile")
     query = query.Where(params)
 
     if !req.StartDate.IsZero() {
-        query = query.WhereGTE(c.CreatedAt, req.StartDate.Format(layout))
+        query = query.WhereGTE(fmt.Sprintf("%s.%s", t, c.CreatedAt), req.StartDate.Format(layout))
     }
     if !req.EndDate.IsZero() {
-        query = query.WhereLTE(c.CreatedAt, req.EndDate.Format(layout))
+        query = query.WhereLTE(fmt.Sprintf("%s.%s", t, c.CreatedAt), req.EndDate.Format(layout))
     }
 
     if req.Mobile != "" {

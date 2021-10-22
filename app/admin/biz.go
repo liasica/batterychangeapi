@@ -34,6 +34,6 @@ func (*bizApi) List(r *ghttp.Request) {
     var req = new(model.BizListReq)
     _ = request.ParseRequest(r, req)
 
-    total, items := service.UserBizService.ListAdmin(r.Context(), req)
+    total, items := service.UserBizService.Filter(r.Context(), req)
     response.ItemsWithTotal(r, total, items)
 }

@@ -1253,6 +1253,28 @@
                 }
             }
         },
+        "/api/battery": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "公用"
+                ],
+                "summary": "电池型号",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/sms": {
             "post": {
                 "consumes": [
@@ -2717,7 +2739,7 @@
                 }
             }
         },
-        "/sapi/biz_record": {
+        "/sapi/biz/record": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -2726,9 +2748,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "门店-业务"
+                    "门店"
                 ],
-                "summary": "门店-业务-换电记录列表",
+                "summary": "门店-门店业务记录",
                 "parameters": [
                     {
                         "type": "integer",
@@ -2739,30 +2761,34 @@
                     },
                     {
                         "type": "integer",
-                        "description": "每页行数",
+                        "description": "每页数量",
                         "name": "pageLimit",
                         "in": "query",
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "月份数字，如 202106",
+                        "type": "string",
+                        "description": "月份数字, eg: 2021-09",
                         "name": "month",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
-                        "description": "业务类型 2 换电 3 寄存(仅个签可用)，5 退租",
+                        "description": "业务类型: 2 换电 3 寄存(仅个签可用)，5 退租",
                         "name": "bizType",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "description": "用户类型 1 个签  2 团签",
+                        "description": "用户类型: 1个签 2团签",
                         "name": "userType",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "筛选用户姓名",
+                        "name": "realName",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -2779,64 +2805,8 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.UserBizShopRecordRep"
+                                                "$ref": "#/definitions/model.BizShopFilterResp"
                                             }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/sapi/biz_record_total": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "门店-业务"
-                ],
-                "summary": "门店-业务-记录统计",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "月份数字，如 202106",
-                        "name": "month",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "业务类型 1 个签  2 团签",
-                        "name": "userType",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "业务类型 2 换电 3 寄存(仅个签可用)，5 退租",
-                        "name": "bizType",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.JsonResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/model.UserBizShopRecordMonthTotalRep"
                                         }
                                     }
                                 }
@@ -3531,8 +3501,12 @@
             "type": "object",
             "properties": {
                 "batteryType": {
-                    "description": "电池型号 60 / 72",
+                    "description": "电池型号",
                     "type": "string"
+                },
+                "bizType": {
+                    "description": "业务类型: 1新签 2换电 3寄存 4恢复计费 5退租",
+                    "type": "integer"
                 },
                 "cityId": {
                     "description": "城市ID",
@@ -3551,11 +3525,11 @@
                     "type": "string"
                 },
                 "createdAt": {
-                    "description": "业务办理时间",
+                    "description": "扫码时间",
                     "type": "string"
                 },
-                "goroupId": {
-                    "description": "团体ID",
+                "groupId": {
+                    "description": "团签ID",
                     "type": "integer"
                 },
                 "groupName": {
@@ -3582,10 +3556,6 @@
                     "description": "门店名称",
                     "type": "string"
                 },
-                "type": {
-                    "description": "业务类型: 1新签 2换电 3寄存 4恢复计费 5退租",
-                    "type": "integer"
-                },
                 "userId": {
                     "description": "用户ID",
                     "type": "integer"
@@ -3599,6 +3569,10 @@
                 "pageLimit"
             ],
             "properties": {
+                "bizTpe": {
+                    "description": "业务类型: 1新签 2换电 3寄存 4恢复计费 5退租",
+                    "type": "integer"
+                },
                 "endDate": {
                     "description": "结束日期 eg: 2021-10-19",
                     "type": "string"
@@ -3619,12 +3593,20 @@
                     "description": "骑手姓名",
                     "type": "string"
                 },
+                "shopId": {
+                    "description": "店铺ID",
+                    "type": "integer"
+                },
                 "startDate": {
                     "description": "开始日期 eg: 2021-10-17",
                     "type": "string"
                 },
                 "userId": {
                     "description": "骑手ID",
+                    "type": "integer"
+                },
+                "userTpe": {
+                    "description": "用户类型: 1个签 2团签",
                     "type": "integer"
                 }
             }
@@ -3669,6 +3651,55 @@
                 "realName": {
                     "description": "真实姓名",
                     "type": "string"
+                }
+            }
+        },
+        "model.BizShopFilterItem": {
+            "type": "object",
+            "properties": {
+                "bizType": {
+                    "description": "业务类型: 1新签 2换电 3寄存 4恢复计费 5退租",
+                    "type": "integer"
+                },
+                "comboName": {
+                    "description": "套餐名称",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "description": "时间",
+                    "type": "string"
+                },
+                "groupName": {
+                    "description": "团体名称， 名称为空即为 个签用户",
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "realName": {
+                    "description": "用户姓名",
+                    "type": "string"
+                }
+            }
+        },
+        "model.BizShopFilterResp": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "description": "记录详细",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.BizShopFilterItem"
+                    }
+                },
+                "month": {
+                    "description": "月份",
+                    "type": "string"
+                },
+                "total": {
+                    "description": "记录数",
+                    "type": "integer"
                 }
             }
         },
@@ -5509,44 +5540,6 @@
                 "type": {
                     "description": "业务类型:  2 换电 3 寄存(仅个签用户使用)， 4 恢复计费，5 退租",
                     "type": "integer"
-                }
-            }
-        },
-        "model.UserBizShopRecordMonthTotalRep": {
-            "type": "object",
-            "properties": {
-                "cnt": {
-                    "description": "总条数",
-                    "type": "integer"
-                }
-            }
-        },
-        "model.UserBizShopRecordRep": {
-            "type": "object",
-            "properties": {
-                "at": {
-                    "description": "时间",
-                    "type": "string"
-                },
-                "bizType": {
-                    "description": "业务类型: 1新签 2换电 3寄存 4恢复计费 5退租",
-                    "type": "integer"
-                },
-                "comboName": {
-                    "description": "套餐名称",
-                    "type": "string"
-                },
-                "groupName": {
-                    "description": "团体名称， 名称为空即为 个签用户",
-                    "type": "string"
-                },
-                "userMobile": {
-                    "description": "手机号",
-                    "type": "string"
-                },
-                "userName": {
-                    "description": "用户姓名",
-                    "type": "string"
                 }
             }
         },

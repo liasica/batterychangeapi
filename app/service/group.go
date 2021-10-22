@@ -7,7 +7,6 @@ import (
     "battery/library/mq"
     "context"
     "fmt"
-    "strings"
 )
 
 var GroupService = groupService{}
@@ -45,14 +44,15 @@ func (*groupService) Create(ctx context.Context, group model.Group) (uint, error
 func (*groupService) ListAdmin(ctx context.Context, req *model.GroupListAdminReq) (total int, items []model.GroupEntity) {
     query := dao.Group.Ctx(ctx).WithAll()
     if req.Keywords != "" {
-        query = query.WhereLike(dao.Group.Columns.Name, fmt.Sprintf("%%%s%%", req.Keywords))
+        query = query.WhereLike(fmt.Sprintf("%s.%s", group.Table, dao.Group.Columns.Name), fmt.Sprintf("%%%s%%", req.Keywords))
     }
 
     total, _ = query.Count()
 
     // 查找成员数量
-    fileds := mq.FieldsWithTable(group.Table, dao.Group.Columns)
-    query = query.Fields(strings.Join(fileds, ",") + ",memberCnt").
+    fields := mq.FieldsWithTable(group.Table, dao.Group.Columns)
+    fields = append(fields, "memberCnt")
+    query = query.Fields(fields).
         LeftJoin("(SELECT COUNT(1) AS `memberCnt`, `gu`.`groupId` FROM `group_user` `gu` GROUP BY `gu`.`groupId`) `members` ON `members`.groupId = `group`.id")
 
     _ = query.Page(req.PageIndex, req.PageLimit).Scan(&items)

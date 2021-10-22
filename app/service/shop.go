@@ -3,6 +3,7 @@ package service
 import (
     "battery/app/dao"
     "battery/app/model"
+    "battery/app/model/shop"
     "battery/library/snowflake"
     "context"
     "fmt"
@@ -55,17 +56,6 @@ func (s *shopService) State(ctx context.Context, id uint, state uint) error {
     return err
 }
 
-// BatteryRenewal 换电池
-func (s *shopService) BatteryRenewal(ctx context.Context, req model.BizProfileRep) error {
-    _, err := UserBizService.Create(ctx, model.UserBiz{
-        UserId: req.Id,
-        // GoroupId:   req.GroupId,
-        Type: model.UserBizBatteryRenewal,
-        // ComboId: req.ComboId,
-    })
-    return err
-}
-
 // MapIdName 获取店名IDMap
 func (*shopService) MapIdName(ctx context.Context, ids []uint) map[uint]string {
     var list []model.Shop
@@ -113,7 +103,7 @@ func (*shopService) Create(ctx context.Context, shop *model.Shop) error {
 func (s *shopService) ListAdmin(ctx context.Context, req model.ShopListAdminReq) (total int, items []model.ShopListItem) {
     m := dao.Shop.Ctx(ctx).Page(req.PageIndex, req.PageLimit)
     if req.Name != "" {
-        m = m.WhereLike(dao.Shop.Columns.Name, fmt.Sprintf("%%%s%%", req.Name))
+        m = m.WhereLike(fmt.Sprintf("%s.%s", shop.Table, dao.Shop.Columns.Name), fmt.Sprintf("%%%s%%", req.Name))
     }
     total, _ = m.Count()
     if total > 0 {

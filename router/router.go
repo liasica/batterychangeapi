@@ -155,8 +155,7 @@ func init() {
         group.POST("/user_biz", shop.UserBizApi.Post)
         group.GET("/user_biz_profile/:code", shop.UserBizApi.Profile)
 
-        group.GET("biz_record", shop.UserBizApi.RecordUser)
-        group.GET("biz_record_total", shop.UserBizApi.RecordUserTotal)
+        group.GET("/biz/record", shop.UserBizApi.Record)
 
         group.GET("/battery", shop.BatteryApi.Overview)
         group.GET("/battery/record", shop.BatteryApi.Record)
@@ -209,6 +208,7 @@ func init() {
             g.GET("/exception", admin.BatteryApi.Exception)
             g.PUT("/exception/{id}", admin.BatteryApi.ExceptionFix)
             g.GET("/record", admin.BatteryApi.TransferRecord)
+            g.POST("/transfer", admin.BatteryApi.Transfer)
         })
 
         group.GET("/order", admin.OrderApi.List)

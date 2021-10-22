@@ -5,7 +5,6 @@ import (
     "battery/app/service"
     "battery/library/response"
     "github.com/gogf/gf/net/ghttp"
-    "sort"
 )
 
 var BatteryApi = batteryApi{}
@@ -55,12 +54,10 @@ func (*batteryApi) Record(r *ghttp.Request) {
         response.JsonOkExit(r, make([]model.ShopBatteryRecordListWithDateGroup, 0))
     }
     var rep []model.ShopBatteryRecordListWithDateGroup
-    var dates []string
     tmp := make(map[string]model.ShopBatteryRecordListWithDateGroup)
     layout := "Y-m-d"
     for _, record := range recordList {
         date := record.Date.Format(layout)
-        dates = append(dates, date)
         list, ok := tmp[date]
         if !ok {
             list = model.ShopBatteryRecordListWithDateGroup{
@@ -90,9 +87,8 @@ func (*batteryApi) Record(r *ghttp.Request) {
         tmp[date] = list
     }
 
-    sort.Strings(dates)
-    for _, date := range dates {
-        rep = append(rep, tmp[date])
+    for _, item := range tmp {
+        rep = append(rep, item)
     }
 
     response.JsonOkExit(r, rep)

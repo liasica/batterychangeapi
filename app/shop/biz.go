@@ -4,6 +4,7 @@ import (
     "battery/app/dao"
     "battery/app/model"
     "battery/app/service"
+    "battery/library/request"
     "battery/library/response"
     "context"
     "github.com/gogf/gf/database/gdb"
@@ -67,8 +68,8 @@ func (*bizApi) Post(r *ghttp.Request) {
                 ShopId:      shop.Id,
                 CityId:      shop.CityId,
                 UserId:      user.Id,
-                GoroupId:    user.GroupId,
-                Type:        model.UserBizBatteryRenewal,
+                GroupId:     user.GroupId,
+                BizType:     model.UserBizBatteryRenewal,
                 ComboId:     user.ComboId,
                 BatteryType: user.BatteryType,
             }); err != nil {
@@ -95,14 +96,13 @@ func (*bizApi) Post(r *ghttp.Request) {
             }
             // 寄存记录
             bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
-                CityId:       shop.CityId,
-                ShopId:       shop.Id,
-                UserId:       user.Id,
-                GoroupId:     0,
-                GoroupUserId: 0,
-                Type:         model.UserBizBatteryPause,
-                ComboId:      user.ComboId,
-                BatteryType:  user.BatteryType,
+                CityId:      shop.CityId,
+                ShopId:      shop.Id,
+                UserId:      user.Id,
+                GroupId:     0,
+                BizType:     model.UserBizBatteryPause,
+                ComboId:     user.ComboId,
+                BatteryType: user.BatteryType,
             })
             if err != nil {
                 return err
@@ -145,7 +145,7 @@ func (*bizApi) Post(r *ghttp.Request) {
                 CityId:      shop.CityId,
                 ShopId:      shop.Id,
                 UserId:      user.Id,
-                Type:        model.UserBizBatteryRecover,
+                BizType:     model.UserBizBatteryRecover,
                 ComboId:     user.ComboId,
                 BatteryType: user.BatteryType,
             })
@@ -180,8 +180,6 @@ func (*bizApi) Post(r *ghttp.Request) {
         var refundId uint64
         var refundNo string
 
-        groupUser := service.GroupUserService.GetBuyUserId(r.Context(), user.Id)
-
         err = dao.User.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
             // 用户状态
             if err := service.UserService.BizBatteryExit(ctx, user); err != nil {
@@ -189,14 +187,13 @@ func (*bizApi) Post(r *ghttp.Request) {
             }
             // 业务记录
             bizId, err := service.UserBizService.Create(ctx, model.UserBiz{
-                CityId:       shop.CityId,
-                ShopId:       shop.Id,
-                UserId:       user.Id,
-                GoroupId:     user.GroupId,
-                GoroupUserId: groupUser.Id,
-                Type:         model.UserBizCancel,
-                ComboId:      user.ComboId,
-                BatteryType:  user.BatteryType,
+                CityId:      shop.CityId,
+                ShopId:      shop.Id,
+                UserId:      user.Id,
+                GroupId:     user.GroupId,
+                BizType:     model.UserBizCancel,
+                ComboId:     user.ComboId,
+                BatteryType: user.BatteryType,
             })
             if err != nil {
                 return err
@@ -246,80 +243,23 @@ func (*bizApi) Post(r *ghttp.Request) {
     response.JsonErrExit(r)
 }
 
-// RecordUser
-// @Summary 门店-业务-换电记录列表
-// @Tags    门店-业务
+// Record
+// @Summary 门店-门店业务记录
+// @Tags    门店
 // @Accept  json
 // @Produce json
-// @Param 	pageIndex query integer  true "当前页码"
-// @Param 	pageLimit query integer  true "每页行数"
-// @Param 	month 	  query integer  true "月份数字，如 202106"
-// @Param 	bizType   query integer  false "业务类型 2 换电 3 寄存(仅个签可用)，5 退租"
-// @Param 	userType  query integer  true  "用户类型 1 个签  2 团签"
-// @Router  /sapi/biz_record [GET]
-// @Success 200 {object} response.JsonResponse{data=[]model.UserBizShopRecordRep} "返回结果"
-func (*bizApi) RecordUser(r *ghttp.Request) {
-    var req model.UserBizShopRecordReq
-    if err := r.Parse(&req); err != nil {
-        response.Json(r, response.RespCodeArgs, err.Error())
-    }
-    list := service.UserBizService.ListShop(r.Context(), req)
-    if len(list) > 0 {
-        userIds := make([]uint64, len(list))
-        comboIds := make([]uint, len(list))
-        groupIds := make([]uint, len(list))
-        for _, record := range list {
-            userIds = append(userIds, record.UserId)
-            comboIds = append(comboIds, record.ComboId)
-            groupIds = append(groupIds, record.GoroupId)
-        }
-        userList := service.UserService.GetByIds(r.Context(), userIds)
-        comboList := service.ComboService.GetByIds(r.Context(), comboIds)
-        groupList := service.GroupService.GetByIds(r.Context(), groupIds)
-        userIdList := make(map[uint64]model.User, len(userList))
-        comboIdList := make(map[uint]model.Combo, len(comboList))
-        groupIdList := make(map[uint]model.Group, len(groupList))
-        for _, user := range userList {
-            userIdList[user.Id] = user
-        }
-        for _, combo := range comboList {
-            comboIdList[combo.Id] = combo
-        }
-        for _, group := range groupList {
-            groupIdList[group.Id] = group
-        }
-        res := make([]model.UserBizShopRecordRep, len(list))
-        for key, record := range list {
-            res[key] = model.UserBizShopRecordRep{
-                UserName:   userIdList[record.UserId].RealName,
-                UserMobile: userIdList[record.UserId].Mobile,
-                ComboName:  comboIdList[record.ComboId].Name,
-                BizType:    record.Type,
-                At:         record.CreatedAt,
-            }
-            if record.GoroupId > 0 {
-                res[key].GroupName = groupIdList[record.GoroupId].Name
-            }
-        }
-        response.JsonOkExit(r, res)
-    }
-    response.JsonOkExit(r, make([]model.UserBizShopRecordRep, 0))
-}
-
-// RecordUserTotal
-// @Summary 门店-业务-记录统计
-// @Tags    门店-业务
-// @Accept  json
-// @Produce json
-// @Param 	month 	query integer  true "月份数字，如 202106"
-// @Param 	userType  query integer  true  "业务类型 1 个签  2 团签"
-// @Param 	bizType   query integer  false "业务类型 2 换电 3 寄存(仅个签可用)，5 退租"
-// @Router  /sapi/biz_record_total [GET]
-// @Success 200 {object} response.JsonResponse{data=model.UserBizShopRecordMonthTotalRep} "返回结果"
-func (*bizApi) RecordUserTotal(r *ghttp.Request) {
-    var req model.UserBizShopRecordMonthTotalReq
-    if err := r.Parse(&req); err != nil {
-        response.Json(r, response.RespCodeArgs, err.Error())
-    }
-    response.JsonOkExit(r, service.UserBizService.ListShopMonthTotal(r.Context(), req))
+// @Param 	pageIndex query integer true "当前页码"
+// @Param 	pageLimit query integer true "每页数量"
+// @Param 	month 	  query string false "月份数字, eg: 2021-09"
+// @Param 	bizType   query integer false "业务类型: 2 换电 3 寄存(仅个签可用)，5 退租"
+// @Param 	userType  query integer false "用户类型: 1个签 2团签"
+// @Param 	realName  query string false "筛选用户姓名"
+// @Router  /sapi/biz/record [GET]
+// @Success 200 {object} response.JsonResponse{data=[]model.BizShopFilterResp} "返回结果"
+func (*bizApi) Record(r *ghttp.Request) {
+    req := new(model.BizShopFilterReq)
+    _ = request.ParseRequest(r, req)
+    req.ShopId = r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId
+    total, items := service.UserBizService.ShopFilter(r.Context(), req)
+    response.ItemsWithTotal(r, total, items)
 }

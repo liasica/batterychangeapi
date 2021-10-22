@@ -3,7 +3,9 @@ package service
 import (
     "battery/app/dao"
     "battery/app/model"
+    "battery/app/model/exception"
     "context"
+    "fmt"
 )
 
 var ExceptionService = exceptionService{}
@@ -18,16 +20,17 @@ func (*exceptionService) Create(ctx context.Context, req model.ExceptionReportRe
 
 func (*exceptionService) PageList(ctx context.Context, req *model.ExceptionListReq) (total int, items []model.ExceptionListItem) {
     c := dao.Exception.Columns
+    t := exception.Table
     layout := "Y-m-d"
     query := dao.Exception.Ctx(ctx)
     if req.ShopId > 0 {
-        query = query.Where(c.ShopId, req.ShopId)
+        query = query.Where(fmt.Sprintf("%s.%s", t, c.ShopId), req.ShopId)
     }
     if !req.StartDate.IsZero() {
-        query = query.WhereGTE(c.CreatedAt, req.StartDate.Format(layout))
+        query = query.WhereGTE(fmt.Sprintf("%s.%s", t, c.CreatedAt), req.StartDate.Format(layout))
     }
     if !req.EndDate.IsZero() {
-        query = query.WhereLTE(c.CreatedAt, req.EndDate.Format(layout))
+        query = query.WhereLTE(fmt.Sprintf("%s.%s", t, c.CreatedAt), req.EndDate.Format(layout))
     }
 
     _ = query.

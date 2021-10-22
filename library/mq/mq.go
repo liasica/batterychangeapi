@@ -43,7 +43,7 @@ func ParseStructToQuery(req interface{}, without ...string) (params g.Map) {
 func FieldsWithTable(table string, columns interface{}) (fields []string) {
     keys := gutil.Values(columns)
     for _, field := range keys {
-        fields = append(fields, fmt.Sprintf("%s.%v", table, field))
+        fields = append(fields, fmt.Sprintf("`%s`.`%v`", table, field))
     }
     return
 }

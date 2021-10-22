@@ -25,29 +25,27 @@ var (
 	Model = &arModel{g.DB("default").Model(Table).Safe()}
 	// Columns defines and stores column names for table user_biz.
 	Columns = struct {
-		Id            string //                                              
-        UserId        string // 用户ID                                       
-        ComboId       string // 套餐ID                                       
-        CityId        string // 城市ID                                       
-        ShopId        string // 门店ID                                       
-        GoroupId      string // 团签ID                                       
-        GoroupUserId  string // 团签用户ID                                   
-        Type          string // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租  
-        BatteryType   string // 电池型号                                     
-        CreatedAt     string // 扫码时间                                     
-        UpdatedAt     string //
+		Id           string //                                              
+        UserId       string // 用户ID                                       
+        ComboId      string // 套餐ID                                       
+        CityId       string // 城市ID                                       
+        ShopId       string // 门店ID                                       
+        GroupId      string // 团签ID                                       
+        BizType      string // 业务类型: 1新签 2换电 3寄存 4恢复计费 5退租  
+        BatteryType  string // 电池型号                                     
+        CreatedAt    string // 扫码时间                                     
+        UpdatedAt    string //
 	}{
-		Id:           "id",            
-        UserId:       "userId",        
-        ComboId:      "comboId",       
-        CityId:       "cityId",        
-        ShopId:       "shopId",        
-        GoroupId:     "goroupId",      
-        GoroupUserId: "goroupUserId",  
-        Type:         "type",          
-        BatteryType:  "batteryType",   
-        CreatedAt:    "createdAt",     
-        UpdatedAt:    "updatedAt",
+		Id:          "id",           
+        UserId:      "userId",       
+        ComboId:     "comboId",      
+        CityId:      "cityId",       
+        ShopId:      "shopId",       
+        GroupId:     "groupId",      
+        BizType:     "bizType",      
+        BatteryType: "batteryType",  
+        CreatedAt:   "createdAt",    
+        UpdatedAt:   "updatedAt",
 	}
 )
 

@@ -20,6 +20,13 @@ var BatteryApi = new(batteryApi)
 type batteryApi struct {
 }
 
+// Battery
+// @Summary 电池型号
+// @Tags    公用
+// @Accept  json
+// @Produce json
+// @Router  /api/battery [GET]
+// @Success 200 {object} response.JsonResponse "返回结果"
 func (b *batteryApi) Battery(r *ghttp.Request) {
     response.JsonOkExit(r, []model.BatteryTypeItem{
         {Type: model.BatteryType60, Name: "60伏电池"},

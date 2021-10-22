@@ -70,3 +70,11 @@ type BatteryRecordListItem struct {
     BatteryType string      `json:"batteryType" enums:"60,72"`   // 电池型号: 60 / 72
     CreatedAt   *gtime.Time `json:"createdAt"`                   // 操作时间
 }
+
+// BatterTransferReq 电池调拨请求体
+type BatterTransferReq struct {
+    BatteryType string `json:"batteryType" enums:"60,72" v:"required|in:60,72"` // 电池型号
+    From        uint   `json:"from" v:"required|integer|min:0"`                 // 调出自 0平台 其他店铺ID
+    To          uint   `json:"to" v:"required|integer|min:0"`                   // 调入至 0平台 其他店铺ID
+    Num         uint   `json:"num" v:"required|integer|between:1,9999"`         // 数量
+}
