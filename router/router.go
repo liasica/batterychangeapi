@@ -187,9 +187,9 @@ func init() {
         group.POST("/combo", admin.ComboApi.Create)
         group.PUT("/combo/:id", admin.ComboApi.Edit)
 
-        group.Group("/driver", func(g *ghttp.RouterGroup) {
-            g.GET("/verify", admin.DriverApi.Verify)
-            g.GET("/personal", admin.DriverApi.Personal)
+        group.Group("/rider", func(g *ghttp.RouterGroup) {
+            g.GET("/verify", admin.RiderApi.Verify)
+            g.GET("/personal", admin.RiderApi.Personal)
         })
 
         group.Group("/group", func(g *ghttp.RouterGroup) {

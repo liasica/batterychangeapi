@@ -1,11 +1,11 @@
 package qr
 
 import (
-	"github.com/skip2/go-qrcode"
-	"strings"
+    "github.com/skip2/go-qrcode"
+    "strings"
 )
 
-const CodePrefix = "sgjdriver://"
+const CodePrefix = "sgjrider://"
 
 var Code = code{}
 
@@ -13,15 +13,15 @@ type code struct {
 }
 
 func (c *code) Encode(data string, size int) ([]byte, error) {
-	return qrcode.Encode(c.AddPrefix(data), qrcode.Medium, size)
+    return qrcode.Encode(c.AddPrefix(data), qrcode.Medium, size)
 }
 
 // AddPrefix 添加前缀
 func (*code) AddPrefix(data string) string {
-	return CodePrefix + data
+    return CodePrefix + data
 }
 
 // RemovePrefix 删除前缀
 func (*code) RemovePrefix(data string) string {
-	return strings.Replace(data, CodePrefix, "", 1)
+    return strings.Replace(data, CodePrefix, "", 1)
 }

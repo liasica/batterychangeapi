@@ -17,9 +17,9 @@ import (
     "github.com/gogf/gf/net/ghttp"
 )
 
-var DriverApi = driverApi{}
+var RiderApi = riderApi{}
 
-type driverApi struct {
+type riderApi struct {
 }
 
 // Verify
@@ -28,9 +28,9 @@ type driverApi struct {
 // @Accept  json
 // @Param   entity body model.UserVerifyReq true "请求参数"
 // @Produce json
-// @Router  /admin/driver/verify [GET]
+// @Router  /admin/rider/verify [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.UserVerifyListItem}}  "返回结果"
-func (*driverApi) Verify(r *ghttp.Request) {
+func (*riderApi) Verify(r *ghttp.Request) {
     req := new(model.UserVerifyReq)
     _ = request.ParseRequest(r, req)
 
@@ -44,9 +44,9 @@ func (*driverApi) Verify(r *ghttp.Request) {
 // @Accept  json
 // @Param   entity body model.UserListReq true "请求参数"
 // @Produce json
-// @Router  /admin/driver/personal [GET]
+// @Router  /admin/rider/personal [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.UserListItem}}  "返回结果"
-func (*driverApi) Personal(r *ghttp.Request) {
+func (*riderApi) Personal(r *ghttp.Request) {
     req := new(model.UserListReq)
     _ = request.ParseRequest(r, req)
 

@@ -22,8 +22,8 @@ const (
 )
 
 const (
-    ExceptionDiscoverDriver = 1 + iota // 骑手
-    ExceptionDiscoverShop              // 门店
+    ExceptionDiscoverRider = 1 + iota // 骑手
+    ExceptionDiscoverShop             // 门店
 )
 
 type Exception struct {
