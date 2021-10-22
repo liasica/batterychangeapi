@@ -208,7 +208,7 @@ func init() {
             g.GET("/exception", admin.BatteryApi.Exception)
             g.PUT("/exception/{id}", admin.BatteryApi.ExceptionFix)
             g.GET("/record", admin.BatteryApi.TransferRecord)
-            g.POST("/transfer", admin.BatteryApi.Transfer)
+            g.POST("/allocate", admin.BatteryApi.Allocate)
         })
 
         group.GET("/order", admin.OrderApi.List)

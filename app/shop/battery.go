@@ -17,8 +17,6 @@ type batteryApi struct {
 // @Tags    门店
 // @Accept  json
 // @Produce json
-// @Param 	pageIndex query integer  true "当前页码"
-// @Param 	pageLimit query integer  true "每页行数"
 // @Router  /sapi/battery [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ShopBatteryRecordStatRep} "返回结果"
 func (*batteryApi) Overview(r *ghttp.Request) {

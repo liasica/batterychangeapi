@@ -5,7 +5,10 @@ import (
     "battery/app/model"
     "battery/app/model/shop"
     "battery/app/model/shop_battery_record"
+    "battery/library/sutil"
     "context"
+    "errors"
+    "fmt"
     "github.com/gogf/gf/database/gdb"
     "github.com/gogf/gf/os/gtime"
 )
@@ -15,7 +18,7 @@ var ShopBatteryRecordService = shopBatteryRecordService{}
 type shopBatteryRecordService struct{}
 
 // Transfer 出入库
-func (s shopBatteryRecordService) Transfer(ctx context.Context, record model.ShopBatteryRecord, shopModel *model.Shop) error {
+func (s *shopBatteryRecordService) Transfer(ctx context.Context, record model.ShopBatteryRecord, shopModel *model.Shop) error {
     return dao.ShopBatteryRecord.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
         var err error
         // 数量 正数为入库 负数为出库
@@ -40,22 +43,66 @@ func (s shopBatteryRecordService) Transfer(ctx context.Context, record model.Sho
     })
 }
 
-// DriverBiz 骑手业务调拨记录
-func (*shopBatteryRecordService) DriverBiz(ctx context.Context, recordType, bizType, shopId uint, bizId uint64, user model.User) error {
-    _, err := dao.ShopBatteryRecord.Ctx(ctx).
-        Insert(model.ShopBatteryRecord{
-            ShopId:      shopId,
-            BizId:       bizId,
-            BizType:     bizType,
-            UserName:    user.RealName,
-            BatteryType: user.BatteryType,
-            Num:         1,
-            Type:        recordType,
-            UserId:      user.Id,
-        })
-    return err
+// Allocate 转移库存
+func (s *shopBatteryRecordService) Allocate(ctx context.Context, req *model.BatteryAllocateReq) error {
+    // 开始转移库存
+    return dao.ShopBatteryRecord.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+        var err error
+        st := shop.Table
+        now := gtime.Now()
+
+        sysUser := ctx.Value(model.ContextAdminKey).(*model.ContextAdmin)
+        // 从门店转移
+        if req.From > 0 {
+            fromShop, _ := ShopService.GetShop(ctx, req.From)
+            // 判断库存是否足够转移
+            if fromShop == nil || sutil.StructGetFieldByString(fromShop, "V"+req.BatteryType).(int) < req.Num {
+                return errors.New("库存不足")
+            }
+            // 减数量
+            if _, err = tx.Update(st, fmt.Sprintf("`V%s` = `V%s` - %d", req.BatteryType, req.BatteryType, req.Num), "id = ?", req.From); err != nil {
+                return err
+            }
+            // 出库记录
+            if _, err = tx.Save(shop_battery_record.Table, model.ShopBatteryRecord{
+                ShopId:      req.From,
+                BatteryType: req.BatteryType,
+                Type:        model.ShopBatteryRecordTypeOut,
+                Num:         req.Num,
+                Date:        now,
+                SysUserId:   sysUser.Id,
+                SysUserName: sysUser.Username,
+            }); err != nil {
+                return err
+            }
+        }
+
+        // 转移到门店
+        if req.To > 0 {
+            // 加数量
+            if _, err = tx.Update(st, fmt.Sprintf("`V%s` = `V%s` + %d", req.BatteryType, req.BatteryType, req.Num), "id = ?", req.To); err != nil {
+                return err
+            }
+
+            // 入库记录
+            if _, err = tx.Save(shop_battery_record.Table, model.ShopBatteryRecord{
+                ShopId:      req.To,
+                BatteryType: req.BatteryType,
+                Type:        model.ShopBatteryRecordTypeIn,
+                Num:         req.Num,
+                Date:        now,
+                SysUserId:   sysUser.Id,
+                SysUserName: sysUser.Username,
+            }); err != nil {
+                return err
+            }
+        }
+
+        return err
+    })
 }
 
+// GetBatteryNumber 获取电池数量
 func (*shopBatteryRecordService) GetBatteryNumber(ctx context.Context, shopId uint) (data model.ShopBatteryRecordStatRep) {
     var items []*model.ShopBatteryRecord
     c := dao.ShopBatteryRecord.Columns

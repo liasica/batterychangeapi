@@ -40,6 +40,7 @@ func (s *shopService) ListUser(ctx context.Context, req model.ShopListUserReq) (
 
 // GetShop 获取门店
 func (s *shopService) GetShop(ctx context.Context, id uint) (rep *model.Shop, err error) {
+    rep = new(model.Shop)
     err = dao.Shop.Ctx(ctx).WherePri(id).Scan(rep)
     return
 }
@@ -82,13 +83,13 @@ func (*shopService) CheckMobile(ctx context.Context, shopId uint, mobile string)
 
 // CheckName 检测名称是否可用
 func (*shopService) CheckName(ctx context.Context, shopId uint, name string) bool {
-    if shopId == 0 {
-        cnt, _ := dao.Shop.Ctx(ctx).Where(dao.Shop.Columns.Name, name).Count()
-        return cnt == 0
+    c := dao.Shop.Columns
+    query := dao.Shop.Ctx(ctx).Where(c.Name, name)
+    if shopId > 0 {
+        query = query.WhereNot(c.Id, shopId)
     }
-    var shop model.Shop
-    _ = dao.Shop.Ctx(ctx).Where(dao.Shop.Columns.Mobile, name).Scan(&shop)
-    return shop.Id == 0 || shop.Id == shopId
+    cnt, _ := query.Count()
+    return cnt == 0
 }
 
 // Create 创建门店

@@ -112,13 +112,43 @@
                 "summary": "电池调拨记录",
                 "parameters": [
                     {
-                        "description": "请求参数",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.BatteryRecordListReq"
-                        }
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "门店ID",
+                        "name": "ShopId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "1出库 2入库",
+                        "name": "type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始日期",
+                        "name": "startDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束日期",
+                        "name": "endDate",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -153,6 +183,37 @@
                                     }
                                 }
                             ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "电池调拨",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.BatteryAllocateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
                         }
                     }
                 }
@@ -2655,22 +2716,6 @@
                     "门店"
                 ],
                 "summary": "门店-电池数量概览",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "当前页码",
-                        "name": "pageIndex",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数",
-                        "name": "pageLimit",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -3443,6 +3488,31 @@
         }
     },
     "definitions": {
+        "model.BatteryAllocateReq": {
+            "type": "object",
+            "properties": {
+                "batteryType": {
+                    "description": "电池型号",
+                    "type": "string",
+                    "enum": [
+                        "60",
+                        "72"
+                    ]
+                },
+                "from": {
+                    "description": "调出自 0平台 其他店铺ID",
+                    "type": "integer"
+                },
+                "num": {
+                    "description": "数量",
+                    "type": "integer"
+                },
+                "to": {
+                    "description": "调入至 0平台 其他店铺ID",
+                    "type": "integer"
+                }
+            }
+        },
         "model.BatteryRecordListItem": {
             "type": "object",
             "properties": {
@@ -3485,41 +3555,6 @@
                 "userName": {
                     "description": "操作员: 平台调拨为0",
                     "type": "string"
-                }
-            }
-        },
-        "model.BatteryRecordListReq": {
-            "type": "object",
-            "required": [
-                "pageIndex",
-                "pageIndex",
-                "pageLimit",
-                "pageLimit"
-            ],
-            "properties": {
-                "endDate": {
-                    "description": "结束日期 eg: 2021-10-17",
-                    "type": "string"
-                },
-                "pageIndex": {
-                    "description": "当前页号",
-                    "type": "integer"
-                },
-                "pageLimit": {
-                    "description": "页大小",
-                    "type": "integer"
-                },
-                "shopId": {
-                    "description": "门店ID",
-                    "type": "integer"
-                },
-                "startDate": {
-                    "description": "开始日期 eg: 2021-10-17",
-                    "type": "string"
-                },
-                "type": {
-                    "description": "1入库 2出库",
-                    "type": "integer"
                 }
             }
         },

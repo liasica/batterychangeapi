@@ -28,7 +28,12 @@ var BatteryApi = new(batteryApi)
 // @Summary 电池调拨记录
 // @Tags    管理
 // @Accept  json
-// @Param   entity body model.BatteryRecordListReq true "请求参数"
+// @Param 	pageIndex query integer true "当前页码"
+// @Param 	pageLimit query integer true "每页行数"
+// @Param 	ShopId query integer false "门店ID"
+// @Param 	type query integer true "1出库 2入库"
+// @Param 	startDate query string false "开始日期"
+// @Param 	endDate query string false "结束日期"
 // @Produce json
 // @Router  /admin/battery/record [GET]
 // @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.BatteryRecordListItem}}  "返回结果"
@@ -39,8 +44,21 @@ func (*batteryApi) TransferRecord(r *ghttp.Request) {
     response.ItemsWithTotal(r, total, items)
 }
 
-func (*batteryApi) Transfer(r *ghttp.Request) {
-
+// Allocate
+// @Summary 电池调拨
+// @Tags    管理
+// @Accept  json
+// @Param   entity body model.BatteryAllocateReq true "请求参数"
+// @Produce json
+// @Router  /admin/battery/record [POST]
+// @Success 200 {object} response.JsonResponse "返回结果"
+func (*batteryApi) Allocate(r *ghttp.Request) {
+    var req = new(model.BatteryAllocateReq)
+    _ = request.ParseRequest(r, req)
+    if err := service.ShopBatteryRecordService.Allocate(r.Context(), req); err != nil {
+        response.Json(r, response.RespCodeArgs, err.Error())
+    }
+    response.JsonOkExit(r)
 }
 
 // Exception

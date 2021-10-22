@@ -55,9 +55,11 @@ type ShopBatteryRecordListRep struct {
 
 // BatteryRecordListReq 电池日志请求
 type BatteryRecordListReq struct {
-    ShopBatteryRecordListReq
-    ShopId uint `json:"shopId"` // 门店ID
     Page
+    ShopId    uint        `json:"shopId"`    // 门店ID
+    Type      uint        `json:"type"`      // 1入库 2出库
+    StartDate *gtime.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
+    EndDate   *gtime.Time `json:"endDate"`   // 结束日期 eg: 2021-10-17
 }
 
 // BatteryRecordListItem 电池日志项
@@ -71,10 +73,10 @@ type BatteryRecordListItem struct {
     CreatedAt   *gtime.Time `json:"createdAt"`                   // 操作时间
 }
 
-// BatterTransferReq 电池调拨请求体
-type BatterTransferReq struct {
+// BatteryAllocateReq 电池调拨请求体
+type BatteryAllocateReq struct {
     BatteryType string `json:"batteryType" enums:"60,72" v:"required|in:60,72"` // 电池型号
     From        uint   `json:"from" v:"required|integer|min:0"`                 // 调出自 0平台 其他店铺ID
     To          uint   `json:"to" v:"required|integer|min:0"`                   // 调入至 0平台 其他店铺ID
-    Num         uint   `json:"num" v:"required|integer|between:1,9999"`         // 数量
+    Num         int    `json:"num" v:"required|integer|between:1,9999"`         // 数量
 }
