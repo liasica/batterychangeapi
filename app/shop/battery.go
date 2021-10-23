@@ -3,6 +3,7 @@ package shop
 import (
     "battery/app/model"
     "battery/app/service"
+    "battery/library/request"
     "battery/library/response"
     "github.com/gogf/gf/net/ghttp"
 )
@@ -32,15 +33,13 @@ func (*batteryApi) Overview(r *ghttp.Request) {
 // @Param 	pageIndex query integer  true "当前页码"
 // @Param 	pageLimit query integer  true "每页行数"
 // @Param 	type query integer true "1入库 2出库"
-// @Param 	startTime query string  false "开始时间"
-// @Param 	endTime query string  false "结束时间"
+// @Param 	startDate query string  false "开始时间"
+// @Param 	endDate query string  false "结束时间"
 // @Router  /sapi/battery/record  [GET]
 // @Success 200 {object} response.JsonResponse{data=[]model.ShopBatteryRecordListWithDateGroup} "返回结果"
 func (*batteryApi) Record(r *ghttp.Request) {
-    var req model.ShopBatteryRecordListReq
-    if err := r.Parse(&req); err != nil {
-        response.Json(r, response.RespCodeArgs, err.Error())
-    }
+    req := new(model.ShopBatteryRecordListReq)
+    _ = request.ParseRequest(r, req)
     recordList := service.ShopBatteryRecordService.ShopList(
         r.Context(),
         r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId,

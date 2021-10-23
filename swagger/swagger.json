@@ -3246,13 +3246,13 @@
                     {
                         "type": "string",
                         "description": "开始时间",
-                        "name": "startTime",
+                        "name": "startDate",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "结束时间",
-                        "name": "endTime",
+                        "name": "endDate",
                         "in": "query"
                     }
                 ],
