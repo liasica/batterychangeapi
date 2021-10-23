@@ -21,6 +21,7 @@ type ShopBatteryRecordStatRep struct {
 // ShopBatteryRecordListReq 门店电池管理明细请求
 type ShopBatteryRecordListReq struct {
     Page
+    ShopId    uint        `json:"shopId"`    // 店铺ID
     Type      uint        `json:"type"`      // 1入库 2出库
     StartDate *gtime.Time `json:"startDate"` // 开始日期 eg: 2021-10-17
     EndDate   *gtime.Time `json:"endDate"`   // 结束日期 eg: 2021-10-17
@@ -28,10 +29,9 @@ type ShopBatteryRecordListReq struct {
 
 // ShopBatteryRecordListWithDateGroup 按天统计电池出入库情况
 type ShopBatteryRecordListWithDateGroup struct {
-    Date     string                      `json:"date"`     // 日期
-    InTotal  int                         `json:"inTotal"`  // 入库总数
-    OutTotal int                         `json:"outTotal"` // 出库总数
-    Items    []ShopBatteryRecordListItem `json:"items"`    // 详细
+    Date  string                      `json:"date"`  // 日期
+    Total int                         `json:"total"` // 总数
+    Items []ShopBatteryRecordListItem `json:"items"` // 详细
 }
 
 // ShopBatteryRecordListItem 电池出入库列表项

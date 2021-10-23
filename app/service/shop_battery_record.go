@@ -11,6 +11,7 @@ import (
     "fmt"
     "github.com/gogf/gf/database/gdb"
     "github.com/gogf/gf/os/gtime"
+    "sort"
 )
 
 var ShopBatteryRecordService = shopBatteryRecordService{}
@@ -125,21 +126,68 @@ func (*shopBatteryRecordService) GetBatteryNumber(ctx context.Context, shopId ui
     return
 }
 
-// ShopList 门店获取电池记录
-func (*shopBatteryRecordService) ShopList(ctx context.Context, shopId uint, recordType uint, st *gtime.Time, et *gtime.Time) (list []model.ShopBatteryRecord) {
+// RecordShopFilter 门店获取电池记录
+func (*shopBatteryRecordService) RecordShopFilter(ctx context.Context, req *model.ShopBatteryRecordListReq) (items []model.ShopBatteryRecordListWithDateGroup) {
+    items = make([]model.ShopBatteryRecordListWithDateGroup, 0)
     c := dao.ShopBatteryRecord.Columns
     layout := "Y-m-d"
-    m := dao.ShopBatteryRecord.Ctx(ctx).
-        Where(c.ShopId, shopId).
-        Where(c.Type, recordType).
-        OrderDesc(c.Id)
-    if !st.IsZero() {
-        m = m.WhereGTE(c.CreatedAt, st.Format(layout))
+    var rows []model.ShopBatteryRecord
+
+    queryInit := dao.ShopBatteryRecord.Ctx(ctx).
+        Where(c.ShopId, req.ShopId).
+        Where(c.Type, req.Type).
+        OrderDesc(c.Date)
+    query := queryInit
+    if !req.StartDate.IsZero() {
+        query = query.WhereGTE(c.Date, req.StartDate.Format(layout))
     }
-    if !et.IsZero() {
-        m = m.WhereLTE(c.CreatedAt, et.Format(layout))
+    if !req.EndDate.IsZero() {
+        query = query.WhereLTE(c.Date, req.EndDate.Format(layout))
     }
-    _ = m.Scan(&list)
+    _ = query.Limit(req.PageIndex, req.PageLimit).Scan(&rows)
+
+    tmp := make(map[string]model.ShopBatteryRecordListWithDateGroup)
+    l := len(rows)
+    var lastDay *gtime.Time
+    for k, record := range rows {
+        lastDay = record.Date
+        date := record.Date.Format(layout)
+        list, ok := tmp[date]
+        if !ok {
+            list = model.ShopBatteryRecordListWithDateGroup{
+                Date:  date,
+                Total: 0,
+                Items: []model.ShopBatteryRecordListItem{},
+            }
+        }
+        list.Total += record.Num
+        name := record.UserName
+        if record.BizType == 0 {
+            name = "平台调拨"
+        }
+        list.Items = append(list.Items, model.ShopBatteryRecordListItem{
+            BizType:     record.BizType,
+            UserName:    name,
+            Num:         record.Num,
+            BatteryType: record.BatteryType,
+            Date:        record.Date.Format(layout),
+        })
+        // 查找最后一天数量
+        if l-1 == k {
+            sum, _ := query.Where(c.Date, lastDay.Format(layout)).Sum(c.Num)
+            list.Total = int(sum)
+        }
+        tmp[date] = list
+    }
+
+    for _, item := range tmp {
+        items = append(items, item)
+    }
+
+    sort.Slice(items, func(i, j int) bool {
+        return items[i].Date > items[j].Date
+    })
+
     return
 }
 
@@ -148,15 +196,15 @@ func (*shopBatteryRecordService) ListAdmin(ctx context.Context, req *model.Batte
     layout := "Y-m-d"
     c := dao.ShopBatteryRecord.Columns
     query := dao.ShopBatteryRecord.Ctx(ctx).
-        OrderDesc(c.CreatedAt)
+        OrderDesc(c.Date)
     if req.Type > 0 {
         query = query.Where(c.Type, req.Type)
     }
     if !req.StartDate.IsZero() {
-        query = query.WhereGTE(c.CreatedAt, req.StartDate.Format(layout))
+        query = query.WhereGTE(c.Date, req.StartDate.Format(layout))
     }
     if !req.EndDate.IsZero() {
-        query = query.WhereLTE(c.CreatedAt, req.EndDate.Format(layout))
+        query = query.WhereLTE(c.Date, req.EndDate.Format(layout))
     }
     if req.ShopId > 0 {
         query = query.Where(c.ShopId, req.ShopId)

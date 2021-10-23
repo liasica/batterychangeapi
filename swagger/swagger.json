@@ -1323,6 +1323,20 @@
                         "name": "userId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -2507,30 +2521,7 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-个签用户套餐列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "当前页码",
-                        "name": "pageIndex",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数",
-                        "name": "pageLimit",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "当前城市ID",
-                        "name": "cityId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
+                "summary": "骑手-获取骑手当前套餐详情",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -2543,10 +2534,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
-                                            }
+                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
                                         }
                                     }
                                 }
@@ -3310,9 +3298,10 @@
                     },
                     {
                         "type": "string",
-                        "description": "月份数字, eg: 2021-09",
+                        "description": "月份, eg: 2021-09",
                         "name": "month",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "integer",
@@ -5113,10 +5102,6 @@
                     "description": "日期",
                     "type": "string"
                 },
-                "inTotal": {
-                    "description": "入库总数",
-                    "type": "integer"
-                },
                 "items": {
                     "description": "详细",
                     "type": "array",
@@ -5124,8 +5109,8 @@
                         "$ref": "#/definitions/model.ShopBatteryRecordListItem"
                     }
                 },
-                "outTotal": {
-                    "description": "出库总数",
+                "total": {
+                    "description": "总数",
                     "type": "integer"
                 }
             }

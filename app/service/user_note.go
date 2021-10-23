@@ -32,8 +32,9 @@ func (*userNoteService) Create(ctx context.Context, req *model.UserNotePostReq) 
 }
 
 // List 获取骑手跟进列表
-func (*userNoteService) List(ctx context.Context, userId uint64) (items []model.UserNoteListItem) {
+func (*userNoteService) List(ctx context.Context, userId uint64, page *model.Page) (total int, items []model.UserNoteListItem) {
     query := dao.UserNote.Ctx(ctx).OrderDesc(dao.UserNote.Columns.CreatedAt).Where(dao.UserNote.Columns.UserId, userId)
-    _ = query.Scan(&items)
+    total, _ = query.Count()
+    _ = query.Page(page.PageIndex, page.PageLimit).Scan(&items)
     return
 }

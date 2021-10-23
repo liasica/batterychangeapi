@@ -86,10 +86,15 @@ func (*riderApi) Note(r *ghttp.Request) {
 // @Tags    管理
 // @Accept  json
 // @Param   userId path int true "骑手ID"
+// @Param 	pageIndex query integer true "当前页码"
+// @Param 	pageLimit query integer true "每页行数"
 // @Produce json
 // @Router  /admin/rider/note/{userId} [GET]
 // @Success 200 {object} response.JsonResponse{data=[]model.UserNoteListItem} "返回结果"
 func (*riderApi) NoteList(r *ghttp.Request) {
     userId := r.GetUint64("userId")
-    response.JsonOkExit(r, service.UserNoteService.List(r.Context(), userId))
+    page := new(model.Page)
+    _ = request.ParseRequest(r, page)
+    total, items := service.UserNoteService.List(r.Context(), userId, page)
+    response.ItemsWithTotal(r, total, items)
 }

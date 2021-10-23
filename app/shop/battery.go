@@ -40,53 +40,6 @@ func (*batteryApi) Overview(r *ghttp.Request) {
 func (*batteryApi) Record(r *ghttp.Request) {
     req := new(model.ShopBatteryRecordListReq)
     _ = request.ParseRequest(r, req)
-    recordList := service.ShopBatteryRecordService.ShopList(
-        r.Context(),
-        r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId,
-        req.Type,
-        req.StartDate,
-        req.EndDate,
-    )
-    if len(recordList) == 0 {
-        response.JsonOkExit(r, make([]model.ShopBatteryRecordListWithDateGroup, 0))
-    }
-    var rep []model.ShopBatteryRecordListWithDateGroup
-    tmp := make(map[string]model.ShopBatteryRecordListWithDateGroup)
-    layout := "Y-m-d"
-    for _, record := range recordList {
-        date := record.Date.Format(layout)
-        list, ok := tmp[date]
-        if !ok {
-            list = model.ShopBatteryRecordListWithDateGroup{
-                Date:     date,
-                InTotal:  0,
-                OutTotal: 0,
-                Items:    []model.ShopBatteryRecordListItem{},
-            }
-        }
-        switch record.Type {
-        case model.ShopBatteryRecordTypeIn:
-            list.InTotal++
-        case model.ShopBatteryRecordTypeOut:
-            list.OutTotal++
-        }
-        name := record.UserName
-        if record.BizType == 0 {
-            name = "平台调拨"
-        }
-        list.Items = append(list.Items, model.ShopBatteryRecordListItem{
-            BizType:     record.BizType,
-            UserName:    name,
-            Num:         record.Num,
-            BatteryType: record.BatteryType,
-            Date:        record.Date.Format(layout),
-        })
-        tmp[date] = list
-    }
-
-    for _, item := range tmp {
-        rep = append(rep, item)
-    }
-
-    response.JsonOkExit(r, rep)
+    req.ShopId = r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId
+    response.JsonOkExit(r, service.ShopBatteryRecordService.RecordShopFilter(r.Context(), req))
 }

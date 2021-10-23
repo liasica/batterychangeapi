@@ -10,6 +10,7 @@ import (
     "fmt"
     "github.com/gogf/gf/database/gdb"
     "github.com/gogf/gf/os/gtime"
+    "sort"
 )
 
 var UserBizService = userBizService{}
@@ -39,8 +40,9 @@ func (*userBizService) ListUser(ctx context.Context, req model.Page) (rep []mode
 }
 
 // ShopFilter 门店业务记录
-func (b *userBizService) ShopFilter(ctx context.Context, req *model.BizShopFilterReq) (total int, items []model.BizShopFilterResp) {
+func (b *userBizService) ShopFilter(ctx context.Context, req *model.BizShopFilterReq) (items []model.BizShopFilterResp) {
     layout := "Y-m"
+    items = make([]model.BizShopFilterResp, 0)
 
     filterReq := &model.BizListReq{
         Page:     req.Page,
@@ -93,6 +95,10 @@ func (b *userBizService) ShopFilter(ctx context.Context, req *model.BizShopFilte
     for _, item := range tmp {
         items = append(items, item)
     }
+
+    sort.Slice(items, func(i, j int) bool {
+        return items[i].Month > items[j].Month
+    })
 
     return
 }

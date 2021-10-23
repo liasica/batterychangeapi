@@ -57,8 +57,8 @@ type ContextShopManager struct {
 
 // Page 分页参数
 type Page struct {
-    PageIndex int `validate:"required" v:"required|integer|min:1"`         // 当前页号
-    PageLimit int `validate:"required" v:"required|integer|min:1|max:100"` // 页大小
+    PageIndex int `validate:"required" v:"required|integer|min:1"`        // 当前页号
+    PageLimit int `validate:"required" v:"required|integer|min:1|max:50"` // 页大小
 }
 
 // ItemsWithTotal 带有总数的列表数据

@@ -250,7 +250,7 @@ func (*bizApi) Post(r *ghttp.Request) {
 // @Produce json
 // @Param 	pageIndex query integer true "当前页码"
 // @Param 	pageLimit query integer true "每页数量"
-// @Param 	month 	  query string false "月份数字, eg: 2021-09"
+// @Param 	month 	  query string true "月份, eg: 2021-09"
 // @Param 	bizType   query integer false "业务类型: 2 换电 3 寄存(仅个签可用)，5 退租"
 // @Param 	userType  query integer false "用户类型: 1个签 2团签"
 // @Param 	realName  query string false "筛选用户姓名"
@@ -260,6 +260,5 @@ func (*bizApi) Record(r *ghttp.Request) {
     req := new(model.BizShopFilterReq)
     _ = request.ParseRequest(r, req)
     req.ShopId = r.Context().Value(model.ContextShopManagerKey).(*model.ContextShopManager).ShopId
-    total, items := service.UserBizService.ShopFilter(r.Context(), req)
-    response.ItemsWithTotal(r, total, items)
+    response.JsonOkExit(r, service.UserBizService.ShopFilter(r.Context(), req))
 }
