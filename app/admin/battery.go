@@ -54,7 +54,7 @@ func (*batteryApi) TransferRecord(r *ghttp.Request) {
 // @Param 	to query integer true "调入至 0平台 其他店铺ID"
 // @Param 	num query integer true "数量"
 // @Produce json
-// @Router  /admin/battery/record [POST]
+// @Router  /admin/battery/allocate [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"
 func (*batteryApi) Allocate(r *ghttp.Request) {
     var req = new(model.BatteryAllocateReq)

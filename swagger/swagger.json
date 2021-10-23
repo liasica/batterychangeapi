@@ -7,6 +7,71 @@
     },
     "host": "apiv2.shiguangjv.com",
     "paths": {
+        "/admin/battery/allocate": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "电池调拨",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.BatteryAllocateReq"
+                        }
+                    },
+                    {
+                        "enum": [
+                            "60",
+                            "72"
+                        ],
+                        "type": "string",
+                        "description": "电池型号",
+                        "name": "batteryType",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "调出自 0平台 其他店铺ID",
+                        "name": "from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "调入至 0平台 其他店铺ID",
+                        "name": "to",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "数量",
+                        "name": "num",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/battery/exception": {
             "get": {
                 "consumes": [
@@ -206,69 +271,6 @@
                                     }
                                 }
                             ]
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "管理"
-                ],
-                "summary": "电池调拨",
-                "parameters": [
-                    {
-                        "description": "请求参数",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.BatteryAllocateReq"
-                        }
-                    },
-                    {
-                        "enum": [
-                            "60",
-                            "72"
-                        ],
-                        "type": "string",
-                        "description": "电池型号",
-                        "name": "batteryType",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "调出自 0平台 其他店铺ID",
-                        "name": "from",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "调入至 0平台 其他店铺ID",
-                        "name": "to",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "数量",
-                        "name": "num",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonResponse"
                         }
                     }
                 }
