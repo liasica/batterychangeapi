@@ -21,13 +21,36 @@
                 "summary": "电池异常记录",
                 "parameters": [
                     {
-                        "description": "请求参数",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ExceptionListReq"
-                        }
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "门店ID",
+                        "name": "shopId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始日期",
+                        "name": "startDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束日期",
+                        "name": "endDate",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -128,7 +151,7 @@
                     {
                         "type": "integer",
                         "description": "门店ID",
-                        "name": "ShopId",
+                        "name": "shopId",
                         "in": "query"
                     },
                     {
@@ -207,6 +230,38 @@
                         "schema": {
                             "$ref": "#/definitions/model.BatteryAllocateReq"
                         }
+                    },
+                    {
+                        "enum": [
+                            "60",
+                            "72"
+                        ],
+                        "type": "string",
+                        "description": "电池型号",
+                        "name": "batteryType",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "调出自 0平台 其他店铺ID",
+                        "name": "from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "调入至 0平台 其他店铺ID",
+                        "name": "to",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "数量",
+                        "name": "num",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -233,13 +288,85 @@
                 "summary": "业务列表",
                 "parameters": [
                     {
-                        "description": "门店列表请求",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.BizListReq"
-                        }
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "门店ID",
+                        "name": "shopId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "骑手ID",
+                        "name": "userId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "店铺ID",
+                        "name": "shopId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "骑手姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "手机号",
+                        "name": "mobile",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            1,
+                            2
+                        ],
+                        "type": "integer",
+                        "description": "用户类型: 1个签 2团签",
+                        "name": "userTpe",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5
+                        ],
+                        "type": "integer",
+                        "description": "业务类型: 1新签 2换电 3寄存 4恢复计费 5退租",
+                        "name": "bizTpe",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始日期",
+                        "name": "startDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束日期",
+                        "name": "endDate",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -293,13 +420,18 @@
                 "summary": "套餐列表",
                 "parameters": [
                     {
-                        "description": "分页参数",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.Page"
-                        }
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -461,13 +593,30 @@
                 "summary": "团签列表",
                 "parameters": [
                     {
-                        "description": "请求参数",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.GroupListReq"
-                        }
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始日期",
+                        "name": "startDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束日期",
+                        "name": "endDate",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -686,13 +835,62 @@
                         "required": true
                     },
                     {
-                        "description": "请求参数",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UserListReq"
-                        }
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "团签ID",
+                        "name": "groupId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "成员姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "成员电话",
+                        "name": "mobile",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            0,
+                            1,
+                            2,
+                            3,
+                            4,
+                            5
+                        ],
+                        "type": "integer",
+                        "description": "换电状态, 个签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租 5已逾期; 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租",
+                        "name": "batteryState",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始日期",
+                        "name": "startDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束日期",
+                        "name": "endDate",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -834,6 +1032,20 @@
                         "name": "userId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -942,13 +1154,84 @@
                 "summary": "订单列表",
                 "parameters": [
                     {
-                        "description": "门店列表请求",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.OrderListReq"
-                        }
+                        "type": "string",
+                        "description": "订单编号",
+                        "name": "no",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "门店ID",
+                        "name": "shopId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "骑手ID",
+                        "name": "userId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "套餐ID",
+                        "name": "comboId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "城市ID",
+                        "name": "cityId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "骑手姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "骑手电话",
+                        "name": "mobile",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "type": "integer",
+                        "description": "订单类型 1新签 2续签 3违约金",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始日期",
+                        "name": "startDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束日期",
+                        "name": "endDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -988,6 +1271,85 @@
                 }
             }
         },
+        "/admin/rider/note": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "创建骑手跟进",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserNotePostReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/rider/note/{userId}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "获取骑手跟进",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "骑手ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.UserNoteListItem"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/rider/personal": {
             "get": {
                 "consumes": [
@@ -1002,13 +1364,62 @@
                 "summary": "个签用户列表",
                 "parameters": [
                     {
-                        "description": "请求参数",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UserListReq"
-                        }
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "团签ID",
+                        "name": "groupId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "成员姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "成员电话",
+                        "name": "mobile",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            0,
+                            1,
+                            2,
+                            3,
+                            4,
+                            5
+                        ],
+                        "type": "integer",
+                        "description": "换电状态, 个签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租 5已逾期; 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租",
+                        "name": "batteryState",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始日期",
+                        "name": "startDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束日期",
+                        "name": "endDate",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1062,13 +1473,53 @@
                 "summary": "认证列表",
                 "parameters": [
                     {
-                        "description": "请求参数",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UserVerifyReq"
-                        }
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "type": "integer",
+                        "description": "用户类型: 1个签骑手 2团签骑手 3团签BOSS",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            0,
+                            1,
+                            2,
+                            3
+                        ],
+                        "type": "integer",
+                        "description": "实名认证状态: 0未提交 1待审核 2审核通过 3审核拒绝",
+                        "name": "authState",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "骑手姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "骑手电话",
+                        "name": "mobile",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1122,13 +1573,24 @@
                 "summary": "门店列表",
                 "parameters": [
                     {
-                        "description": "门店列表请求",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ShopListAdminReq"
-                        }
+                        "type": "string",
+                        "description": "门店名称",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1199,7 +1661,7 @@
                 }
             }
         },
-        "/admin/shop/idname": {
+        "/admin/shop/simpleList": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -1210,7 +1672,16 @@
                 "tags": [
                     "管理"
                 ],
-                "summary": "门店选择列表(id, name)",
+                "summary": "门店选择列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "额外携带字段(逗号分隔多个), eg: v60,v70",
+                        "name": "exf",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -2036,7 +2507,30 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-获取骑手当前套餐详情",
+                "summary": "骑手-个签用户套餐列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前城市ID",
+                        "name": "cityId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -2049,7 +2543,10 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
+                                            }
                                         }
                                     }
                                 }
@@ -3597,55 +4094,6 @@
                 }
             }
         },
-        "model.BizListReq": {
-            "type": "object",
-            "required": [
-                "pageIndex",
-                "pageLimit"
-            ],
-            "properties": {
-                "bizTpe": {
-                    "description": "业务类型: 1新签 2换电 3寄存 4恢复计费 5退租",
-                    "type": "integer"
-                },
-                "endDate": {
-                    "description": "结束日期 eg: 2021-10-19",
-                    "type": "string"
-                },
-                "mobile": {
-                    "description": "手机号",
-                    "type": "string"
-                },
-                "pageIndex": {
-                    "description": "当前页号",
-                    "type": "integer"
-                },
-                "pageLimit": {
-                    "description": "页大小",
-                    "type": "integer"
-                },
-                "realName": {
-                    "description": "骑手姓名",
-                    "type": "string"
-                },
-                "shopId": {
-                    "description": "店铺ID",
-                    "type": "integer"
-                },
-                "startDate": {
-                    "description": "开始日期 eg: 2021-10-17",
-                    "type": "string"
-                },
-                "userId": {
-                    "description": "骑手ID",
-                    "type": "integer"
-                },
-                "userTpe": {
-                    "description": "用户类型: 1个签 2团签",
-                    "type": "integer"
-                }
-            }
-        },
         "model.BizProfileRep": {
             "type": "object",
             "properties": {
@@ -4029,35 +4477,6 @@
                 }
             }
         },
-        "model.ExceptionListReq": {
-            "type": "object",
-            "required": [
-                "pageIndex",
-                "pageLimit"
-            ],
-            "properties": {
-                "endDate": {
-                    "description": "结束日期 eg: 2021-10-17",
-                    "type": "string"
-                },
-                "pageIndex": {
-                    "description": "当前页号",
-                    "type": "integer"
-                },
-                "pageLimit": {
-                    "description": "页大小",
-                    "type": "integer"
-                },
-                "shopId": {
-                    "description": "店铺ID",
-                    "type": "integer"
-                },
-                "startDate": {
-                    "description": "开始日期 eg: 2021-10-17",
-                    "type": "string"
-                }
-            }
-        },
         "model.ExceptionReportReq": {
             "type": "object",
             "required": [
@@ -4213,34 +4632,6 @@
                     "items": {
                         "$ref": "#/definitions/model.GroupCreateUserReq"
                     }
-                }
-            }
-        },
-        "model.GroupListReq": {
-            "type": "object",
-            "required": [
-                "pageIndex",
-                "pageLimit"
-            ],
-            "properties": {
-                "endDate": {
-                    "description": "结束日期",
-                    "type": "string"
-                },
-                "keywords": {
-                    "type": "string"
-                },
-                "pageIndex": {
-                    "description": "当前页号",
-                    "type": "integer"
-                },
-                "pageLimit": {
-                    "description": "页大小",
-                    "type": "integer"
-                },
-                "startDate": {
-                    "description": "开始日期",
-                    "type": "string"
                 }
             }
         },
@@ -4522,80 +4913,6 @@
                 },
                 "userId": {
                     "description": "骑手ID",
-                    "type": "integer"
-                }
-            }
-        },
-        "model.OrderListReq": {
-            "type": "object",
-            "required": [
-                "pageIndex",
-                "pageLimit"
-            ],
-            "properties": {
-                "cityId": {
-                    "description": "城市ID",
-                    "type": "integer"
-                },
-                "comboId": {
-                    "description": "套餐ID",
-                    "type": "integer"
-                },
-                "endDate": {
-                    "description": "结束日期 eg: 2021-10-19",
-                    "type": "string"
-                },
-                "mobile": {
-                    "description": "手机号",
-                    "type": "string"
-                },
-                "no": {
-                    "description": "订单编号",
-                    "type": "string"
-                },
-                "pageIndex": {
-                    "description": "当前页号",
-                    "type": "integer"
-                },
-                "pageLimit": {
-                    "description": "页大小",
-                    "type": "integer"
-                },
-                "realName": {
-                    "description": "骑手姓名",
-                    "type": "string"
-                },
-                "shopId": {
-                    "description": "门店ID",
-                    "type": "integer"
-                },
-                "startDate": {
-                    "description": "开始日期 eg: 2021-10-17",
-                    "type": "string"
-                },
-                "type": {
-                    "description": "订单类型: 1新签 2续签 3违约金",
-                    "type": "integer"
-                },
-                "userId": {
-                    "description": "骑手ID",
-                    "type": "integer"
-                }
-            }
-        },
-        "model.Page": {
-            "type": "object",
-            "required": [
-                "pageIndex",
-                "pageLimit"
-            ],
-            "properties": {
-                "pageIndex": {
-                    "description": "当前页号",
-                    "type": "integer"
-                },
-                "pageLimit": {
-                    "description": "页大小",
                     "type": "integer"
                 }
             }
@@ -4887,27 +5204,6 @@
                 },
                 "name": {
                     "type": "string"
-                }
-            }
-        },
-        "model.ShopListAdminReq": {
-            "type": "object",
-            "required": [
-                "pageIndex",
-                "pageLimit"
-            ],
-            "properties": {
-                "name": {
-                    "description": "门店名称。搜索时使用",
-                    "type": "string"
-                },
-                "pageIndex": {
-                    "description": "当前页号",
-                    "type": "integer"
-                },
-                "pageLimit": {
-                    "description": "页大小",
-                    "type": "integer"
                 }
             }
         },
@@ -5763,43 +6059,6 @@
                 }
             }
         },
-        "model.UserListReq": {
-            "type": "object",
-            "required": [
-                "pageIndex",
-                "pageLimit"
-            ],
-            "properties": {
-                "batteryState": {
-                    "description": "换电状态 个签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租 5已逾期; 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租",
-                    "type": "integer"
-                },
-                "endDate": {
-                    "description": "结束日期 eg: 2021-10-17",
-                    "type": "string"
-                },
-                "mobile": {
-                    "description": "手机号",
-                    "type": "string"
-                },
-                "pageIndex": {
-                    "description": "当前页号",
-                    "type": "integer"
-                },
-                "pageLimit": {
-                    "description": "页大小",
-                    "type": "integer"
-                },
-                "realName": {
-                    "description": "姓名",
-                    "type": "string"
-                },
-                "startDate": {
-                    "description": "开始日期 eg: 2021-10-17",
-                    "type": "string"
-                }
-            }
-        },
         "model.UserLoginRep": {
             "type": "object",
             "required": [
@@ -5836,6 +6095,42 @@
                 "sms": {
                     "description": "短信验证码",
                     "type": "string"
+                }
+            }
+        },
+        "model.UserNoteListItem": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "跟进内容",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "sysUserId": {
+                    "description": "操作员ID",
+                    "type": "integer"
+                },
+                "sysUserName": {
+                    "description": "操作员",
+                    "type": "string"
+                },
+                "userId": {
+                    "description": "用户ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserNotePostReq": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
                 }
             }
         },
@@ -6027,45 +6322,6 @@
                 "mobile": {
                     "description": "手机号",
                     "type": "string"
-                },
-                "realName": {
-                    "description": "姓名",
-                    "type": "string"
-                },
-                "type": {
-                    "description": "用户类别",
-                    "type": "integer"
-                }
-            }
-        },
-        "model.UserVerifyReq": {
-            "type": "object",
-            "required": [
-                "pageIndex",
-                "pageLimit"
-            ],
-            "properties": {
-                "authState": {
-                    "description": "认证状态 0未提交 1待审核 2审核通过 3审核失败",
-                    "type": "integer",
-                    "enum": [
-                        0,
-                        1,
-                        2,
-                        3
-                    ]
-                },
-                "mobile": {
-                    "description": "手机号",
-                    "type": "string"
-                },
-                "pageIndex": {
-                    "description": "当前页号",
-                    "type": "integer"
-                },
-                "pageLimit": {
-                    "description": "页大小",
-                    "type": "integer"
                 },
                 "realName": {
                     "description": "姓名",

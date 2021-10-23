@@ -27,7 +27,7 @@ func (*districtsApi) Child(r *ghttp.Request) {
 // @Accept  json
 // @Produce json
 // @Router  /admin/districts [GET]
-// @Success 200 {object} response.JsonResponse{data=[]service.DistrictEl}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=[]service.DistrictEl} "返回结果"
 func (*districtsApi) List(r *ghttp.Request) {
     response.JsonOkExit(r, service.DistrictsService.ListCityTree())
 }

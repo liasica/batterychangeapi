@@ -88,10 +88,13 @@ func (*groupApi) Create(r *ghttp.Request) {
 // @Summary 团签列表
 // @Tags    管理
 // @Accept  json
-// @Param   entity body model.GroupListReq true "请求参数"
+// @Param 	pageIndex query integer true "当前页码"
+// @Param 	pageLimit query integer true "每页行数"
+// @Param 	startDate query string false "开始日期"
+// @Param 	endDate query string false "结束日期"
 // @Produce json
 // @Router  /admin/group [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.GroupEntity}}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.GroupEntity}} "返回结果"
 func (*groupApi) List(r *ghttp.Request) {
     req := new(model.GroupListAdminReq)
     _ = request.ParseRequest(r, req)
@@ -104,7 +107,7 @@ func (*groupApi) List(r *ghttp.Request) {
 // @Tags    管理
 // @Accept  json
 // @Param   id path int true "团签ID"
-// @Produce  octet-stream
+// @Produce octet-stream
 // @Produce json
 // @Router  /admin/group/{id}/contract [GET]
 // @Success 200 {object} object "合同文件"
@@ -157,10 +160,17 @@ func (*groupApi) AddMember(r *ghttp.Request) {
 // @Tags    管理
 // @Accept  json
 // @Param   id path int true "团签ID"
-// @Param   entity body model.UserListReq true "请求参数"
+// @Param 	pageIndex query integer true "当前页码"
+// @Param 	pageLimit query integer true "每页行数"
+// @Param 	groupId query integer false "团签ID"
+// @Param 	realName query string false "成员姓名"
+// @Param 	mobile query string false "成员电话"
+// @Param 	batteryState query integer false "换电状态, 个签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租 5已逾期; 团签骑手换电状态：0未开通 1新签未领 2租借中 3寄存中 4已退租" ENUMS(0,1,2,3,4,5)
+// @Param 	startDate query string false "开始日期"
+// @Param 	endDate query string false "结束日期"
 // @Produce json
 // @Router  /admin/group/{id}/member [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.UserListItem}}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.UserListItem}} "返回结果"
 func (*groupApi) ListMember(r *ghttp.Request) {
     req := new(model.UserListReq)
     _ = request.ParseRequest(r, req)
@@ -176,12 +186,16 @@ func (*groupApi) ListMember(r *ghttp.Request) {
 // @Accept  json
 // @Param   id path int true "团签ID"
 // @Param   userId path int true "成员ID"
+// @Param 	pageIndex query integer true "当前页码"
+// @Param 	pageLimit query integer true "每页行数"
 // @Produce json
 // @Router  /admin/group/{id}/member/{userId}/biz [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.BizSimpleItem}}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.BizSimpleItem}} "返回结果"
 func (*groupApi) ListMemberBiz(r *ghttp.Request) {
     groupId := r.GetUint("id")
     userId := r.GetUint("userId")
+    var page = new(model.Page)
+    _ = request.ParseRequest(r, page)
 
     // 查找用户
     c := dao.User.Columns
@@ -190,7 +204,7 @@ func (*groupApi) ListMemberBiz(r *ghttp.Request) {
     if member == nil {
         response.Json(r, response.RespCodeArgs, "未找到该用户")
     }
-    total, items := service.UserBizService.ListSimaple(r.Context(), member)
+    total, items := service.UserBizService.ListSimaple(r.Context(), member, page)
     response.ItemsWithTotal(r, total, items)
 }
 
@@ -222,7 +236,7 @@ func (*groupApi) DeleteMember(r *ghttp.Request) {
 // @Param   expDate path string true "截止日期"
 // @Produce json
 // @Router  /admin/group/{id}/bill/{expDate} [GET]
-// @Success 200 {object} response.JsonResponse{data=model.SettlementCache}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.SettlementCache} "返回结果"
 func (*groupApi) GetSettlement(r *ghttp.Request) {
     id := r.GetInt("id")
     d := r.GetString("expDate")
@@ -251,7 +265,7 @@ func (*groupApi) GetSettlement(r *ghttp.Request) {
 // @Param   entity body model.GroupSettlementCheckoutReq true "结算请求"
 // @Produce json
 // @Router  /admin/group/bill [POST]
-// @Success 200 {object} response.JsonResponse  "返回结果"
+// @Success 200 {object} response.JsonResponse "返回结果"
 func (*groupApi) PostSettlement(r *ghttp.Request) {
     var req = new(model.GroupSettlementCheckoutReq)
     _ = request.ParseRequest(r, req)

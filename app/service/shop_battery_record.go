@@ -56,7 +56,8 @@ func (s *shopBatteryRecordService) Allocate(ctx context.Context, req *model.Batt
         if req.From > 0 {
             fromShop, _ := ShopService.GetShop(ctx, req.From)
             // 判断库存是否足够转移
-            if fromShop == nil || sutil.StructGetFieldByString(fromShop, "V"+req.BatteryType).(int) < req.Num {
+            v := sutil.StructGetFieldByString(fromShop, "V"+req.BatteryType)
+            if fromShop == nil || v == nil || v.(int) < req.Num {
                 return errors.New("库存不足")
             }
             // 减数量

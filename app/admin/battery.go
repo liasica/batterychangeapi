@@ -30,13 +30,13 @@ var BatteryApi = new(batteryApi)
 // @Accept  json
 // @Param 	pageIndex query integer true "当前页码"
 // @Param 	pageLimit query integer true "每页行数"
-// @Param 	ShopId query integer false "门店ID"
+// @Param 	shopId query integer false "门店ID"
 // @Param 	type query integer true "1出库 2入库"
 // @Param 	startDate query string false "开始日期"
 // @Param 	endDate query string false "结束日期"
 // @Produce json
 // @Router  /admin/battery/record [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.BatteryRecordListItem}}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.BatteryRecordListItem}} "返回结果"
 func (*batteryApi) TransferRecord(r *ghttp.Request) {
     var req = new(model.BatteryRecordListReq)
     _ = request.ParseRequest(r, req)
@@ -49,6 +49,10 @@ func (*batteryApi) TransferRecord(r *ghttp.Request) {
 // @Tags    管理
 // @Accept  json
 // @Param   entity body model.BatteryAllocateReq true "请求参数"
+// @Param 	batteryType query string true "电池型号" ENUMS(60,72)
+// @Param 	from query integer true "调出自 0平台 其他店铺ID"
+// @Param 	to query integer true "调入至 0平台 其他店铺ID"
+// @Param 	num query integer true "数量"
 // @Produce json
 // @Router  /admin/battery/record [POST]
 // @Success 200 {object} response.JsonResponse "返回结果"
@@ -65,10 +69,14 @@ func (*batteryApi) Allocate(r *ghttp.Request) {
 // @Summary 电池异常记录
 // @Tags    管理
 // @Accept  json
-// @Param   entity body model.ExceptionListReq true "请求参数"
+// @Param 	pageIndex query integer true "当前页码"
+// @Param 	pageLimit query integer true "每页行数"
+// @Param 	shopId query integer false "门店ID"
+// @Param 	startDate query string false "开始日期"
+// @Param 	endDate query string false "结束日期"
 // @Produce json
 // @Router  /admin/battery/exception [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.ExceptionListItem}}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.ExceptionListItem}} "返回结果"
 func (*batteryApi) Exception(r *ghttp.Request) {
     var req = new(model.ExceptionListReq)
     _ = request.ParseRequest(r, req)
@@ -83,7 +91,7 @@ func (*batteryApi) Exception(r *ghttp.Request) {
 // @Param   id path int true "记录ID"
 // @Produce json
 // @Router  /admin/battery/exception/{id} [PUT]
-// @Success 200 {object} response.JsonResponse  "返回结果"
+// @Success 200 {object} response.JsonResponse "返回结果"
 func (*batteryApi) ExceptionFix(r *ghttp.Request) {
     id := r.GetInt("id")
     _, _ = dao.Exception.Where("id = ?", id).Data(g.Map{"state": model.ExceptionStateProcessed}).Update()

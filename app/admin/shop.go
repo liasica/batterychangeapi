@@ -6,10 +6,12 @@ import (
     "battery/app/service"
     "battery/library/request"
     "battery/library/response"
+    "battery/library/sutil"
     "context"
     "github.com/gogf/gf/database/gdb"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
+    "strings"
 )
 
 var ShopApi = shopApi{}
@@ -22,9 +24,11 @@ type shopApi struct {
 // @Tags    管理
 // @Accept  json
 // @Produce json
-// @Param   entity body model.ShopListAdminReq true "门店列表请求"
+// @Param 	name query string false "门店名称"
+// @Param 	pageIndex query integer true "当前页码"
+// @Param 	pageLimit query integer true "每页行数"
 // @Router  /admin/shop [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.ShopListItem}}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.ShopListItem}} "返回结果"
 func (*shopApi) List(r *ghttp.Request) {
     var req model.ShopListAdminReq
     if err := r.Parse(&req); err != nil {
@@ -176,16 +180,31 @@ func (*shopApi) Detail(r *ghttp.Request) {
     response.JsonOkExit(r, shop)
 }
 
-// ListIdName
-// @Summary 门店选择列表(id, name)
+// SimpleList
+// @Summary 门店选择列表
 // @Tags    管理
 // @Accept  json
 // @Produce json
-// @Router  /admin/shop/idname [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ShopIdNameList}  "返回结果"
-func (*shopApi) ListIdName(r *ghttp.Request) {
+// @Param 	exf query integer true "额外携带字段(逗号分隔多个), eg: v60,v70"
+// @Router  /admin/shop/simpleList [GET]
+// @Success 200 {object} response.JsonResponse{data=model.ShopIdNameList} "返回结果"
+func (*shopApi) SimpleList(r *ghttp.Request) {
     c := dao.Shop.Columns
-    var items []model.ShopIdNameList
-    _ = dao.Shop.Ctx(r.Context()).OrderAsc(c.CreatedAt).Fields(c.Id, c.Name).Scan(&items)
+    exfs := strings.Split(r.GetString("exf"), ",")
+    var rows []model.Shop
+    var items []g.Map
+    _ = dao.Shop.Ctx(r.Context()).OrderAsc(c.CreatedAt).Scan(&rows)
+    for _, row := range rows {
+        item := g.Map{
+            "id":   row.Id,
+            "name": row.Name,
+        }
+        for _, exf := range exfs {
+            if exf != "" {
+                item[exf] = sutil.StructGetFieldByString(row, sutil.StringToFirstUpper(exf))
+            }
+        }
+        items = append(items, item)
+    }
     response.JsonOkExit(r, items)
 }

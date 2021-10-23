@@ -180,7 +180,7 @@ func init() {
             g.POST("/", admin.ShopApi.Create)
             g.GET("/:id", admin.ShopApi.Detail)
             g.PUT("/:id", admin.ShopApi.Edit)
-            g.GET("/idname", admin.ShopApi.ListIdName)
+            g.GET("/simpleList", admin.ShopApi.SimpleList)
         })
 
         group.GET("/combo", admin.ComboApi.List)
@@ -190,6 +190,8 @@ func init() {
         group.Group("/rider", func(g *ghttp.RouterGroup) {
             g.GET("/verify", admin.RiderApi.Verify)
             g.GET("/personal", admin.RiderApi.Personal)
+            g.GET("/note/:userId", admin.RiderApi.NoteList)
+            g.POST("/note", admin.RiderApi.Note)
         })
 
         group.Group("/group", func(g *ghttp.RouterGroup) {

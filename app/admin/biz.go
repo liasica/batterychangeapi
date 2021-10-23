@@ -27,9 +27,19 @@ type bizApi struct {
 // @Tags    管理
 // @Accept  json
 // @Produce json
-// @Param   entity body model.BizListReq true "门店列表请求"
+// @Param 	pageIndex query integer true "当前页码"
+// @Param 	pageLimit query integer true "每页行数"
+// @Param 	shopId query integer false "门店ID"
+// @Param 	userId query integer false "骑手ID"
+// @Param 	shopId query integer false "店铺ID"
+// @Param 	realName query string false "骑手姓名"
+// @Param 	mobile query string false "手机号"
+// @Param 	userTpe query integer true "用户类型: 1个签 2团签" ENUMS(1,2)
+// @Param 	bizTpe query integer true "业务类型: 1新签 2换电 3寄存 4恢复计费 5退租" ENUMS(1,2,3,4,5)
+// @Param 	startDate query string false "开始日期"
+// @Param 	endDate query string false "结束日期"
 // @Router  /admin/biz [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.BizEntity}}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.BizEntity}} "返回结果"
 func (*bizApi) List(r *ghttp.Request) {
     var req = new(model.BizListReq)
     _ = request.ParseRequest(r, req)

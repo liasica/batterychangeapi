@@ -33,7 +33,7 @@ type ShopListUserReq struct {
 // ShopListAdminReq 管理员获取门店列表请求
 type ShopListAdminReq struct {
     Page
-    Name string `json:"name"` // 门店名称。搜索时使用
+    Name string `json:"name"` // 门店名称, 搜索时使用
 }
 
 // ShopListUserRep 骑手获取门店列表响应

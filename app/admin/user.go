@@ -20,7 +20,7 @@ type userApi struct {
 // @Produce json
 // @Param   entity  body model.SysUserLoginReq true "登录数据"
 // @Router  /admin/login [POST]
-// @Success 200 {object} response.JsonResponse  "返回结果"
+// @Success 200 {object} response.JsonResponse "返回结果"
 func (*userApi) Login(r *ghttp.Request) {
     var req model.SysUserLoginReq
     if err := r.Parse(&req); err != nil {
@@ -40,7 +40,7 @@ func (*userApi) Login(r *ghttp.Request) {
 // @Accept  json
 // @Produce json
 // @Router  /admin/logout [PUT]
-// @Success 200 {object} response.JsonResponse  "返回结果"
+// @Success 200 {object} response.JsonResponse "返回结果"
 func (*userApi) Logout(r *ghttp.Request) {
     err := service.SysUsersService.Logout(r.Context())
     if err != nil {

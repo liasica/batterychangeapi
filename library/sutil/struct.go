@@ -11,8 +11,17 @@ package sutil
 
 import "reflect"
 
-func StructGetFieldByString(v interface{}, field string) interface{} {
+func StructGetFieldByString(v interface{}, field string) (data interface{}) {
+    if v == nil {
+        return
+    }
     r := reflect.ValueOf(v)
+    if r.IsZero() {
+        return
+    }
     f := reflect.Indirect(r).FieldByName(field)
+    if !f.IsValid() {
+        return
+    }
     return f.Interface()
 }

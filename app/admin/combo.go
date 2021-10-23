@@ -18,10 +18,11 @@ type comboApi struct {
 // @Summary 套餐列表
 // @Tags    管理
 // @Accept  json
-// @Param   entity body model.Page true "分页参数"
+// @Param 	pageIndex query integer true "当前页码"
+// @Param 	pageLimit query integer true "每页行数"
 // @Produce json
 // @Router  /admin/combo [GET]
-// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.ComboListItem}}  "返回结果"
+// @Success 200 {object} response.JsonResponse{data=model.ItemsWithTotal{items=[]model.ComboListItem}} "返回结果"
 func (*comboApi) List(r *ghttp.Request) {
     var req model.Page
     if err := r.Parse(&req); err != nil {

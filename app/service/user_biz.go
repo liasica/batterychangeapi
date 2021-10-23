@@ -178,12 +178,13 @@ func (b *userBizService) Filter(ctx context.Context, req *model.BizListReq) (tot
     return
 }
 
-func (*userBizService) ListSimaple(ctx context.Context, member *model.User) (total int, items []model.BizSimpleItem) {
+func (*userBizService) ListSimaple(ctx context.Context, member *model.User, page *model.Page) (total int, items []model.BizSimpleItem) {
     c := dao.UserBiz.Columns
     query := dao.UserBiz.Ctx(ctx).
         WithAll().
         Where(c.GroupId, member.GroupId).
         Where(c.UserId, member.Id).
+        Page(page.PageIndex, page.PageLimit).
         OrderDesc(c.CreatedAt)
 
     _ = query.Scan(&items)
