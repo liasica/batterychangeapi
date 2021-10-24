@@ -35,6 +35,18 @@ type DashboardOrderNewly struct {
     New     int64   `json:"new"`     // 新增订单
     Renewal int64   `json:"renewal"` // 续签订单
     Amount  float64 `json:"amount"`  // 新增订单金额
+}
 
-    // Riders      int64   `json:"riders"`      // 新增骑手
+// DashboardBusinessReq 业务统计请求
+type DashboardBusinessReq struct {
+    DateBetween
+    CityId uint `json:"cityId"` // 城市ID
+}
+
+// DashboardBusiness 业务统计
+type DashboardBusiness struct {
+    Date      string `json:"date"`      // 日期
+    Renewal   int64  `json:"renewal"`   // 换电
+    Pause     int64  `json:"pause"`     // 寄存
+    Retrieval int64  `json:"retrieval"` // 恢复
 }

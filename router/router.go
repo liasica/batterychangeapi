@@ -220,6 +220,7 @@ func init() {
             g.GET("/cities", admin.DashboardApi.OpenCities)
             g.GET("/overview", admin.DashboardApi.Overview)
             g.GET("/newly", admin.DashboardApi.Newly)
+            g.GET("/business", admin.DashboardApi.Business)
         })
     })
 

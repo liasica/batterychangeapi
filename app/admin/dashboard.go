@@ -73,3 +73,24 @@ func (*dashboardApi) Newly(r *ghttp.Request) {
     data := service.DashboardService.NewlyOrders(ctx, req)
     response.JsonOkExit(r, data)
 }
+
+// Business
+// @Summary 业务统计
+// @Tags    管理
+// @Accept  json
+// @Produce json
+// @Param 	cityId query int false "城市ID"
+// @Param 	startDate query string true "开始日期"
+// @Param 	endDate query string true "结束日期"
+// @Router  /admin/dashboard/business [GET]
+// @Success 200 {object} response.JsonResponse{data=[]model.DashboardBusiness} "返回结果"
+func (*dashboardApi) Business(r *ghttp.Request) {
+    var req = new(model.DashboardBusinessReq)
+    _ = request.ParseRequest(r, req)
+    if req.StartDate.AddDate(0, 0, 60).Before(req.EndDate) {
+        response.JsonErrExit(r, response.RespCodeArgs, "时间范围太大")
+    }
+    ctx := r.Context()
+    data := service.DashboardService.Business(ctx, req)
+    response.JsonOkExit(r, data)
+}

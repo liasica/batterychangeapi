@@ -544,6 +544,65 @@
                 }
             }
         },
+        "/admin/dashboard/business": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "业务统计",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "城市ID",
+                        "name": "cityId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始日期",
+                        "name": "startDate",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束日期",
+                        "name": "endDate",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.DashboardBusiness"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/dashboard/cities": {
             "get": {
                 "consumes": [
@@ -2667,30 +2726,7 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-个签用户套餐列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "当前页码",
-                        "name": "pageIndex",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数",
-                        "name": "pageLimit",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "当前城市ID",
-                        "name": "cityId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
+                "summary": "骑手-获取骑手当前套餐详情",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -2703,10 +2739,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
-                                            }
+                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
                                         }
                                     }
                                 }
@@ -4506,6 +4539,27 @@
                 },
                 "usableShopCnt": {
                     "description": "可用门店数量",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.DashboardBusiness": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "description": "日期",
+                    "type": "string"
+                },
+                "pause": {
+                    "description": "寄存",
+                    "type": "integer"
+                },
+                "renewal": {
+                    "description": "换电",
+                    "type": "integer"
+                },
+                "retrieval": {
+                    "description": "恢复",
                     "type": "integer"
                 }
             }

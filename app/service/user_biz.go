@@ -32,7 +32,7 @@ func (*userBizService) ListUser(ctx context.Context, req model.Page) (rep []mode
     u := ctx.Value(model.ContextRiderKey).(*model.ContextRider)
     _ = dao.UserBiz.Ctx(ctx).
         Where(dao.UserBiz.Columns.UserId, u.Id).
-        WhereIn(dao.UserBiz.Columns.BizType, []int{model.UserBizNew, model.UserBizBatteryRenewal, model.UserBizBatteryRecover}).
+        WhereIn(dao.UserBiz.Columns.BizType, []int{model.UserBizNew, model.UserBizBatteryRenewal, model.UserBizBatteryRetrieval}).
         OrderDesc(dao.UserBiz.Columns.Id).
         Page(req.PageIndex, req.PageLimit).
         Scan(&rep)

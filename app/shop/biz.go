@@ -125,7 +125,7 @@ func (*bizApi) Post(r *ghttp.Request) {
         })
 
     // 恢复计费
-    case model.UserBizBatteryRecover:
+    case model.UserBizBatteryRetrieval:
         if user.BatteryState != model.BatteryStateSave {
             response.Json(r, response.RespCodeArgs, "用户不是寄存中状态，不能办理恢复计费")
         }
@@ -145,7 +145,7 @@ func (*bizApi) Post(r *ghttp.Request) {
                 CityId:      shop.CityId,
                 ShopId:      shop.Id,
                 UserId:      user.Id,
-                BizType:     model.UserBizBatteryRecover,
+                BizType:     model.UserBizBatteryRetrieval,
                 ComboId:     user.ComboId,
                 BatteryType: user.BatteryType,
             })
@@ -158,7 +158,7 @@ func (*bizApi) Post(r *ghttp.Request) {
                 model.ShopBatteryRecord{
                     ShopId:      shop.Id,
                     BizId:       bizId,
-                    BizType:     model.UserBizBatteryRecover,
+                    BizType:     model.UserBizBatteryRetrieval,
                     UserName:    user.RealName,
                     BatteryType: user.BatteryType,
                     Num:         1,

@@ -41,6 +41,7 @@ func (d *dashboardService) queryDateBetween(query *gdb.Model, req *model.DateBet
     if !req.EndDate.IsZero() {
         query = query.WhereLTE(field, req.EndDate)
     }
+    query = query.OrderAsc(field)
     return query
 }
 
@@ -81,19 +82,6 @@ func (d *dashboardService) OverviewOrderTotal(ctx context.Context, req *model.Da
     return
 }
 
-// NewlyRiders 新增骑手
-func (d *dashboardService) NewlyRiders(ctx context.Context, req *model.DateBetween) (data map[string]model.DashboardOrderNewly) {
-    // data = make(map[string]model.DashboardOrderNewly)
-    // c := dao.User.Columns
-    // query := dao.User.Ctx(ctx)
-    // var rows []model.DashboardOrderNewly
-    // _ = d.queryDateBetween(query, req, c.CreatedAt).Fields(`DATE(createdAt) AS date, COUNT(1) AS riders`).Scan(&data)
-    // for _, row := range rows {
-    //     data[row.Date] = row
-    // }
-    return
-}
-
 // NewlyOrders 新增订单
 func (d *dashboardService) NewlyOrders(ctx context.Context, req *model.DashboardNewlyReq) (items []model.DashboardOrderNewly) {
     items = make([]model.DashboardOrderNewly, 0)
@@ -115,7 +103,21 @@ func (d *dashboardService) NewlyOrders(ctx context.Context, req *model.Dashboard
     return
 }
 
-// Newly 新增统计
-func (d *dashboardService) Newly(ctx context.Context, req *model.DateBetween) (items []model.DashboardOrderNewly) {
+// Business 业务统计
+func (d *dashboardService) Business(ctx context.Context, req *model.DashboardBusinessReq) (items []model.DashboardBusiness) {
+    items = make([]model.DashboardBusiness, 0)
+    c := dao.UserBiz.Columns
+    query := dao.UserBiz.Ctx(ctx)
+    if req.CityId > 0 {
+        query = query.Where(c.CityId, req.CityId)
+    }
+    _ = d.queryDateBetween(query, &req.DateBetween, c.CreatedAt).
+        Fields(`DATE(createdAt) AS date, cityId, SUM(IF(bizType = 2, 1, 0)) AS renewal, SUM(IF(bizType = 3, 1, 0)) AS pause, SUM(IF(bizType = 4, 1, 0)) AS retrieval`).
+        Group("date").
+        Scan(&items)
+    // 按时间正序排列
+    sort.Slice(items, func(i, j int) bool {
+        return items[i].Date < items[j].Date
+    })
     return
 }

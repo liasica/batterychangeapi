@@ -8,11 +8,11 @@ import (
 )
 
 const (
-    UserBizNew            = 1 // 新签
-    UserBizBatteryRenewal = 2 // 换电池
-    UserBizBatteryPause   = 3 // 寄存暂停
-    UserBizBatteryRecover = 4 // 恢复计费
-    UserBizCancel         = 5 // 退租
+    UserBizNew              = 1 // 新签
+    UserBizBatteryRenewal   = 2 // 换电池
+    UserBizBatteryPause     = 3 // 寄存暂停
+    UserBizBatteryRetrieval = 4 // 恢复计费
+    UserBizCancel           = 5 // 退租
 )
 
 // UserBiz is the golang structure for table user_biz.
