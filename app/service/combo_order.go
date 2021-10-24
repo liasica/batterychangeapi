@@ -39,7 +39,7 @@ func (s *comboOrderService) DetailByNo(ctx context.Context, no string) (rep mode
 }
 
 // New 新购订单
-func (s *comboOrderService) New(ctx context.Context, userId uint64, combo model.Combo) (order model.ComboOrder, err error) {
+func (s *comboOrderService) New(ctx context.Context, user *model.ContextRider, combo model.Combo) (order model.ComboOrder, err error) {
     no := s.GenerateOrderNo()
     c := dao.ComboOrder.Columns
     id, insertErr := dao.ComboOrder.Ctx(ctx).InsertAndGetId(g.Map{
@@ -48,9 +48,10 @@ func (s *comboOrderService) New(ctx context.Context, userId uint64, combo model.
         c.Deposit: combo.Deposit,
         c.PayType: 0,
         c.No:      no,
-        c.UserId:  userId,
-        c.Type:    model.ComboTypeNew,
+        c.UserId:  user.Id,
+        c.Type:    model.ComboOrderTypeNew,
         c.CityId:  combo.CityId,
+        c.GroupId: user.GroupId,
     })
     if insertErr == nil {
         err = dao.ComboOrder.Ctx(ctx).WherePri(id).Scan(&order)
@@ -59,18 +60,20 @@ func (s *comboOrderService) New(ctx context.Context, userId uint64, combo model.
 }
 
 // Renewal 续购订单
-func (s *comboOrderService) Renewal(ctx context.Context, payType uint, firstOrder model.ComboOrder) (order model.ComboOrder, err error) {
+func (s *comboOrderService) Renewal(ctx context.Context, user *model.ContextRider, payType uint, firstOrder model.ComboOrder) (order model.ComboOrder, err error) {
     no := s.GenerateOrderNo()
     c := dao.ComboOrder.Columns
     id, insertErr := dao.ComboOrder.Ctx(ctx).InsertAndGetId(g.Map{
+        c.ParentId: firstOrder.Id,
         c.ComboId:  firstOrder.ComboId,
         c.Amount:   firstOrder.Amount - firstOrder.Deposit,
         c.Deposit:  0,
         c.PayType:  payType,
         c.No:       no,
         c.UserId:   firstOrder.UserId,
+        c.GroupId:  user.GroupId,
         c.ShopId:   firstOrder.ShopId,
-        c.Type:     model.ComboTypeRenewal,
+        c.Type:     model.ComboOrderTypeRenewal,
         c.CityId:   firstOrder.CityId,
         c.ParentId: firstOrder.Id,
     })
@@ -81,18 +84,20 @@ func (s *comboOrderService) Renewal(ctx context.Context, payType uint, firstOrde
 }
 
 // Penalty 订单违约金
-func (s *comboOrderService) Penalty(ctx context.Context, payType uint, amount float64, firstOrder model.ComboOrder) (order model.ComboOrder, err error) {
+func (s *comboOrderService) Penalty(ctx context.Context, user *model.ContextRider, payType uint, amount float64, firstOrder model.ComboOrder) (order model.ComboOrder, err error) {
     no := s.GenerateOrderNo()
     c := dao.ComboOrder.Columns
     id, insertErr := dao.ComboOrder.Ctx(ctx).InsertAndGetId(g.Map{
+        c.ParentId: firstOrder.Id,
         c.ComboId:  firstOrder.ComboId,
         c.Amount:   amount,
         c.Deposit:  0,
         c.PayType:  payType,
         c.No:       no,
         c.UserId:   firstOrder.UserId,
+        c.GroupId:  user.GroupId,
         c.ShopId:   firstOrder.ShopId,
-        c.Type:     model.ComboTypePenalty,
+        c.Type:     model.ComboOrderTypePenalty,
         c.CityId:   firstOrder.CityId,
         c.ParentId: firstOrder.Id,
     })

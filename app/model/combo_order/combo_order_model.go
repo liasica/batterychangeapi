@@ -31,6 +31,7 @@ var (
         ShopId         string // 门店ID                             
         UserId         string // 用户ID                             
         ComboId        string // 套餐ID                             
+        GroupId        string // 团签ID                             
         No             string // 订单编号                           
         Type           string // 订单类别: 1新签 2续费 3违约金      
         Amount         string // 总金额(包含押金)                   
@@ -50,6 +51,7 @@ var (
         ShopId:        "shopId",         
         UserId:        "userId",         
         ComboId:       "comboId",        
+        GroupId:       "groupId",        
         No:            "no",             
         Type:          "type",           
         Amount:        "amount",         

@@ -16,6 +16,7 @@ type ComboOrder struct {
 	ShopId        uint        `orm:"shopId"        json:"shopId"`        // 门店ID
 	UserId        uint64      `orm:"userId"        json:"userId"`        // 用户ID
 	ComboId       uint        `orm:"comboId"       json:"comboId"`       // 套餐ID
+	GroupId       uint        `orm:"groupId"       json:"groupId"`       // 团签ID
 	No            string      `orm:"no,unique"     json:"no"`            // 订单编号
 	Type          uint        `orm:"type"          json:"type"`          // 订单类别: 1新签 2续费 3违约金
 	Amount        float64     `orm:"amount"        json:"amount"`        // 总金额(包含押金)

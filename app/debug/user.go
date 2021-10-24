@@ -12,12 +12,8 @@ package debug
 import (
     "battery/app/dao"
     "battery/app/model"
-    "battery/app/service"
-    "battery/library/snowflake"
-    "encoding/base64"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
-    "log"
 )
 
 type userDebug struct {
@@ -46,13 +42,20 @@ func (*userDebug) Reset(r *ghttp.Request) {
 }
 
 func (*userDebug) GroupTest(r *ghttp.Request) {
-    mobile := "18501358302"
-    user := model.User{
-        GroupId:  2,
-        RealName: "ContactName",
-        Mobile:   mobile,
-        Type:     model.UserTypeGroupBoss,
+    var orders []model.ComboOrder
+    var users []model.User
+    userMap := make(map[uint64]model.User)
+    _ = dao.ComboOrder.Ctx(r.Context()).Scan(&orders)
+    _ = dao.User.Ctx(r.Context()).Scan(&users)
+
+    for _, user := range users {
+        userMap[user.Id] = user
     }
-    log.Println(base64.StdEncoding.EncodeToString(snowflake.Service().Generate().Bytes()))
-    log.Println(service.UserService.AddOrSetGroupUser(r.Context(), user))
+
+    for k, order := range orders {
+        orders[k].GroupId = userMap[order.UserId].GroupId
+        orders[k].PayState -= 1
+    }
+
+    _, _ = dao.ComboOrder.Ctx(r.Context()).Data(orders).FieldsEx("month").Save()
 }

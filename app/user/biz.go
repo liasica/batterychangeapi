@@ -254,7 +254,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
     }
     combo, err := service.ComboService.Detail(r.Context(), req.ComboId)
     if err != nil {
-        response.Json(r, response.RespCodeArgs, "套餐不存")
+        response.Json(r, response.RespCodeArgs, "套餐不存在")
     }
 
     user := service.UserService.Detail(r.Context(), u.Id)
@@ -340,7 +340,7 @@ func (*bizApi) Sign(r *ghttp.Request) {
     }
 
     if err := dao.ComboOrder.DB.Transaction(r.Context(), func(ctx context.Context, tx *gdb.TX) error {
-        order, err := service.ComboOrderService.New(ctx, u.Id, combo)
+        order, err := service.ComboOrderService.New(ctx, u, combo)
         if err != nil {
             return err
         }
@@ -392,7 +392,7 @@ func (*bizApi) Renewal(r *ghttp.Request) {
     }
     combo, _ := service.ComboService.Detail(r.Context(), user.ComboId)
     firstOrder, _ := service.ComboOrderService.Detail(r.Context(), user.ComboOrderId)
-    order, err := service.ComboOrderService.Renewal(r.Context(), req.PaymentType, firstOrder)
+    order, err := service.ComboOrderService.Renewal(r.Context(), user, req.PaymentType, firstOrder)
     if err == nil && req.PaymentType == model.PayTypeWechat {
         if res, err := wechat.Service().App(r.Context(), model.Prepay{
             Description: combo.Name,
@@ -485,7 +485,7 @@ func (*bizApi) Penalty(r *ghttp.Request) {
     }
     firstOrder, _ := service.ComboOrderService.Detail(r.Context(), user.ComboOrderId)
     combo, _ := service.ComboService.Detail(r.Context(), user.ComboId)
-    order, err := service.ComboOrderService.Penalty(r.Context(), req.PaymentType, amount, firstOrder)
+    order, err := service.ComboOrderService.Penalty(r.Context(), user, req.PaymentType, amount, firstOrder)
 
     if err == nil && req.PaymentType == model.PayTypeWechat {
         if res, err := wechat.Service().App(r.Context(), model.Prepay{

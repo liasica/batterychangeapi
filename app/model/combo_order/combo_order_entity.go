@@ -18,6 +18,7 @@ type Entity struct {
     ShopId        uint        `orm:"shopId"        json:"shop_id"`         // 门店ID                             
     UserId        uint64      `orm:"userId"        json:"user_id"`         // 用户ID                             
     ComboId       uint        `orm:"comboId"       json:"combo_id"`        // 套餐ID                             
+    GroupId       uint        `orm:"groupId"       json:"group_id"`        // 团签ID                             
     No            string      `orm:"no,unique"     json:"no"`              // 订单编号                           
     Type          uint        `orm:"type"          json:"type"`            // 订单类别: 1新签 2续费 3违约金      
     Amount        float64     `orm:"amount"        json:"amount"`          // 总金额(包含押金)                   

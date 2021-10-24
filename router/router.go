@@ -216,6 +216,11 @@ func init() {
         group.GET("/order", admin.OrderApi.List)
 
         group.GET("/biz", admin.BizApi.List)
+
+        group.Group("/dashboard", func(g *ghttp.RouterGroup) {
+            g.GET("/cities", admin.DashboardApi.OpenCities)
+            g.GET("/overview", admin.DashboardApi.Overview)
+        })
     })
 
     s.SetIndexFolder(true)

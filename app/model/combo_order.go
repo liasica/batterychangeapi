@@ -8,15 +8,21 @@ import (
 
 type ComboOrder internal.ComboOrder
 
-const PayTypeAliPay = 1
-const PayTypeWechat = 2
+const (
+    PayTypeAliPay = iota + 1 // 支付宝支付
+    PayTypeWechat            // 微信支付
+)
 
-const ComboTypeNew = 1
-const ComboTypeRenewal = 2
-const ComboTypePenalty = 3
+const (
+    ComboOrderTypeNew     = iota + 1 // 新签订单
+    ComboOrderTypeRenewal            // 续签订单
+    ComboOrderTypePenalty            // 违约金
+)
 
-const PayStateWait = 1    // 待支付
-const PayStateSuccess = 2 // 已支付
+const (
+    PayStatePending = iota // 待支付
+    PayStateSuccess        // 已支付
+)
 
 // ShopOrderListReq 门店订单列表
 type ShopOrderListReq struct {
@@ -145,7 +151,7 @@ type OrderEntity struct {
     Amount     float64     `json:"amount"`                // 支付金额
     Deposit    float64     `json:"deposit"`               // 押金
     PayType    uint        `json:"payType" enums:"0,1,2"` // 支付方式: 0未知 1支付宝 2微信
-    PayState   uint        `json:"payState" enums:"1,2"`  // 支付状态: 1未支付 2已支付
+    PayState   uint        `json:"payState" enums:"0,1"`  // 支付状态: 0未支付 1已支付
     PayAt      *gtime.Time `json:"payAt"`                 // 支付时间
     FirstUseAt *gtime.Time `json:"firstUseAt"`            // 开始时间
     CreatedAt  *gtime.Time
@@ -171,8 +177,22 @@ type OrderListItem struct {
     Amount     float64     `json:"amount"`                          // 支付金额
     Deposit    float64     `json:"deposit"`                         // 押金
     PayType    uint        `json:"payType" enums:"0,1,2"`           // 支付方式: 0未知 1支付宝 2微信
-    PayState   uint        `json:"payState" enums:"1,2"`            // 支付状态: 1未支付 2已支付
+    PayState   uint        `json:"payState" enums:"0,1"`            // 支付状态: 0未支付 1已支付
     PayAt      *gtime.Time `json:"payAt"`                           // 支付时间
     FirstUseAt *gtime.Time `json:"firstUseAt"`                      // 开始时间
     CreatedAt  *gtime.Time `json:"createdAt"`                       // 订单时间
+}
+
+// DashboardOverview 订单概览
+type DashboardOverview struct {
+    PersonalRiders int     `json:"personalRiders"` // 个签用户数量
+    GroupRiders    int     `json:"groupRiders"`    // 团签用户数量
+    GroupCnt       int     `json:"groupCnt"`       // 团队数量
+    TotalAmount    float64 `json:"totalAmount"`    // 订单金额总计
+    Orders         int64   `json:"orders"`         // 总订单量
+    PersonalAmount float64 `json:"personalAmount"` // 个签订单金额总计
+    PersonalOrders int64   `json:"personalOrders"` // 个签订单数量
+    Deposit        float64 `json:"deposit"`        // 个签押金
+    GroupAmount    float64 `json:"groupAmount"`    // 团签订单金额总计
+    GroupOrders    int64   `json:"groupOrders"`    // 团签订单数量
 }

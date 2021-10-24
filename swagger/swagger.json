@@ -544,6 +544,91 @@
                 }
             }
         },
+        "/admin/dashboard/cities": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "已开通城市",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.City"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/dashboard/overview": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "统计概览",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "开始日期",
+                        "name": "startDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束日期",
+                        "name": "endDate",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.DashboardOverview"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/districts": {
             "get": {
                 "consumes": [
@@ -4205,6 +4290,17 @@
                 }
             }
         },
+        "model.City": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "model.ComboListItem": {
             "type": "object",
             "properties": {
@@ -4359,6 +4455,51 @@
                 "usableShopCnt": {
                     "description": "可用门店数量",
                     "type": "integer"
+                }
+            }
+        },
+        "model.DashboardOverview": {
+            "type": "object",
+            "properties": {
+                "deposit": {
+                    "description": "个签押金",
+                    "type": "number"
+                },
+                "groupAmount": {
+                    "description": "团签订单金额总计",
+                    "type": "number"
+                },
+                "groupCnt": {
+                    "description": "团队数量",
+                    "type": "integer"
+                },
+                "groupOrders": {
+                    "description": "团签订单数量",
+                    "type": "integer"
+                },
+                "groupRiders": {
+                    "description": "团签用户数量",
+                    "type": "integer"
+                },
+                "orders": {
+                    "description": "总订单量",
+                    "type": "integer"
+                },
+                "personalAmount": {
+                    "description": "个签订单金额总计",
+                    "type": "number"
+                },
+                "personalOrders": {
+                    "description": "个签订单数量",
+                    "type": "integer"
+                },
+                "personalRiders": {
+                    "description": "个签用户数量",
+                    "type": "integer"
+                },
+                "totalAmount": {
+                    "description": "订单金额总计",
+                    "type": "number"
                 }
             }
         },
@@ -4865,11 +5006,11 @@
                     "type": "string"
                 },
                 "payState": {
-                    "description": "支付状态: 1未支付 2已支付",
+                    "description": "支付状态: 0未支付 1已支付",
                     "type": "integer",
                     "enum": [
-                        1,
-                        2
+                        0,
+                        1
                     ]
                 },
                 "payType": {

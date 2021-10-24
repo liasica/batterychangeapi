@@ -61,6 +61,12 @@ type Page struct {
     PageLimit int `validate:"required" v:"required|integer|min:1|max:50"` // 页大小
 }
 
+// DateBetween 时间参数
+type DateBetween struct {
+    StartDate *gtime.Time `v:"date"` // 开始时间
+    EndDate   *gtime.Time `v:"date"` // 结束时间
+}
+
 // ItemsWithTotal 带有总数的列表数据
 type ItemsWithTotal struct {
     Total int           `json:"total"` // 总数
@@ -86,6 +92,13 @@ type ImageBase64Req struct {
 type BatteryTypeItem struct {
     Type string `json:"type"`
     Name string `json:"name"`
+}
+
+// City 城市
+type City struct {
+    Id     uint       `json:"id"`
+    Name   string     `json:"name"`
+    Detail *Districts `json:"-" orm:"with:id=id"`
 }
 
 type ArrayString []string
