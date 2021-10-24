@@ -9,6 +9,8 @@
 
 package model
 
+import "github.com/gogf/gf/util/gmeta"
+
 // DashboardOverview 订单概览
 type DashboardOverview struct {
     PersonalRiders int64   `json:"personalRiders"` // 个签用户数量
@@ -49,4 +51,29 @@ type DashboardBusiness struct {
     Renewal   int64  `json:"renewal"`   // 换电
     Pause     int64  `json:"pause"`     // 寄存
     Retrieval int64  `json:"retrieval"` // 恢复
+}
+
+// DashboardRankShop 门店订单排名
+type DashboardRankShop struct {
+    gmeta.Meta `json:"-" orm:"table:combo_order" swaggerignore:"true"`
+
+    CityId   uint   `json:"-"`
+    CityName string `json:"cityName"` // 城市名
+    ShopId   uint   `json:"-"`
+    ShopName string `json:"shopName"` // 门店名
+    Cnt      int    `json:"cnt"`      // 订单数量
+
+    City *Districts `json:"-" orm:"with:id=CityId"`
+    Shop *Shop      `json:"-" orm:"with:id=ShopId"`
+}
+
+// DashboardRankCity 城市订单排名
+type DashboardRankCity struct {
+    gmeta.Meta `json:"-" orm:"table:combo_order" swaggerignore:"true"`
+
+    CityId   uint   `json:"-"`
+    CityName string `json:"cityName"` // 城市名
+    Cnt      int    `json:"cnt"`      // 订单数量
+
+    City *Districts `json:"-" orm:"with:id=CityId"`
 }

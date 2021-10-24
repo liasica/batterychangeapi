@@ -10,6 +10,7 @@
 package admin
 
 import (
+    "battery/app/dao"
     "battery/app/model"
     "battery/app/service"
     "battery/library/request"
@@ -93,4 +94,57 @@ func (*dashboardApi) Business(r *ghttp.Request) {
     ctx := r.Context()
     data := service.DashboardService.Business(ctx, req)
     response.JsonOkExit(r, data)
+}
+
+// RankShop
+// @Summary 门店订单数量排名
+// @Tags    管理
+// @Accept  json
+// @Produce json
+// @Router  /admin/dashboard/rankshop [GET]
+// @Success 200 {object} response.JsonResponse{data=[]model.DashboardRankShop} "返回结果"
+func (*dashboardApi) RankShop(r *ghttp.Request) {
+    var items []model.DashboardRankShop
+    c := dao.ComboOrder.Columns
+    _ = dao.ComboOrder.Ctx(r.Context()).WithAll().
+        Where(c.PayState, model.PayStateSuccess).
+        WhereNot(c.Type, model.ComboOrderTypePenalty).
+        Fields(`type, payState, cityId, shopId, COUNT(1) AS cnt`).
+        OrderDesc("cnt").
+        Group("shopId").
+        Scan(&items)
+    for k, item := range items {
+        if item.Shop != nil {
+            items[k].ShopName = item.Shop.Name
+        }
+        if item.City != nil {
+            items[k].CityName = item.City.Name
+        }
+    }
+    response.JsonOkExit(r, items)
+}
+
+// RankCity
+// @Summary 门店订单数量排名[总订单分布]
+// @Tags    管理
+// @Accept  json
+// @Produce json
+// @Router  /admin/dashboard/rankcity [GET]
+// @Success 200 {object} response.JsonResponse{data=[]model.DashboardRankShop} "返回结果"
+func (*dashboardApi) RankCity(r *ghttp.Request) {
+    var items []model.DashboardRankCity
+    c := dao.ComboOrder.Columns
+    _ = dao.ComboOrder.Ctx(r.Context()).WithAll().
+        Where(c.PayState, model.PayStateSuccess).
+        WhereNot(c.Type, model.ComboOrderTypePenalty).
+        Fields(`type, payState, cityId, COUNT(1) AS cnt`).
+        OrderDesc("cnt").
+        Group("cityId").
+        Scan(&items)
+    for k, item := range items {
+        if item.City != nil {
+            items[k].CityName = item.City.Name
+        }
+    }
+    response.JsonOkExit(r, items)
 }

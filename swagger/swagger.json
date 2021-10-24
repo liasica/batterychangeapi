@@ -747,6 +747,80 @@
                 }
             }
         },
+        "/admin/dashboard/rankcity": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "门店订单数量排名[总订单分布]",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.DashboardRankShop"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/dashboard/rankshop": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "门店订单数量排名",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.DashboardRankShop"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/districts": {
             "get": {
                 "consumes": [
@@ -2726,30 +2800,7 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-个签用户套餐列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "当前页码",
-                        "name": "pageIndex",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数",
-                        "name": "pageLimit",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "当前城市ID",
-                        "name": "cityId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
+                "summary": "骑手-获取骑手当前套餐详情",
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -2762,10 +2813,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
-                                            }
+                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
                                         }
                                     }
                                 }
@@ -4653,6 +4701,23 @@
                 "totalAmount": {
                     "description": "订单金额总计",
                     "type": "number"
+                }
+            }
+        },
+        "model.DashboardRankShop": {
+            "type": "object",
+            "properties": {
+                "cityName": {
+                    "description": "城市名",
+                    "type": "string"
+                },
+                "cnt": {
+                    "description": "订单数量",
+                    "type": "integer"
+                },
+                "shopName": {
+                    "description": "门店名",
+                    "type": "string"
                 }
             }
         },
