@@ -223,7 +223,7 @@ func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserReal
         dao.User.Columns.IdCardImg1:     req.IdCardImg1,
         dao.User.Columns.IdCardImg2:     req.IdCardImg2,
         dao.User.Columns.IdCardImg3:     req.IdCardImg3,
-        dao.User.Columns.AuthState:      model.AuthStateVerifyWait,
+        dao.User.Columns.AuthState:      model.AuthStateVerifyPending,
         dao.User.Columns.EsignAccountId: accountId,
     })
     if err != nil {
@@ -252,7 +252,7 @@ func (s *userService) RealNameAuthSubmit(ctx context.Context, req model.UserReal
 // RealNameAuthVerifyCallBack 骑手实名认证回调通知结果
 func (s *userService) RealNameAuthVerifyCallBack(ctx context.Context, eSignAccountId string, req model.RealNameAuthVerifyReq) error {
     _, err := dao.User.Ctx(ctx).Where(dao.User.Columns.EsignAccountId, eSignAccountId).
-        Where(dao.User.Columns.AuthState, model.AuthStateVerifyWait).
+        Where(dao.User.Columns.AuthState, model.AuthStateVerifyPending).
         Update(g.Map{
             dao.User.Columns.AuthState: req.AuthState,
         })

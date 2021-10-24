@@ -77,3 +77,11 @@ type DashboardRankCity struct {
 
     City *Districts `json:"-" orm:"with:id=CityId"`
 }
+
+// DashboardRider 用户统计
+type DashboardRider struct {
+    Total    uint64 `json:"total"`    // 注册骑手总数
+    Verified uint64 `json:"verified"` // 已认证骑手
+    Used     uint64 `json:"used"`     // 换过电的骑手
+    Using    uint64 `json:"using"`    // 正在使用中的骑手
+}

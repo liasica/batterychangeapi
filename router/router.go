@@ -223,6 +223,7 @@ func init() {
             g.GET("/business", admin.DashboardApi.Business)
             g.GET("/rankshop", admin.DashboardApi.RankShop)
             g.GET("/rankcity", admin.DashboardApi.RankCity)
+            g.GET("/rider", admin.DashboardApi.Rider)
         })
     })
 

@@ -821,6 +821,43 @@
                 }
             }
         },
+        "/admin/dashboard/rider": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "骑手统计",
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.DashboardRider"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/districts": {
             "get": {
                 "consumes": [
@@ -4744,6 +4781,27 @@
                 "shopName": {
                     "description": "门店名",
                     "type": "string"
+                }
+            }
+        },
+        "model.DashboardRider": {
+            "type": "object",
+            "properties": {
+                "total": {
+                    "description": "注册骑手总数",
+                    "type": "integer"
+                },
+                "used": {
+                    "description": "换过电的骑手",
+                    "type": "integer"
+                },
+                "using": {
+                    "description": "正在使用中的骑手",
+                    "type": "integer"
+                },
+                "verified": {
+                    "description": "已认证骑手",
+                    "type": "integer"
                 }
             }
         },

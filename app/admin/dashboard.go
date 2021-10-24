@@ -148,3 +148,17 @@ func (*dashboardApi) RankCity(r *ghttp.Request) {
     }
     response.JsonOkExit(r, items)
 }
+
+// Rider
+// @Summary 骑手统计
+// @Tags    管理
+// @Accept  json
+// @Produce json
+// @Router  /admin/dashboard/rider [GET]
+// @Success 200 {object} response.JsonResponse{data=[]model.DashboardRider} "返回结果"
+func (*dashboardApi) Rider(r *ghttp.Request) {
+    data := new(model.DashboardRider)
+    _ = dao.User.Ctx(r.Context()).Fields("COUNT(1) AS total, SUM(IF(authState = 2, 1, 0)) AS verified, SUM(IF(DATE(batteryReturnAt) >= DATE(NOW()), 1, 0)) AS `using`").Scan(data)
+    _ = dao.UserBiz.Ctx(r.Context()).Fields(`userId, COUNT(1) AS used`).Scan(data)
+    response.JsonOkExit(r, data)
+}

@@ -10,7 +10,7 @@ import (
 // 实名认证状态
 const (
     AuthStateVerifyDefault = iota // 未提交
-    AuthStateVerifyWait           // 待审核
+    AuthStateVerifyPending        // 待审核
     AuthStateVerifySuccess        // 审核通过
     AuthStateDefaultFailed        // 审核失败
 )
