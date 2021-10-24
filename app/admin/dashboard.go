@@ -62,7 +62,7 @@ func (*dashboardApi) Overview(r *ghttp.Request) {
 // @Param 	startDate query string true "开始日期"
 // @Param 	endDate query string true "结束日期"
 // @Router  /admin/dashboard/newly [GET]
-// @Success 200 {object} response.JsonResponse{data=[]model.DashboardNewly} "返回结果"
+// @Success 200 {object} response.JsonResponse{data=[]model.DashboardOrderNewly} "返回结果"
 func (*dashboardApi) Newly(r *ghttp.Request) {
     var req = new(model.DashboardNewlyReq)
     _ = request.ParseRequest(r, req)

@@ -29,10 +29,12 @@ type DashboardNewlyReq struct {
     CityId uint `json:"cityId"` // 城市ID
 }
 
-// DashboardNewly 新增统计
-type DashboardNewly struct {
-    Date string `json:"date"` // 日期
+// DashboardOrderNewly 新增订单统计
+type DashboardOrderNewly struct {
+    Date    string  `json:"date"`    // 日期
+    New     int64   `json:"new"`     // 新增订单
+    Renewal int64   `json:"renewal"` // 续签订单
+    Amount  float64 `json:"amount"`  // 新增订单金额
+
     // Riders      int64   `json:"riders"`      // 新增骑手
-    Orders      int64   `json:"orders"`      // 新增订单
-    OrderAmount float64 `json:"orderAmount"` // 新增订单金额
 }

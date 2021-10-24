@@ -82,11 +82,11 @@ func (d *dashboardService) OverviewOrderTotal(ctx context.Context, req *model.Da
 }
 
 // NewlyRiders 新增骑手
-func (d *dashboardService) NewlyRiders(ctx context.Context, req *model.DateBetween) (data map[string]model.DashboardNewly) {
-    // data = make(map[string]model.DashboardNewly)
+func (d *dashboardService) NewlyRiders(ctx context.Context, req *model.DateBetween) (data map[string]model.DashboardOrderNewly) {
+    // data = make(map[string]model.DashboardOrderNewly)
     // c := dao.User.Columns
     // query := dao.User.Ctx(ctx)
-    // var rows []model.DashboardNewly
+    // var rows []model.DashboardOrderNewly
     // _ = d.queryDateBetween(query, req, c.CreatedAt).Fields(`DATE(createdAt) AS date, COUNT(1) AS riders`).Scan(&data)
     // for _, row := range rows {
     //     data[row.Date] = row
@@ -95,15 +95,15 @@ func (d *dashboardService) NewlyRiders(ctx context.Context, req *model.DateBetwe
 }
 
 // NewlyOrders 新增订单
-func (d *dashboardService) NewlyOrders(ctx context.Context, req *model.DashboardNewlyReq) (items []model.DashboardNewly) {
-    items = make([]model.DashboardNewly, 0)
+func (d *dashboardService) NewlyOrders(ctx context.Context, req *model.DashboardNewlyReq) (items []model.DashboardOrderNewly) {
+    items = make([]model.DashboardOrderNewly, 0)
     c := dao.ComboOrder.Columns
     query := dao.ComboOrder.Ctx(ctx)
     if req.CityId > 0 {
         query = query.Where(c.CityId, req.CityId)
     }
     _ = d.queryDateBetween(query, &req.DateBetween, c.CreatedAt).
-        Fields(`DATE(createdAt) AS date, COUNT(1) AS orders, SUM(amount) AS orderAmount, cityId`).
+        Fields("DATE(createdAt) AS date, SUM(IF(combo_order.type = 1, 1, 0)) AS `new`, SUM(IF(combo_order.type = 2, 1, 0)) AS `renewal`, SUM(amount) AS `amount`, cityId").
         WhereNot(c.Type, model.ComboOrderTypePenalty).
         Where(c.PayState, model.PayStateSuccess).
         Group("date").
@@ -116,6 +116,6 @@ func (d *dashboardService) NewlyOrders(ctx context.Context, req *model.Dashboard
 }
 
 // Newly 新增统计
-func (d *dashboardService) Newly(ctx context.Context, req *model.DateBetween) (items []model.DashboardNewly) {
+func (d *dashboardService) Newly(ctx context.Context, req *model.DateBetween) (items []model.DashboardOrderNewly) {
     return
 }

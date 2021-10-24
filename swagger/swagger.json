@@ -629,7 +629,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.DashboardNewly"
+                                                "$ref": "#/definitions/model.DashboardOrderNewly"
                                             }
                                         }
                                     }
@@ -4510,19 +4510,23 @@
                 }
             }
         },
-        "model.DashboardNewly": {
+        "model.DashboardOrderNewly": {
             "type": "object",
             "properties": {
+                "amount": {
+                    "description": "新增订单金额",
+                    "type": "number"
+                },
                 "date": {
                     "description": "日期",
                     "type": "string"
                 },
-                "orderAmount": {
-                    "description": "新增订单金额",
-                    "type": "number"
+                "new": {
+                    "description": "新增订单",
+                    "type": "integer"
                 },
-                "orders": {
-                    "description": "Riders      int64   `json:\"riders\"`      // 新增骑手",
+                "renewal": {
+                    "description": "续签订单",
                     "type": "integer"
                 }
             }
