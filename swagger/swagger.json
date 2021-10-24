@@ -640,7 +640,7 @@
                 }
             }
         },
-        "/admin/dashboard/newly": {
+        "/admin/dashboard/order": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -688,7 +688,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.DashboardOrderNewly"
+                                                "$ref": "#/definitions/model.DashboardOrder"
                                             }
                                         }
                                     }
@@ -4590,7 +4590,7 @@
                 }
             }
         },
-        "model.DashboardOrderNewly": {
+        "model.DashboardOrder": {
             "type": "object",
             "properties": {
                 "amount": {

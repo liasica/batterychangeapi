@@ -219,7 +219,7 @@ func init() {
         group.Group("/dashboard", func(g *ghttp.RouterGroup) {
             g.GET("/cities", admin.DashboardApi.OpenCities)
             g.GET("/overview", admin.DashboardApi.Overview)
-            g.GET("/newly", admin.DashboardApi.Newly)
+            g.GET("/order", admin.DashboardApi.Order)
             g.GET("/business", admin.DashboardApi.Business)
         })
     })

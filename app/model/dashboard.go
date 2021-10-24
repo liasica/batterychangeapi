@@ -23,14 +23,14 @@ type DashboardOverview struct {
     GroupOrders    int64   `json:"groupOrders"`    // 团签订单数量
 }
 
-// DashboardNewlyReq 新增统计请求体
-type DashboardNewlyReq struct {
+// DashboardOrderReq 新增统计请求体
+type DashboardOrderReq struct {
     DateBetween
     CityId uint `json:"cityId"` // 城市ID
 }
 
-// DashboardOrderNewly 新增订单统计
-type DashboardOrderNewly struct {
+// DashboardOrder 新增订单统计
+type DashboardOrder struct {
     Date    string  `json:"date"`    // 日期
     New     int64   `json:"new"`     // 新增订单
     Renewal int64   `json:"renewal"` // 续签订单

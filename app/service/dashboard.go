@@ -83,8 +83,8 @@ func (d *dashboardService) OverviewOrderTotal(ctx context.Context, req *model.Da
 }
 
 // NewlyOrders 新增订单
-func (d *dashboardService) NewlyOrders(ctx context.Context, req *model.DashboardNewlyReq) (items []model.DashboardOrderNewly) {
-    items = make([]model.DashboardOrderNewly, 0)
+func (d *dashboardService) NewlyOrders(ctx context.Context, req *model.DashboardOrderReq) (items []model.DashboardOrder) {
+    items = make([]model.DashboardOrder, 0)
     c := dao.ComboOrder.Columns
     query := dao.ComboOrder.Ctx(ctx)
     if req.CityId > 0 {
