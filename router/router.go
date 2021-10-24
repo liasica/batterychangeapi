@@ -89,18 +89,17 @@ func init() {
 
     // 骑手
     s.Group("/rapi", func(group *ghttp.RouterGroup) {
-        group.POST("/register", user.UserApi.Register)
-        group.POST("/login", user.UserApi.Login)
+        group.POST("/login", user.RiderApi.Login)
         group.Middleware(
             user.Middleware.Ctx,
             user.Middleware.Auth,
         )
-        group.POST("/auth", user.UserApi.Auth)
-        group.GET("/auth", user.UserApi.AuthGet)
-        group.PUT("/device", user.UserApi.PushToken)
-        group.GET("/combo", user.UserApi.Combo)
-        group.GET("/combo_order/qr", user.UserApi.ComboOrderQr)
-        group.GET("/home", user.UserApi.Profile)
+        group.POST("/auth", user.RiderApi.Auth)
+        group.GET("/auth", user.RiderApi.AuthGet)
+        group.PUT("/device", user.RiderApi.PushToken)
+        group.GET("/combo", user.RiderApi.Combo)
+        group.GET("/combo_order/qr", user.RiderApi.ComboOrderQr)
+        group.GET("/home", user.RiderApi.Profile)
 
         group.GET("/districts/current_city", user.DistrictsApi.CurrentCity)
         group.GET("/open_city", user.DistrictsApi.OpenCityList)
@@ -125,7 +124,7 @@ func init() {
         group.GET("/group/stat", user.GroupApi.Stat)
         group.GET("/group/list", user.GroupApi.List)
 
-        group.GET("/sign_file", user.UserApi.SignFile)
+        group.GET("/sign_file", user.RiderApi.SignFile)
 
         group.GET("/message", user.MessageApi.List)
         group.PUT("/message/read", user.MessageApi.Read)
@@ -220,6 +219,7 @@ func init() {
         group.Group("/dashboard", func(g *ghttp.RouterGroup) {
             g.GET("/cities", admin.DashboardApi.OpenCities)
             g.GET("/overview", admin.DashboardApi.Overview)
+            g.GET("/newly", admin.DashboardApi.Newly)
         })
     })
 

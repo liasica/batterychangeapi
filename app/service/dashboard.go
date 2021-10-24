@@ -15,6 +15,7 @@ import (
     "context"
     "fmt"
     "github.com/gogf/gf/database/gdb"
+    "sort"
 )
 
 var DashboardService = new(dashboardService)
@@ -56,7 +57,7 @@ func (d *dashboardService) OverviewGroupCount(ctx context.Context, req *model.Da
     c := dao.Group.Columns
     query := dao.Group.Ctx(ctx)
     cnt, _ := d.queryDateBetween(query, req, c.CreatedAt).Count()
-    data.GroupCnt = cnt
+    data.GroupCnt = int64(cnt)
 }
 
 // OverviewOrderTotal 订单概览
@@ -77,5 +78,44 @@ func (d *dashboardService) OverviewOrderTotal(ctx context.Context, req *model.Da
             data.GroupAmount += order.Amount
         }
     }
+    return
+}
+
+// NewlyRiders 新增骑手
+func (d *dashboardService) NewlyRiders(ctx context.Context, req *model.DateBetween) (data map[string]model.DashboardNewly) {
+    // data = make(map[string]model.DashboardNewly)
+    // c := dao.User.Columns
+    // query := dao.User.Ctx(ctx)
+    // var rows []model.DashboardNewly
+    // _ = d.queryDateBetween(query, req, c.CreatedAt).Fields(`DATE(createdAt) AS date, COUNT(1) AS riders`).Scan(&data)
+    // for _, row := range rows {
+    //     data[row.Date] = row
+    // }
+    return
+}
+
+// NewlyOrders 新增订单
+func (d *dashboardService) NewlyOrders(ctx context.Context, req *model.DashboardNewlyReq) (items []model.DashboardNewly) {
+    items = make([]model.DashboardNewly, 0)
+    c := dao.ComboOrder.Columns
+    query := dao.ComboOrder.Ctx(ctx)
+    if req.CityId > 0 {
+        query = query.Where(c.CityId, req.CityId)
+    }
+    _ = d.queryDateBetween(query, &req.DateBetween, c.CreatedAt).
+        Fields(`DATE(createdAt) AS date, COUNT(1) AS orders, SUM(amount) AS orderAmount, cityId`).
+        WhereNot(c.Type, model.ComboOrderTypePenalty).
+        Where(c.PayState, model.PayStateSuccess).
+        Group("date").
+        Scan(&items)
+    // 按时间正序排列
+    sort.Slice(items, func(i, j int) bool {
+        return items[i].Date < items[j].Date
+    })
+    return
+}
+
+// Newly 新增统计
+func (d *dashboardService) Newly(ctx context.Context, req *model.DateBetween) (items []model.DashboardNewly) {
     return
 }

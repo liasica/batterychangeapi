@@ -11,28 +11,9 @@ import (
     "battery/library/response"
 )
 
-var UserApi = userApi{}
+var RiderApi = riderApi{}
 
-type userApi struct {
-}
-
-// Register
-// @Summary 骑手-用户注册
-// @Tags    骑手
-// @Accept  json
-// @Produce json
-// @Param   entity  body model.UserRegisterReq true "注册数据"
-// @Router  /rapi/register [POST]
-// @Success 200 {object} response.JsonResponse  "返回结果"
-func (*userApi) Register(r *ghttp.Request) {
-    var req model.UserRegisterReq
-    if err := r.Parse(&req); err != nil {
-        response.Json(r, response.RespCodeArgs, err.Error())
-    }
-    if _, err := service.UserService.Register(r.Context(), req); err != nil {
-        response.Json(r, response.RespCodeArgs, err.Error())
-    }
-    response.JsonOkExit(r)
+type riderApi struct {
 }
 
 // Login
@@ -43,7 +24,7 @@ func (*userApi) Register(r *ghttp.Request) {
 // @Param   entity  body model.UserLoginReq true "登录数据"
 // @Router  /rapi/login [POST]
 // @Success 200 {object} response.JsonResponse{data=model.UserLoginRep}  "返回结果"
-func (*userApi) Login(r *ghttp.Request) {
+func (*riderApi) Login(r *ghttp.Request) {
     var req model.UserLoginReq
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
@@ -63,7 +44,7 @@ func (*userApi) Login(r *ghttp.Request) {
 // @Param   entity  body model.UserRealNameAuthReq true "认证数据"
 // @Router  /rapi/auth [POST]
 // @Success 200 {object} response.JsonResponse{data=model.UserRealNameAuthRep}  "返回结果"
-func (*userApi) Auth(r *ghttp.Request) {
+func (*riderApi) Auth(r *ghttp.Request) {
     var req model.UserRealNameAuthReq
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
@@ -85,7 +66,7 @@ func (*userApi) Auth(r *ghttp.Request) {
 // @Produce json
 // @Router  /rapi/auth [GET]
 // @Success 200 {object} response.JsonResponse{data=int}  "返回结果"
-func (*userApi) AuthGet(r *ghttp.Request) {
+func (*riderApi) AuthGet(r *ghttp.Request) {
     u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
     response.JsonOkExit(r, u.AuthState)
 }
@@ -98,7 +79,7 @@ func (*userApi) AuthGet(r *ghttp.Request) {
 // @Param   entity  body model.PushTokenReq true "登录数据"
 // @Router  /rapi/device  [PUT]
 // @Success 200 {object} response.JsonResponse  "返回结果"
-func (*userApi) PushToken(r *ghttp.Request) {
+func (*riderApi) PushToken(r *ghttp.Request) {
     var req model.PushTokenReq
     if err := r.Parse(&req); err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
@@ -117,7 +98,7 @@ func (*userApi) PushToken(r *ghttp.Request) {
 // @Produce json
 // @Router  /rapi/combo  [GET]
 // @Success 200 {object} response.JsonResponse{data=model.UserCurrentComboOrder}  "返回结果"
-func (*userApi) Combo(r *ghttp.Request) {
+func (*riderApi) Combo(r *ghttp.Request) {
     rep, err := service.UserService.MyCombo(r.Context())
     if err != nil {
         response.Json(r, response.RespCodeArgs, err.Error())
@@ -134,7 +115,7 @@ func (*userApi) Combo(r *ghttp.Request) {
 // @Produce json
 // @Router  /rapi/combo_order/qr  [GET]
 // @Success 200 {object} response.JsonResponse "返回结果, data字段为二维码图片数据，需要本地生成二维码"
-func (*userApi) ComboOrderQr(r *ghttp.Request) {
+func (*riderApi) ComboOrderQr(r *ghttp.Request) {
     u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
     if u.GroupId > 0 {
         response.JsonOkExit(r, fmt.Sprintf("%d-%s-%d", u.GroupId, u.Qr, u.BatteryType))
@@ -157,7 +138,7 @@ func (*userApi) ComboOrderQr(r *ghttp.Request) {
 // @Produce json
 // @Router  /rapi/home  [GET]
 // @Success 200 {object} response.JsonResponse{data=model.UserProfileRep}  "返回结果"
-func (*userApi) Profile(r *ghttp.Request) {
+func (*riderApi) Profile(r *ghttp.Request) {
     profile := service.UserService.Profile(r.Context())
     profile.Qr = qr.Code.AddPrefix(profile.Qr)
     response.JsonOkExit(r, profile)
@@ -170,7 +151,7 @@ func (*userApi) Profile(r *ghttp.Request) {
 // @Produce json
 // @Router  /rapi/sign_file  [GET]
 // @Success 200 {object} response.JsonResponse{data=[]model.UserSignFileRep}  "返回结果"
-func (*userApi) SignFile(r *ghttp.Request) {
+func (*riderApi) SignFile(r *ghttp.Request) {
     u := r.Context().Value(model.ContextRiderKey).(*model.ContextRider)
     s, err := service.SignService.UserLatestDoneDetail(r.Context(), u.Id, u.ComboOrderId, u.GroupId)
     if err != nil {

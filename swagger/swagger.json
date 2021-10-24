@@ -581,6 +581,65 @@
                 }
             }
         },
+        "/admin/dashboard/newly": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理"
+                ],
+                "summary": "新增订单统计",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "城市ID",
+                        "name": "cityId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始日期",
+                        "name": "startDate",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束日期",
+                        "name": "endDate",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回结果",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.JsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.DashboardNewly"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/dashboard/overview": {
             "get": {
                 "consumes": [
@@ -2608,7 +2667,30 @@
                 "tags": [
                     "骑手"
                 ],
-                "summary": "骑手-获取骑手当前套餐详情",
+                "summary": "骑手-个签用户套餐列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "当前页码",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "pageLimit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前城市ID",
+                        "name": "cityId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "返回结果",
@@ -2621,7 +2703,10 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UserCurrentComboOrder"
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.ComboRiderListRepItem"
+                                            }
                                         }
                                     }
                                 }
@@ -3098,39 +3183,6 @@
                                     }
                                 }
                             ]
-                        }
-                    }
-                }
-            }
-        },
-        "/rapi/register": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "骑手"
-                ],
-                "summary": "骑手-用户注册",
-                "parameters": [
-                    {
-                        "description": "注册数据",
-                        "name": "entity",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UserRegisterReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回结果",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonResponse"
                         }
                     }
                 }
@@ -4454,6 +4506,23 @@
                 },
                 "usableShopCnt": {
                     "description": "可用门店数量",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.DashboardNewly": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "description": "日期",
+                    "type": "string"
+                },
+                "orderAmount": {
+                    "description": "新增订单金额",
+                    "type": "number"
+                },
+                "orders": {
+                    "description": "Riders      int64   `json:\"riders\"`      // 新增骑手",
                     "type": "integer"
                 }
             }
@@ -6380,23 +6449,6 @@
                 },
                 "realName": {
                     "description": "真实姓名",
-                    "type": "string"
-                }
-            }
-        },
-        "model.UserRegisterReq": {
-            "type": "object",
-            "required": [
-                "mobile",
-                "sms"
-            ],
-            "properties": {
-                "mobile": {
-                    "description": "手机号",
-                    "type": "string"
-                },
-                "sms": {
-                    "description": "短信验证码",
                     "type": "string"
                 }
             }
